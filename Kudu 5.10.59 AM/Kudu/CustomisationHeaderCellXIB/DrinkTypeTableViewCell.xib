@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkTypeTableViewCell" rowHeight="160" id="KbY-9g-UA3" userLabel="DrinkTypeTableViewCell" customClass="DrinkTypeTableViewCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="440" height="160"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KbY-9g-UA3" id="Ue4-1N-Oj5">
+                <rect key="frame" x="0.0" y="0.0" width="440" height="160"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmn-5F-ZOT">
+                        <rect key="frame" x="16" y="10" width="41.5" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="F1l-VP-G3A">
+                        <rect key="frame" x="16" y="45.5" width="408" height="82"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="82" id="ED3-O3-6YI"/>
+                        </constraints>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bw0-bJ-lxV">
+                            <size key="itemSize" width="128" height="128"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <connections>
+                            <outlet property="dataSource" destination="KbY-9g-UA3" id="wh8-US-er3"/>
+                            <outlet property="delegate" destination="KbY-9g-UA3" id="mtU-2N-pki"/>
+                        </connections>
+                    </collectionView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="dmn-5F-ZOT" firstAttribute="top" secondItem="Ue4-1N-Oj5" secondAttribute="top" constant="10" id="2I8-XL-aMF"/>
+                    <constraint firstItem="F1l-VP-G3A" firstAttribute="top" secondItem="dmn-5F-ZOT" secondAttribute="bottom" constant="15" id="Ml9-7l-GZv"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="F1l-VP-G3A" secondAttribute="bottom" constant="5" id="PQ4-Bc-hUF"/>
+                    <constraint firstItem="F1l-VP-G3A" firstAttribute="leading" secondItem="dmn-5F-ZOT" secondAttribute="leading" id="RFz-wE-U2d"/>
+                    <constraint firstItem="dmn-5F-ZOT" firstAttribute="leading" secondItem="Ue4-1N-Oj5" secondAttribute="leading" constant="16" id="Vm5-rT-ZLw"/>
+                    <constraint firstAttribute="trailing" secondItem="F1l-VP-G3A" secondAttribute="trailing" constant="16" id="kmk-jp-6ml"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dmn-5F-ZOT" secondAttribute="trailing" constant="16" id="vSb-u7-swz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="QoV-eU-SdI"/>
+            <accessibility key="accessibilityConfiguration" identifier="DrinkTypeTableViewCell"/>
+            <connections>
+                <outlet property="collectionView" destination="F1l-VP-G3A" id="TMS-wI-9Af"/>
+                <outlet property="drinkSizeTitle" destination="dmn-5F-ZOT" id="Uha-vM-Jgl"/>
+            </connections>
+            <point key="canvasLocation" x="242.0289855072464" y="248.4375"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

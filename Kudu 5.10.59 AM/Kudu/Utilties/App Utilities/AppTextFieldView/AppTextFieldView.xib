@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppTextFieldView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="leftClearButton" destination="GEc-pP-2rn" id="LrZ-Rt-LSr"/>
+                <outlet property="leftClearButtonWidth" destination="Ssm-G9-iYZ" id="zIu-KL-Hjw"/>
+                <outlet property="leftSpaceConstraint" destination="453-lk-Vem" id="rVS-ob-zL1"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="kD6-jx-hAt"/>
+                <outlet property="rightClearButton" destination="gv3-cQ-cr1" id="j3R-Qy-R1d"/>
+                <outlet property="rightClearButtonWidth" destination="9wl-lJ-0HA" id="wja-Rr-TOy"/>
+                <outlet property="rightSpaceConstraint" destination="dkc-Lo-5gU" id="Unb-5u-FHI"/>
+                <outlet property="txtField" destination="dAl-8p-xzR" id="09h-pr-vWb"/>
+                <outlet property="txtFieldBottomConstraint" destination="nGs-ag-qBS" id="sBM-nN-nrB"/>
+                <outlet property="txtFieldTopConstraint" destination="dgJ-A6-6oa" id="2bR-tv-Jfr"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEc-pP-2rn" userLabel="clearBtn" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="2.5" width="0.0" height="35"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="IpI-J5-Kan"/>
+                        <constraint firstAttribute="width" id="Ssm-G9-iYZ"/>
+                    </constraints>
+                    <color key="tintColor" name="ThemeBlackTextColor"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="clearCross"/>
+                    <connections>
+                        <action selector="clearBtnPressed:" destination="-1" eventType="touchUpInside" id="R9m-yt-Wub"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Placeholder Text Here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dAl-8p-xzR">
+                    <rect key="frame" x="0.0" y="0.0" width="374" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="username"/>
+                </textField>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gv3-cQ-cr1" userLabel="clearBtn" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="379" y="2.5" width="35" height="35"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="9wl-lJ-0HA"/>
+                        <constraint firstAttribute="height" constant="35" id="MwX-yt-KSY"/>
+                    </constraints>
+                    <color key="tintColor" name="ThemeBlackTextColor"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="clearCross"/>
+                    <connections>
+                        <action selector="clearBtnPressed:" destination="-1" eventType="touchUpInside" id="UJk-Yl-ZHZ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="dAl-8p-xzR" firstAttribute="leading" secondItem="GEc-pP-2rn" secondAttribute="trailing" id="453-lk-Vem"/>
+                <constraint firstItem="GEc-pP-2rn" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="RYN-HE-MnN"/>
+                <constraint firstItem="dAl-8p-xzR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="dgJ-A6-6oa"/>
+                <constraint firstItem="gv3-cQ-cr1" firstAttribute="leading" secondItem="dAl-8p-xzR" secondAttribute="trailing" constant="5" id="dkc-Lo-5gU"/>
+                <constraint firstItem="GEc-pP-2rn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fbQ-Ea-6Tx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="dAl-8p-xzR" secondAttribute="bottom" id="nGs-ag-qBS"/>
+                <constraint firstAttribute="trailing" secondItem="gv3-cQ-cr1" secondAttribute="trailing" id="tZ0-lb-0M1"/>
+                <constraint firstItem="gv3-cQ-cr1" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="wOg-eB-3jY"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="141" y="130"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="GEc-pP-2rn">
+            <size key="intrinsicContentSize" width="36" height="38"/>
+        </designable>
+        <designable name="gv3-cQ-cr1">
+            <size key="intrinsicContentSize" width="36" height="38"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="clearCross" width="16" height="16"/>
+        <namedColor name="ThemeBlackTextColor">
+            <color red="0.070588235294117646" green="0.070588235294117646" blue="0.070588235294117646" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

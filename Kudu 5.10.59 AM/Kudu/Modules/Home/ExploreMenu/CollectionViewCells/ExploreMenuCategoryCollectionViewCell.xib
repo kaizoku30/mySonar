@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-SemiBold.ttf">
+            <string>Mulish-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExploreMenuCategoryCollectionViewCell" id="gTV-IL-0wX" customClass="ExploreMenuCategoryCollectionViewCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="80" height="85"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="80" height="85"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Desserts Cold" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfo-qC-OtY">
+                        <rect key="frame" x="12" y="58.5" width="56" height="15.5"/>
+                        <fontDescription key="fontDescription" name="Mulish-SemiBold" family="Mulish" pointSize="12"/>
+                        <color key="textColor" red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="4358197 1" translatesAutoresizingMaskIntoConstraints="NO" id="QJI-0A-gvK">
+                        <rect key="frame" x="16" y="6.5" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="Tiq-4a-mQC"/>
+                            <constraint firstAttribute="height" constant="48" id="iOw-Sr-7nR"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8W-Mt-tmY">
+                        <rect key="frame" x="27.5" y="75" width="25" height="2"/>
+                        <color key="backgroundColor" red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="cd1-ww-o1M"/>
+                            <constraint firstAttribute="height" constant="2" id="oZF-XA-ZgA"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WP2-OS-wMo">
+                        <rect key="frame" x="16" y="6.5" width="48" height="48"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="24"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="kfo-qC-OtY" firstAttribute="top" secondItem="QJI-0A-gvK" secondAttribute="bottom" constant="4" id="3U3-3R-r4G"/>
+                <constraint firstAttribute="bottom" secondItem="v8W-Mt-tmY" secondAttribute="bottom" constant="8" id="3Yt-H4-a5p"/>
+                <constraint firstItem="WP2-OS-wMo" firstAttribute="width" secondItem="QJI-0A-gvK" secondAttribute="width" id="5UO-th-121"/>
+                <constraint firstItem="v8W-Mt-tmY" firstAttribute="top" secondItem="kfo-qC-OtY" secondAttribute="bottom" constant="1" id="8Wb-If-xAn"/>
+                <constraint firstItem="WP2-OS-wMo" firstAttribute="height" secondItem="QJI-0A-gvK" secondAttribute="height" id="9fW-Qc-UzX"/>
+                <constraint firstItem="kfo-qC-OtY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="Jry-lZ-f9T"/>
+                <constraint firstAttribute="trailing" secondItem="kfo-qC-OtY" secondAttribute="trailing" constant="12" id="NuT-9a-jDa"/>
+                <constraint firstItem="QJI-0A-gvK" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" constant="6.5" id="OpJ-R2-8Mh"/>
+                <constraint firstItem="QJI-0A-gvK" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="QrY-uE-mxf"/>
+                <constraint firstItem="v8W-Mt-tmY" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="cPD-1x-ngW"/>
+                <constraint firstItem="WP2-OS-wMo" firstAttribute="centerY" secondItem="QJI-0A-gvK" secondAttribute="centerY" id="dti-o7-uCy"/>
+                <constraint firstItem="WP2-OS-wMo" firstAttribute="centerX" secondItem="QJI-0A-gvK" secondAttribute="centerX" id="faA-8l-V4g"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QJI-0A-gvK" secondAttribute="trailing" constant="12" id="n3k-OU-n1m"/>
+                <constraint firstItem="QJI-0A-gvK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="r0N-BL-79Z"/>
+            </constraints>
+            <connections>
+                <outlet property="itemImgView" destination="QJI-0A-gvK" id="K2b-I7-NrV"/>
+                <outlet property="itemLabel" destination="kfo-qC-OtY" id="Ka7-XE-MVT"/>
+                <outlet property="selectedView" destination="v8W-Mt-tmY" id="al9-Ea-cMt"/>
+                <outlet property="shimmerView" destination="WP2-OS-wMo" id="Ewv-z9-ddT"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="130"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="4358197 1" width="360" height="341"/>
+    </resources>
+</document>

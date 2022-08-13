@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressEntryFieldCell" rowHeight="72" id="KGk-i7-Jjw" customClass="AddressEntryFieldCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="acD-oh-3id">
+                        <rect key="frame" x="32" y="0.0" width="256" height="48"/>
+                        <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cUd-hV-FJL" userLabel="Phone">
+                                <rect key="frame" x="0.0" y="0.0" width="256" height="48"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+966" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4p-AB-e6Z">
+                                        <rect key="frame" x="15" y="15" width="34" height="18"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNF-LY-mGN" customClass="AppTextFieldView" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="54" y="0.0" width="202" height="48"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="5XI-4N-7oW"/>
+                                        </constraints>
+                                    </view>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Ic-oF-v1R">
+                                        <rect key="frame" x="54" y="0.0" width="202" height="48"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.8666666666666667" green="0.8666666666666667" blue="0.8666666666666667" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="9Ic-oF-v1R" firstAttribute="width" secondItem="WNF-LY-mGN" secondAttribute="width" id="1dz-BF-he6"/>
+                                    <constraint firstAttribute="bottom" secondItem="WNF-LY-mGN" secondAttribute="bottom" id="2JJ-UJ-5dI"/>
+                                    <constraint firstItem="K4p-AB-e6Z" firstAttribute="leading" secondItem="cUd-hV-FJL" secondAttribute="leading" constant="15" id="BJZ-Ks-vAd"/>
+                                    <constraint firstItem="9Ic-oF-v1R" firstAttribute="centerY" secondItem="WNF-LY-mGN" secondAttribute="centerY" id="FOz-yF-BT3"/>
+                                    <constraint firstAttribute="height" constant="48" id="JLb-cJ-rjI"/>
+                                    <constraint firstItem="K4p-AB-e6Z" firstAttribute="centerY" secondItem="cUd-hV-FJL" secondAttribute="centerY" id="SbT-aR-u3M"/>
+                                    <constraint firstItem="9Ic-oF-v1R" firstAttribute="height" secondItem="WNF-LY-mGN" secondAttribute="height" id="aq8-Fc-ERV"/>
+                                    <constraint firstItem="9Ic-oF-v1R" firstAttribute="centerX" secondItem="WNF-LY-mGN" secondAttribute="centerX" id="f0s-6W-KSf"/>
+                                    <constraint firstItem="WNF-LY-mGN" firstAttribute="leading" secondItem="K4p-AB-e6Z" secondAttribute="trailing" constant="5" id="gHS-gV-0kD"/>
+                                    <constraint firstItem="WNF-LY-mGN" firstAttribute="top" secondItem="cUd-hV-FJL" secondAttribute="top" id="uzg-T1-e5R"/>
+                                    <constraint firstAttribute="trailing" secondItem="WNF-LY-mGN" secondAttribute="trailing" id="vvz-9d-jec"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6u9-cb-C0W" userLabel="Name">
+                                <rect key="frame" x="0.0" y="0.0" width="256" height="48"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNe-b3-ayx" customClass="AppTextFieldView" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="0.0" width="241" height="48"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="zav-TR-eku"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.8666666666666667" green="0.8666666666666667" blue="0.8666666666666667" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="yNe-b3-ayx" firstAttribute="leading" secondItem="6u9-cb-C0W" secondAttribute="leading" constant="15" id="L2h-my-1Mh"/>
+                                    <constraint firstAttribute="bottom" secondItem="yNe-b3-ayx" secondAttribute="bottom" id="LKL-yw-ReA"/>
+                                    <constraint firstAttribute="height" constant="48" id="eW9-Lt-Rbg"/>
+                                    <constraint firstItem="yNe-b3-ayx" firstAttribute="top" secondItem="6u9-cb-C0W" secondAttribute="top" id="h4Q-TY-eIL"/>
+                                    <constraint firstAttribute="trailing" secondItem="yNe-b3-ayx" secondAttribute="trailing" id="vDq-9f-q6d"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="6u9-cb-C0W" secondAttribute="trailing" id="0cS-1E-9Dd"/>
+                            <constraint firstAttribute="bottom" secondItem="6u9-cb-C0W" secondAttribute="bottom" id="K8r-qo-pP3"/>
+                            <constraint firstItem="cUd-hV-FJL" firstAttribute="top" secondItem="acD-oh-3id" secondAttribute="top" id="fBN-Mq-FUB"/>
+                            <constraint firstItem="cUd-hV-FJL" firstAttribute="leading" secondItem="acD-oh-3id" secondAttribute="leading" id="ljD-31-sb2"/>
+                            <constraint firstItem="6u9-cb-C0W" firstAttribute="top" secondItem="acD-oh-3id" secondAttribute="top" id="onn-X0-Icw"/>
+                            <constraint firstAttribute="trailing" secondItem="cUd-hV-FJL" secondAttribute="trailing" id="uuJ-Tn-qew"/>
+                            <constraint firstAttribute="bottom" secondItem="cUd-hV-FJL" secondAttribute="bottom" id="wow-xD-GDG"/>
+                            <constraint firstItem="6u9-cb-C0W" firstAttribute="leading" secondItem="acD-oh-3id" secondAttribute="leading" id="zSF-Kc-BMT"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="acD-oh-3id" secondAttribute="trailing" constant="32" id="WXj-12-FBU"/>
+                    <constraint firstItem="acD-oh-3id" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="lvo-FS-Evn"/>
+                    <constraint firstAttribute="bottom" secondItem="acD-oh-3id" secondAttribute="bottom" constant="24" id="pvk-Yu-jO0"/>
+                    <constraint firstItem="acD-oh-3id" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="upz-Ct-DhS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="containerView" destination="acD-oh-3id" id="RZz-BX-McY"/>
+                <outlet property="countryCodeLabel" destination="K4p-AB-e6Z" id="x85-yf-gGg"/>
+                <outlet property="entryContainerView" destination="6u9-cb-C0W" id="Zqx-k2-DKw"/>
+                <outlet property="entryTFView" destination="yNe-b3-ayx" id="vrN-CS-MEP"/>
+                <outlet property="phoneEntryContainerView" destination="cUd-hV-FJL" id="y2S-cQ-vF4"/>
+                <outlet property="phoneTF" destination="9Ic-oF-v1R" id="8nn-0F-viQ"/>
+                <outlet property="phoneTFLeftPadding" destination="gHS-gV-0kD" id="GJI-oa-ELE"/>
+            </connections>
+            <point key="canvasLocation" x="278" y="-5"/>
+        </tableViewCell>
+    </objects>
+</document>

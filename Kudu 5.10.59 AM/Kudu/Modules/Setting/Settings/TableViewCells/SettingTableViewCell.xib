@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingTableViewCell" rowHeight="61" id="qdK-vt-21v" customClass="SettingTableViewCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="346" height="61"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="qdK-vt-21v" id="MIW-2r-KUN">
+                <rect key="frame" x="0.0" y="0.0" width="346" height="61"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3af-Zu-b0L">
+                        <rect key="frame" x="0.0" y="0.0" width="346" height="40"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1A-IM-Edi">
+                                <rect key="frame" x="12" y="12" width="82.5" height="16"/>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rightArrowImage" translatesAutoresizingMaskIntoConstraints="NO" id="I07-JK-60a">
+                                <rect key="frame" x="318" y="16" width="12" height="8"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="12" id="9Fo-CL-yTJ"/>
+                                    <constraint firstAttribute="height" constant="8" id="zMa-Lp-a64"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageDirection">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvv-5x-7hU">
+                                <rect key="frame" x="12" y="39" width="318" height="1"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.061982615890000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="4JO-bd-DbN"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ndJ-oU-d1r" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
+                                <rect key="frame" x="12" y="7.5" width="25" height="25"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="WYD-cI-q02"/>
+                                    <constraint firstAttribute="height" constant="25" id="Yi5-0J-4jF"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                        <color key="value" name="kuduThemeBlue"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="lineSpinFadeLoader"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="I07-JK-60a" firstAttribute="centerY" secondItem="3af-Zu-b0L" secondAttribute="centerY" id="7RJ-d1-mL7"/>
+                            <constraint firstAttribute="height" constant="40" id="7i0-Kt-gdU"/>
+                            <constraint firstItem="I07-JK-60a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u1A-IM-Edi" secondAttribute="trailing" constant="15" id="KdV-r4-BSp"/>
+                            <constraint firstItem="ndJ-oU-d1r" firstAttribute="leading" secondItem="u1A-IM-Edi" secondAttribute="leading" id="MAO-3B-Ily"/>
+                            <constraint firstAttribute="bottom" secondItem="Hvv-5x-7hU" secondAttribute="bottom" id="XhW-pj-sam"/>
+                            <constraint firstAttribute="trailing" secondItem="I07-JK-60a" secondAttribute="trailing" constant="16" id="ci9-mH-7D6"/>
+                            <constraint firstItem="Hvv-5x-7hU" firstAttribute="top" secondItem="u1A-IM-Edi" secondAttribute="bottom" constant="11" id="ggu-5h-2Oj"/>
+                            <constraint firstItem="ndJ-oU-d1r" firstAttribute="centerY" secondItem="u1A-IM-Edi" secondAttribute="centerY" id="kr8-cS-9y8"/>
+                            <constraint firstAttribute="trailing" secondItem="Hvv-5x-7hU" secondAttribute="trailing" constant="16" id="oYk-hl-Ewz"/>
+                            <constraint firstItem="Hvv-5x-7hU" firstAttribute="leading" secondItem="3af-Zu-b0L" secondAttribute="leading" constant="12" id="qd5-Pr-Yjt"/>
+                            <constraint firstItem="u1A-IM-Edi" firstAttribute="centerY" secondItem="3af-Zu-b0L" secondAttribute="centerY" id="sFZ-6e-0sB"/>
+                            <constraint firstItem="u1A-IM-Edi" firstAttribute="leading" secondItem="3af-Zu-b0L" secondAttribute="leading" constant="12" id="vpr-6k-9Ne"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="3af-Zu-b0L" secondAttribute="trailing" id="SK2-Cm-dIH"/>
+                    <constraint firstItem="3af-Zu-b0L" firstAttribute="top" secondItem="MIW-2r-KUN" secondAttribute="top" id="UFh-eF-fEE"/>
+                    <constraint firstAttribute="bottom" secondItem="3af-Zu-b0L" secondAttribute="bottom" id="mdp-NC-dhd"/>
+                    <constraint firstItem="3af-Zu-b0L" firstAttribute="leading" secondItem="MIW-2r-KUN" secondAttribute="leading" id="up6-xw-xzQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="ZXz-mY-dEt"/>
+            <connections>
+                <outlet property="activityIndicator" destination="ndJ-oU-d1r" id="FHx-24-pYe"/>
+                <outlet property="imageArrow" destination="I07-JK-60a" id="Drh-Iu-CJP"/>
+                <outlet property="settingName" destination="u1A-IM-Edi" id="h5N-NO-9hw"/>
+                <outlet property="viewLine" destination="Hvv-5x-7hU" id="6uq-Lp-pv7"/>
+            </connections>
+            <point key="canvasLocation" x="-20.289855072463769" y="117.52232142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="rightArrowImage" width="8" height="12"/>
+        <namedColor name="kuduThemeBlue">
+            <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="InStorePromoCell" rowHeight="300" id="KGk-i7-Jjw" customClass="InStorePromoCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xD7-Yw-9zZ" userLabel="TopView">
+                        <rect key="frame" x="16" y="0.0" width="288" height="17"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVm-ul-fWc" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                <rect key="frame" x="229" y="0.0" width="59" height="17"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="VIEW ALL">
+                                    <color key="titleColor" name="yellowF5B21B"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IN STORE PROMOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8MR-XT-qpP">
+                                <rect key="frame" x="8" y="0.0" width="112" height="17"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pmJ-FY-wlc" userLabel="LeftYellowLine">
+                                <rect key="frame" x="0.0" y="0.0" width="2" height="17"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="VEj-tw-XyT"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="9TS-Pf-g2Q"/>
+                            <constraint firstItem="NVm-ul-fWc" firstAttribute="top" secondItem="xD7-Yw-9zZ" secondAttribute="top" id="AUq-Ro-dyu"/>
+                            <constraint firstItem="pmJ-FY-wlc" firstAttribute="top" secondItem="xD7-Yw-9zZ" secondAttribute="top" id="Bd9-ir-kcH"/>
+                            <constraint firstAttribute="trailing" secondItem="NVm-ul-fWc" secondAttribute="trailing" id="FV1-Ss-qU9"/>
+                            <constraint firstAttribute="bottom" secondItem="NVm-ul-fWc" secondAttribute="bottom" id="LJV-iC-LUM"/>
+                            <constraint firstItem="NVm-ul-fWc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8MR-XT-qpP" secondAttribute="trailing" id="Q97-oo-TnB"/>
+                            <constraint firstItem="NVm-ul-fWc" firstAttribute="centerY" secondItem="xD7-Yw-9zZ" secondAttribute="centerY" id="Rzp-hZ-Zh8"/>
+                            <constraint firstAttribute="bottom" secondItem="8MR-XT-qpP" secondAttribute="bottom" id="VGN-5C-TAF"/>
+                            <constraint firstItem="8MR-XT-qpP" firstAttribute="leading" secondItem="pmJ-FY-wlc" secondAttribute="trailing" constant="6" id="cG6-8x-s1O"/>
+                            <constraint firstAttribute="bottom" secondItem="pmJ-FY-wlc" secondAttribute="bottom" id="dbC-Tp-TIZ"/>
+                            <constraint firstItem="8MR-XT-qpP" firstAttribute="top" secondItem="xD7-Yw-9zZ" secondAttribute="top" id="onA-LL-aED"/>
+                            <constraint firstItem="pmJ-FY-wlc" firstAttribute="leading" secondItem="xD7-Yw-9zZ" secondAttribute="leading" id="wxb-fD-jxt"/>
+                            <constraint firstItem="8MR-XT-qpP" firstAttribute="centerY" secondItem="xD7-Yw-9zZ" secondAttribute="centerY" id="xDM-3U-Dcv"/>
+                        </constraints>
+                    </view>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="u4I-qW-S90">
+                        <rect key="frame" x="0.0" y="33" width="320" height="122"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="122" id="Ef4-Ll-fds"/>
+                        </constraints>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GSd-Kt-iU2">
+                            <size key="itemSize" width="128" height="128"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="u4I-qW-S90" firstAttribute="top" secondItem="xD7-Yw-9zZ" secondAttribute="bottom" constant="16" id="H4g-L2-Nj7"/>
+                    <constraint firstAttribute="trailing" secondItem="xD7-Yw-9zZ" secondAttribute="trailing" constant="16" id="NY4-ow-awA"/>
+                    <constraint firstAttribute="trailing" secondItem="u4I-qW-S90" secondAttribute="trailing" id="Q60-67-yWp"/>
+                    <constraint firstAttribute="bottom" secondItem="u4I-qW-S90" secondAttribute="bottom" constant="24" id="Ws4-Qf-sb5"/>
+                    <constraint firstItem="xD7-Yw-9zZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="j7n-tu-ghz"/>
+                    <constraint firstItem="u4I-qW-S90" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="jMI-Lu-wPD"/>
+                    <constraint firstItem="xD7-Yw-9zZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="oLU-7y-yEB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="collectionView" destination="u4I-qW-S90" id="reZ-ht-rrj"/>
+                <outlet property="inStorePromoLbl" destination="8MR-XT-qpP" id="XOY-jf-NeS"/>
+                <outlet property="viewAllButton" destination="NVm-ul-fWc" id="rnP-9x-Cd2"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="129.91071428571428"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="NVm-ul-fWc">
+            <size key="intrinsicContentSize" width="59" height="28"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="yellowF5B21B">
+            <color red="0.96078431372549022" green="0.69803921568627447" blue="0.10588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

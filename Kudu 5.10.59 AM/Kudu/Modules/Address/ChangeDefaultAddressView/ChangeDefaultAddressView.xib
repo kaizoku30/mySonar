@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeDefaultAddressView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="actionSheet" destination="WYi-Bi-eYs" id="nH7-mE-rxN"/>
+                <outlet property="bottomSheet" destination="MV5-Dw-0aS" id="qhN-Sj-6f5"/>
+                <outlet property="dismissButton" destination="LE0-qF-X2q" id="Q1z-MO-61m"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="Yfe-rB-6WJ"/>
+                <outlet property="saveButton" destination="gC1-9G-XNy" id="acq-GQ-3HS"/>
+                <outlet property="tableView" destination="1i9-tu-FhK" id="SvW-hA-Qya"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MV5-Dw-0aS">
+                    <rect key="frame" x="0.0" y="351" width="414" height="545"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LE0-qF-X2q" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                            <rect key="frame" x="191" y="0.0" width="32" height="32"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="cnX-dn-g71"/>
+                                <constraint firstAttribute="width" constant="32" id="xbJ-6n-I6u"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="11.300000000000001" minY="11.300000000000001" maxX="11.300000000000001" maxY="11.300000000000001"/>
+                            <state key="normal" image="blackCross"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="16"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="Jtg-WY-vBK"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WYi-Bi-eYs">
+                            <rect key="frame" x="0.0" y="70" width="414" height="475"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gC1-9G-XNy" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                    <rect key="frame" x="32" y="371" width="350" height="48"/>
+                                    <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="48" id="D0l-Ns-4Aq"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Save">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="4"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="xzN-8q-oSX"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set your default address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Grt-6T-Cw6">
+                                    <rect key="frame" x="16" y="24" width="210.5" height="23"/>
+                                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
+                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1i9-tu-FhK">
+                                    <rect key="frame" x="0.0" y="71" width="414" height="295"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="Grt-6T-Cw6" firstAttribute="leading" secondItem="WYi-Bi-eYs" secondAttribute="leading" constant="16" id="31V-23-39O"/>
+                                <constraint firstAttribute="trailing" secondItem="gC1-9G-XNy" secondAttribute="trailing" constant="32" id="3rj-bt-2Xr"/>
+                                <constraint firstItem="gC1-9G-XNy" firstAttribute="leading" secondItem="WYi-Bi-eYs" secondAttribute="leading" constant="32" id="8lV-f2-mRd"/>
+                                <constraint firstItem="gC1-9G-XNy" firstAttribute="top" secondItem="1i9-tu-FhK" secondAttribute="bottom" constant="5" id="Flu-WO-AbY"/>
+                                <constraint firstItem="1i9-tu-FhK" firstAttribute="leading" secondItem="WYi-Bi-eYs" secondAttribute="leading" id="MYS-vT-D52"/>
+                                <constraint firstAttribute="trailing" secondItem="1i9-tu-FhK" secondAttribute="trailing" id="dv4-Eg-qVM"/>
+                                <constraint firstAttribute="height" constant="475" id="fLw-pl-1P7"/>
+                                <constraint firstItem="Grt-6T-Cw6" firstAttribute="top" secondItem="WYi-Bi-eYs" secondAttribute="top" constant="24" id="jU6-Mj-wK1"/>
+                                <constraint firstAttribute="bottom" secondItem="gC1-9G-XNy" secondAttribute="bottom" constant="56" id="quH-cX-NFJ"/>
+                                <constraint firstItem="1i9-tu-FhK" firstAttribute="top" secondItem="Grt-6T-Cw6" secondAttribute="bottom" constant="24" id="tfG-Sv-IoX"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="WYi-Bi-eYs" firstAttribute="leading" secondItem="MV5-Dw-0aS" secondAttribute="leading" id="2l2-3Z-3Wu"/>
+                        <constraint firstItem="LE0-qF-X2q" firstAttribute="centerX" secondItem="MV5-Dw-0aS" secondAttribute="centerX" id="4ir-Ht-tdw"/>
+                        <constraint firstAttribute="height" constant="545" id="hdZ-K4-d6z"/>
+                        <constraint firstAttribute="bottom" secondItem="WYi-Bi-eYs" secondAttribute="bottom" id="idc-Vn-7ed"/>
+                        <constraint firstItem="WYi-Bi-eYs" firstAttribute="top" secondItem="LE0-qF-X2q" secondAttribute="bottom" constant="38" id="lOX-df-Ace"/>
+                        <constraint firstItem="WYi-Bi-eYs" firstAttribute="leading" secondItem="MV5-Dw-0aS" secondAttribute="leading" id="mS5-Bs-PaI"/>
+                        <constraint firstAttribute="trailing" secondItem="WYi-Bi-eYs" secondAttribute="trailing" id="pHF-3F-rI6"/>
+                        <constraint firstAttribute="trailing" secondItem="WYi-Bi-eYs" secondAttribute="trailing" id="pgW-5X-MQn"/>
+                        <constraint firstAttribute="bottom" secondItem="WYi-Bi-eYs" secondAttribute="bottom" id="s1f-w2-jO6"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="MV5-Dw-0aS" secondAttribute="bottom" id="Csc-pQ-745"/>
+                <constraint firstAttribute="trailing" secondItem="MV5-Dw-0aS" secondAttribute="trailing" id="Jcd-t3-F2p"/>
+                <constraint firstAttribute="bottom" secondItem="MV5-Dw-0aS" secondAttribute="bottom" id="KZh-3K-hJf"/>
+                <constraint firstItem="MV5-Dw-0aS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UPP-gO-eoJ"/>
+                <constraint firstItem="MV5-Dw-0aS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nxt-Rb-DzC"/>
+                <constraint firstAttribute="trailing" secondItem="MV5-Dw-0aS" secondAttribute="trailing" id="pB3-1g-nAE"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="130"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="LE0-qF-X2q">
+            <size key="intrinsicContentSize" width="20" height="22"/>
+        </designable>
+        <designable name="gC1-9G-XNy">
+            <size key="intrinsicContentSize" width="38" height="33"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="blackCross" width="20" height="20.5"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

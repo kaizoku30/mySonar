@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationServicesDeniedView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="leftBtn" destination="O5k-F2-2gF" id="fhv-dR-Vbv"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="c57-P2-VuI"/>
+                <outlet property="messageLabel" destination="7w2-i7-BCf" id="Drk-QW-VG2"/>
+                <outlet property="rightBtn" destination="N8G-PW-OsG" id="xjN-iO-FuH"/>
+                <outlet property="titleLabel" destination="bWc-8U-bQw" id="NJ0-CY-JVp"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="350"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_myaddress_alertBg" translatesAutoresizingMaskIntoConstraints="NO" id="UmL-FJ-853">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="143"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="143" id="Jta-XC-9HI"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_myaddress_locationServices" translatesAutoresizingMaskIntoConstraints="NO" id="apm-bw-txI">
+                    <rect key="frame" x="138" y="21" width="138" height="130"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="138" id="0wI-Fd-g6V"/>
+                        <constraint firstAttribute="height" constant="129.97999999999999" id="Udz-Wh-wqO"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Service Off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWc-8U-bQw">
+                    <rect key="frame" x="134.33333333333331" y="179.66666666666666" width="145.33333333333331" height="18.666666666666657"/>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turn On Location Services to allow KUDU to  determine  your  Current location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7w2-i7-BCf">
+                    <rect key="frame" x="52" y="210.33333333333334" width="310" height="28"/>
+                    <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                    <color key="textColor" white="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5k-F2-2gF" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="87.666666666666686" y="257.33333333333331" width="106" height="40"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="106" id="y6i-nb-eiO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal">
+                        <color key="titleColor" red="0.35686274509999999" green="0.35294117650000001" blue="0.35294117650000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N8G-PW-OsG" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="220.66666666666663" y="257.33333333333331" width="106" height="40"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="zN9-OT-a3W"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="bWc-8U-bQw" firstAttribute="top" secondItem="apm-bw-txI" secondAttribute="bottom" constant="28.629999999999999" id="3Ju-2g-7pI"/>
+                <constraint firstItem="7w2-i7-BCf" firstAttribute="centerX" secondItem="bWc-8U-bQw" secondAttribute="centerX" id="9I0-qs-LRL"/>
+                <constraint firstItem="7w2-i7-BCf" firstAttribute="top" secondItem="bWc-8U-bQw" secondAttribute="bottom" constant="12" id="Dxn-c8-vpz"/>
+                <constraint firstItem="O5k-F2-2gF" firstAttribute="top" secondItem="7w2-i7-BCf" secondAttribute="bottom" constant="19" id="FLM-UM-h90"/>
+                <constraint firstItem="7w2-i7-BCf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="52" id="GH9-EL-HVe"/>
+                <constraint firstItem="bWc-8U-bQw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="UQ4-P5-124"/>
+                <constraint firstItem="UmL-FJ-853" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bGZ-jM-SKB"/>
+                <constraint firstItem="apm-bw-txI" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cOY-d1-PgR"/>
+                <constraint firstItem="N8G-PW-OsG" firstAttribute="centerY" secondItem="O5k-F2-2gF" secondAttribute="centerY" id="fvt-bb-ClU"/>
+                <constraint firstItem="O5k-F2-2gF" firstAttribute="width" secondItem="N8G-PW-OsG" secondAttribute="width" id="h6Z-8G-h6m"/>
+                <constraint firstItem="apm-bw-txI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="21" id="hHf-0F-Uqx"/>
+                <constraint firstAttribute="trailing" secondItem="7w2-i7-BCf" secondAttribute="trailing" constant="52" id="mSj-Kv-C60"/>
+                <constraint firstItem="O5k-F2-2gF" firstAttribute="height" secondItem="N8G-PW-OsG" secondAttribute="height" id="o8a-Ug-trH"/>
+                <constraint firstItem="O5k-F2-2gF" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="-66.5" id="oPn-ty-xlq"/>
+                <constraint firstItem="N8G-PW-OsG" firstAttribute="leading" secondItem="O5k-F2-2gF" secondAttribute="trailing" constant="27" id="ocb-RE-owx"/>
+                <constraint firstItem="UmL-FJ-853" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pfJ-G2-8Vr"/>
+                <constraint firstAttribute="trailing" secondItem="UmL-FJ-853" secondAttribute="trailing" id="z1F-Tg-a1A"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="15"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="132" y="130"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="N8G-PW-OsG">
+            <size key="intrinsicContentSize" width="30" height="29"/>
+        </designable>
+        <designable name="O5k-F2-2gF">
+            <size key="intrinsicContentSize" width="30" height="29"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="k_myaddress_alertBg" width="354" height="183.33332824707031"/>
+        <image name="k_myaddress_locationServices" width="138" height="133.66667175292969"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

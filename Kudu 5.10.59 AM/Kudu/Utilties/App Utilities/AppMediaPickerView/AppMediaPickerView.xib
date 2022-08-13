@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AppMediaPickerView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="alertTitle" destination="nhZ-BS-Wnn" id="DhD-XV-vwd"/>
+                <outlet property="leftBtnView" destination="xQE-t7-lbN" id="rM7-Vl-rLp"/>
+                <outlet property="leftButtonLabel" destination="4Jp-D4-2J1" id="C8y-vu-R9S"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="Y98-mI-Kac"/>
+                <outlet property="rightBtnView" destination="JSJ-Ns-AOy" id="Gz1-zP-ths"/>
+                <outlet property="rightButtonLabel" destination="btq-Zi-4WQ" id="9Zc-cS-fDE"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="288" height="193"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhZ-BS-Wnn">
+                    <rect key="frame" x="98" y="24" width="92" height="18"/>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQE-t7-lbN">
+                    <rect key="frame" x="30" y="66" width="100" height="100"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_settings_mediaPickerBorder" translatesAutoresizingMaskIntoConstraints="NO" id="iUE-ne-Lkb">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_settings_MediaPicker_camera" translatesAutoresizingMaskIntoConstraints="NO" id="zd3-zR-Nw3">
+                            <rect key="frame" x="26" y="12" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="0OP-KF-rv3"/>
+                                <constraint firstAttribute="height" constant="48" id="3zN-le-KZp"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take a picture" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Jp-D4-2J1">
+                            <rect key="frame" x="5" y="68" width="90" height="15.5"/>
+                            <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                            <color key="textColor" red="0.50588235294117645" green="0.5725490196078431" blue="0.71372549019607845" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="iUE-ne-Lkb" firstAttribute="top" secondItem="xQE-t7-lbN" secondAttribute="top" id="0uM-6l-32b"/>
+                        <constraint firstItem="4Jp-D4-2J1" firstAttribute="top" secondItem="zd3-zR-Nw3" secondAttribute="bottom" constant="8" id="384-KJ-5KT"/>
+                        <constraint firstAttribute="trailing" secondItem="4Jp-D4-2J1" secondAttribute="trailing" constant="5" id="4gs-r4-VcQ"/>
+                        <constraint firstItem="iUE-ne-Lkb" firstAttribute="leading" secondItem="xQE-t7-lbN" secondAttribute="leading" id="53P-j5-dpS"/>
+                        <constraint firstItem="4Jp-D4-2J1" firstAttribute="centerX" secondItem="zd3-zR-Nw3" secondAttribute="centerX" id="5Mf-8O-y5B"/>
+                        <constraint firstAttribute="trailing" secondItem="iUE-ne-Lkb" secondAttribute="trailing" id="7kE-ln-ezY"/>
+                        <constraint firstAttribute="bottom" secondItem="iUE-ne-Lkb" secondAttribute="bottom" id="84b-MQ-Tts"/>
+                        <constraint firstItem="4Jp-D4-2J1" firstAttribute="leading" secondItem="xQE-t7-lbN" secondAttribute="leading" constant="5" id="LMX-Ek-H7H"/>
+                        <constraint firstAttribute="width" constant="100" id="UNK-71-ZZb"/>
+                        <constraint firstItem="zd3-zR-Nw3" firstAttribute="centerX" secondItem="xQE-t7-lbN" secondAttribute="centerX" id="WC3-Uf-dD6"/>
+                        <constraint firstItem="zd3-zR-Nw3" firstAttribute="top" secondItem="xQE-t7-lbN" secondAttribute="top" constant="12" id="jbC-Sm-VYW"/>
+                        <constraint firstAttribute="height" constant="100" id="zqx-bk-ow0"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JSJ-Ns-AOy">
+                    <rect key="frame" x="158" y="66" width="100" height="100"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_settings_mediaPickerBorder" translatesAutoresizingMaskIntoConstraints="NO" id="VW5-zZ-Nhs">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_settings_MediaPicker_gallery" translatesAutoresizingMaskIntoConstraints="NO" id="I6q-C5-6xx">
+                            <rect key="frame" x="30" y="16" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="C3Q-sS-cLB"/>
+                                <constraint firstAttribute="height" constant="40" id="diN-JL-yN3"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gallery" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="btq-Zi-4WQ">
+                            <rect key="frame" x="5" y="68" width="90" height="15.5"/>
+                            <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                            <color key="textColor" red="0.50588235290000005" green="0.57254901960000004" blue="0.71372549019999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="HLH-DY-Ywr"/>
+                        <constraint firstItem="btq-Zi-4WQ" firstAttribute="leading" secondItem="JSJ-Ns-AOy" secondAttribute="leading" constant="5" id="Wj0-I5-9vb"/>
+                        <constraint firstItem="btq-Zi-4WQ" firstAttribute="centerX" secondItem="I6q-C5-6xx" secondAttribute="centerX" id="bn1-2D-fa6"/>
+                        <constraint firstItem="I6q-C5-6xx" firstAttribute="centerX" secondItem="JSJ-Ns-AOy" secondAttribute="centerX" id="dFD-oP-yB0"/>
+                        <constraint firstAttribute="trailing" secondItem="btq-Zi-4WQ" secondAttribute="trailing" constant="5" id="dVR-GY-KRo"/>
+                        <constraint firstAttribute="width" constant="100" id="gA4-ee-Cco"/>
+                        <constraint firstAttribute="trailing" secondItem="VW5-zZ-Nhs" secondAttribute="trailing" id="kgN-q1-tff"/>
+                        <constraint firstAttribute="bottom" secondItem="VW5-zZ-Nhs" secondAttribute="bottom" id="mLh-Ws-Rpe"/>
+                        <constraint firstItem="VW5-zZ-Nhs" firstAttribute="leading" secondItem="JSJ-Ns-AOy" secondAttribute="leading" id="pNQ-fv-T3k"/>
+                        <constraint firstItem="VW5-zZ-Nhs" firstAttribute="top" secondItem="JSJ-Ns-AOy" secondAttribute="top" id="rXp-wK-SXf"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PfH-bX-4bm" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="248" y="16" width="24" height="24"/>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="0wL-qH-gdp"/>
+                        <constraint firstAttribute="width" constant="24" id="QUi-Ol-Y5j"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                    <state key="normal" image="blackCross"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="12"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="R66-JF-F2X"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="PfH-bX-4bm" secondAttribute="trailing" constant="16" id="2eG-RG-EQ2"/>
+                <constraint firstItem="nhZ-BS-Wnn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="2hS-Ie-bWU"/>
+                <constraint firstItem="JSJ-Ns-AOy" firstAttribute="centerY" secondItem="xQE-t7-lbN" secondAttribute="centerY" id="Bk7-L2-tv6"/>
+                <constraint firstItem="btq-Zi-4WQ" firstAttribute="centerY" secondItem="4Jp-D4-2J1" secondAttribute="centerY" id="HQh-qO-kcf"/>
+                <constraint firstItem="I6q-C5-6xx" firstAttribute="centerY" secondItem="zd3-zR-Nw3" secondAttribute="centerY" id="KXi-Hr-KC8"/>
+                <constraint firstItem="nhZ-BS-Wnn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NJf-9G-zzG"/>
+                <constraint firstItem="JSJ-Ns-AOy" firstAttribute="leading" secondItem="xQE-t7-lbN" secondAttribute="trailing" constant="28" id="O9c-Yu-eNF"/>
+                <constraint firstItem="xQE-t7-lbN" firstAttribute="top" secondItem="nhZ-BS-Wnn" secondAttribute="bottom" constant="24" id="R8b-AJ-Uxm"/>
+                <constraint firstItem="PfH-bX-4bm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="arl-hN-jjN"/>
+                <constraint firstItem="xQE-t7-lbN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" constant="-64" id="w8u-el-onH"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="4"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="225" y="-116"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="PfH-bX-4bm">
+            <size key="intrinsicContentSize" width="20" height="22"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="blackCross" width="20" height="20.5"/>
+        <image name="k_settings_MediaPicker_camera" width="48" height="48"/>
+        <image name="k_settings_MediaPicker_gallery" width="36" height="36"/>
+        <image name="k_settings_mediaPickerBorder" width="100" height="100"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

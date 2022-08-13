@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressLabelCell" rowHeight="100" id="KGk-i7-Jjw" customClass="AddressLabelCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWQ-Tr-Vvx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Su-Ff-YZJ">
+                                <rect key="frame" x="32" y="0.0" width="42" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Q37-67-hjy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2d0-0K-M3k" userLabel="ButtonsContainer">
+                                <rect key="frame" x="32" y="28" width="256" height="29"/>
+                                <subviews>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yuW-2M-0ZW">
+                                        <rect key="frame" x="93" y="0.0" width="163" height="29"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vm3-ym-232" customClass="AppTextFieldView" customModule="Kudu" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="163" height="29"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0f-xH-y0K" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                                <rect key="frame" x="144.5" y="6.5" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="JSf-PN-md4"/>
+                                                    <constraint firstAttribute="width" constant="16" id="KVt-mC-2fB"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="k_myaddress_clearCross"/>
+                                                <connections>
+                                                    <action selector="clearButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="uXJ-6d-3VM"/>
+                                                </connections>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fTZ-a9-Z8f" userLabel="bottomBorderView">
+                                                <rect key="frame" x="0.0" y="27" width="163" height="1"/>
+                                                <color key="backgroundColor" name="kuduThemeBlue"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="BAR-LP-LIy"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="g0f-xH-y0K" secondAttribute="trailing" constant="2.5" id="116-SG-2d4"/>
+                                            <constraint firstAttribute="bottom" secondItem="vm3-ym-232" secondAttribute="bottom" id="1yR-VP-T2a"/>
+                                            <constraint firstItem="vm3-ym-232" firstAttribute="leading" secondItem="yuW-2M-0ZW" secondAttribute="leading" id="82f-LP-HIV"/>
+                                            <constraint firstAttribute="trailing" secondItem="vm3-ym-232" secondAttribute="trailing" id="8ka-Ia-6Gz"/>
+                                            <constraint firstItem="g0f-xH-y0K" firstAttribute="centerY" secondItem="yuW-2M-0ZW" secondAttribute="centerY" id="QXF-qf-HV7"/>
+                                            <constraint firstItem="vm3-ym-232" firstAttribute="top" secondItem="yuW-2M-0ZW" secondAttribute="top" id="TuO-O4-z8b"/>
+                                            <constraint firstAttribute="bottom" secondItem="fTZ-a9-Z8f" secondAttribute="bottom" constant="1" id="ZT4-aI-waN"/>
+                                            <constraint firstItem="fTZ-a9-Z8f" firstAttribute="leading" secondItem="yuW-2M-0ZW" secondAttribute="leading" id="pZ3-Wj-XWs"/>
+                                            <constraint firstAttribute="trailing" secondItem="fTZ-a9-Z8f" secondAttribute="trailing" id="qko-Lw-RqK"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MsR-Jl-7rL" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="1" width="78" height="27"/>
+                                        <color key="backgroundColor" name="kuduThemeBlue"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="AJa-i0-Mvo"/>
+                                            <constraint firstAttribute="height" constant="27" id="xqf-dv-6mI"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Home">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="homeTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="phg-5X-7g1"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MYr-hF-70g" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="86" y="1" width="78" height="27"/>
+                                        <color key="backgroundColor" name="kuduThemeBlue"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="Lws-Ig-hQ7"/>
+                                            <constraint firstAttribute="height" constant="27" id="Pmh-qv-550"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Work">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="workTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="LMO-bk-YhW"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGM-bE-7lS" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="172" y="1" width="78" height="27"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="7YT-GW-sLn"/>
+                                            <constraint firstAttribute="height" constant="27" id="x5a-Rh-B3d"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Other">
+                                            <color key="titleColor" name="kuduThemeBlue"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="kuduThemeBlue"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="otherTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ovg-0n-RsH"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="MsR-Jl-7rL" firstAttribute="leading" secondItem="2d0-0K-M3k" secondAttribute="leading" id="7Da-WL-WKg"/>
+                                    <constraint firstItem="yuW-2M-0ZW" firstAttribute="centerY" secondItem="tGM-bE-7lS" secondAttribute="centerY" id="91h-76-mCV"/>
+                                    <constraint firstItem="MYr-hF-70g" firstAttribute="leading" secondItem="MsR-Jl-7rL" secondAttribute="trailing" constant="8" id="CSf-n4-CHh"/>
+                                    <constraint firstItem="tGM-bE-7lS" firstAttribute="centerY" secondItem="MYr-hF-70g" secondAttribute="centerY" id="VY4-BF-tsc"/>
+                                    <constraint firstItem="yuW-2M-0ZW" firstAttribute="leading" secondItem="MsR-Jl-7rL" secondAttribute="trailing" constant="15" id="WWH-Cf-YeT"/>
+                                    <constraint firstItem="MsR-Jl-7rL" firstAttribute="centerY" secondItem="2d0-0K-M3k" secondAttribute="centerY" id="Z2A-eQ-poS"/>
+                                    <constraint firstItem="MYr-hF-70g" firstAttribute="centerY" secondItem="MsR-Jl-7rL" secondAttribute="centerY" id="d6E-D8-KBQ"/>
+                                    <constraint firstItem="yuW-2M-0ZW" firstAttribute="height" secondItem="2d0-0K-M3k" secondAttribute="height" id="e8A-HL-EjJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="yuW-2M-0ZW" secondAttribute="trailing" id="jxt-PB-mfb"/>
+                                    <constraint firstItem="tGM-bE-7lS" firstAttribute="leading" secondItem="2d0-0K-M3k" secondAttribute="leading" constant="172" id="pGq-Gg-vFg"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="2d0-0K-M3k" secondAttribute="trailing" constant="32" id="5MV-Cn-ooF"/>
+                            <constraint firstItem="2d0-0K-M3k" firstAttribute="top" secondItem="9Su-Ff-YZJ" secondAttribute="bottom" constant="8" id="MnL-je-4y7"/>
+                            <constraint firstAttribute="bottom" secondItem="2d0-0K-M3k" secondAttribute="bottom" id="Wg4-RT-hbB"/>
+                            <constraint firstItem="2d0-0K-M3k" firstAttribute="leading" secondItem="xWQ-Tr-Vvx" secondAttribute="leading" constant="32" id="aRw-tX-XKX"/>
+                            <constraint firstItem="9Su-Ff-YZJ" firstAttribute="top" secondItem="xWQ-Tr-Vvx" secondAttribute="top" id="iEe-Hf-Vij"/>
+                            <constraint firstItem="9Su-Ff-YZJ" firstAttribute="leading" secondItem="xWQ-Tr-Vvx" secondAttribute="leading" constant="32" id="mHS-cM-UOH"/>
+                            <constraint firstAttribute="height" constant="57" id="p1j-3a-LMp"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="xWQ-Tr-Vvx" secondAttribute="trailing" id="5Nx-mp-EPt"/>
+                    <constraint firstAttribute="bottom" secondItem="xWQ-Tr-Vvx" secondAttribute="bottom" constant="24" id="OKA-g3-JQE"/>
+                    <constraint firstItem="xWQ-Tr-Vvx" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="dh3-xe-umO"/>
+                    <constraint firstItem="xWQ-Tr-Vvx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="wpO-OD-tbH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="buttonContainer" destination="2d0-0K-M3k" id="hUb-dG-eL7"/>
+                <outlet property="homeButton" destination="MsR-Jl-7rL" id="76r-mG-gLo"/>
+                <outlet property="otherButton" destination="tGM-bE-7lS" id="ShN-zQ-8WN"/>
+                <outlet property="otherButtonConstraint" destination="pGq-Gg-vFg" id="zmI-Aa-g9I"/>
+                <outlet property="staticLabel" destination="9Su-Ff-YZJ" id="48j-wk-Siq"/>
+                <outlet property="textFieldContainer" destination="yuW-2M-0ZW" id="B27-vX-Cu8"/>
+                <outlet property="textfieldView" destination="vm3-ym-232" id="cQS-kQ-42f"/>
+                <outlet property="workButton" destination="MYr-hF-70g" id="Hn0-Eq-B5r"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="126.5625"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="MYr-hF-70g">
+            <size key="intrinsicContentSize" width="31" height="28"/>
+        </designable>
+        <designable name="MsR-Jl-7rL">
+            <size key="intrinsicContentSize" width="34" height="28"/>
+        </designable>
+        <designable name="g0f-xH-y0K">
+            <size key="intrinsicContentSize" width="16" height="22"/>
+        </designable>
+        <designable name="tGM-bE-7lS">
+            <size key="intrinsicContentSize" width="32" height="28"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="k_myaddress_clearCross" width="16" height="16"/>
+        <namedColor name="kuduThemeBlue">
+            <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoInternetConnectionView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="errorSubTitleLabel" destination="0t0-S3-uAQ" id="h3N-Nv-KRG"/>
+                <outlet property="errorTitleLabel" destination="CGD-mb-eb5" id="Q6F-cc-ikB"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="aub-tm-XHp"/>
+                <outlet property="tryAgainButton" destination="cz4-Zm-CPC" id="25F-7n-H8j"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_network_errorImage" translatesAutoresizingMaskIntoConstraints="NO" id="HrR-mr-zZs">
+                    <rect key="frame" x="56" y="202" width="302" height="165"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something went wrong" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGD-mb-eb5">
+                    <rect key="frame" x="10" y="399" width="394" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                    <color key="textColor" red="0.35686274509803922" green="0.3529411764705882" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please check your internet connection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0t0-S3-uAQ">
+                    <rect key="frame" x="10" y="417.5" width="394" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cz4-Zm-CPC" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="32" y="758" width="350" height="48"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="nKm-iX-Zgs"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Try Again">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="tryAgain:" destination="-1" eventType="touchUpInside" id="oSe-Gc-WSL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="CGD-mb-eb5" secondAttribute="trailing" constant="10" id="0p5-Da-DOt"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cz4-Zm-CPC" secondAttribute="trailing" constant="32" id="1s1-Is-dkT"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="cz4-Zm-CPC" secondAttribute="bottom" constant="56" id="4k1-75-pzs"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0t0-S3-uAQ" secondAttribute="trailing" constant="10" id="9bp-JV-9Hk"/>
+                <constraint firstItem="HrR-mr-zZs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="56" id="GAf-dT-f70"/>
+                <constraint firstItem="HrR-mr-zZs" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="158" id="JyL-fW-Nvk"/>
+                <constraint firstItem="CGD-mb-eb5" firstAttribute="top" secondItem="HrR-mr-zZs" secondAttribute="bottom" constant="32" id="L7G-V2-Aki"/>
+                <constraint firstItem="CGD-mb-eb5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Llx-uF-pqq"/>
+                <constraint firstItem="0t0-S3-uAQ" firstAttribute="top" secondItem="CGD-mb-eb5" secondAttribute="bottom" constant="4" id="MBU-aY-Mns"/>
+                <constraint firstItem="cz4-Zm-CPC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="32" id="Rjv-6o-bHc"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HrR-mr-zZs" secondAttribute="trailing" constant="56" id="YGd-lV-dm3"/>
+                <constraint firstItem="cz4-Zm-CPC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0t0-S3-uAQ" secondAttribute="bottom" constant="10" id="hD2-Tz-djH"/>
+                <constraint firstItem="0t0-S3-uAQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="htk-Ce-72Q"/>
+                <constraint firstItem="HrR-mr-zZs" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.184152" id="rEZ-og-W0k"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="80.357142857142847"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="cz4-Zm-CPC">
+            <size key="intrinsicContentSize" width="67" height="31"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="k_network_errorImage" width="248" height="165"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

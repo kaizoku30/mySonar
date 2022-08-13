@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DrinkTypeCollectionViewCell" id="gTV-IL-0wX" customClass="DrinkTypeCollectionViewCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="82" height="46"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="82" height="46"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_promo_tempPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="apj-tw-IqG">
+                        <rect key="frame" x="12" y="2" width="58" height="42"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="apj-tw-IqG" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="HVm-PG-ebE"/>
+                <constraint firstAttribute="bottom" secondItem="apj-tw-IqG" secondAttribute="bottom" constant="2" id="YJf-tF-6Vh"/>
+                <constraint firstItem="apj-tw-IqG" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="j8E-je-J62"/>
+                <constraint firstAttribute="trailing" secondItem="apj-tw-IqG" secondAttribute="trailing" constant="12" id="vtQ-pz-o48"/>
+            </constraints>
+            <size key="customSize" width="79" height="84"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.05587748344370861" colorSpace="custom" customColorSpace="sRGB"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="5"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                    <real key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="drinkTypeImage" destination="apj-tw-IqG" id="DiR-dC-5Sy"/>
+            </connections>
+            <point key="canvasLocation" x="134.78260869565219" y="43.526785714285715"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="k_promo_tempPlaceholder" width="984" height="555"/>
+    </resources>
+</document>

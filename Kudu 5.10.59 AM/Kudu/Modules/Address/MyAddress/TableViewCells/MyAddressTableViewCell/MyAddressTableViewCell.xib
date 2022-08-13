@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-SemiBold.ttf">
+            <string>Mulish-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyAddressTableViewCell" rowHeight="141" id="KGk-i7-Jjw" customClass="MyAddressTableViewCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="141"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="141"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jjV-LJ-WAM">
+                        <rect key="frame" x="16" y="0.0" width="288" height="125"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_myaddress_building" translatesAutoresizingMaskIntoConstraints="NO" id="tPe-yk-NM1">
+                                <rect key="frame" x="12" y="12" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="5PC-xp-lfn"/>
+                                    <constraint firstAttribute="height" constant="24" id="w28-ZJ-9lI"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYe-J3-dvh">
+                                <rect key="frame" x="48" y="14" width="228" height="20.5"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BVl-kH-9Sb" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                <rect key="frame" x="12" y="98" width="25" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="fXn-8O-9OG"/>
+                                    <constraint firstAttribute="height" constant="15" id="hTg-IU-e2B"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Edit">
+                                    <color key="titleColor" red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="editButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3O7-6w-ciY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ZK-1Y-Sad" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                <rect key="frame" x="53" y="98" width="37" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="0Rc-Ox-ZjM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Delete">
+                                    <color key="titleColor" red="0.92156862745098034" green="0.18823529411764706" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ULV-tJ-fxl"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ke-so-if0">
+                                <rect key="frame" x="12" y="48" width="264" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="L2G-rx-cT4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-SemiBold" family="Mulish" pointSize="14"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="BVl-kH-9Sb" firstAttribute="leading" secondItem="jjV-LJ-WAM" secondAttribute="leading" constant="12" id="Ljq-hc-3it"/>
+                            <constraint firstItem="hYe-J3-dvh" firstAttribute="leading" secondItem="tPe-yk-NM1" secondAttribute="trailing" constant="12" id="O0x-A4-jdy"/>
+                            <constraint firstItem="hYe-J3-dvh" firstAttribute="centerY" secondItem="tPe-yk-NM1" secondAttribute="centerY" id="OFB-au-wMt"/>
+                            <constraint firstItem="3Ke-so-if0" firstAttribute="leading" secondItem="tPe-yk-NM1" secondAttribute="leading" id="OOW-eK-EEQ"/>
+                            <constraint firstItem="tPe-yk-NM1" firstAttribute="leading" secondItem="jjV-LJ-WAM" secondAttribute="leading" constant="12" id="Poq-NZ-8jC"/>
+                            <constraint firstItem="9ZK-1Y-Sad" firstAttribute="leading" secondItem="BVl-kH-9Sb" secondAttribute="trailing" constant="16" id="RlB-dh-jNd"/>
+                            <constraint firstItem="tPe-yk-NM1" firstAttribute="top" secondItem="jjV-LJ-WAM" secondAttribute="top" constant="12" id="XPp-dP-hba"/>
+                            <constraint firstItem="BVl-kH-9Sb" firstAttribute="top" secondItem="3Ke-so-if0" secondAttribute="bottom" constant="12" id="aXL-dg-WL5"/>
+                            <constraint firstItem="3Ke-so-if0" firstAttribute="top" secondItem="tPe-yk-NM1" secondAttribute="bottom" constant="12" id="e2s-hj-HeW"/>
+                            <constraint firstItem="9ZK-1Y-Sad" firstAttribute="centerY" secondItem="BVl-kH-9Sb" secondAttribute="centerY" id="u29-mc-pN6"/>
+                            <constraint firstAttribute="bottom" secondItem="BVl-kH-9Sb" secondAttribute="bottom" constant="12" id="vG4-cE-Wlx"/>
+                            <constraint firstAttribute="height" constant="125" id="vva-h5-f3K"/>
+                            <constraint firstAttribute="trailing" secondItem="3Ke-so-if0" secondAttribute="trailing" constant="12" id="x3a-cW-q64"/>
+                            <constraint firstAttribute="trailing" secondItem="hYe-J3-dvh" secondAttribute="trailing" constant="12" id="zuC-yd-Gjk"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="jjV-LJ-WAM" secondAttribute="bottom" constant="16" id="OYq-U8-UeZ"/>
+                    <constraint firstItem="jjV-LJ-WAM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="bfJ-KA-I3O"/>
+                    <constraint firstItem="jjV-LJ-WAM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kRb-Zo-cIl"/>
+                    <constraint firstAttribute="trailing" secondItem="jjV-LJ-WAM" secondAttribute="trailing" constant="16" id="uZx-m7-p1t"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="addressLabel" destination="3Ke-so-if0" id="PrO-ls-XWv"/>
+                <outlet property="bottomPadding" destination="OYq-U8-UeZ" id="hHV-hA-JU9"/>
+                <outlet property="contentContainer" destination="jjV-LJ-WAM" id="KOq-pi-owI"/>
+                <outlet property="deleteButton" destination="9ZK-1Y-Sad" id="H17-vw-q9v"/>
+                <outlet property="editButton" destination="BVl-kH-9Sb" id="DzB-bt-8JP"/>
+                <outlet property="titleLabel" destination="hYe-J3-dvh" id="C8N-Fr-QAx"/>
+            </connections>
+            <point key="canvasLocation" x="133" y="130"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="9ZK-1Y-Sad">
+            <size key="intrinsicContentSize" width="37" height="28"/>
+        </designable>
+        <designable name="BVl-kH-9Sb">
+            <size key="intrinsicContentSize" width="30" height="28"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="k_myaddress_building" width="24" height="24"/>
+    </resources>
+</document>

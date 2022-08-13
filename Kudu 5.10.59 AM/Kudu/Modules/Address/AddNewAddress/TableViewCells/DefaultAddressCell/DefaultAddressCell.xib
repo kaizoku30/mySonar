@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="KGk-i7-Jjw" customClass="DefaultAddressCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJG-iW-JPo">
+                        <rect key="frame" x="32" y="0.0" width="256" height="26"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_myaddress_grayUncheck" translatesAutoresizingMaskIntoConstraints="NO" id="dLT-Mz-Kmh">
+                                <rect key="frame" x="0.0" y="3" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="8WX-91-A4b"/>
+                                    <constraint firstAttribute="width" constant="20" id="I1G-3I-szB"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set as default address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kwV-o5-j8f">
+                                <rect key="frame" x="32" y="3" width="224" height="20"/>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dLT-Mz-Kmh" firstAttribute="leading" secondItem="cJG-iW-JPo" secondAttribute="leading" id="AUj-F9-hFT"/>
+                            <constraint firstAttribute="trailing" secondItem="kwV-o5-j8f" secondAttribute="trailing" id="VKy-We-rOM"/>
+                            <constraint firstItem="kwV-o5-j8f" firstAttribute="top" secondItem="dLT-Mz-Kmh" secondAttribute="top" id="Vx8-pQ-4sY"/>
+                            <constraint firstItem="kwV-o5-j8f" firstAttribute="bottom" secondItem="dLT-Mz-Kmh" secondAttribute="bottom" id="a2Q-U1-Y2V"/>
+                            <constraint firstItem="kwV-o5-j8f" firstAttribute="leading" secondItem="dLT-Mz-Kmh" secondAttribute="trailing" constant="12" id="aRE-WF-uH9"/>
+                            <constraint firstItem="dLT-Mz-Kmh" firstAttribute="centerY" secondItem="cJG-iW-JPo" secondAttribute="centerY" id="dqB-j8-PLr"/>
+                            <constraint firstAttribute="height" constant="26" id="sLR-Ky-m6p"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cJG-iW-JPo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="5sp-GL-deS"/>
+                    <constraint firstAttribute="trailing" secondItem="cJG-iW-JPo" secondAttribute="trailing" constant="32" id="mKj-mg-jPb"/>
+                    <constraint firstItem="cJG-iW-JPo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ufy-I3-y1f"/>
+                    <constraint firstAttribute="bottom" secondItem="cJG-iW-JPo" secondAttribute="bottom" constant="24" id="xhb-M6-70c"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="checkBoxImgView" destination="dLT-Mz-Kmh" id="GXo-ns-UlI"/>
+                <outlet property="label" destination="kwV-o5-j8f" id="0FW-3a-KwT"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="130"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="k_myaddress_grayUncheck" width="20" height="20"/>
+    </resources>
+</document>
