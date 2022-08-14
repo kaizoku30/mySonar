@@ -10,7 +10,7 @@ import UIKit
 class RestaurantItemTableViewCell: UITableViewCell {
     @IBOutlet private weak var restNameLabel: UILabel!
     @IBOutlet private weak var distanceLabel: UILabel!
-    @IBOutlet private weak var confirmLocationButton: AppButton!
+    @IBOutlet private weak var confirmButton: AppButton!
     @IBOutlet private weak var restAddressLabel: UILabel!
     @IBOutlet private weak var openCloseLabel: UILabel!
     @IBOutlet private weak var closeTimingStackView: UIStackView!
@@ -24,7 +24,7 @@ class RestaurantItemTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        confirmLocationButton.setTitle(LocalizedStrings.SetRestaurant.confirmlocationSmall, for: .normal)
+        confirmButton.setTitle(LocalizedStrings.SetRestaurant.confirmlocationSmall, for: .normal)
         // Initialization code
     }
 
@@ -43,31 +43,31 @@ class RestaurantItemTableViewCell: UITableViewCell {
         let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
         distanceLabel.text = distance + LocalizedStrings.SetRestaurant.km
         restAddressLabel.text = areaName
-        let isOpen = self.isOpen(item: item, type: type)
+        let isOpen = self.checkRestaurantIsOpen(item: item, type: type)
         closeTimingStackView.isHidden = !isOpen
         let closingTime = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
         closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) \(closingTime.replace(string: "AM", withString: LocalizedStrings.SetRestaurant.amString).replace(string: "PM", withString: LocalizedStrings.SetRestaurant.pmString))"
-        setButton(enabled: isOpen)
+        setConfirmButton(enabled: isOpen)
         openCloseLabel.text = isOpen ? LocalizedStrings.SetRestaurant.open : LocalizedStrings.SetRestaurant.closed
         openCloseLabel.textColor = isOpen ? AppColors.RestaurantListCell.openGreen : AppColors.RestaurantListCell.closedRed
     }
     
-    private func setButton(enabled: Bool) {
-        confirmLocationButton.setTitleColor(enabled ? .white : AppColors.RestaurantListCell.unselectedButtonTextColor, for: .normal)
-        confirmLocationButton.backgroundColor = enabled ? AppColors.kuduThemeYellow : AppColors.RestaurantListCell.unselectedButtonBg
-        confirmLocationButton.isUserInteractionEnabled = enabled
+    private func setConfirmButton(enabled: Bool) {
+        confirmButton.setTitleColor(enabled ? .white : AppColors.RestaurantListCell.unselectedButtonTextColor, for: .normal)
+        confirmButton.backgroundColor = enabled ? AppColors.kuduThemeYellow : AppColors.RestaurantListCell.unselectedButtonBg
+        confirmButton.isUserInteractionEnabled = enabled
         
     }
     
-    private func isOpen(item: RestaurantListItem, type: HomeVM.SectionType) -> Bool {
-        let startString = type == .pickup ? ((item.pickupTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.pickupTimingFrom ?? ""))) : (((item.curbSideTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.curbSideTimingFrom ?? ""))))
-        let endString = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
-        debugPrint("Start Time : \(startString), End Time : \(endString)")
-        let dateStart = startString.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        let dateEnd = endString.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
+    private func checkRestaurantIsOpen(item: RestaurantListItem, type: HomeVM.SectionType) -> Bool {
+        let start = type == .pickup ? ((item.pickupTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.pickupTimingFrom ?? ""))) : (((item.curbSideTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.curbSideTimingFrom ?? ""))))
+        let end = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
+        debugPrint("Start Time : \(start), End Time : \(end)")
+        let startDate = start.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
+        let endDate = end.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
         let currentTime = Date().toString(dateFormat: Date.DateFormat.hmmazzz.rawValue)
         let currentDate = currentTime.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        guard let dateStart = dateStart, let dateEnd = dateEnd, let currentDate = currentDate else {
+        guard let dateStart = startDate, let dateEnd = endDate, let currentDate = currentDate else {
             debugPrint("Date parsing failed")
             return false
         }
