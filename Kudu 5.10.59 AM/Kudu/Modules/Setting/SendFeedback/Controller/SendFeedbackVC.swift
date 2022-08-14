@@ -135,7 +135,7 @@ class SendFeedbackVC: BaseVC {
     
     func showCameraPermissionDenied() {
         mainThread {
-            let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.Width, height: CameraPermissionDeniedView.Height))
+            let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.popUpWidth, height: CameraPermissionDeniedView.popUpHeight))
             cameraPermissionAlert.configure(type: .noCamera, leftButtonTitle: "Cancel", rightButtonTitle: "Setting", container: self.baseView)
             cameraPermissionAlert.handleAction = {
                 if $0 == .right {
@@ -236,7 +236,7 @@ class SendFeedbackVC: BaseVC {
     
     func showGalleryPermissionDenied() {
         mainThread {
-            let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.Width, height: CameraPermissionDeniedView.Height))
+            let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.popUpWidth, height: CameraPermissionDeniedView.popUpHeight))
             cameraPermissionAlert.configure(type: .noGallery, leftButtonTitle: LocalizedStrings.Setting.cancel, rightButtonTitle: LocalizedStrings.Setting.settings, container: self.baseView)
             cameraPermissionAlert.handleAction = {
                 if $0 == .right {

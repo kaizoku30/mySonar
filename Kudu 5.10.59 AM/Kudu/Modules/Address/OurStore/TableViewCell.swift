@@ -25,39 +25,20 @@ class TableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func deliveryTitle(_ isDelivery : Bool) -> (String , UIColor ){
+    func deliveryTitle(_ isDelivery: Bool) -> (String, UIColor ) {
         if isDelivery {
-            return ("Delivery available" , UIColor.green)
-        }
-        else {
+            return ("Delivery available", UIColor.green)
+        } else {
             return ("Delivery unavailable", UIColor.red)
         }
     }
     
     func configure(_ data: AllData) {
         storeName.text = data.storeName
-        distanceLbl.attributedText = textSet(data.distance)
+        //distanceLbl.attributedText = textSet(data.distance)
         storeAddress.text = data.storeAddress
       //  deliveryAvailability.text = deliveryTitle(data.isDelivery).0
         imageLabel.isHidden = data.statusView
        // deliveryAvailability.textColor = deliveryTitle(data.isDelivery).1
-        
-        
-    }
-    
-    func textSet( _ disName : String)  -> NSMutableAttributedString {
-        let myAttribute = [ NSAttributedString.Key.font: UIFont(name: "Futura", size: 14.0)! ]
-        let myString = NSMutableAttributedString(string: disName, attributes: myAttribute )
-        var loc = 0
-        for (i,j) in disName.enumerated() {
-            if j == "|" { loc = i + 1}
-        }
-        let myRange = NSRange(location: loc, length: disName.count - loc)
-        myString.addAttribute(NSAttributedString.Key.foregroundColor,value: UIColor(named: "grrenCustom") , range: myRange)
-        return myString
     }
 }
-
-
-
-

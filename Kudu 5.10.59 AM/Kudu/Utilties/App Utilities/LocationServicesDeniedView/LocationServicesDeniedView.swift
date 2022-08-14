@@ -44,8 +44,8 @@ class LocationServicesDeniedView: UIView {
     @IBOutlet weak var messageLabel: UILabel!
     
     var handleAction: ((AlertButton) -> Void)?
-    static var Height: CGFloat { 336 }
-    static var Width: CGFloat { 308 }
+    static var popUpHeight: CGFloat { 336 }
+    static var popUpWidth: CGFloat { 308 }
     private weak var containerView: UIView?
     
     override init(frame: CGRect) {
@@ -63,16 +63,7 @@ class LocationServicesDeniedView: UIView {
         addSubview(mainContentView)
         mainContentView.frame = self.bounds
         mainContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        leftBtn.handleBtnTap = {
-            [weak self] in
-            self?.handleAction?(.left)
-            self?.removeFromContainer()
-        }
-        rightBtn.handleBtnTap = {
-            [weak self] in
-            self?.handleAction?(.right)
-            self?.removeFromContainer()
-        }
+        handleButtonTap()
     }
     
     private func removeFromContainer() {
@@ -86,6 +77,19 @@ class LocationServicesDeniedView: UIView {
                 $0.removeFromSuperview()
             }
         })
+    }
+    
+    private func handleButtonTap() {
+        leftBtn.handleBtnTap = {
+            [weak self] in
+            self?.handleAction?(.left)
+            self?.removeFromContainer()
+        }
+        rightBtn.handleBtnTap = {
+            [weak self] in
+            self?.handleAction?(.right)
+            self?.removeFromContainer()
+        }
     }
     
     func configure(type: AlertType, leftButtonTitle: String, rightButtonTitle: String, container view: UIView) {

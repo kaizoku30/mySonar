@@ -188,7 +188,7 @@ class GoogleAutoCompleteView: UIView {
     }
     
     func showLocationServicesAlert(type: LocationServicesDeniedView.AlertType) {
-        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.Width, height: LocationServicesDeniedView.Height))
+        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.popUpWidth, height: LocationServicesDeniedView.popUpHeight))
         alert.configure(type: type, leftButtonTitle: LocalizedStrings.GoogleAutoComplete.cancel, rightButtonTitle: LocalizedStrings.GoogleAutoComplete.settings, container: self)
         alert.handleAction = { [weak self] in
             if $0 == .right {
