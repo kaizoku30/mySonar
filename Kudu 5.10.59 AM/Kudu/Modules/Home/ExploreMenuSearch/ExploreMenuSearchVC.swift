@@ -268,59 +268,59 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
             return getLoaderCell(tableView, cellForRowAt: indexPath)
         }
         if recentSearches.isEmpty {
-            let cell = tableView.dequeueCell(with: TopSearchCategoriesCell.self)
-            cell.configure(topSearchedCategories)
-            cell.performOperation = { [weak self] in
-                let savedFormat = MenuSearchResultItem(_id: $0._id, titleEnglish: $0.titleEnglish, titleArabic: $0.titleArabic, isCategory: true, isItem: false, descriptionEnglish: nil, descriptionArabic: nil, nameEnglish: nil, nameArabic: nil, itemImageUrl: nil, price: nil, allergicComponent: nil, isCustomised: nil, menuImageUrl: $0.menuImageUrl, itemCount: $0.itemCount)
-                DataManager.shared.saveToRecentlySearchExploreMenu(savedFormat)
-                let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
-                self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
-            }
-            return cell
+            return getTopSearchCategoriesCell(tableView, cellForRowAt: indexPath)
         } else {
             if row == 0 {
                 let cell = tableView.dequeueCell(with: RecentMenuSearchTitleCell.self)
                 return cell
             } else if row == tableView.numberOfRows(inSection: 0) - 1 {
                 //Last Cell
-                let cell = tableView.dequeueCell(with: TopSearchCategoriesCell.self)
-                cell.configure(topSearchedCategories)
-                cell.performOperation = { [weak self] in
-                    let savedFormat = MenuSearchResultItem(_id: $0._id, titleEnglish: $0.titleEnglish, titleArabic: $0.titleArabic, isCategory: true, isItem: false, descriptionEnglish: nil, descriptionArabic: nil, nameEnglish: nil, nameArabic: nil, itemImageUrl: nil, price: nil, allergicComponent: nil, isCustomised: nil, menuImageUrl: $0.menuImageUrl, itemCount: $0.itemCount)
-                    DataManager.shared.saveToRecentlySearchExploreMenu(savedFormat)
-                    let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
-                    self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
-                }
-                return cell
+                return getTopSearchCategoriesCell(tableView, cellForRowAt: indexPath)
             } else {
                 //Rest Of the Cell between 0 -- Last Cell
-                let cell = tableView.dequeueCell(with: SuggestionTableViewCell.self)
-                if let item = recentSearches[safe: indexPath.row - 1] {
-                    cell.configure(item)
-                    cell.performOperation = { [weak self] (result) in
-                        guard let `self` = self else { return }
-                        if result.isItem ?? false {
-                            mainThread {
-                                self.searchTFView.unfocus()
-                                DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-                                bottomSheet.configureForExploreMenu(container: self.view, item: result)
-                            }
-                        } else {
-                            DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                            let id = result._id ?? ""
-                            let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
-                            self.getCategoryItems(forMenuId: id, menuTitle: title)
-                        }
-                    }
-                }
-                return cell
+                return getSuggestionTableViewCell(tableView, cellForRowAt: indexPath)
             }
         }
     }
     
     private func getLoaderCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return tableView.dequeueCell(with: AutoCompleteLoaderCell.self)
+    }
+    
+    private func getTopSearchCategoriesCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: TopSearchCategoriesCell.self)
+        cell.configure(topSearchedCategories)
+        cell.performOperation = { [weak self] in
+            let savedFormat = MenuSearchResultItem(_id: $0._id, titleEnglish: $0.titleEnglish, titleArabic: $0.titleArabic, isCategory: true, isItem: false, descriptionEnglish: nil, descriptionArabic: nil, nameEnglish: nil, nameArabic: nil, itemImageUrl: nil, price: nil, allergicComponent: nil, isCustomised: nil, menuImageUrl: $0.menuImageUrl, itemCount: $0.itemCount)
+            DataManager.shared.saveToRecentlySearchExploreMenu(savedFormat)
+            let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
+            self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
+        }
+        return cell
+    }
+    
+    private func getSuggestionTableViewCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: SuggestionTableViewCell.self)
+        if let item = recentSearches[safe: indexPath.row - 1] {
+            cell.configure(item)
+            cell.performOperation = { [weak self] (result) in
+                guard let `self` = self else { return }
+                if result.isItem ?? false {
+                    mainThread {
+                        self.searchTFView.unfocus()
+                        DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                        let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
+                        bottomSheet.configureForExploreMenu(container: self.view, item: result)
+                    }
+                } else {
+                    DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                    let id = result._id ?? ""
+                    let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
+                    self.getCategoryItems(forMenuId: id, menuTitle: title)
+                }
+            }
+        }
+        return cell
     }
     
     private func getCellForResults(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

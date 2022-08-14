@@ -242,9 +242,6 @@ extension GoogleAutoCompleteVC: UITableViewDelegate, UITableViewDataSource {
         if let viewModel = self.viewModel, indexPath.row < viewModel.getRecentlySearchAddress.count {
             let item = viewModel.getRecentlySearchAddress[indexPath.row]
             cell.configure(title: item.googleTitle ?? "", subtitle: item.googleSubtitle ?? "", index: indexPath.row)
-            cell.cellTapped = { [weak self] (index) in
-                
-            }
         }
         return cell
     }
