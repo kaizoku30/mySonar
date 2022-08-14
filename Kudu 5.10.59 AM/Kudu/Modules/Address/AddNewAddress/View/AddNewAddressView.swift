@@ -96,7 +96,7 @@ class AddNewAddressView: UIView {
         let addressPicker = ChangeDefaultAddressView(frame: CGRect(x: 0, y: 0, width: self.width, height: self.height))
         addressPicker.configureForEditFlow(container: self, list: otherList)
         addressPicker.editFlowCompletion = { _ in
-            
+            // No implementation yet
         }
     }
     

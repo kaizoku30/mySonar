@@ -29,40 +29,46 @@ class GoogleAutoCompleteVC: BaseVC {
             guard let `self` = self, let viewModel = self.viewModel else { return }
             switch $0 {
             case .clearButtonPressed:
-                self.textQuery = ""
-                viewModel.clearData()
-                if viewModel.getFlow == .setDeliveryLocation {
-                    self.baseView.clearAllPressed()
-                    return
-                }
-                self.baseView.handleAPIResponse(.autoComplete, isSuccess: true, noResultFound: false, errorMsg: nil)
+                self.clearButtonPressed()
             case .backButtonPressed:
                 self.pop()
             case .searchTextChanged(let updatedText):
                 self.textQuery = updatedText
                 self.debouncer.call()
             case .openMap:
-                    if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
-                        self.showLocationPermissionAlert()
-                        return
-                    } else {
-                        
-                        CommonLocationManager.getLocationOfDevice(foundCoordinates: {
-                            if let coordinate = $0 {
-                                self.launchMapPinVC(lat: coordinate.latitude, long: coordinate.longitude)
-                            } else {
-                                self.showLocationPermissionAlert()
-                            }
-                        })
-                    }
-               // self.launchMapPinVC(lat: lat!, long: long!)
-                
+                self.openMap()
             case .fetchAddressList:
                 viewModel.getAddressList()
                 self.baseView.handleAPIRequest(.addressListFetched)
             case .openSettings:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
+        }
+    }
+    
+    private func clearButtonPressed() {
+        self.textQuery = ""
+        viewModel?.clearData()
+        if viewModel?.getFlow ?? .setDeliveryLocation == .setDeliveryLocation {
+            self.baseView.clearAllPressed()
+            return
+        }
+        self.baseView.handleAPIResponse(.autoComplete, isSuccess: true, noResultFound: false, errorMsg: nil)
+    }
+    
+    private func openMap() {
+        if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
+            self.showLocationPermissionAlert()
+            return
+        } else {
+            
+            CommonLocationManager.getLocationOfDevice(foundCoordinates: {
+                if let coordinate = $0 {
+                    self.launchMapPinVC(lat: coordinate.latitude, long: coordinate.longitude)
+                } else {
+                    self.showLocationPermissionAlert()
+                }
+            })
         }
     }
     
