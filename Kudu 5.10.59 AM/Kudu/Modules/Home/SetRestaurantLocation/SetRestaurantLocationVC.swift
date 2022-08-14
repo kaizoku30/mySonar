@@ -129,7 +129,7 @@ class SetRestaurantLocationVC: BaseVC {
     
     private func showLocationPermissionAlert() {
         mainThread {
-            let type: LocationServicesDeniedView.AlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
+            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
             self.baseView.showLocationServicesAlert(type: type)
         }
     }

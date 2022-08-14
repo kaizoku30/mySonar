@@ -82,10 +82,10 @@ class AddNewAddressView: UIView {
         }
     }
     
-    func showLocationServicesAlert(type: LocationServicesDeniedView.AlertType) {
-        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.popUpWidth, height: LocationServicesDeniedView.popUpHeight))
-        alert.configure(type: type, leftButtonTitle: "Cancel", rightButtonTitle: "Setting", container: self)
-        alert.handleAction = { [weak self] in
+    func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
+        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
+        alert.configureLocationView(type: type, leftButtonTitle: "Cancel", rightButtonTitle: "Setting", container: self)
+        alert.handleActionOnLocationView = { [weak self] in
             if $0 == .right {
                 self?.handleViewActions?(.openSettings)
             }

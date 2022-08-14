@@ -9,12 +9,12 @@ import UIKit
 
 class LocationServicesDeniedView: UIView {
     
-    enum AlertButton {
+    enum LocationAlertButton {
         case left
         case right
     }
     
-    enum AlertType {
+    enum LocationAlertType {
         case locationServicesNotWorking
         case locationPermissionDenied
         
@@ -37,75 +37,75 @@ class LocationServicesDeniedView: UIView {
         }
     }
     
-    @IBOutlet private var mainContentView: UIView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var rightBtn: AppButton!
-    @IBOutlet private weak var leftBtn: AppButton!
-    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet private var locationContentView: UIView!
+    @IBOutlet private weak var title: UILabel!
+    @IBOutlet private weak var rightButton: AppButton!
+    @IBOutlet private weak var leftButton: AppButton!
+    @IBOutlet private weak var messageLbl: UILabel!
     
-    var handleAction: ((AlertButton) -> Void)?
-    static var popUpHeight: CGFloat { 336 }
-    static var popUpWidth: CGFloat { 308 }
-    private weak var containerView: UIView?
+    var handleActionOnLocationView: ((LocationAlertButton) -> Void)?
+    static var locationPopUpHeight: CGFloat { 336 }
+    static var locationPopUpWidth: CGFloat { 308 }
+    private weak var locationPopUpContainerView: UIView?
     
     override init(frame: CGRect) {
          super.init(frame: frame)
-         commonInit()
+         intitialiseLocationView()
      }
      
      required init?(coder adecoder: NSCoder) {
          super.init(coder: adecoder)
-         commonInit()
+         intitialiseLocationView()
      }
     
-    private func commonInit() {
+    private func intitialiseLocationView() {
         Bundle.main.loadNibNamed("LocationServicesDeniedView", owner: self, options: nil)
-        addSubview(mainContentView)
-        mainContentView.frame = self.bounds
-        mainContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        handleButtonTap()
+        addSubview(locationContentView)
+        locationContentView.frame = self.bounds
+        locationContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        handleLocationButtonTap()
     }
     
-    private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
+    private func removeLocationPopUpFromContainer() {
+        self.locationPopUpContainerView?.subviews.forEach({
             if $0.tag == Constants.CustomViewTags.alertTag {
                 $0.removeFromSuperview()
             }
         })
-        self.containerView?.subviews.forEach({
+        self.locationPopUpContainerView?.subviews.forEach({
             if $0.tag == Constants.CustomViewTags.dimViewTag {
                 $0.removeFromSuperview()
             }
         })
     }
     
-    private func handleButtonTap() {
-        leftBtn.handleBtnTap = {
+    private func handleLocationButtonTap() {
+        leftButton.handleBtnTap = {
             [weak self] in
-            self?.handleAction?(.left)
-            self?.removeFromContainer()
+            self?.handleActionOnLocationView?(.left)
+            self?.removeLocationPopUpFromContainer()
         }
-        rightBtn.handleBtnTap = {
+        rightButton.handleBtnTap = {
             [weak self] in
-            self?.handleAction?(.right)
-            self?.removeFromContainer()
+            self?.handleActionOnLocationView?(.right)
+            self?.removeLocationPopUpFromContainer()
         }
     }
     
-    func configure(type: AlertType, leftButtonTitle: String, rightButtonTitle: String, container view: UIView) {
-        self.containerView = view
+    func configureLocationView(type: LocationAlertType, leftButtonTitle: String, rightButtonTitle: String, container view: UIView) {
+        self.locationPopUpContainerView = view
         let dimmedView = UIView(frame: view.frame)
         dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
         dimmedView.tag = Constants.CustomViewTags.dimViewTag
         view.addSubview(dimmedView)
         self.tag = Constants.CustomViewTags.alertTag
         self.center = view.center
-        messageLabel.numberOfLines = 3
-        messageLabel.adjustsFontSizeToFitWidth = true
-        messageLabel.text = type.message
-        titleLabel.text = type.title
-        leftBtn.setTitle(leftButtonTitle, for: .normal)
-        rightBtn.setTitle(rightButtonTitle, for: .normal)
+        messageLbl.numberOfLines = 3
+        messageLbl.adjustsFontSizeToFitWidth = true
+        messageLbl.text = type.message
+        title.text = type.title
+        leftButton.setTitle(leftButtonTitle, for: .normal)
+        rightButton.setTitle(rightButtonTitle, for: .normal)
         view.addSubview(self)
     }
 }

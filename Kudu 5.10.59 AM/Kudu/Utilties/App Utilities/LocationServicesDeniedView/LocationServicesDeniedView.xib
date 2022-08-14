@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,11 +16,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationServicesDeniedView" customModule="Kudu" customModuleProvider="target">
             <connections>
-                <outlet property="leftBtn" destination="O5k-F2-2gF" id="fhv-dR-Vbv"/>
-                <outlet property="mainContentView" destination="iN0-l3-epB" id="c57-P2-VuI"/>
-                <outlet property="messageLabel" destination="7w2-i7-BCf" id="Drk-QW-VG2"/>
-                <outlet property="rightBtn" destination="N8G-PW-OsG" id="xjN-iO-FuH"/>
-                <outlet property="titleLabel" destination="bWc-8U-bQw" id="NJ0-CY-JVp"/>
+                <outlet property="leftButton" destination="O5k-F2-2gF" id="fhv-dR-Vbv"/>
+                <outlet property="locationContentView" destination="iN0-l3-epB" id="c57-P2-VuI"/>
+                <outlet property="messageLbl" destination="7w2-i7-BCf" id="Drk-QW-VG2"/>
+                <outlet property="rightButton" destination="N8G-PW-OsG" id="xjN-iO-FuH"/>
+                <outlet property="title" destination="bWc-8U-bQw" id="NJ0-CY-JVp"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -44,19 +42,19 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Service Off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWc-8U-bQw">
-                    <rect key="frame" x="134.33333333333331" y="179.66666666666666" width="145.33333333333331" height="18.666666666666657"/>
+                    <rect key="frame" x="134.5" y="179.5" width="145" height="19"/>
                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turn On Location Services to allow KUDU to  determine  your  Current location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7w2-i7-BCf">
-                    <rect key="frame" x="52" y="210.33333333333334" width="310" height="28"/>
+                    <rect key="frame" x="52" y="210.5" width="310" height="28"/>
                     <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                     <color key="textColor" white="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5k-F2-2gF" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                    <rect key="frame" x="87.666666666666686" y="257.33333333333331" width="106" height="40"/>
+                    <rect key="frame" x="87.5" y="257.5" width="106" height="40"/>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="106" id="y6i-nb-eiO"/>
@@ -73,7 +71,7 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N8G-PW-OsG" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                    <rect key="frame" x="220.66666666666663" y="257.33333333333331" width="106" height="40"/>
+                    <rect key="frame" x="220.5" y="257.5" width="106" height="40"/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="zN9-OT-a3W"/>
@@ -117,14 +115,6 @@
             <point key="canvasLocation" x="132" y="130"/>
         </view>
     </objects>
-    <designables>
-        <designable name="N8G-PW-OsG">
-            <size key="intrinsicContentSize" width="30" height="29"/>
-        </designable>
-        <designable name="O5k-F2-2gF">
-            <size key="intrinsicContentSize" width="30" height="29"/>
-        </designable>
-    </designables>
     <resources>
         <image name="k_myaddress_alertBg" width="354" height="183.33332824707031"/>
         <image name="k_myaddress_locationServices" width="138" height="133.66667175292969"/>
