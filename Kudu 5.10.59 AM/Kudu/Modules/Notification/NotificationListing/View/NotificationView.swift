@@ -12,7 +12,7 @@ class NotificationView: UIView {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var notificationTitle: UILabel!
     @IBAction private func backButtonPressed(_ sender: Any) {
-       
+       // Implementation Pending
     }
     
     override func awakeFromNib() {

@@ -167,23 +167,28 @@ extension RTOtpView: UITextFieldDelegate {
         }
         textField.text = ""
         if string.isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
-                debugPrint("Current TF : \(textField.tag)")
-                let newTFTag = textField.tag - 2
-                let selectedLang = AppUserDefaults.selectedLanguage()
-                if (textField.tag) == 2 {
-                    if selectedLang == .en { self?.firstTF.becomeFirstResponder() } else {
-                        self?.sixthTF.becomeFirstResponder()
-                    }
-                } else {
-                    if selectedLang == .en { self?.autoToggleForEnglish(newTFTag) } else {
-                        self?.autoToggleForArabic(newTFTag)
-                    }
-                }
-            })
+            handleTextFieldReplacementEmptyString(textField, string: string)
         }
-        
         return true
+    }
+    
+    
+    
+    private func handleTextFieldReplacementEmptyString(_ textField: UITextField, string: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+            debugPrint("Current TF : \(textField.tag)")
+            let newTFTag = textField.tag - 2
+            let selectedLang = AppUserDefaults.selectedLanguage()
+            if (textField.tag) == 2 {
+                if selectedLang == .en { self?.firstTF.becomeFirstResponder() } else {
+                    self?.sixthTF.becomeFirstResponder()
+                }
+            } else {
+                if selectedLang == .en { self?.autoToggleForEnglish(newTFTag) } else {
+                    self?.autoToggleForArabic(newTFTag)
+                }
+            }
+        })
     }
     
     private func autoFillOtp(_ otpString: String, currentTF: UITextField) {

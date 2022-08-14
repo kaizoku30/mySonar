@@ -18,7 +18,7 @@ class TwitterService {
     private var credential: RequestAccessTokenResponse?
     private var callbackObserver: NSObjectProtocol?
     private var authUrl: URL?
-    
+    private let HMACConstant = "HMAC-SHA1"
     weak var delegate: TwitterServiceDelegate?
     
     func authorizationHeader(params: [String: Any]) -> String {
@@ -109,7 +109,7 @@ class TwitterService {
         "oauth_callback": callback,
         "oauth_consumer_key": args.consumerKey,
         "oauth_nonce": UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
-        "oauth_signature_method": "HMAC-SHA1",
+        "oauth_signature_method": HMACConstant,
         "oauth_timestamp": String(Int(NSDate().timeIntervalSince1970)),
         "oauth_version": "1.0"
       ]
@@ -147,7 +147,7 @@ class TwitterService {
         "oauth_verifier": args.oauthVerifier,
         "oauth_consumer_key": args.consumerKey,
         "oauth_nonce": UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
-        "oauth_signature_method": "HMAC-SHA1",
+        "oauth_signature_method": HMACConstant,
         "oauth_timestamp": String(Int(NSDate().timeIntervalSince1970)),
         "oauth_version": "1.0"
       ]
@@ -186,7 +186,7 @@ class TwitterService {
           "oauth_token": accessToken,
           "oauth_consumer_key": args.consumerKey,
           "oauth_nonce": UUID().uuidString, // nonce can be any 32-bit string made up of random ASCII values
-          "oauth_signature_method": "HMAC-SHA1",
+          "oauth_signature_method": HMACConstant,
           "oauth_timestamp": String(Int(NSDate().timeIntervalSince1970)),
           "oauth_version": "1.0"
         ]

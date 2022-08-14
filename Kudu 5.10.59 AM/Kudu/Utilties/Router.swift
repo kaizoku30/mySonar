@@ -57,26 +57,30 @@ class Router: NSObject {
         }
     }
     
-    func goToLoginVC(fromVC: BaseVC?, sessionExpiryText: String? = nil, showBackButton: Bool = false) {
+    func goToLoginVC(fromVC: BaseVC?, sessionExpiryText: String? = nil) {
         debugPrint("Router function called")
         mainThread {
             guard let strongVC = fromVC else {
-                if let mainNavigation = self.mainNavigation {
-                    if let topVC = mainNavigation.topViewController {
-                        if topVC.isKind(of: LoginVC.self) {
-                            NotificationCenter.postNotificationForObservers(.sessionExpired, object: ["msg": sessionExpiryText ?? ""])
-                            return
-                        }
-                    }
-                }
-                NotificationCenter.postNotificationForObservers(.pushLoginVC, object: ["msg": sessionExpiryText ?? ""])
+                self.handleLoginFlowFromMainNavigation(sessionExpiryText: sessionExpiryText)
                 return
             }
-            
             if strongVC.navigationController.isNotNil {
                 strongVC.navigationController!.pushViewController(LoginVC.instantiate(fromAppStoryboard: .Onboarding), animated: true)
             }
         }
+    }
+    
+    private func handleLoginFlowFromMainNavigation(sessionExpiryText: String? = nil) {
+        if let mainNavigation = self.mainNavigation {
+            if let topVC = mainNavigation.topViewController {
+                if topVC.isKind(of: LoginVC.self) {
+                    NotificationCenter.postNotificationForObservers(.sessionExpired, object: ["msg": sessionExpiryText ?? ""])
+                    return
+                }
+            }
+        }
+        NotificationCenter.postNotificationForObservers(.pushLoginVC, object: ["msg": sessionExpiryText ?? ""])
+        return
     }
     
     func goToPhoneVerificationVC(fromVC: BaseVC?) {

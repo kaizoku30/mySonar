@@ -27,13 +27,15 @@ class ItemDetailView: UIView {
     @IBOutlet private weak var allergenceTitleLabel: UILabel!
     
     @IBAction func incrementButtonPressed(_ sender: Any) {
+        // Implementation Pending
     }
     
     @IBAction func deleteButtonPressed(_ sender: Any) {
+        // Implementation Pending
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
-        
+        // Implementation Pending
     }
     
     @IBAction private func dismissButtonPressed(_ sender: Any) {
@@ -101,7 +103,9 @@ class ItemDetailView: UIView {
         view.addSubview(self)
         UIView.animate(withDuration: 1, animations: {
             self.bottomSheet.transform = CGAffineTransform(translationX: 0, y: 0)
-        }, completion: { _ in })
+        }, completion: { _ in
+            // Implementation Not Needed
+        })
     }
     
     private func setData() {

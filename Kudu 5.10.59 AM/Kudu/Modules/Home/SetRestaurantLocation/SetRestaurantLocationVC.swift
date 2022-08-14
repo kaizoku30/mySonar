@@ -124,7 +124,7 @@ class SetRestaurantLocationVC: BaseVC {
     }
     
     private func launchMapPinVC(lat: Double, long: Double) {
-        
+        // Implementation Pending? Check
     }
     
     private func showLocationPermissionAlert() {

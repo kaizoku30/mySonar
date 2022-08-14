@@ -149,56 +149,74 @@ class SendFeedbackVC: BaseVC {
         let galleryAccessRequested = AppUserDefaults.value(forKey: .galleryPermissionAsked) as? Bool ?? false
         if galleryAccessRequested {
             if #available(iOS 14, *) {
-                let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-                switch status {
-                case .notDetermined, .denied:
-                    showGalleryPermissionDenied()
-                case .restricted, .authorized, .limited:
-                    launchGallery()
-                @unknown default:
-                    showGalleryPermissionDenied()
-                }
+                galleryAccessiOS14()
             } else {
                 // Fallback on earlier versions
-                let status = PHPhotoLibrary.authorizationStatus()
-                switch status {
-                case .notDetermined, .denied:
-                    showGalleryPermissionDenied()
-                case .restricted, .authorized, .limited:
-                    launchGallery()
-                @unknown default:
-                    showGalleryPermissionDenied()
-                }
+                galleryAccessiOS13()
             }
             
         } else {
             AppUserDefaults.save(value: true, forKey: .galleryPermissionAsked)
             if #available(iOS 14, *) {
-                PHPhotoLibrary.requestAuthorization(for: .addOnly, handler: { [weak self] in
-                    switch $0 {
-                    case .authorized, .limited, .restricted:
-                        self?.launchGallery()
-                    case .denied, .notDetermined:
-                        self?.showGalleryPermissionDenied()
-                    @unknown default:
-                        self?.showGalleryPermissionDenied()
-                    }
-                })
+                galleryRequestiOS14()
             } else {
                 // Fallback on earlier versions
-                PHPhotoLibrary.requestAuthorization({ [weak self] in
-                    switch $0 {
-                    case .authorized, .limited, .restricted:
-                        self?.launchGallery()
-                    case .denied, .notDetermined:
-                        self?.showGalleryPermissionDenied()
-                    @unknown default:
-                        self?.showGalleryPermissionDenied()
-                    }
-                })
+                galleryRequestiOS13()
             }
         }
         
+    }
+    
+    @available(iOS 14, *)
+    private func galleryAccessiOS14() {
+        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+        switch status {
+        case .notDetermined, .denied:
+            showGalleryPermissionDenied()
+        case .restricted, .authorized, .limited:
+            launchGallery()
+        @unknown default:
+            showGalleryPermissionDenied()
+        }
+    }
+    
+    private func galleryAccessiOS13() {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .notDetermined, .denied:
+            showGalleryPermissionDenied()
+        case .restricted, .authorized, .limited:
+            launchGallery()
+        @unknown default:
+            showGalleryPermissionDenied()
+        }
+    }
+    
+    @available(iOS 14, *)
+    private func galleryRequestiOS14() {
+        PHPhotoLibrary.requestAuthorization(for: .addOnly, handler: { [weak self] in
+            switch $0 {
+            case .authorized, .limited, .restricted:
+                self?.launchGallery()
+            case .denied, .notDetermined:
+                self?.showGalleryPermissionDenied()
+            @unknown default:
+                self?.showGalleryPermissionDenied()
+            }
+        })
+    }
+    
+    private func galleryRequestiOS13() {
+        PHPhotoLibrary.requestAuthorization({ [weak self] in
+            switch $0 {
+            case .authorized, .limited, .restricted:
+                self?.launchGallery()
+            case .denied, .notDetermined:
+                self?.showGalleryPermissionDenied()
+            @unknown default:
+                self?.showGalleryPermissionDenied()
+            }
+        })
     }
     
     func launchGallery() {

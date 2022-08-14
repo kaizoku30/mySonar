@@ -20,6 +20,7 @@ class HorizontallyExpandableCollection: UIView {
         expandCollectionButton.isHidden = true
         collapseCollectionButton.isHidden = false
         collectionView.performBatchUpdates({
+            //No implementation needed as of now
         }, completion: { (completed) in
             if completed {
                 self.collectionView.reloadData()
@@ -31,6 +32,7 @@ class HorizontallyExpandableCollection: UIView {
         collapseCollectionButton.isHidden = true
         expandCollectionButton.isHidden = false
         collectionView.performBatchUpdates({
+            //No implementation needed as of now
         }, completion: { (completed) in
             if completed {
                 self.collectionView.reloadData()

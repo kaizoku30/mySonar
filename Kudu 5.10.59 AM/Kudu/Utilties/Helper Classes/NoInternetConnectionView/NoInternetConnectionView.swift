@@ -15,10 +15,10 @@ class NoInternetConnectionView: UIView {
     @IBOutlet weak var errorTitleLabel: UILabel!
     @IBOutlet weak var tryAgainButton: AppButton!
     
-    private let reachability = try! Reachability()
+    private let reachability = try? Reachability()
     
     @IBAction func tryAgain(_ sender: Any) {
-        if reachability.connection != .unavailable {
+        if reachability?.connection ?? .unavailable != .unavailable {
             NotificationCenter.postNotificationForObservers(.internetConnectionFound)
         }
     }

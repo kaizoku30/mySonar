@@ -63,41 +63,61 @@ extension SettingVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == 0 {
-            let cell = tableView.dequeueCell(with: HeaderCell.self)
-            cell.headerName.text = SettingView.SectionHeaderName.allCases[indexPath.section].title
-            return cell
+            return getHeaderCell(tableView, cellForRowAt: indexPath)
         } else {
-            let cell = tableView.dequeueCell(with: SettingTableViewCell.self)
-            switch indexPath.section {
-            case 0:
-                cell.settingName.text = SettingView.Help.allCases[indexPath.row-1].title
-                if indexPath.row == SettingView.Help.allCases.count {
-                    cell.viewLine.isHidden   = true
-                }
-                if indexPath.row == 2 && (viewModel?.isGuestUser ?? false) {
-                    cell.viewLine.isHidden = true
-                }
-            case 1:
-                cell.settingName.text = SettingView.Content.allCases[indexPath.row-1].title
-                if indexPath.row == SettingView.Content.allCases.count {
-                    cell.viewLine.isHidden   = true
-                }
-            default:
-                cell.settingName.text = SettingView.AccountControl.allCases[indexPath.row-1].title
-                if indexPath.row == SettingView.AccountControl.allCases.count {
-                    cell.viewLine.isHidden = true
-                    cell.imageArrow.isHidden   = true
-                    cell.settingName.textColor = .red
-                }
-                if indexPath.row == 1 {
-                    cell.toggleLoading(loading: self.baseView.isDeleteApiHitting)
-                }
-                
-                if indexPath.row == 2 {
-                    cell.toggleLoading(loading: self.baseView.isLogoutApiHitting)
-                }
-            }
-            return cell
+            return getSettingTableViewCell(tableView, cellForRowAt: indexPath)
+        }
+    }
+    
+    private func getHeaderCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: HeaderCell.self)
+        cell.headerName.text = SettingView.SectionHeaderName.allCases[indexPath.section].title
+        return cell
+    }
+    
+    private func getSettingTableViewCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: SettingTableViewCell.self)
+        switch indexPath.section {
+        case 0:
+            setHelpSectionCell(cell: cell, indexPath: indexPath)
+        case 1:
+            setContentSectionCell(cell: cell, indexPath: indexPath)
+        default:
+            setAccountControlCell(cell: cell, indexPath: indexPath)
+        }
+        return cell
+    }
+    
+    private func setHelpSectionCell(cell: SettingTableViewCell, indexPath: IndexPath) {
+        cell.settingName.text = SettingView.Help.allCases[indexPath.row-1].title
+        if indexPath.row == SettingView.Help.allCases.count {
+            cell.viewLine.isHidden   = true
+        }
+        if indexPath.row == 2 && (viewModel?.isGuestUser ?? false) {
+            cell.viewLine.isHidden = true
+        }
+    }
+    
+    private func setContentSectionCell(cell: SettingTableViewCell, indexPath: IndexPath) {
+        cell.settingName.text = SettingView.Content.allCases[indexPath.row-1].title
+        if indexPath.row == SettingView.Content.allCases.count {
+            cell.viewLine.isHidden   = true
+        }
+    }
+    
+    private func setAccountControlCell(cell: SettingTableViewCell, indexPath: IndexPath) {
+        cell.settingName.text = SettingView.AccountControl.allCases[indexPath.row-1].title
+        if indexPath.row == SettingView.AccountControl.allCases.count {
+            cell.viewLine.isHidden = true
+            cell.imageArrow.isHidden   = true
+            cell.settingName.textColor = .red
+        }
+        if indexPath.row == 1 {
+            cell.toggleLoading(loading: self.baseView.isDeleteApiHitting)
+        }
+        
+        if indexPath.row == 2 {
+            cell.toggleLoading(loading: self.baseView.isLogoutApiHitting)
         }
     }
     
@@ -111,69 +131,86 @@ extension SettingVC {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0 :
-            switch indexPath.row {
-            case 1 :
-                let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
-                controller.pageType = .faq
-                self.navigationController?.pushViewController(controller, animated: true)
-            case 2 :
-                let controller = SupportDetailsVC.instantiate(fromAppStoryboard: .Setting)
-                self.navigationController?.pushViewController(controller, animated: true)
-            case 3 :
-                self.push(vc: SendFeedbackVC.instantiate(fromAppStoryboard: .Setting))
-            default:
-                break
-            }
+            handleHelpSectionSelection(indexPath: indexPath)
         case 1 :
-            switch indexPath.row {
-            case 1 :
-                let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
-                controller.pageType = .privacyPolicy
-                self.navigationController?.pushViewController(controller, animated: true)
-            case 2 :
-                let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
-                controller.pageType = .terms
-                self.navigationController?.pushViewController(controller, animated: true)
-            case 3 :
-                let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
-                controller.pageType = .vision
-                self.navigationController?.pushViewController(controller, animated: true)
-            case 4 :
-                let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
-                controller.pageType = .aboutUs
-                self.navigationController?.pushViewController(controller, animated: true)
-            default:
-                break
-            }
+            handleContentSectionSelection(indexPath: indexPath)
         case 2 :
-            if indexPath.row == 1 {
-                let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
-                popUp.rightButtonBgColor = AppColors.SendFeedbackScreen.deleteBtnColor
-                popUp.configure(title: LocalizedStrings.Setting.deleteAccount, message: LocalizedStrings.Setting.yourInformationWillBeErasedAsAResult, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
-                popUp.setButtonConfiguration(for: .left, config: .blueOutline)
-                popUp.setButtonConfiguration(for: .right, config: .yellow)
-                popUp.handleAction = { [weak self] in
-                    if $0 == .left {
-                        self?.baseView.handleAPIRequest(.delete)
-                        self?.viewModel?.hitDeleteAPI()
-                    }
-                }
-            } else {
-                let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
-                popUp.configure(title: LocalizedStrings.Setting.logoutButton, message: LocalizedStrings.Setting.areYouSureYouWantToLogout, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
-                popUp.setButtonConfiguration(for: .left, config: .blueOutline)
-                popUp.setButtonConfiguration(for: .right, config: .yellow)
-                popUp.handleAction = { [weak self] in
-                    if $0 == .left {
-                        self?.baseView.handleAPIRequest(.logout)
-                        self?.viewModel?.hitLogoutAPI()
-                    }
-                }
-            }
+            handleAccountControlSectionSelection(indexPath: indexPath)
         default:
             break
         }
     }
+    
+    private func handleHelpSectionSelection(indexPath: IndexPath) {
+        switch indexPath.row {
+        case 1 :
+            goToWebViewVC(pageType: .faq)
+        case 2 :
+            let controller = SupportDetailsVC.instantiate(fromAppStoryboard: .Setting)
+            self.navigationController?.pushViewController(controller, animated: true)
+        case 3 :
+            self.push(vc: SendFeedbackVC.instantiate(fromAppStoryboard: .Setting))
+        default:
+            break
+        }
+    }
+    
+    private func handleContentSectionSelection(indexPath: IndexPath) {
+        switch indexPath.row {
+        case 1 :
+            goToWebViewVC(pageType: .privacyPolicy)
+        case 2 :
+            goToWebViewVC(pageType: .terms)
+        case 3 :
+            goToWebViewVC(pageType: .vision)
+        case 4 :
+            goToWebViewVC(pageType: .aboutUs)
+        default:
+            break
+        }
+    }
+    
+    private func handleAccountControlSectionSelection(indexPath: IndexPath) {
+        if indexPath.row == 1 {
+            handleDeletePopUp()
+        } else {
+            handleLogoutPopUp()
+        }
+    }
+    
+    private func goToWebViewVC(pageType: Constants.StaticContentType) {
+        let controller = WebViewVC.instantiate(fromAppStoryboard: .Setting)
+        controller.pageType = pageType
+        self.push(vc: controller)
+    }
+    
+    private func handleDeletePopUp() {
+        let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
+        popUp.rightButtonBgColor = AppColors.SendFeedbackScreen.deleteBtnColor
+        popUp.configure(title: LocalizedStrings.Setting.deleteAccount, message: LocalizedStrings.Setting.yourInformationWillBeErasedAsAResult, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
+        popUp.setButtonConfiguration(for: .left, config: .blueOutline)
+        popUp.setButtonConfiguration(for: .right, config: .yellow)
+        popUp.handleAction = { [weak self] in
+            if $0 == .left {
+                self?.baseView.handleAPIRequest(.delete)
+                self?.viewModel?.hitDeleteAPI()
+            }
+        }
+    }
+    
+    private func handleLogoutPopUp() {
+        let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
+        popUp.configure(title: LocalizedStrings.Setting.logoutButton, message: LocalizedStrings.Setting.areYouSureYouWantToLogout, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
+        popUp.setButtonConfiguration(for: .left, config: .blueOutline)
+        popUp.setButtonConfiguration(for: .right, config: .yellow)
+        popUp.handleAction = { [weak self] in
+            if $0 == .left {
+                self?.baseView.handleAPIRequest(.logout)
+                self?.viewModel?.hitLogoutAPI()
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return " "
     }
