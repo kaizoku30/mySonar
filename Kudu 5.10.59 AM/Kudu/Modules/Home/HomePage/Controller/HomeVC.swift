@@ -357,7 +357,7 @@ extension HomeVC {
     func goToSetRestaurantFlow() {
         let vc = SetRestaurantLocationVC.instantiate(fromAppStoryboard: .Home)
         vc.restaurantSelected = { [weak self] (restaurant) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant.restaurantNameEnglish) : (restaurant.restaurantNameArabic)
             let title = name
             if viewModel.getSelectedSection == .pickup {
@@ -365,9 +365,9 @@ extension HomeVC {
             } else {
                 DataManager.shared.currentCurbsideRestaurant = restaurant
             }
-            self.baseView.updateLocationLabel(title)
-            self.viewModel?.hitMenuAPI()
-            self.baseView.handleAPIRequest(.getMenuList)
+            strongSelf.baseView.updateLocationLabel(title)
+            strongSelf.viewModel?.hitMenuAPI()
+            strongSelf.baseView.handleAPIRequest(.getMenuList)
         }
         vc.viewModel = SetRestaurantLocationVM(delegate: vc, flow: self.viewModel?.getSelectedSection ?? .delivery)
         self.push(vc: vc)
@@ -377,10 +377,10 @@ extension HomeVC {
         let googleAutoCompleteVC = GoogleAutoCompleteVC.instantiate(fromAppStoryboard: .Address)
         googleAutoCompleteVC.viewModel = GoogleAutoCompleteVM(delegate: googleAutoCompleteVC, flow: .setDeliveryLocation, prefillData: self.viewModel?.getCurrentLocationData)
         googleAutoCompleteVC.prefillCallback = { [weak self] in
-            guard let `self` = self else { return }
-            self.viewModel?.setLocation($0)
-            self.baseView.updateLocationLabel($0.trimmedAddress)
-            self.viewModel?.hitMenuAPI()
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.setLocation($0)
+            strongSelf.baseView.updateLocationLabel($0.trimmedAddress)
+            strongSelf.viewModel?.hitMenuAPI()
         }
         self.push(vc: googleAutoCompleteVC)
     }

@@ -27,14 +27,14 @@ class SendFeedbackVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             switch $0 {
             case .submitButtonPressed:
                 mainThread({
-                    self.validateForm()
+                    strongSelf.validateForm()
                 })
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             }
         }
     }

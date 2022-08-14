@@ -73,13 +73,13 @@ class AddNewAddressVM {
     
     func deleteAddress(id: String) {
         webService.deleteAddress(id: id, success: { [weak self] in
-            guard let `self` = self else { return }
-            self.defaultIdToReplace = nil
-            self.delegate?.saveAddressAPIResponse(responseType: .success($0.message ?? ""))
+            guard let strongSelf = self else { return }
+            strongSelf.defaultIdToReplace = nil
+            strongSelf.delegate?.saveAddressAPIResponse(responseType: .success($0.message ?? ""))
         }, failure: { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             let error = NSError(code: $0.code, localizedDescription: $0.msg)
-            self.delegate?.saveAddressAPIResponse(responseType: .failure(error))
+            strongSelf.delegate?.saveAddressAPIResponse(responseType: .failure(error))
         })
     }
 }

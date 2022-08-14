@@ -107,10 +107,10 @@ class GoogleAutoCompleteView: UIView {
     @objc private func keyboardWillShow(notification: NSNotification) {
         animateWithKeyboard(notification: notification, animations: { [weak self] (keyboardRect) in
             mainThread {
-                guard let `self` = self else { return }
+                guard let strongSelf = self else { return }
 
-                self.bottomConstraintMapButton.constant = keyboardRect.height + 16 - self.safeAreaInsets.bottom
-                self.layoutIfNeeded()
+                strongSelf.bottomConstraintMapButton.constant = keyboardRect.height + 16 - strongSelf.safeAreaInsets.bottom
+                strongSelf.layoutIfNeeded()
                 
             }
         })
@@ -119,10 +119,10 @@ class GoogleAutoCompleteView: UIView {
     @objc private func keyboardWillHide(notification: NSNotification) {
         animateWithKeyboard(notification: notification) { [weak self] (_) in
             mainThread {
-                guard let `self` = self else { return }
-                self.bottomConstraintMapButton.constant = 22
+                guard let strongSelf = self else { return }
+                strongSelf.bottomConstraintMapButton.constant = 22
                 //self.textViewBottomC.constant = 95
-                self.layoutIfNeeded()
+                strongSelf.layoutIfNeeded()
             }}
     }
     
@@ -146,9 +146,9 @@ class GoogleAutoCompleteView: UIView {
     
     private func handleTextField() {
         searchTFView.textFieldDidChangeCharacters = { [weak self] in
-            guard let `self` = self, let text = $0 else { return }
-            self.clearBtn.isHidden = text.isEmpty
-            self.handleViewActions?(.searchTextChanged(updatedText: text))
+            guard let strongSelf = self, let text = $0 else { return }
+            strongSelf.clearBtn.isHidden = text.isEmpty
+            strongSelf.handleViewActions?(.searchTextChanged(updatedText: text))
         }
     }
     

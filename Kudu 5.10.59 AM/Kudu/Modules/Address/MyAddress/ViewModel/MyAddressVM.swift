@@ -37,12 +37,12 @@ class MyAddressVM {
     
     func deleteAddress(id: String) {
         webService.deleteAddress(id: id, success: { [weak self] in
-            guard let `self` = self else { return }
-            self.delegate?.deleteAddressAPIResponse(responseType: .success($0.message ?? ""))
+            guard let strongSelf = self else { return }
+            strongSelf.delegate?.deleteAddressAPIResponse(responseType: .success($0.message ?? ""))
         }, failure: { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             let error = NSError(code: $0.code, localizedDescription: $0.msg)
-            self.delegate?.deleteAddressAPIResponse(responseType: .failure(error))
+            strongSelf.delegate?.deleteAddressAPIResponse(responseType: .failure(error))
         })
     }
     

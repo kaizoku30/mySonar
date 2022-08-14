@@ -112,20 +112,20 @@ extension MyAddressVC: UITableViewDataSource, UITableViewDelegate {
         let item = sectionType == .DEFAULT ? viewModel.getDefaultAddress! : viewModel.getList[indexPath.row]
         cell.configure(item: item)
         cell.editAddress = { [weak self] (item) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             let addAddressVC = AddNewAddressVC.instantiate(fromAppStoryboard: .Address)
             addAddressVC.viewModel = AddNewAddressVM(_delegate: addAddressVC, editObject: item, forcedDefault: (viewModel.getList.count == 0))
-            `self`.push(vc: addAddressVC)
+            strongSelf.push(vc: addAddressVC)
         }
         cell.deleteAddress = { [weak self] (item) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             let isDefault = item.isDefault ?? false
             var otherAddresses: [MyAddressListItem]?
             if isDefault {
                 otherAddresses = viewModel.getList.filter({ ($0.isDefault ?? false) == false })
             }
             let addressId = item.id ?? ""
-            self.baseView.showDeletePopUp(id: addressId, isDefault: isDefault, otherAddresses: otherAddresses)
+            strongSelf.baseView.showDeletePopUp(id: addressId, isDefault: isDefault, otherAddresses: otherAddresses)
         }
         return cell
     }

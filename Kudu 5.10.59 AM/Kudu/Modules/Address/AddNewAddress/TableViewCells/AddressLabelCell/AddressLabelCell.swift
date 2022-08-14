@@ -71,10 +71,10 @@ class AddressLabelCell: UITableViewCell {
         self.textfieldView.textColor = .black
         self.textfieldView.font = AppFonts.mulishSemiBold.withSize(12)
         self.textfieldView.textFieldFinishedEditing = { [weak self] in
-            guard let `self` = self else { return }
-            self.otherLabel = $0
+            guard let strongSelf = self else { return }
+            strongSelf.otherLabel = $0
             debugPrint("Text field ended : \($0 ?? "")")
-            self.selectionUpdated?(self.selectionType, self.otherLabel)
+            strongSelf.selectionUpdated?(strongSelf.selectionType, strongSelf.otherLabel)
         }
     }
     

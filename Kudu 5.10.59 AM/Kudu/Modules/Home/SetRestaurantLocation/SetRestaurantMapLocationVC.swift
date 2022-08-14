@@ -86,12 +86,12 @@ class SetRestaurantMapLocationVC: BaseVC {
         setInfoView()
         searchTFView.currentText = lastTextQuery
         clearButton.handleBtnTap = { [weak self] in
-            guard let `self` = self else { return }
-            self.searchTFView.currentText = ""
-            self.searchTFView.unfocus()
-            self.restaurantArray = []
-            self.markers = []
-            self.clearHandling()
+            guard let strongSelf = self else { return }
+            strongSelf.searchTFView.currentText = ""
+            strongSelf.searchTFView.unfocus()
+            strongSelf.restaurantArray = []
+            strongSelf.markers = []
+            strongSelf.clearHandling()
         }
     }
     
@@ -116,11 +116,11 @@ class SetRestaurantMapLocationVC: BaseVC {
     
     private func handleTextField() {
         searchTFView.textFieldDidChangeCharacters = { [weak self] in
-            guard let `self` = self, let text = $0 else { return }
+            guard let strongSelf = self, let text = $0 else { return }
             if text.isEmpty {
-                self.clearHandling()
+                strongSelf.clearHandling()
             } else {
-                self.clearButton.isHidden = false
+                strongSelf.clearButton.isHidden = false
             }
         }
         
@@ -130,14 +130,14 @@ class SetRestaurantMapLocationVC: BaseVC {
         }
         
         searchTFView.textFieldFinishedEditing = { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             let text = $0 ?? ""
             if text.isEmpty {
-                self.restaurantArray = []
-                self.markers = []
-                self.clearHandling()
+                strongSelf.restaurantArray = []
+                strongSelf.markers = []
+                strongSelf.clearHandling()
             } else {
-                self.fetchResults(text: text)
+                strongSelf.fetchResults(text: text)
                 debugPrint("Textfield Unselected")
             }
             
@@ -288,12 +288,12 @@ extension SetRestaurantMapLocationVC {
         }
         
         WebServices.HomeEndPoints.getRestaurantListing(request: RestaurantListRequest(searchKey: text, latitude: currentCoordinates.latitude, longitude: currentCoordinates.longitude, type: type), success: { [weak self] (response) in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             mainThread {
-                if self.searchTFView.currentText.isEmpty { return }
-                self.restaurantArray = (response.data?.list) ?? []
-                self.setMarkers()
-                self.setInfoView()
+                if strongSelf.searchTFView.currentText.isEmpty { return }
+                strongSelf.restaurantArray = (response.data?.list) ?? []
+                strongSelf.setMarkers()
+                strongSelf.setInfoView()
             }
             //self.delegate?.listingAPIResponse(responseType: .success(response.message ?? ""))
             

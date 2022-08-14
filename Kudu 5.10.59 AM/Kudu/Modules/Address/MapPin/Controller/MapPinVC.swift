@@ -25,16 +25,16 @@ class MapPinVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch $0 {
             case .confirmLocationPressed:
                 guard let data = viewModel.getPrefillData else { return }
-                self.prefillCallback?(data)
-                self.pop()
+                strongSelf.prefillCallback?(data)
+                strongSelf.pop()
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .recenterMap:
-                self.viewModel?.fetchInitialPointInMap()
+                strongSelf.viewModel?.fetchInitialPointInMap()
             }
         }
     }

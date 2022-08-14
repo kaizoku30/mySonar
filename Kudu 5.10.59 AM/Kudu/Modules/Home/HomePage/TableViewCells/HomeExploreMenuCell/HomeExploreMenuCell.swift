@@ -54,10 +54,10 @@ class HomeExploreMenuCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         mainThread({ [weak self] in
-            guard let `self` = self else { return }
-            if self.list.isNil {
-                self.shimmerViews.layoutIfNeeded()
-                self.shimmerViews.startShimmering()
+            guard let strongSelf = self else { return }
+            if strongSelf.list.isNil {
+                strongSelf.shimmerViews.layoutIfNeeded()
+                strongSelf.shimmerViews.startShimmering()
             }
         })
     }

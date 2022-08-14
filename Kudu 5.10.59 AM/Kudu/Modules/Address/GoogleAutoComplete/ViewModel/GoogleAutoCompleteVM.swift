@@ -46,16 +46,16 @@ class GoogleAutoCompleteVM {
         service.APIKey = Constants.GooglePaidAPIKey.apiKey
         service.countries = ["in", "sa"]
         SwiftLocation.autocompleteWith(service).then({ [weak self] (result) in
-            guard let `self` = self else {
+            guard let strongSelf = self else {
                 return
             }
             switch result {
             case .success(let data):
-                self.listMatches = data
-                self.delegate?.autoCompleteAPIResponse(responseType: .success(""))
+                strongSelf.listMatches = data
+                strongSelf.delegate?.autoCompleteAPIResponse(responseType: .success(""))
             case .failure(let error):
-                self.listMatches = []
-                self.delegate?.autoCompleteAPIResponse(responseType: .failure(error))
+                strongSelf.listMatches = []
+                strongSelf.delegate?.autoCompleteAPIResponse(responseType: .failure(error))
             }
         })
     }
@@ -68,7 +68,7 @@ class GoogleAutoCompleteVM {
         detailService.APIKey = Constants.GooglePaidAPIKey.apiKey
         detailService.operation = .addressDetail(reverseGeoCodeID)
         SwiftLocation.autocompleteWith(detailService).then({ [weak self] (result) in
-            guard let `self` = self else {
+            guard let strongSelf = self else {
                 return
             }
             switch result {
@@ -79,11 +79,11 @@ class GoogleAutoCompleteVM {
                 guard let detailMatch = data[0].place else {
                     return
                 }
-                self.detailMatch = detailMatch
-                self.parseReverseGeoCodeData(detailMatch, title: partialMatch.title, subtitle: partialMatch.subtitle)
+                strongSelf.detailMatch = detailMatch
+                strongSelf.parseReverseGeoCodeData(detailMatch, title: partialMatch.title, subtitle: partialMatch.subtitle)
             case .failure(let error):
-                self.detailMatch = nil
-                self.delegate?.detailAPIResponse(responseType: .failure(error))
+                strongSelf.detailMatch = nil
+                strongSelf.delegate?.detailAPIResponse(responseType: .failure(error))
             }
         })
     }

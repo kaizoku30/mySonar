@@ -26,20 +26,20 @@ class GoogleAutoCompleteVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch $0 {
             case .clearButtonPressed:
-                self.clearButtonPressed()
+                strongSelf.clearButtonPressed()
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .searchTextChanged(let updatedText):
-                self.textQuery = updatedText
-                self.debouncer.call()
+                strongSelf.textQuery = updatedText
+                strongSelf.debouncer.call()
             case .openMap:
-                self.openMap()
+                strongSelf.openMap()
             case .fetchAddressList:
                 viewModel.getAddressList()
-                self.baseView.handleAPIRequest(.addressListFetched)
+                strongSelf.baseView.handleAPIRequest(.addressListFetched)
             case .openSettings:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             }
@@ -59,7 +59,6 @@ class GoogleAutoCompleteVC: BaseVC {
     private func openMap() {
         if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
             self.showLocationPermissionAlert()
-            return
         } else {
             
             CommonLocationManager.getLocationOfDevice(foundCoordinates: {
@@ -99,19 +98,19 @@ class GoogleAutoCompleteVC: BaseVC {
     
     private func handleDebouncer() {
         debouncer.callback = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
-            if self.textQuery.isEmpty {
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
+            if strongSelf.textQuery.isEmpty {
                 viewModel.clearData()
                 if viewModel.getFlow == .setDeliveryLocation {
-                    self.baseView.clearAllPressed()
+                    strongSelf.baseView.clearAllPressed()
                     return
                 }
-                self.baseView.handleAPIResponse(.autoComplete, isSuccess: true, noResultFound: false, errorMsg: nil)
+                strongSelf.baseView.handleAPIResponse(.autoComplete, isSuccess: true, noResultFound: false, errorMsg: nil)
                 return
             }
-            self.isSearching = true
-            self.baseView.handleAPIRequest(.autoComplete)
-            viewModel.hitGoogleAutocomplete(self.textQuery)
+            strongSelf.isSearching = true
+            strongSelf.baseView.handleAPIRequest(.autoComplete)
+            viewModel.hitGoogleAutocomplete(strongSelf.textQuery)
         }
     }
     

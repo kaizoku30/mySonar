@@ -43,9 +43,9 @@ class SetRestaurantLocationVM {
     func fetchSuggestions(text: String) {
         self.suggestions = []
         webService.getRestaurantSuggestions(request: RestaurantListRequest(searchKey: text, latitude: location.latitude, longitude: location.longitude, type: flow), success: { [weak self] (response) in
-            guard let `self` = self else { return }
-            self.suggestions = response.data ?? []
-            self.delegate?.suggestionsAPIResponse(responseType: .success(response.message ?? ""))
+            guard let strongSelf = self else { return }
+            strongSelf.suggestions = response.data ?? []
+            strongSelf.delegate?.suggestionsAPIResponse(responseType: .success(response.message ?? ""))
             
         }, failure: { [weak self] in
             let error = NSError(code: $0.code, localizedDescription: $0.msg)
@@ -56,9 +56,9 @@ class SetRestaurantLocationVM {
     func fetchResults(text: String) {
         self.list = []
         webService.getRestaurantListing(request: RestaurantListRequest(searchKey: text, latitude: location.latitude, longitude: location.longitude, type: flow), success: { [weak self] (response) in
-            guard let `self` = self else { return }
-            self.list = (response.data?.list) ?? []
-            self.delegate?.listingAPIResponse(responseType: .success(response.message ?? ""))
+            guard let strongSelf = self else { return }
+            strongSelf.list = (response.data?.list) ?? []
+            strongSelf.delegate?.listingAPIResponse(responseType: .success(response.message ?? ""))
             
         }, failure: { [weak self] in
             let error = NSError(code: $0.code, localizedDescription: $0.msg)

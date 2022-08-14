@@ -24,22 +24,22 @@ class EditProfileVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] (action) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch action {
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .nameUpdated(let updatedText):
-                self.viewModel?.update(name: updatedText, email: nil)
+                strongSelf.viewModel?.update(name: updatedText, email: nil)
             case .emailUpdated(let updatedText):
-                self.viewModel?.update(name: nil, email: updatedText)
+                strongSelf.viewModel?.update(name: nil, email: updatedText)
             case .updateProfile:
                 let validation = viewModel.validateData()
                 if validation.validData == false {
-                    self.baseView.showError(msg: validation.errorMsg ?? "")
+                    strongSelf.baseView.showError(msg: validation.errorMsg ?? "")
                     return
                 }
-                self.baseView.handleAPIRequest()
-                self.viewModel?.hitUpdateAPI()
+                strongSelf.baseView.handleAPIRequest()
+                strongSelf.viewModel?.hitUpdateAPI()
             }
         }
     }

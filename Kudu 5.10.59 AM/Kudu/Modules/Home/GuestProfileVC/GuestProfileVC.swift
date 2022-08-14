@@ -117,20 +117,20 @@ extension GuestProfileVC: UITableViewDataSource, UITableViewDelegate {
         if row == .menu {
             let currentDeliveryLocation = DataManager.shared.currentDeliveryLocation
             WebServices.HomeEndPoints.getMenuList(request: MenuListRequest(servicesType: .delivery, lat: currentDeliveryLocation?.latitude, long: currentDeliveryLocation?.longitude, storeId: nil), success: { [weak self] (response) in
-                guard let `self` = self else { return }
+                guard let strongSelf = self else { return }
                 var categories = response.data ?? []
                 if categories.isEmpty { return }
                 categories[0].isSelectedInApp = true
                 let vc = ExploreMenuVC.instantiate(fromAppStoryboard: .Home)
                 vc.viewModel = ExploreMenuVM(menuCategories: categories, delegate: vc)
                 mainThread {
-                    self.dismissSideMenu(pushViewController: vc)
+                    strongSelf.dismissSideMenu(pushViewController: vc)
                 }
             }, failure: { [weak self] (error) in
-                guard let `self` = self else { return }
+                guard let strongSelf = self else { return }
                 mainThread {
-                    let errorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.view.width - 32, height: 48))
-                    errorToast.show(message: error.msg, view: self.view)
+                    let errorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width - 32, height: 48))
+                    errorToast.show(message: error.msg, view: strongSelf.view)
                 }
             })
         }

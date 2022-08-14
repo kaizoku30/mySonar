@@ -66,29 +66,29 @@ class LoginVC: BaseVC {
     // MARK: Functions
     private func handleActions() {
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             switch $0 {
             case .loginButtonPressed :
-                self.baseView.handleAPIRequest(.loginAPI)
-                self.viewModel?.getOtp(self.baseView.getMobileNumberEntered)
+                strongSelf.baseView.handleAPIRequest(.loginAPI)
+                strongSelf.viewModel?.getOtp(strongSelf.baseView.getMobileNumberEntered)
                 //Router.shared.goToPhoneVerificationVC(fromVC: self)
                
             case .googleLogin :
-                self.handleGoogleIn()
+                strongSelf.handleGoogleIn()
             case .twitterLogin :
-                self.handleTwitterLogIn()
+                strongSelf.handleTwitterLogIn()
             case .facebookLogin:
-                self.handleFacebookLogin()
+                strongSelf.handleFacebookLogin()
             case .appleLogin:
-                self.handleAppleLogin()
+                strongSelf.handleAppleLogin()
             case .backButtonPressed:
-                if let flow = self.viewModel?.getCurrentFlow, flow == .comingFromGuestUser {
-                    self.pop()
+                if let flow = strongSelf.viewModel?.getCurrentFlow, flow == .comingFromGuestUser {
+                    strongSelf.pop()
                 } else {
                     //Redirection to Home Screen Guest User Flow
                     let homeVC = HomeVC.instantiate(fromAppStoryboard: .Home)
                     homeVC.viewModel = HomeVM(delegate: homeVC)
-                    self.push(vc: homeVC)
+                    strongSelf.push(vc: homeVC)
                 }
                 
             }

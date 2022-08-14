@@ -18,13 +18,13 @@ class NotificationPrefVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] (action) in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             switch action {
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .updateSettings:
-                self.baseView.handleAPIRequest(.notificationPrefAPI)
-                self.viewModel?.updateSettingsOnServer()
+                strongSelf.baseView.handleAPIRequest(.notificationPrefAPI)
+                strongSelf.viewModel?.updateSettingsOnServer()
             }
         }
     }

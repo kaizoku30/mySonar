@@ -56,19 +56,19 @@ class SetRestaurantLocationVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch $0 {
             case .clearButtonPressed:
-                self.textQuery = ""
+                strongSelf.textQuery = ""
                 viewModel.clearData()
-                self.baseView.handleClearAll()
+                strongSelf.baseView.handleClearAll()
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .searchTextChanged(let updatedText):
-                self.textQuery = updatedText
-                self.debouncer.call()
+                strongSelf.textQuery = updatedText
+                strongSelf.debouncer.call()
             case .openMap:
-                self.checkLocationState(launchMap: true)
+                strongSelf.checkLocationState(launchMap: true)
             case .openSettings:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             case .fetchSuggestions:
@@ -76,10 +76,10 @@ class SetRestaurantLocationVC: BaseVC {
             case .fetchList:
                 break
             case .searchTextForDetailList(searchText: let searchText):
-                self.textQuery = searchText
-                self.isFetchingResultList = true
-                self.viewModel?.fetchResults(text: searchText)
-                self.baseView.handleAPIRequest(.detailList)
+                strongSelf.textQuery = searchText
+                strongSelf.isFetchingResultList = true
+                strongSelf.viewModel?.fetchResults(text: searchText)
+                strongSelf.baseView.handleAPIRequest(.detailList)
             }
         }
     }
@@ -110,15 +110,15 @@ class SetRestaurantLocationVC: BaseVC {
     
     private func handleDebouncer() {
         debouncer.callback = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
-            if self.textQuery.isEmpty {
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
+            if strongSelf.textQuery.isEmpty {
                 viewModel.clearData()
                 return
             }
-            if self.baseView.getCurrentSection == .suggestions {
-                self.isFetchingSuggestions = true
-                self.viewModel?.fetchSuggestions(text: self.textQuery)
-                self.baseView.handleAPIRequest(.suggestions)
+            if strongSelf.baseView.getCurrentSection == .suggestions {
+                strongSelf.isFetchingSuggestions = true
+                strongSelf.viewModel?.fetchSuggestions(text: strongSelf.textQuery)
+                strongSelf.baseView.handleAPIRequest(.suggestions)
             }
         }
     }
@@ -218,10 +218,10 @@ extension SetRestaurantLocationVC: UITableViewDataSource, UITableViewDelegate {
         let item = viewModel.getList[indexPath.row - 1]
         cell.configure(item: item, type: viewModel.getFlow)
         cell.confirmLocationTapped = { [weak self] (item) in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             let restaurant = RestaurantInfoModel(restaurantNameEnglish: item.nameEnglish ?? "", restaurantNameArabic: item.nameArabic ?? "", areaNameEnglish: item.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: item.restaurantLocation?.areaNameArabic ?? "", latitude: (item.restaurantLocation?.coordinates?[1]) ?? 0.0, longitude: (item.restaurantLocation?.coordinates?[0]) ?? 0.0, storeId: item._id ?? "")
-                self.restaurantSelected?(restaurant)
-                self.pop()
+            strongSelf.restaurantSelected?(restaurant)
+            strongSelf.pop()
         }
         return cell
     }
@@ -236,12 +236,12 @@ extension SetRestaurantLocationVC: UITableViewDataSource, UITableViewDelegate {
             cell.configure(title: name, subtitle: area, index: indexPath.row)
         }
         cell.cellTapped = { [weak self] (indexOfSuggestion) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             if indexOfSuggestion < viewModel.getSuggestions.count {
                 let item = viewModel.getSuggestions[indexOfSuggestion]
                 let restaurant = RestaurantInfoModel(restaurantNameEnglish: item.nameEnglish ?? "", restaurantNameArabic: item.nameArabic ?? "", areaNameEnglish: item.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: item.restaurantLocation?.areaNameArabic ?? "", latitude: (item.restaurantLocation?.coordinates?[1]) ?? 0.0, longitude: (item.restaurantLocation?.coordinates?[0]) ?? 0.0, storeId: item._id ?? "")
-                self.restaurantSelected?(restaurant)
-                self.pop()
+                strongSelf.restaurantSelected?(restaurant)
+                strongSelf.pop()
             }
         }
         return cell

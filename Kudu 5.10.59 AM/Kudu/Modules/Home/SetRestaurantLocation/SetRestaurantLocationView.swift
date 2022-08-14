@@ -104,34 +104,34 @@ class SetRestaurantLocationView: UIView {
     
     private func handleTextField() {
         searchTFView.textFieldDidChangeCharacters = { [weak self] in
-            guard let `self` = self, let text = $0 else { return }
-            self.toggleNoResult(show: false)
-            self.currentSection = text.isEmpty ? .blankScreen : .suggestions
-            self.clearBtn.isHidden = text.isEmpty
-            if self.currentSection == .suggestions {
-                self.handleViewActions?(.searchTextChanged(updatedText: text))
+            guard let strongSelf = self, let text = $0 else { return }
+            strongSelf.toggleNoResult(show: false)
+            strongSelf.currentSection = text.isEmpty ? .blankScreen : .suggestions
+            strongSelf.clearBtn.isHidden = text.isEmpty
+            if strongSelf.currentSection == .suggestions {
+                strongSelf.handleViewActions?(.searchTextChanged(updatedText: text))
             } else {
-                self.handleClearAll()
+                strongSelf.handleClearAll()
             }
         }
         
         searchTFView.textFieldDidBeginEditing = { [weak self] in
-            guard let `self` = self else { return }
-            self.toggleNoResult(show: false)
-            self.currentSection = self.searchTFView.currentText.isEmpty ? .blankScreen : .suggestions
+            guard let strongSelf = self else { return }
+            strongSelf.toggleNoResult(show: false)
+            strongSelf.currentSection = strongSelf.searchTFView.currentText.isEmpty ? .blankScreen : .suggestions
             debugPrint("Textfield Selected")
-            self.tableView.reloadData()
+            strongSelf.tableView.reloadData()
         }
         
         searchTFView.textFieldFinishedEditing = { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             if let text = $0, text.isEmpty == false {
-                self.currentSection = text.isEmpty ? .blankScreen : .results
+                strongSelf.currentSection = text.isEmpty ? .blankScreen : .results
                 if text.isEmpty {
-                    self.handleClearAll()
+                    strongSelf.handleClearAll()
                     return
                 }
-                self.handleViewActions?(.searchTextForDetailList(searchText: text))
+                strongSelf.handleViewActions?(.searchTextForDetailList(searchText: text))
             }
             debugPrint("Textfield Unselected")
         }
@@ -188,15 +188,15 @@ extension SetRestaurantLocationView {
     
     func handleAPIResponse( _ api: APICalled, isSuccess: Bool, noResultFound: Bool, errorMsg: String?) {
         mainThread { [weak self] in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             if api == .detailList && isSuccess && noResultFound {
-                self.toggleNoResult(show: true)
+                strongSelf.toggleNoResult(show: true)
                 return
             }
-            self.tableView.reloadData()
+            strongSelf.tableView.reloadData()
             if !isSuccess {
-                let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
-                toast.show(message: errorMsg ?? "", view: self)
+                let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: strongSelf.width - 32, height: 48))
+                toast.show(message: errorMsg ?? "", view: strongSelf)
             }
         }
     }

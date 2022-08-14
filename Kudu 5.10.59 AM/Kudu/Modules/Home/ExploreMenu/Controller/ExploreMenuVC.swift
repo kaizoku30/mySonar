@@ -118,14 +118,14 @@ extension ExploreMenuVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: ItemTableViewCell.self, indexPath: indexPath)
         cell.openItemDetail = { [weak self] (result) in
-            guard let `self` = self else { return }
+            guard let strongSelf = self else { return }
             mainThread {
-                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
-                bottomSheet.configure(container: self.baseView, item: result)
+                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.baseView.width, height: strongSelf.baseView.height))
+                bottomSheet.configure(container: strongSelf.baseView, item: result)
             }
         }
         cell.likeStatusUpdated = { [weak self] (liked, itemId) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
                 viewModel.updateLikeStatus(liked, id: itemId)
         }
         cell.triggerLoginFlow = { [weak self] in

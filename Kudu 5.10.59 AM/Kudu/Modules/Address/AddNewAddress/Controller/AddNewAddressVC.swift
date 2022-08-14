@@ -23,18 +23,18 @@ class AddNewAddressVC: BaseVC {
     
     private func handleActions() {
         baseView.handleViewActions = { [weak self] in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch $0 {
             case .saveAddress:
                 let validationResult = viewModel.validateForm()
                 if validationResult.validForm {
-                    self.baseView.handleAPIRequest(.saveAddress)
+                    strongSelf.baseView.handleAPIRequest(.saveAddress)
                     viewModel.saveAddress()
                 } else {
-                    self.baseView.showError(message: validationResult.errorMsg ?? "")
+                    strongSelf.baseView.showError(message: validationResult.errorMsg ?? "")
                 }
             case .backButtonPressed:
-                self.pop()
+                strongSelf.pop()
             case .openSettings:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
             default:
@@ -68,7 +68,7 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         let latitude = viewModel?.formData.latitude
         cell.configure(type: type, entry: fetchTextEntry(type: type), prefillAttempted: latitude.isNotNil)
         cell.textEntered = { [weak self] (entryType, text) in
-            guard let `self` = self, let viewModel = self.viewModel else { return }
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch entryType {
             case .name:
                 viewModel.updateForm(.name(text))
@@ -171,7 +171,7 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         let selectionType = viewModel?.formData.addressLabel ?? .HOME
         cell.configure(selectionType: selectionType, otherLabel: viewModel?.formData.otherAddressLabel)
         cell.selectionUpdated = { [weak self] (selectionType, otherLabel) in
-        guard let `self` = self, let vm = self.viewModel else { return }
+        guard let strongSelf = self, let vm = strongSelf.viewModel else { return }
             switch selectionType {
             case .WORK:
                 vm.updateForm(.addressLabel(selectionType))
@@ -194,7 +194,7 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         let isDefault = (isForcedDefault || defaultStatus) ? true : false
         cell.configure(isDefault: isDefault, forcedDefault: isForcedDefault)
         cell.defaultChoiceUpdated = { [weak self] in
-            guard let `self` = self, let vm = self.viewModel else { return }
+            guard let strongSelf = self, let vm = strongSelf.viewModel else { return }
             debugPrint("ADDRESS IS NOW DEFAULT :")
             debugPrint($0)
             vm.updateForm(.isDefault($0))

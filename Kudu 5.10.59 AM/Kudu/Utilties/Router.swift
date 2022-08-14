@@ -80,7 +80,6 @@ class Router: NSObject {
             }
         }
         NotificationCenter.postNotificationForObservers(.pushLoginVC, object: ["msg": sessionExpiryText ?? ""])
-        return
     }
     
     func goToPhoneVerificationVC(fromVC: BaseVC?) {

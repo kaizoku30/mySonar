@@ -24,11 +24,11 @@ class ExploreMenuCategoryCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         mainThread({ [weak self] in
-            guard let `self` = self else { return }
-            if self.isImageLoading {
-                self.shimmerView.isHidden = false
-                self.shimmerView.layoutIfNeeded()
-                self.shimmerView.startShimmering()
+            guard let strongSelf = self else { return }
+            if strongSelf.isImageLoading {
+                strongSelf.shimmerView.isHidden = false
+                strongSelf.shimmerView.layoutIfNeeded()
+                strongSelf.shimmerView.startShimmering()
             }
         })
     }
