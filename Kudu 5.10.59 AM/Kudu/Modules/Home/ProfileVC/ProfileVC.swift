@@ -8,7 +8,31 @@
 import UIKit
 import LanguageManager_iOS
 
-class ProfileVC: BaseVC {
+class SideMenuVC: BaseVC {
+    var removeContainerOverlay: (() -> Void)?
+    var pushVC: ((BaseVC?) -> Void)?
+    
+    func dismissSideMenu(pushViewController vc: BaseVC?) {
+        self.removeContainerOverlay?()
+        self.willMove(toParent: nil)
+        self.removeFromParent()
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
+            if AppUserDefaults.selectedLanguage() == .en {
+                self.view.transform = CGAffineTransform(translationX: -self.view.width, y: 0)
+            } else {
+                self.view.transform = CGAffineTransform(translationX: self.view.width, y: 0)
+            }
+            
+        }, completion: {
+            if $0 {
+                self.pushVC?(vc)
+                self.view.removeFromSuperview()
+            }
+        })
+    }
+}
+
+class ProfileVC: SideMenuVC {
     @IBOutlet weak var roundView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
@@ -60,8 +84,6 @@ class ProfileVC: BaseVC {
     }
     
     var showEmailConflictAlert: (() -> Void)?
-    var removeContainerOverlay: (() -> Void)?
-    var pushVC: ((BaseVC?) -> Void)?
     private var shadowSetup = false
     private var detailSetup = false
     
@@ -141,25 +163,6 @@ class ProfileVC: BaseVC {
         let emailVerified = userData?.isEmailVerified ?? false
         verifyNow.isHidden = emailVerified
         emailVerifiedMarker.isHidden = !emailVerified
-    }
-    
-    private func dismissSideMenu(pushViewController vc: BaseVC?) {
-        self.removeContainerOverlay?()
-        self.willMove(toParent: nil)
-        self.removeFromParent()
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
-            if AppUserDefaults.selectedLanguage() == .en {
-                self.view.transform = CGAffineTransform(translationX: -self.view.width, y: 0)
-            } else {
-                self.view.transform = CGAffineTransform(translationX: self.view.width, y: 0)
-            }
-            
-        }, completion: {
-            if $0 {
-                self.pushVC?(vc)
-                self.view.removeFromSuperview()
-            }
-        })
     }
 }
 

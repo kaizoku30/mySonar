@@ -8,7 +8,7 @@
 import UIKit
 import LanguageManager_iOS
 
-class GuestProfileVC: BaseVC {
+class GuestProfileVC: SideMenuVC {
     
     @IBAction func backButtonPressed(_ sender: Any) {
         dismissSideMenu(pushViewController: nil)
@@ -29,8 +29,6 @@ class GuestProfileVC: BaseVC {
     @IBOutlet weak var loginOrSignUpToCompleteLabel: UILabel!
     
     private var shadowSetup = false
-    var removeContainerOverlay: (() -> Void)?
-    var pushVC: ((BaseVC?) -> Void)?
     
     enum Rows: Int, CaseIterable {
         case ourStore = 0
@@ -69,24 +67,6 @@ class GuestProfileVC: BaseVC {
         containerView.layer.shouldRasterize = true
         containerView.layer.rasterizationScale = UIScreen.main.scale
         shadowSetup = true
-    }
-    
-    private func dismissSideMenu(pushViewController vc: BaseVC?) {
-        self.removeContainerOverlay?()
-        self.willMove(toParent: nil)
-        self.removeFromParent()
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
-            if AppUserDefaults.selectedLanguage() == .en {
-                self.view.transform = CGAffineTransform(translationX: -self.view.width, y: 0)
-            } else {
-                self.view.transform = CGAffineTransform(translationX: self.view.width, y: 0)
-            }
-        }, completion: {
-            if $0 {
-                self.pushVC?(vc)
-                self.view.removeFromSuperview()
-            }
-        })
     }
 }
 
