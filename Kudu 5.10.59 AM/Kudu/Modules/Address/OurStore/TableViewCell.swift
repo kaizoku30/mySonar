@@ -38,9 +38,9 @@ class TableViewCell: UITableViewCell {
         storeName.text = data.storeName
         distanceLbl.attributedText = textSet(data.distance)
         storeAddress.text = data.storeAddress
-        deliveryAvailability.text = deliveryTitle(data.isDelivery).0
+      //  deliveryAvailability.text = deliveryTitle(data.isDelivery).0
         imageLabel.isHidden = data.statusView
-        deliveryAvailability.textColor = deliveryTitle(data.isDelivery).1
+       // deliveryAvailability.textColor = deliveryTitle(data.isDelivery).1
         
         
     }
@@ -56,29 +56,6 @@ class TableViewCell: UITableViewCell {
         myString.addAttribute(NSAttributedString.Key.foregroundColor,value: UIColor(named: "grrenCustom") , range: myRange)
         return myString
     }
-}
-
-extension CALayer {
-  func applySketchShadow(
-    color: UIColor = .black,
-    alpha: Float = 0.5,
-    x: CGFloat = 0,
-    y: CGFloat = 2,
-    blur: CGFloat = 4,
-    spread: CGFloat = 0) {
-    masksToBounds = false
-    shadowColor = color.cgColor
-    shadowOpacity = alpha
-    shadowOffset = CGSize(width: x, height: y)
-    shadowRadius = blur / 2.0
-    if spread == 0 {
-      shadowPath = nil
-    } else {
-      let dx = -spread
-      let rect = bounds.insetBy(dx: dx, dy: dx)
-      shadowPath = UIBezierPath(rect: rect).cgPath
-    }
-  }
 }
 
 

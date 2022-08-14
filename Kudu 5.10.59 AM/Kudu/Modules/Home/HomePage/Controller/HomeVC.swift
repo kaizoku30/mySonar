@@ -15,7 +15,7 @@ class HomeVC: BaseVC {
     
     // MARK: Properties
     var viewModel: HomeVM?
-    private let reachability = try! Reachability()
+    private let reachability = try? Reachability()
     private var sideMenuVC: BaseVC?
     
     // MARK: ViewLifecycle
@@ -392,15 +392,15 @@ extension HomeVC {
     }
     
     private func reachabilityHandling() {
-        reachability.whenReachable = { _ in
+        reachability?.whenReachable = { _ in
             NotificationCenter.postNotificationForObservers(.internetConnectionFound)
         }
-        reachability.whenUnreachable = { _ in
+        reachability?.whenUnreachable = { _ in
             print("Not reachable")
             NotificationCenter.postNotificationForObservers(.noConnection)
         }
         do {
-            try reachability.startNotifier()
+            try reachability?.startNotifier()
         } catch {
             print("Unable to start notifier")
         }

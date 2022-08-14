@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OurStoreTableViewCell: UITableViewCell {
+class OurStoreItemTableViewCell: UITableViewCell {
     
     @IBOutlet private weak var storeName: UILabel!
     @IBOutlet private weak var distanceLbl: UILabel!
@@ -38,9 +38,9 @@ class OurStoreTableViewCell: UITableViewCell {
         storeName.text = data.storeName
         distanceLbl.attributedText = textSet(data.distance)
         storeAddress.text = data.storeAddress
-        deliveryAvailability.text = deliveryTitle(data.isDelivery).0
+      //  deliveryAvailability.text = deliveryTitle(data.isDelivery).0
         imageLabel.isHidden = data.statusView
-        deliveryAvailability.textColor = deliveryTitle(data.isDelivery).1
+       // deliveryAvailability.textColor = deliveryTitle(data.isDelivery).1
         
     }
     
