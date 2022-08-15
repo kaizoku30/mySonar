@@ -251,6 +251,16 @@ extension HomeVC {
     func goToProfileVC() {
         sideMenuVC = ProfileVC.instantiate(fromAppStoryboard: .Home)
         guard let childVC = sideMenuVC as? ProfileVC else { return }
+        openSideNav(vc: childVC)
+    }
+    
+    func openSideNav(vc: SideMenuVC) {
+        var childVC: SideMenuVC = vc
+        if vc.isKind(of: GuestProfileVC.self) {
+            childVC = vc as! GuestProfileVC
+        } else {
+            childVC = vc as! ProfileVC
+        }
         let dimmedView = UIView(frame: baseView.frame)
         dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
         dimmedView.tag = Constants.CustomViewTags.dimViewTag
@@ -264,7 +274,6 @@ extension HomeVC {
             //Coming from right
             childVC.view.transform = CGAffineTransform(translationX: self.baseView.width, y: 0)
         }
-        
         baseView.addSubview(childVC.view)
         self.addChild(childVC)
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
@@ -273,7 +282,6 @@ extension HomeVC {
             } else {
                 childVC.view.transform = CGAffineTransform(translationX: self.baseView.width * (0.15), y: 0)
             }
-            
         }, completion: {
             if $0 {
                 childVC.didMove(toParent: self)
@@ -291,11 +299,6 @@ extension HomeVC {
                 if let viewController = viewController {
                     self?.push(vc: viewController)
                 }
-            }
-        }
-        childVC.showEmailConflictAlert = { [weak self] in
-            mainThread {
-                self?.baseView.showAlreadyAssociatedAlert()
             }
         }
     }
@@ -303,46 +306,7 @@ extension HomeVC {
     func goToGuestProfileVC() {
         sideMenuVC = GuestProfileVC.instantiate(fromAppStoryboard: .Home)
         guard let childVC = sideMenuVC as? GuestProfileVC else { return }
-        let dimmedView = UIView(frame: baseView.frame)
-        dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
-        dimmedView.tag = Constants.CustomViewTags.dimViewTag
-        baseView.addSubview(dimmedView)
-        childVC.view.width = baseView.width * 0.85
-        let selectedLanguage = AppUserDefaults.selectedLanguage()
-        if selectedLanguage == .en {
-            //Coming from left
-            childVC.view.transform = CGAffineTransform(translationX: -childVC.view.width, y: 0)
-        } else {
-            //Coming from right
-            childVC.view.transform = CGAffineTransform(translationX: self.baseView.width, y: 0)
-        }
-        baseView.addSubview(childVC.view)
-        self.addChild(childVC)
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
-            if selectedLanguage == .en {
-                childVC.view.transform = CGAffineTransform(translationX: 0, y: 0)
-            } else {
-                childVC.view.transform = CGAffineTransform(translationX: self.baseView.width * (0.15), y: 0)
-            }
-        }, completion: {
-            if $0 {
-                childVC.didMove(toParent: self)
-            }
-        })
-        childVC.removeContainerOverlay = { [weak self] in
-            mainThread {
-                self?.baseView.subviews.forEach({ if $0.tag == Constants.CustomViewTags.dimViewTag {
-                    $0.removeFromSuperview()
-                } })
-            }
-        }
-        childVC.pushVC = { [weak self] (viewController) in
-            mainThread {
-                if let viewController = viewController {
-                    self?.push(vc: viewController)
-                }
-            }
-        }
+        openSideNav(vc: childVC)
     }
 }
 
