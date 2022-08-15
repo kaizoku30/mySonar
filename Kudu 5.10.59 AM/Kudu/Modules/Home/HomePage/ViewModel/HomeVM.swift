@@ -129,6 +129,10 @@ class HomeVM {
         DataManager.shared.currentDeliveryLocation = self.currentLocationData
         self.delegate?.reverseGeocodingSuccess(trimmedAddress: trimmedAddress)
     }
+}
+
+// MARK: Trimming Algo
+
 //    private func applyTrimmingAlgorithm(_ formattedAdddress: String, city: String, state: String) -> String {
 //        if formattedAdddress.contains(", \(city)") {
 //            let endIndex = formattedAdddress.range(of: ", \(city)", options: .backwards, range: nil, locale: nil)!.lowerBound
@@ -140,4 +144,3 @@ class HomeVM {
 //            return formattedAdddress
 //        }
 //    }
-}

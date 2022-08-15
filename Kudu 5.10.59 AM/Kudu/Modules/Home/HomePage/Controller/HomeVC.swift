@@ -256,32 +256,18 @@ extension HomeVC {
     
     func openSideNav(vc: SideMenuVC) {
         var childVC: SideMenuVC = vc
-        if vc.isKind(of: GuestProfileVC.self) {
-            childVC = vc as! GuestProfileVC
-        } else {
-            childVC = vc as! ProfileVC
-        }
+        childVC = vc.isKind(of: GuestProfileVC.self) ? vc as! GuestProfileVC : vc as! ProfileVC
         let dimmedView = UIView(frame: baseView.frame)
         dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
         dimmedView.tag = Constants.CustomViewTags.dimViewTag
         baseView.addSubview(dimmedView)
         childVC.view.width = baseView.width * 0.85
         let selectedLanguage = AppUserDefaults.selectedLanguage()
-        if selectedLanguage == .en {
-            //Coming from left
-            childVC.view.transform = CGAffineTransform(translationX: -childVC.view.width, y: 0)
-        } else {
-            //Coming from right
-            childVC.view.transform = CGAffineTransform(translationX: self.baseView.width, y: 0)
-        }
+        childVC.view.transform = selectedLanguage == .en ? CGAffineTransform(translationX: -childVC.view.width, y: 0) : CGAffineTransform(translationX: self.baseView.width, y: 0)
         baseView.addSubview(childVC.view)
         self.addChild(childVC)
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
-            if selectedLanguage == .en {
-                childVC.view.transform = CGAffineTransform(translationX: 0, y: 0)
-            } else {
-                childVC.view.transform = CGAffineTransform(translationX: self.baseView.width * (0.15), y: 0)
-            }
+            childVC.view.transform = selectedLanguage == .en ? CGAffineTransform(translationX: 0, y: 0) : CGAffineTransform(translationX: self.baseView.width * (0.15), y: 0)
         }, completion: {
             if $0 {
                 childVC.didMove(toParent: self)
