@@ -77,29 +77,15 @@ class ChangeDefaultAddressView: UIView {
     
     func configure(container view: UIView, list: [MyAddressListItem], idToDelete: String) {
         self.idToDelete = idToDelete
-        self.containerView = view
-        self.list = list
-        if list.count > 0 {
-            self.list[0].isDefault = true
-        }
-        let dimmedView = UIView(frame: view.frame)
-        dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
-        dimmedView.tag = Constants.CustomViewTags.dimViewTag
-        view.addSubview(dimmedView)
-        self.tag = Constants.CustomViewTags.alertTag
-        self.center = view.center
-        view.addSubview(self)
-        UIView.animate(withDuration: 1, animations: {
-            self.bottomSheet.transform = CGAffineTransform(translationX: 0, y: 0)
-        }, completion: {
-            if $0 {
-                self.tableView.reloadData()
-            }
-        })
+        setView(container: view, list: list)
     }
     
     func configureForEditFlow(container view: UIView, list: [MyAddressListItem]) {
         self.editFlow = true
+        setView(container: view, list: list)
+    }
+    
+    private func setView(container view: UIView, list: [MyAddressListItem]) {
         self.containerView = view
         self.list = list
         if list.count > 0 {
