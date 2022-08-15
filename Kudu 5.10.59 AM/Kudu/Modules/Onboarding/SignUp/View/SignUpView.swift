@@ -164,15 +164,6 @@ extension SignUpView: UITextFieldDelegate {
             let newString = text.replacingCharacters(in: range, with: string)
             return self.validatePhoneNumber(newString, string)
         }
-        
-        private func validatePhoneNumber(_ newString: String, _ string: String) -> Bool {
-            let allowed = CharacterSet(charactersIn: "1234567890")
-            let enteredCharacterSet = CharacterSet(charactersIn: newString)
-            if !enteredCharacterSet.isSubset(of: allowed) || newString.count > 9 {
-                return false
-            }
-            return true
-        }
 }
 
 extension SignUpView {

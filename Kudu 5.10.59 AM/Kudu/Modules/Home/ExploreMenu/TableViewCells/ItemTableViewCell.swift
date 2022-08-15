@@ -141,8 +141,8 @@ class ItemTableViewCell: UITableViewCell {
     
     func configure(_ item: MenuSearchResultItem) {
         self.resultItem = item
-        let item = MenuItem(_id: item._id ?? "", nameArabic: item.nameArabic ?? "", descriptionEnglish: item.descriptionEnglish ?? "", nameEnglish: item.nameEnglish ?? "", isCustomised: item.isCustomised ?? false, price: item.price ?? 0.0, descriptionArabic: item.descriptionArabic ?? "", itemImageUrl: item.itemImageUrl ?? "", allergicComponent: item.allergicComponent ?? [])
-       setItemData(item: item)
+        let menuItem = MenuItem(_id: item._id ?? "", nameArabic: item.nameArabic ?? "", descriptionEnglish: item.descriptionEnglish ?? "", nameEnglish: item.nameEnglish ?? "", isCustomised: item.isCustomised ?? false, price: item.price ?? 0.0, descriptionArabic: item.descriptionArabic ?? "", itemImageUrl: item.itemImageUrl ?? "", allergicComponent: item.allergicComponent ?? [])
+       setItemData(item: menuItem)
     }
 
     private func updateButtonView() {
