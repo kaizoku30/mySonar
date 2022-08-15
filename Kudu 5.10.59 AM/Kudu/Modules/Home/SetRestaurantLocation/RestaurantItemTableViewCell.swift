@@ -41,7 +41,7 @@ class RestaurantItemTableViewCell: UITableViewCell {
         let areaName = AppUserDefaults.selectedLanguage() == .en ? (item.restaurantLocation?.areaNameEnglish) ?? "" : (item.restaurantLocation?.areaNameArabic) ?? ""
         restNameLabel.text = name
         let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
-        distanceLabel.text = distance + LocalizedStrings.SetRestaurant.km
+        distanceLabel.text = distance + LocalizedStrings.SetRestaurant.kmt
         restAddressLabel.text = areaName
         let isOpen = self.checkRestaurantIsOpen(item: item, type: type)
         closeTimingStackView.isHidden = !isOpen

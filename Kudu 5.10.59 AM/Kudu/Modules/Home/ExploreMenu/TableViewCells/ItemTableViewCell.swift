@@ -104,39 +104,13 @@ class ItemTableViewCell: UITableViewCell {
     
     func configure(_ item: MenuItem) {
         self.item = item
-        self.customisableLabel.isHidden = !(item.isCustomised ?? false)
-        self.priceLabel.text = "SR " + "\((item.price ?? 0.0).round(to: 2).removeZerosFromEnd())"
-        descriptionLabel.text = AppUserDefaults.selectedLanguage() == .en ? (item.descriptionEnglish ?? "") : (item.descriptionArabic ?? "")
-        if AppUserDefaults.selectedLanguage() == .en {
-            let trunc = NSMutableAttributedString(string: "..\(LocalizedStrings.ExploreMenu.moreLabel)")
-            trunc.addAttribute(NSAttributedString.Key.font, value: AppFonts.mulishBold.withSize(12), range: NSMakeRange(0, 6))
-            trunc.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.kuduThemeBlue, range: NSMakeRange(0, 6))
-            descriptionLabel.attributedTruncationToken = trunc
-        } else {
-            let trunc = NSMutableAttributedString(string: "\(LocalizedStrings.ExploreMenu.moreLabel)..")
-            trunc.addAttribute(NSAttributedString.Key.font, value: AppFonts.mulishBold.withSize(12), range: NSMakeRange(0, 6))
-            trunc.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.kuduThemeBlue, range: NSMakeRange(0, 6))
-            descriptionLabel.attributedTruncationToken = trunc
-        }
-        descriptionLabel.numberOfLines = 3
-        descriptionLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.itemNameLabel.text = AppUserDefaults.selectedLanguage() == .en ? (item.nameEnglish ?? "") : (item.nameArabic ?? "")
-        self.itemImgView.setImageKF(imageString: (item.itemImageUrl ?? ""), placeHolderImage: AppImages.MainImages.fixedPlaceholder, loader: false, loaderTintColor: .clear, completionHandler: { [weak self] _ in
-            mainThread {
-                self?.isImageLoading = false
-                self?.shimmerView.isHidden = true
-                self?.shimmerView.stopShimmering()
-            }
-        })
-        self.itemCartCount = item.currentCartCountInApp ?? 0
-        self.updateButtonView()
+        setItemData(item: item)
         let likeStatus = item.isLikedInApp ?? false
         let image = likeStatus ? AppImages.MainImages.likedHeart : AppImages.MainImages.unlikedHeart
         favouriteButton.setImage(image, for: .normal)
     }
     
-    func configure(_ item: MenuSearchResultItem) {
-        self.resultItem = item
+    private func setItemData(item: MenuItem) {
         self.customisableLabel.isHidden = !(item.isCustomised ?? false)
         self.priceLabel.text = "SR " + "\((item.price ?? 0.0).round(to: 2).removeZerosFromEnd())"
         descriptionLabel.text = AppUserDefaults.selectedLanguage() == .en ? (item.descriptionEnglish ?? "") : (item.descriptionArabic ?? "")
@@ -163,6 +137,12 @@ class ItemTableViewCell: UITableViewCell {
         })
         self.itemCartCount = item.currentCartCountInApp ?? 0
         self.updateButtonView()
+    }
+    
+    func configure(_ item: MenuSearchResultItem) {
+        self.resultItem = item
+        let item = MenuItem(_id: item._id ?? "", nameArabic: item.nameArabic ?? "", descriptionEnglish: item.descriptionEnglish ?? "", nameEnglish: item.nameEnglish ?? "", isCustomised: item.isCustomised ?? false, price: item.price ?? 0.0, descriptionArabic: item.descriptionArabic ?? "", itemImageUrl: item.itemImageUrl ?? "", allergicComponent: item.allergicComponent ?? [])
+       setItemData(item: item)
     }
 
     private func updateButtonView() {
