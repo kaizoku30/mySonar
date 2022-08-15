@@ -129,15 +129,15 @@ class HomeVM {
         DataManager.shared.currentDeliveryLocation = self.currentLocationData
         self.delegate?.reverseGeocodingSuccess(trimmedAddress: trimmedAddress)
     }
-    private func applyTrimmingAlgorithm(_ formattedAdddress: String, city: String, state: String) -> String {
-        if formattedAdddress.contains(", \(city)") {
-            let endIndex = formattedAdddress.range(of: ", \(city)", options: .backwards, range: nil, locale: nil)!.lowerBound
-            //Get the string up to and after the @ symbol
-            let startIndex = formattedAdddress.startIndex
-            let newStr = String(formattedAdddress[startIndex..<endIndex])
-            return newStr
-        } else {
-            return formattedAdddress
-        }
-    }
+//    private func applyTrimmingAlgorithm(_ formattedAdddress: String, city: String, state: String) -> String {
+//        if formattedAdddress.contains(", \(city)") {
+//            let endIndex = formattedAdddress.range(of: ", \(city)", options: .backwards, range: nil, locale: nil)!.lowerBound
+//            //Get the string up to and after the @ symbol
+//            let startIndex = formattedAdddress.startIndex
+//            let newStr = String(formattedAdddress[startIndex..<endIndex])
+//            return newStr
+//        } else {
+//            return formattedAdddress
+//        }
+//    }
 }

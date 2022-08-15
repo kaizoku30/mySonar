@@ -72,16 +72,4 @@ class MapPinVM {
         self.prefillData = LocationInfoModel(trimmedAddress: trimmedAddress, city: city, state: state, postalCode: postalCode, latitude: coordinates.latitude, longitude: coordinates.longitude, googleTitle: trimmedAddress, googleSubtitle: "\(city), \(state)")
         self.delegate?.reverseGeocodingSuccess(trimmedAddress: trimmedAddress, cityStateText: "\(city), \(state)")
     }
-    
-    private func applyTrimmingAlgorithm(_ formattedAdddress: String, city: String, state: String) -> String {
-        if formattedAdddress.contains(", \(city)") {
-            let endIndex = formattedAdddress.range(of: ", \(city)", options: .backwards, range: nil, locale: nil)!.lowerBound
-                //Get the string up to and after the @ symbol
-            let startIndex = formattedAdddress.startIndex
-            let newStr = String(formattedAdddress[startIndex..<endIndex])
-            return newStr
-        } else {
-            return formattedAdddress
-        }
-    }
 }
