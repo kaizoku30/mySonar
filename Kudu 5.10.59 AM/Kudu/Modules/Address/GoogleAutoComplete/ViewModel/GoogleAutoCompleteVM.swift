@@ -93,15 +93,9 @@ class GoogleAutoCompleteVM {
     }
     
     private func parseReverseGeoCodeData(_ object: GeoLocation, title: String, subtitle: String) {
-        let info = object.info
-        let formattedAdddress = (info[.formattedAddress] ?? "") ?? ""
-        var city = (info[.locality] ?? "") ?? ""
-        if city.isEmpty { city = (info[.subAdministrativeArea3] ?? "") ?? ""}
-        let state = (info[.administrativeArea] ?? "") ?? ""
-        let trimmedAddress = formattedAdddress//applyTrimmingAlgorithm(formattedAdddress, city: city, state: state)
-        let coordinates = object.coordinates
-        let postalCode = (info[.postalCode] ?? "") ?? ""
-        self.prefillData = LocationInfoModel(trimmedAddress: trimmedAddress, city: city, state: state, postalCode: postalCode, latitude: coordinates.latitude, longitude: coordinates.longitude, googleTitle: title, googleSubtitle: subtitle)
+        self.prefillData = GeoLocation.parseGeoLocationObject(object)
+        self.prefillData?.googleTitle = title
+        self.prefillData?.googleSubtitle = subtitle
         self.delegate?.detailAPIResponse(responseType: .success(""))
     }
 }

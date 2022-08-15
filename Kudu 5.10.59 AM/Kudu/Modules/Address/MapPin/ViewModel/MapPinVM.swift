@@ -61,6 +61,13 @@ class MapPinVM {
     }
     
     private func parseReverseGeoCodeData(_ object: GeoLocation) {
+        self.prefillData = GeoLocation.parseGeoLocationObject(object)
+        self.delegate?.reverseGeocodingSuccess(trimmedAddress: self.prefillData?.trimmedAddress ?? "", cityStateText: "\(self.prefillData?.city ?? ""), \(self.prefillData?.state ?? "")")
+    }
+}
+
+extension GeoLocation {
+    static func parseGeoLocationObject(_ object: GeoLocation) -> LocationInfoModel {
         let info = object.info
         let formattedAdddress = (info[.formattedAddress] ?? "") ?? ""
         var city = (info[.locality] ?? "") ?? ""
@@ -69,7 +76,6 @@ class MapPinVM {
         let trimmedAddress = formattedAdddress//applyTrimmingAlgorithm(formattedAdddress, city: city, state: state)
         let coordinates = object.coordinates
         let postalCode = (info[.postalCode] ?? "") ?? ""
-        self.prefillData = LocationInfoModel(trimmedAddress: trimmedAddress, city: city, state: state, postalCode: postalCode, latitude: coordinates.latitude, longitude: coordinates.longitude, googleTitle: trimmedAddress, googleSubtitle: "\(city), \(state)")
-        self.delegate?.reverseGeocodingSuccess(trimmedAddress: trimmedAddress, cityStateText: "\(city), \(state)")
+        return LocationInfoModel(trimmedAddress: trimmedAddress, city: city, state: state, postalCode: postalCode, latitude: coordinates.latitude, longitude: coordinates.longitude, googleTitle: trimmedAddress, googleSubtitle: "\(city), \(state)")
     }
 }

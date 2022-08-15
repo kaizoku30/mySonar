@@ -117,30 +117,8 @@ class HomeVM {
     }
     
     private func parseReverseGeoCodeData(_ object: GeoLocation) {
-        let info = object.info
-        let formattedAdddress = (info[.formattedAddress] ?? "") ?? ""
-        var city = (info[.locality] ?? "") ?? ""
-        if city.isEmpty { city = (info[.subAdministrativeArea3] ?? "") ?? ""}
-        let state = (info[.administrativeArea] ?? "") ?? ""
-        let trimmedAddress = formattedAdddress//applyTrimmingAlgorithm(formattedAdddress, city: city, state: state)
-        let coordinates = object.coordinates
-        let postalCode = (info[.postalCode] ?? "") ?? ""
-        self.currentLocationData = LocationInfoModel(trimmedAddress: trimmedAddress, city: city, state: state, postalCode: postalCode, latitude: coordinates.latitude, longitude: coordinates.longitude)
+        self.currentLocationData = GeoLocation.parseGeoLocationObject(object)
         DataManager.shared.currentDeliveryLocation = self.currentLocationData
-        self.delegate?.reverseGeocodingSuccess(trimmedAddress: trimmedAddress)
+        self.delegate?.reverseGeocodingSuccess(trimmedAddress: self.currentLocationData?.trimmedAddress ?? "")
     }
 }
-
-// MARK: Trimming Algo
-
-//    private func applyTrimmingAlgorithm(_ formattedAdddress: String, city: String, state: String) -> String {
-//        if formattedAdddress.contains(", \(city)") {
-//            let endIndex = formattedAdddress.range(of: ", \(city)", options: .backwards, range: nil, locale: nil)!.lowerBound
-//            //Get the string up to and after the @ symbol
-//            let startIndex = formattedAdddress.startIndex
-//            let newStr = String(formattedAdddress[startIndex..<endIndex])
-//            return newStr
-//        } else {
-//            return formattedAdddress
-//        }
-//    }
