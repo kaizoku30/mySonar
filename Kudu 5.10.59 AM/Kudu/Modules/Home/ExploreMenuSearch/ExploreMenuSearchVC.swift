@@ -295,23 +295,27 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
                     cell.configure(item)
                     cell.performOperation = { [weak self] (result) in
                         guard let `self` = self else { return }
-                        if result.isItem ?? false {
-                            mainThread {
-                                self.searchTFView.unfocus()
-                                DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-                                bottomSheet.configureForExploreMenu(container: self.view, item: result)
-                            }
-                        } else {
-                            DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                            let id = result._id ?? ""
-                            let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
-                            self.getCategoryItems(forMenuId: id, menuTitle: title)
-                        }
+                        self.suggestionTableViewCellTapped(result: result)
                     }
                 }
                 return cell
             }
+        }
+    }
+    
+    private func suggestionTableViewCellTapped(result: MenuSearchResultItem) {
+        if result.isItem ?? false {
+            mainThread {
+                self.searchTFView.unfocus()
+                DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
+                bottomSheet.configureForExploreMenu(container: self.view, item: result)
+            }
+        } else {
+            DataManager.shared.saveToRecentlySearchExploreMenu(result)
+            let id = result._id ?? ""
+            let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
+            self.getCategoryItems(forMenuId: id, menuTitle: title)
         }
     }
     
