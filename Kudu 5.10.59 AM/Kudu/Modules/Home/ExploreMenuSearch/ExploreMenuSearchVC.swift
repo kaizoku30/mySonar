@@ -389,37 +389,41 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
             return getTopSearchCategoriesCell(tableView, cellForRowAt: indexPath)
         } else {
             if row < suggestions.count {
-                let cell = tableView.dequeueCell(with: SuggestionTableViewCell.self)
-                if let item = suggestions[safe: indexPath.row] {
-                    cell.configure(item)
-                    cell.performOperation = { [weak self] (result) in
-                        guard let strongSelf = self else { return }
-                        if result.isItem ?? false {
-                            mainThread {
-                                strongSelf.isShowingItemData = true
-                                strongSelf.searchTFView.unfocus()
-                                DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width, height: strongSelf.view.height))
-                                bottomSheet.configureForExploreMenu(container: strongSelf.view, item: result)
-                                bottomSheet.handleDeallocation = { [weak self] in
-                                    self?.isShowingItemData = false
-                                    self?.searchTFView.focus()
-                                }
-                            }
-                        } else {
-                            DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                            let id = result._id ?? ""
-                            let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
-                            strongSelf.getCategoryItems(forMenuId: id, menuTitle: title)
-                        }
-                        
-                    }
-                }
-                return cell
+                return getSuggestionTableViewCellForTopSearchCategories(tableView, cellForRowAt: indexPath)
             } else {
                 return getTopSearchCategoriesCell(tableView, cellForRowAt: indexPath)
             }
         }
+    }
+    
+    private func getSuggestionTableViewCellForTopSearchCategories(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: SuggestionTableViewCell.self)
+        if let item = suggestions[safe: indexPath.row] {
+            cell.configure(item)
+            cell.performOperation = { [weak self] (result) in
+                guard let strongSelf = self else { return }
+                if result.isItem ?? false {
+                    mainThread {
+                        strongSelf.isShowingItemData = true
+                        strongSelf.searchTFView.unfocus()
+                        DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                        let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width, height: strongSelf.view.height))
+                        bottomSheet.configureForExploreMenu(container: strongSelf.view, item: result)
+                        bottomSheet.handleDeallocation = { [weak self] in
+                            self?.isShowingItemData = false
+                            self?.searchTFView.focus()
+                        }
+                    }
+                } else {
+                    DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                    let id = result._id ?? ""
+                    let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
+                    strongSelf.getCategoryItems(forMenuId: id, menuTitle: title)
+                }
+                
+            }
+        }
+        return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
