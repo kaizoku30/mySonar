@@ -102,7 +102,7 @@ extension OurStoreVC {
     private func showLocationPermissionAlert() {
         mainThread {
             let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
-            self.baseView.showLocationServicesAlert(type: type)
+            self.baseView.showLocationPermissionPopUp(errorType: type)
         }
     }
 }
