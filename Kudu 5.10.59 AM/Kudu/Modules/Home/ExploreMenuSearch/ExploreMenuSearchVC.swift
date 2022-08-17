@@ -386,15 +386,7 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
         }
         
         if suggestions.isEmpty {
-            let cell = tableView.dequeueCell(with: TopSearchCategoriesCell.self)
-            cell.configure(topSearchedCategories)
-            cell.performOperation = { [weak self] in
-                let savedFormat = MenuSearchResultItem(_id: $0._id, titleEnglish: $0.titleEnglish, titleArabic: $0.titleArabic, isCategory: true, isItem: false, descriptionEnglish: nil, descriptionArabic: nil, nameEnglish: nil, nameArabic: nil, itemImageUrl: nil, price: nil, allergicComponent: nil, isCustomised: nil, menuImageUrl: $0.menuImageUrl, itemCount: $0.itemCount, isAvailable: true)
-                DataManager.shared.saveToRecentlySearchExploreMenu(savedFormat)
-                let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
-                self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
-            }
-            return cell
+            return getTopSearchCategoriesCell(tableView, cellForRowAt: indexPath)
         } else {
             if row < suggestions.count {
                 let cell = tableView.dequeueCell(with: SuggestionTableViewCell.self)
