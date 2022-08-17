@@ -80,7 +80,8 @@ extension OurStoreVC {
 
 extension OurStoreVC {
     private func checkLocationState() {
-        if viewModel.getLocation.isNotNil { return }
+        if viewModel.getLocation.isNotNil {
+            return }
         if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
             self.baseView.isUserInteractionEnabled = true
             self.showLocationPermissionAlert()
@@ -145,11 +146,6 @@ extension OurStoreVC: UITableViewDelegate, UITableViewDataSource {
             strongSelf.baseView.toggleViewInteraction(enabled: false)
             strongSelf.triggerMenuFlow(type: .pickup, storeId: $0._id ?? "", lat: $0.restaurantLocation?.coordinates?.last ?? 0, long: $0.restaurantLocation?.coordinates?.first ?? 0)
         }
-//        cell.deliveryTapped = { [weak self] in
-//            guard let strongSelf = self else { return }
-//            strongSelf.baseView.toggleViewInteraction(enabled: false)
-//            strongSelf.triggerMenuFlow(type: .delivery, storeId: "", lat: strongSelf.viewModel.getLocation?.latitude ?? 0.0, long: strongSelf.viewModel.getLocation?.longitude ?? 0.0)
-//        }
         return cell
     }
 }
@@ -164,7 +160,8 @@ extension OurStoreVC {
             guard let strongSelf = self else { return }
             strongSelf.baseView.toggleViewInteraction(enabled: true)
             var categories = response.data ?? []
-            if categories.isEmpty { return }
+            if categories.isEmpty {
+                return }
             categories[0].isSelectedInApp = true
             let vc = ExploreMenuVC.instantiate(fromAppStoryboard: .Home)
             vc.viewModel = ExploreMenuVM(menuCategories: categories, delegate: vc)

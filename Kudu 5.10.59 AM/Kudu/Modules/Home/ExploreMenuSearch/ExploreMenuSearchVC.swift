@@ -118,8 +118,8 @@ class ExploreMenuSearchVC: BaseVC {
 extension ExploreMenuSearchVC {
     private func handleDebouncer() {
         debouncer.callback = { [weak self] in
-            guard let `self` = self else { return }
-            self.debouncerFunction()
+            guard let strongSelf = self else { return }
+            strongSelf.debouncerFunction()
         }
     }
     
@@ -149,36 +149,36 @@ extension ExploreMenuSearchVC {
         searchTFView.textColor = .black
         
         searchTFView.textFieldDidChangeCharacters = { [weak self] in
-            guard let `self` = self, let text = $0 else { return }
-            if self.isFetchingMenuItems || self.isShowingMenuData { return }
-            self.textQuery = text
-            self.currentViewType = .suggestionAndTopCategories
-            self.searchIcon.isHidden = !text.isEmpty
-            self.clearButton.isHidden = text.isEmpty
-            self.debouncer.call()
+            guard let strongSelf = self, let text = $0 else { return }
+            if strongSelf.isFetchingMenuItems || strongSelf.isShowingMenuData { return }
+            strongSelf.textQuery = text
+            strongSelf.currentViewType = .suggestionAndTopCategories
+            strongSelf.searchIcon.isHidden = !text.isEmpty
+            strongSelf.clearButton.isHidden = text.isEmpty
+            strongSelf.debouncer.call()
         }
         
         searchTFView.textFieldDidBeginEditing = { [weak self] in
-            guard let `self` = self else { return }
-            if self.searchTFView.currentText.isEmpty {
-                self.suggestions = []
-                self.currentViewType = .recentSearchTopCategories
-                self.clearButton.isHidden = true
-                self.searchIcon.isHidden = false
-                self.tableView.reloadData()
-                self.tableView.isHidden = false
+            guard let strongSelf = self else { return }
+            if strongSelf.searchTFView.currentText.isEmpty {
+                strongSelf.suggestions = []
+                strongSelf.currentViewType = .recentSearchTopCategories
+                strongSelf.clearButton.isHidden = true
+                strongSelf.searchIcon.isHidden = false
+                strongSelf.tableView.reloadData()
+                strongSelf.tableView.isHidden = false
             } else {
-                self.currentViewType = .suggestionAndTopCategories
-                self.searchIcon.isHidden = true
-                self.clearButton.isHidden = false
-                self.tableView.reloadData()
-                self.tableView.isHidden = false
+                strongSelf.currentViewType = .suggestionAndTopCategories
+                strongSelf.searchIcon.isHidden = true
+                strongSelf.clearButton.isHidden = false
+                strongSelf.tableView.reloadData()
+                strongSelf.tableView.isHidden = false
             }
         }
         
         searchTFView.textFieldFinishedEditing = { [weak self] _ in
-            guard let `self` = self else { return }
-            self.keyboardDismissed()
+            guard let strongSelf = self else { return }
+            strongSelf.keyboardDismissed()
         }
     }
     
@@ -294,8 +294,8 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
                 if let item = recentSearches[safe: indexPath.row - 1] {
                     cell.configure(item)
                     cell.performOperation = { [weak self] (result) in
-                        guard let `self` = self else { return }
-                        self.suggestionTableViewCellTapped(result: result)
+                        guard let strongSelf = self else { return }
+                        strongSelf.suggestionTableViewCellTapped(result: result)
                     }
                 }
                 return cell
@@ -351,12 +351,12 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueCell(with: ItemTableViewCell.self)
             cell.configure(item)
             cell.openItemDetailForSearch = { [weak self] (result) in
-                guard let `self` = self else { return }
+                guard let strongSelf = self else { return }
                 mainThread {
-                    self.searchTFView.unfocus()
+                    strongSelf.searchTFView.unfocus()
                     DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                    let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-                    bottomSheet.configureForExploreMenu(container: self.view, item: result)
+                    let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width, height: strongSelf.view.height))
+                    bottomSheet.configureForExploreMenu(container: strongSelf.view, item: result)
                 }
             }
             cell.triggerLoginFlow = { [weak self] in
@@ -401,14 +401,14 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
                 if let item = suggestions[safe: indexPath.row] {
                     cell.configure(item)
                     cell.performOperation = { [weak self] (result) in
-                        guard let `self` = self else { return }
+                        guard let strongSelf = self else { return }
                         if result.isItem ?? false {
                             mainThread {
-                                self.isShowingItemData = true
-                                self.searchTFView.unfocus()
+                                strongSelf.isShowingItemData = true
+                                strongSelf.searchTFView.unfocus()
                                 DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-                                bottomSheet.configureForExploreMenu(container: self.view, item: result)
+                                let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width, height: strongSelf.view.height))
+                                bottomSheet.configureForExploreMenu(container: strongSelf.view, item: result)
                                 bottomSheet.handleDeallocation = { [weak self] in
                                     self?.isShowingItemData = false
                                     self?.searchTFView.focus()
@@ -418,7 +418,7 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
                             DataManager.shared.saveToRecentlySearchExploreMenu(result)
                             let id = result._id ?? ""
                             let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish ?? "" : result.titleArabic ?? ""
-                            self.getCategoryItems(forMenuId: id, menuTitle: title)
+                            strongSelf.getCategoryItems(forMenuId: id, menuTitle: title)
                         }
                         
                     }
