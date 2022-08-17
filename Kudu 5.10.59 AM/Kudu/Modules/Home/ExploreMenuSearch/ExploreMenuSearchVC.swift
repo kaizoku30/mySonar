@@ -451,7 +451,9 @@ extension ExploreMenuSearchVC {
             mainThread {
                 self?.tableView.reloadData()
             }
-        }, failure: { _ in })
+        }, failure: { _ in
+            // No implementation needed
+        })
     }
     
     func getSuggetions() {
@@ -462,7 +464,9 @@ extension ExploreMenuSearchVC {
             mainThread {
                 self?.tableView.reloadData()
             }
-        }, failure: { _ in })
+        }, failure: { _ in
+            // No implementation needed
+        })
     }
     
     func getResults() {
@@ -480,7 +484,9 @@ extension ExploreMenuSearchVC {
                     self?.tableView.isHidden = resultCount == 0 }
                 self?.tableView.reloadData()
             }
-        }, failure: { _ in })
+        }, failure: { _ in
+            // No implementation needed
+        })
     }
     
     func getCategoryItems(forMenuId menuId: String, menuTitle: String) {
@@ -516,7 +522,9 @@ extension ExploreMenuSearchVC {
                 if self?.currentViewType == .results { self?.tableView.isHidden = resultCount == 0 }
                 self?.tableView.reloadData()
             }
-        }, failure: { _ in })
+        }, failure: { _ in
+            // No implementation needed
+        })
     }
     
     func toggleSearchState(searchBarActive: Bool) {

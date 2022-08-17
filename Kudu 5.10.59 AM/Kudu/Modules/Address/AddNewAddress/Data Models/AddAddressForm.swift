@@ -97,8 +97,8 @@ struct AddAddressForm {
         guard let name = name, let stateName = stateName, let cityName = cityName, let zipCode = zipCode, let buildingName = buildingName, let latitue = latitude, let longitude = longitude else {
             return nil
         }
-        let otherAddressLabel: String? = addressLabel == .OTHER ? otherAddressLabel : nil
-        return AddAddressRequest(addressLabel: addressLabel, otherAddressLabel: otherAddressLabel, name: name, stateName: stateName, cityName: cityName, phoneNumber: phoneNumber, zipCode: zipCode, buildingName: buildingName, landmark: landmark, isDefault: isDefault, latitude: latitue, longitude: longitude)
+        let otherAddressLabelAdded: String? = addressLabel == .OTHER ? otherAddressLabel : nil
+        return AddAddressRequest(addressLabel: addressLabel, otherAddressLabel: otherAddressLabelAdded, name: name, stateName: stateName, cityName: cityName, phoneNumber: phoneNumber, zipCode: zipCode, buildingName: buildingName, landmark: landmark, isDefault: isDefault, latitude: latitue, longitude: longitude)
         
     }
     

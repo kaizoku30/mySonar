@@ -120,24 +120,19 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         cell.configure(address: viewModel?.formData.buildingName ?? "")
         cell.openMap = { [weak self] in
             
-            if CLLocationManager.locationServicesEnabled() == false {
+            if !CLLocationManager.locationServicesEnabled() {
                 self?.baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
                 return
             }
             
-            if CommonLocationManager.isAuthorized() == false {
+            if !CommonLocationManager.isAuthorized() {
                 self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
                 return
             }
             
             CommonLocationManager.getLocationOfDevice(foundCoordinates: {
                 if let coordinates = $0 {
-                    let vc = MapPinVC.instantiate(fromAppStoryboard: .Address)
-                    vc.viewModel = MapPinVM(delegate: vc, coordinates: coordinates)
-                    vc.prefillCallback = {
-                        self?.handlePrefillData($0)
-                    }
-                    self?.push(vc: vc)
+                    self?.openMapVC(coordinates: coordinates)
                 } else {
                     self?.baseView.showError(message: "Could not fetch location of device")
                 }
@@ -153,6 +148,15 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
             self?.push(vc: vc)
         }
         return cell
+    }
+    
+    private func openMapVC(coordinates: CLLocationCoordinate2D) {
+        let vc = MapPinVC.instantiate(fromAppStoryboard: .Address)
+        vc.viewModel = MapPinVM(delegate: vc, coordinates: coordinates)
+        vc.prefillCallback = { [weak self] in
+            self?.handlePrefillData($0)
+        }
+        self.push(vc: vc)
     }
     
     private func handlePrefillData(_ data: LocationInfoModel) {
@@ -173,10 +177,7 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         cell.selectionUpdated = { [weak self] (selectionType, otherLabel) in
         guard let strongSelf = self, let vm = strongSelf.viewModel else { return }
             switch selectionType {
-            case .WORK:
-                vm.updateForm(.addressLabel(selectionType))
-                vm.updateForm(.otherAddressLabel(nil))
-            case .HOME:
+            case .WORK, .HOME:
                 vm.updateForm(.addressLabel(selectionType))
                 vm.updateForm(.otherAddressLabel(nil))
             case .OTHER:
@@ -191,7 +192,7 @@ extension AddNewAddressVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueCell(with: DefaultAddressCell.self)
         let isForcedDefault = (viewModel?.isForcedDefault ?? false) || ((viewModel?.getEditObject.isNotNil ?? false) && (viewModel?.getEditObject?.isDefault ?? false))
         let defaultStatus = viewModel?.formData.isDefault ?? false
-        let isDefault = (isForcedDefault || defaultStatus) ? true : false
+        let isDefault = (isForcedDefault || defaultStatus)
         cell.configure(isDefault: isDefault, forcedDefault: isForcedDefault)
         cell.defaultChoiceUpdated = { [weak self] in
             guard let strongSelf = self, let vm = strongSelf.viewModel else { return }
