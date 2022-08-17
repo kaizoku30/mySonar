@@ -228,6 +228,7 @@
                 <outlet property="deleteBtn" destination="r4L-v0-PD1" id="w97-dw-eI0"/>
                 <outlet property="descriptionLabel" destination="f72-mL-CqQ" id="zR1-6v-KEa"/>
                 <outlet property="favouriteButton" destination="9ao-uf-Uxs" id="ivs-CN-j8H"/>
+                <outlet property="gradientImageView" destination="eY8-EH-LvL" id="1cJ-A7-ded"/>
                 <outlet property="incrementorStackView" destination="WjP-Xb-kF4" id="qjy-ia-lnZ"/>
                 <outlet property="itemImgView" destination="p7y-qa-KAd" id="kkh-yI-rNg"/>
                 <outlet property="itemNameLabel" destination="w6U-k7-Pbw" id="8ul-E0-OeL"/>

@@ -75,13 +75,13 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Service Off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-ed-f7e">
-                    <rect key="frame" x="81.5" y="186" width="145.5" height="19"/>
+                    <rect key="frame" x="77" y="186" width="154" height="20.5"/>
                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turn On Location Services to allow KUDU to  determine  your  Current location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hl-x5-WMQ">
-                    <rect key="frame" x="30" y="217" width="248" height="28"/>
+                    <rect key="frame" x="30" y="218.5" width="248" height="30.5"/>
                     <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                     <color key="textColor" white="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -116,10 +116,10 @@
     </objects>
     <designables>
         <designable name="Ni3-1d-KHG">
-            <size key="intrinsicContentSize" width="30" height="29"/>
+            <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
         <designable name="a1c-V0-sGW">
-            <size key="intrinsicContentSize" width="30" height="29"/>
+            <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
     </designables>
     <resources>

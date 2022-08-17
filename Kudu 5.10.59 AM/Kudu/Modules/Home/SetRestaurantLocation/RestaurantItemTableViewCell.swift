@@ -43,10 +43,13 @@ class RestaurantItemTableViewCell: UITableViewCell {
         let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
         distanceLabel.text = distance + LocalizedStrings.SetRestaurant.km
         restAddressLabel.text = areaName
-        let isOpen = self.checkRestaurantIsOpen(item: item, type: type)
+        let closingTime = type == .pickup ? (item.pickupTimingToInMinutes.isNotNil ? item.pickupTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0) : (item.curbSideTimingToInMinutes.isNotNil ? item.curbSideTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0)
+        let openingTime = type == .pickup ? (item.pickupTimingFromInMinutes.isNotNil ? item.pickupTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0) : (item.curbSideTimingFromInMinutes.isNotNil ? item.curbSideTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0)
+        let currentTime = Date().totalMinutes
+        let isOpen = currentTime >= openingTime && currentTime <= closingTime
         closeTimingStackView.isHidden = !isOpen
-        let closingTime = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
-        closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) \(closingTime.replace(string: "AM", withString: LocalizedStrings.SetRestaurant.amString).replace(string: "PM", withString: LocalizedStrings.SetRestaurant.pmString))"
+        closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) " + closingTime.convertMinutesToAMPM()
+        debugPrint(Date().totalMinutes.convertMinutesToAMPM())
         setConfirmButton(enabled: isOpen)
         openCloseLabel.text = isOpen ? LocalizedStrings.SetRestaurant.open : LocalizedStrings.SetRestaurant.closed
         openCloseLabel.textColor = isOpen ? AppColors.RestaurantListCell.openGreen : AppColors.RestaurantListCell.closedRed
@@ -58,22 +61,4 @@ class RestaurantItemTableViewCell: UITableViewCell {
         confirmButton.isUserInteractionEnabled = enabled
         
     }
-    
-    private func checkRestaurantIsOpen(item: RestaurantListItem, type: HomeVM.SectionType) -> Bool {
-        let start = type == .pickup ? ((item.pickupTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.pickupTimingFrom ?? ""))) : (((item.curbSideTimingFrom.isNil ? (item.workingHoursStartTime ?? "") : (item.curbSideTimingFrom ?? ""))))
-        let end = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
-        debugPrint("Start Time : \(start), End Time : \(end)")
-        let startDate = start.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        let endDate = end.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        let currentTime = Date().toString(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        let currentDate = currentTime.toDate(dateFormat: Date.DateFormat.hmmazzz.rawValue)
-        guard let dateStart = startDate, let dateEnd = endDate, let currentDate = currentDate else {
-            debugPrint("Date parsing failed")
-            return false
-        }
-        let debugString = "Date parsing success \(dateStart) \(dateEnd)"
-        debugPrint(debugString)
-        return (currentDate.unixTimestamp >= dateStart.unixTimestamp) && (currentDate.unixTimestamp <= dateEnd.unixTimestamp)
-    }
-
 }

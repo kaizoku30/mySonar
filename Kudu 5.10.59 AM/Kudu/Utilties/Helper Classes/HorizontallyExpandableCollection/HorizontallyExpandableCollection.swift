@@ -19,25 +19,13 @@ class HorizontallyExpandableCollection: UIView {
         expanded = true
         expandCollectionButton.isHidden = true
         collapseCollectionButton.isHidden = false
-        collectionView.performBatchUpdates({
-            //No implementation needed as of now
-        }, completion: { (completed) in
-            if completed {
-                self.collectionView.reloadData()
-            }
-        })
+        self.collectionView.reloadData()
     }
     @IBAction private func collapseCollectionPressed(_ sender: Any) {
         expanded = false
         collapseCollectionButton.isHidden = true
         expandCollectionButton.isHidden = false
-        collectionView.performBatchUpdates({
-            //No implementation needed as of now
-        }, completion: { (completed) in
-            if completed {
-                self.collectionView.reloadData()
-            }
-        })
+        self.collectionView.reloadData()
     }
     
     override init(frame: CGRect) {

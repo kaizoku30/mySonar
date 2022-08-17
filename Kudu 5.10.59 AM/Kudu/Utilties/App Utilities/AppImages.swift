@@ -67,5 +67,6 @@ final class AppImages {
     }
     struct ExploreMenu {
         static var drinkImage: UIImage { UIImage(named: "k_exploreMenu_drinkImage_placeholder") ?? UIImage() }
+        static var cellGradient: UIImage { UIImage(named: "k_exploreMenu_cellGradient") ?? UIImage() }
     }
 }

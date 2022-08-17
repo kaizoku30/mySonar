@@ -140,6 +140,7 @@ class AppPopUpView: UIView {
         self.center = view.center
         alertTitle.text = title
         alertMessage.text = message
+        alertMessage.adjustsFontSizeToFitWidth = true
         leftBtn.setTitle(leftButtonTitle, for: .normal)
         rightBtn.setTitle(rightButtonTitle, for: .normal)
         view.addSubview(self)

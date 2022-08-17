@@ -66,7 +66,8 @@ final class AppColors: UIColor {
         static var unselectedDrinkTypeBakgroundColor: UIColor { #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) }
         static var selectedDrinkTypeBorderColor: UIColor { #colorLiteral(red: 0.9607843137, green: 0.6980392157, blue: 0.1058823529, alpha: 1) }
         static var selctDrinkTypeBackgroundColor: UIColor { #colorLiteral(red: 0.9607843137, green: 0.6980392157, blue: 0.1058823529, alpha: 0.07584850993) }
-        
+        static var addButtonUnavailable: UIColor { #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1) }
+        static var addButtonUnavailableTextColor: UIColor { #colorLiteral(red: 0.3568627451, green: 0.3529411765, blue: 0.3529411765, alpha: 1) }
         static var borderColor: UIColor { .black.withAlphaComponent(0.08 )}
     }
     
@@ -86,7 +87,8 @@ final class AppColors: UIColor {
     struct OurStore {
         static var deliveryUnavailable: UIColor { #colorLiteral(red: 0.6901960784, green: 0, blue: 0, alpha: 1) }
         static var deliveryAvailable: UIColor { #colorLiteral(red: 0.1529411765, green: 0.2705882353, blue: 0.5333333333, alpha: 0.8020747103) }
-        static var timeLblColor: UIColor { #colorLiteral(red: 0.368627451, green: 0.368627451, blue: 0.368627451, alpha: 1) }
+        static var distanceLblColor: UIColor { #colorLiteral(red: 0.368627451, green: 0.368627451, blue: 0.368627451, alpha: 1) }
+        static var timeLblColor: UIColor { #colorLiteral(red: 0.1098039216, green: 0.6509803922, blue: 0.3568627451, alpha: 1) }
     }
     
     struct AllergenView {

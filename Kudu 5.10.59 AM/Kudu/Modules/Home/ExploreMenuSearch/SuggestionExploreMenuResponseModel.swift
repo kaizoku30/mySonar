@@ -31,4 +31,5 @@ struct MenuSearchResultItem: Codable {
     let itemCount: Int?
     var currentCartCountInApp: Int?
     var isLikedInApp: Bool?
+    let isAvailable: Bool?
 }

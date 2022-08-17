@@ -7,6 +7,14 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -18,7 +26,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jns-2C-Ga8">
-                        <rect key="frame" x="16" y="6" width="352" height="220"/>
+                        <rect key="frame" x="0.0" y="6" width="384" height="220"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_storeImage" translatesAutoresizingMaskIntoConstraints="NO" id="sGk-5w-Z3e">
                                 <rect key="frame" x="12" y="12" width="80" height="122"/>
@@ -33,25 +41,25 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hie-ZX-Ph6">
-                                <rect key="frame" x="104" y="12" width="47" height="21.5"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <nil key="textColor"/>
+                                <rect key="frame" x="104" y="12" width="37" height="18"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sxU-zw-NWX">
-                                <rect key="frame" x="104" y="37.5" width="37" height="17"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                <rect key="frame" x="104" y="34" width="26.5" height="13"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0sz-rm-1og">
-                                <rect key="frame" x="104" y="58.5" width="34.5" height="18.5"/>
-                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                <rect key="frame" x="104" y="51" width="25.5" height="13"/>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="10"/>
                                 <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_storePinImage" translatesAutoresizingMaskIntoConstraints="NO" id="Nmx-xF-zxK">
-                                <rect key="frame" x="314" y="61" width="24" height="24"/>
+                                <rect key="frame" x="346" y="45.5" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="9oc-Zt-Nrd"/>
                                     <constraint firstAttribute="height" constant="24" id="aKe-xO-lme"/>
@@ -63,8 +71,8 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery unavailable" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bk2-39-ZNQ">
-                                <rect key="frame" x="104" y="81" width="135" height="17"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                <rect key="frame" x="104" y="68" width="97" height="13"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                 <color key="textColor" red="0.69019607839999997" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -75,20 +83,20 @@
                                     <constraint firstAttribute="width" constant="80" id="0PJ-3q-3RI"/>
                                     <constraint firstAttribute="height" constant="20" id="l8k-aF-yOK"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="MK4-nh-UpR">
-                                <rect key="frame" x="104" y="106" width="232" height="24"/>
+                                <rect key="frame" x="104" y="89" width="264" height="24"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xVg-lj-N0d">
-                                        <rect key="frame" x="0.0" y="0.0" width="108" height="24"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xVg-lj-N0d" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="124" height="24"/>
                                         <color key="backgroundColor" red="0.1529411765" green="0.27058823529999998" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="24" id="nMS-4X-5DA"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="CURBSIDE">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -98,32 +106,38 @@
                                                 <integer key="value" value="4"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="curbsideButtonTapped:" destination="9SS-zH-1pt" eventType="touchUpInside" id="tN0-pN-BFv"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mjz-po-jOl">
-                                        <rect key="frame" x="124" y="0.0" width="108" height="24"/>
+                                        <rect key="frame" x="140" y="0.0" width="124" height="24"/>
                                         <color key="backgroundColor" red="0.1529411765" green="0.27058823529999998" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="PICK UP">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="10"/>
-                                            <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </buttonConfiguration>
+                                        <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="PICK UP">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <integer key="value" value="4"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="pickUpButtonTapped:" destination="9SS-zH-1pt" eventType="touchUpInside" id="pM0-nl-hRB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Nmx-xF-zxK" firstAttribute="centerY" secondItem="0sz-rm-1og" secondAttribute="centerY" id="4XB-87-THc"/>
                             <constraint firstAttribute="trailing" secondItem="Nmx-xF-zxK" secondAttribute="trailing" constant="14" id="6M4-HD-4Ux"/>
                             <constraint firstItem="sxU-zw-NWX" firstAttribute="leading" secondItem="Hie-ZX-Ph6" secondAttribute="leading" id="6q4-wS-fj0"/>
                             <constraint firstItem="sGk-5w-Z3e" firstAttribute="leading" secondItem="Jns-2C-Ga8" secondAttribute="leading" constant="12" id="ENN-lw-Ulb"/>
                             <constraint firstAttribute="trailing" secondItem="MK4-nh-UpR" secondAttribute="trailing" constant="16" id="Fdi-Xw-Wdn"/>
                             <constraint firstItem="NPe-9O-bjn" firstAttribute="trailing" secondItem="sGk-5w-Z3e" secondAttribute="trailing" id="HM6-42-0Bl"/>
-                            <constraint firstItem="Nmx-xF-zxK" firstAttribute="centerY" secondItem="sGk-5w-Z3e" secondAttribute="centerY" id="IfS-FU-F7Q"/>
                             <constraint firstItem="Bk2-39-ZNQ" firstAttribute="top" secondItem="0sz-rm-1og" secondAttribute="bottom" constant="4" id="IuE-G7-Jzd"/>
                             <constraint firstItem="NPe-9O-bjn" firstAttribute="top" secondItem="sGk-5w-Z3e" secondAttribute="top" id="M6w-aX-Mbt"/>
                             <constraint firstItem="MK4-nh-UpR" firstAttribute="top" secondItem="Bk2-39-ZNQ" secondAttribute="bottom" constant="8" id="PLv-Y0-pIB"/>
@@ -132,7 +146,7 @@
                             <constraint firstItem="NPe-9O-bjn" firstAttribute="leading" secondItem="sGk-5w-Z3e" secondAttribute="leading" id="VXv-aw-SR1"/>
                             <constraint firstItem="0sz-rm-1og" firstAttribute="leading" secondItem="sxU-zw-NWX" secondAttribute="leading" id="YzM-rS-MHv"/>
                             <constraint firstItem="Hie-ZX-Ph6" firstAttribute="top" secondItem="sGk-5w-Z3e" secondAttribute="top" id="dFM-nk-LeA"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sxU-zw-NWX" secondAttribute="trailing" constant="10" id="dsg-73-t4U"/>
+                            <constraint firstItem="Nmx-xF-zxK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sxU-zw-NWX" secondAttribute="trailing" constant="2.5" id="hHt-aX-25w"/>
                             <constraint firstItem="sGk-5w-Z3e" firstAttribute="top" secondItem="Jns-2C-Ga8" secondAttribute="top" constant="12" id="hUy-Zt-cMU"/>
                             <constraint firstItem="Hie-ZX-Ph6" firstAttribute="leading" secondItem="sGk-5w-Z3e" secondAttribute="trailing" constant="12" id="kUc-SX-ilc"/>
                             <constraint firstItem="Bk2-39-ZNQ" firstAttribute="leading" secondItem="0sz-rm-1og" secondAttribute="leading" id="kVJ-km-vFI"/>
@@ -151,8 +165,8 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="Jns-2C-Ga8" firstAttribute="leading" secondItem="uKV-4n-ZzF" secondAttribute="leading" constant="16" id="Xhx-QU-8Tr"/>
-                    <constraint firstAttribute="trailing" secondItem="Jns-2C-Ga8" secondAttribute="trailing" constant="16" id="cn9-ku-KF4"/>
+                    <constraint firstItem="Jns-2C-Ga8" firstAttribute="leading" secondItem="uKV-4n-ZzF" secondAttribute="leading" id="Xhx-QU-8Tr"/>
+                    <constraint firstAttribute="trailing" secondItem="Jns-2C-Ga8" secondAttribute="trailing" id="cn9-ku-KF4"/>
                     <constraint firstItem="Jns-2C-Ga8" firstAttribute="top" secondItem="uKV-4n-ZzF" secondAttribute="top" constant="6" id="gtX-nb-bdK"/>
                     <constraint firstAttribute="bottom" secondItem="Jns-2C-Ga8" secondAttribute="bottom" constant="6" id="kAJ-v4-wzp"/>
                 </constraints>
@@ -160,9 +174,12 @@
             <viewLayoutGuide key="safeArea" id="qSB-Ri-Cru"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="curbsideButton" destination="xVg-lj-N0d" id="PWt-NC-kPe"/>
                 <outlet property="deliveryAvailability" destination="Bk2-39-ZNQ" id="qES-6l-PaI"/>
                 <outlet property="distanceLbl" destination="sxU-zw-NWX" id="QDR-rn-Ruk"/>
-                <outlet property="imageLabel" destination="NPe-9O-bjn" id="PnH-ju-6je"/>
+                <outlet property="mapImageView" destination="Nmx-xF-zxK" id="S4A-gf-ZKA"/>
+                <outlet property="pickUpButton" destination="mjz-po-jOl" id="sL4-ml-WOP"/>
+                <outlet property="rushHourLabel" destination="NPe-9O-bjn" id="PnH-ju-6je"/>
                 <outlet property="storeAddress" destination="0sz-rm-1og" id="Z6m-w1-R1m"/>
                 <outlet property="storeName" destination="Hie-ZX-Ph6" id="wSP-K6-rWc"/>
             </connections>

@@ -18,6 +18,7 @@ class ProfileVC: SideMenuVC {
     @IBOutlet weak var verifyNow: AppButton!
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var emailVerifiedMarker: UIImageView!
+    @IBOutlet weak var verificationActivityIndicator: UIActivityIndicatorView!
     
     @IBAction func backButtonPressed(_ sender: Any) {
         dismissSideMenu(pushViewController: nil)
@@ -32,6 +33,9 @@ class ProfileVC: SideMenuVC {
     }
     
     @IBAction func verifyPressed(_ sender: Any) {
+        verifyNow.isHidden = true
+        verificationActivityIndicator.isHidden = false
+        verificationActivityIndicator.startAnimating()
         WebServices.HomeEndPoints.sendOtpOnMail(email: DataManager.shared.loginResponse?.email ?? "", success: { [weak self] _ in
             let vc = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
             vc.viewModel = PhoneVerificationVM(_delegate: vc, flowType: .comingFromProfilePage, emailForVerification: DataManager.shared.loginResponse?.email ?? "")
@@ -45,10 +49,7 @@ class ProfileVC: SideMenuVC {
                     return
                 }
             }
-            let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width - 32, height: 48))
-            mainThread {
-                errorView.show(message: error.msg, view: strongSelf.view)
-            }
+            strongSelf.dismissSideMenu(pushViewController: nil)
         })
     }
     
@@ -115,6 +116,7 @@ class ProfileVC: SideMenuVC {
         shadowView.layer.shouldRasterize = true
         shadowView.layer.rasterizationScale = UIScreen.main.scale
         shadowSetup = true
+        verificationActivityIndicator.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -195,6 +197,11 @@ extension ProfileVC: UITableViewDataSource, UITableViewDelegate {
             return
         }
         
+        if type == .OurStore {
+            goToOurStore()
+            return
+        }
+        
         if type != .MyAccount || type != .ControlCenter {
             SKToast.show(withMessage: "Under Development")
         }
@@ -207,6 +214,12 @@ extension ProfileVC {
     func goToNotificationPreferences() {
         let vc = NotificationPrefVC.instantiate(fromAppStoryboard: .Notification)
         vc.viewModel = NotificationPrefVM(delegate: vc)
+        dismissSideMenu(pushViewController: vc)
+    }
+    
+    func goToOurStore() {
+        let vc = OurStoreVC.instantiate(fromAppStoryboard: .Home)
+        vc.viewModel = OurStoreVM(delegate: vc)
         dismissSideMenu(pushViewController: vc)
     }
 }

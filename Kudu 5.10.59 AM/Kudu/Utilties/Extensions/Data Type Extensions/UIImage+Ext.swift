@@ -730,3 +730,19 @@ extension UIImage {
         self.init(data: data)
     }
 }
+
+extension UIImage {
+    func grayscale() -> UIImage? {
+        let image: UIImage = self
+        let context = CIContext(options: nil)
+        if let filter = CIFilter(name: "CIPhotoEffectNoir") {
+            filter.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+            if let output = filter.outputImage {
+                if let cgImage = context.createCGImage(output, from: output.extent) {
+                    return UIImage(cgImage: cgImage)
+                }
+            }
+        }
+        return nil
+    }
+}

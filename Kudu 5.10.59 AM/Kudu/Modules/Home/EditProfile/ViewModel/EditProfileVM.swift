@@ -54,7 +54,7 @@ class EditProfileVM {
     }
     
     func hitUpdateAPI() {
-        let triggerVerificationFlow = getEmail != DataManager.shared.loginResponse?.email ?? ""
+        let triggerVerificationFlow = getEmail != DataManager.shared.loginResponse?.email ?? "" || (DataManager.shared.loginResponse?.isEmailVerified ?? false) == false
         webService.updateProfile(name: getName, email: triggerVerificationFlow ? getEmail : nil, success: { [weak self] _ in
             DataManager.shared.loginResponse?.email = self?.getEmail ?? ""
             DataManager.shared.loginResponse?.fullName = self?.getName ?? ""

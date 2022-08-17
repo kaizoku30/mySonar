@@ -24,8 +24,8 @@ class HorizontallyExpandableCollectionViewCell: UICollectionViewCell {
     private var expanded = false
 
     func configure(expand: Bool, text: String, image: String) {
-        roundImageView.image = UIImage(named: "k_allergen_mustardExample")
-        //roundImageView.setImageKF(imageString: image, placeHolderImage: AppImages.MainImages.fixedPlaceholder, loader: false, loaderTintColor: .clear, completionHandler: nil)
+        //roundImageView.image = UIImage(named: "k_allergen_mustardExample")
+        roundImageView.setImageKF(imageString: image, placeHolderImage: AppImages.MainImages.fixedPlaceholder, loader: false, loaderTintColor: .clear, completionHandler: nil)
         if expand {
             label.text = text
             stackView.isHidden = false

@@ -136,7 +136,7 @@ class SendFeedbackVC: BaseVC {
     func showCameraPermissionDenied() {
         mainThread {
             let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.popUpWidth, height: CameraPermissionDeniedView.popUpHeight))
-            cameraPermissionAlert.configure(type: .noCamera, leftButtonTitle: "Cancel", rightButtonTitle: "Setting", container: self.baseView)
+            cameraPermissionAlert.configure(type: .noCamera, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self.baseView)
             cameraPermissionAlert.handleAction = {
                 if $0 == .right {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)

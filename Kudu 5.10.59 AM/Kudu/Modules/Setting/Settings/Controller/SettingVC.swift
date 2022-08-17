@@ -173,7 +173,7 @@ extension SettingVC {
     private func handleAccountControlSectionSelection(indexPath: IndexPath) {
         if indexPath.row == 1 {
             handleDeletePopUp()
-        } else {
+        } else if indexPath.row == 2 {
             handleLogoutPopUp()
         }
     }

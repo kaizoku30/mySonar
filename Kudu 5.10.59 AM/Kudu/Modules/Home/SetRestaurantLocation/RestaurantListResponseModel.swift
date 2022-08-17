@@ -36,6 +36,16 @@ struct RestaurantListItem: Codable {
     let curbSideTimingFrom: String?
     let curbSideTimingTo: String?
     var isSelectedInApp: Bool?
+    let curbSideTimingFromInMinutes: Int?
+    let curbSideTimingToInMinutes: Int?
+    let deliveryTimingFromInMinutes: Int?
+    let deliveryTimingToInMinutes: Int?
+    let pickupTimingFromInMinutes: Int?
+    let pickupTimingToInMinutes: Int?
+    let workingHoursEndTimeInMinutes: Int?
+    let workingHoursStartTimeInMinutes: Int?
+    let isRushHour: Bool?
+    
 }
 
 struct RestaurantLocation: Codable {

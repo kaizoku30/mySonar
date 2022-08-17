@@ -43,6 +43,7 @@ enum Endpoint {
     case editProfile(name: String?, email: String?)
     case verifyEmailOtp(otp: String, email: String)
     case sendOtpOnMail(email: String)
+    case ourStoreListing(searchKey: String, lat: Double, long: Double)
     
     // MARK: NOTIFICATION END POINTS
     case notificationPref(req: NotificationPrefRequest)
@@ -54,7 +55,7 @@ enum Endpoint {
         switch self {
         case .payment, .login, .sendOtp, .verifyMobileOtp, .socialSignup, .socialVerification, .logout, .signUp, .socialLogIn, .addAddress, .sendFeedback, .verifyEmailOtp, .sendOtpOnMail:
             return .post
-        case .getAddressList, .supportDetails, .menuList, .generalPromoList, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail:
+        case .getAddressList, .supportDetails, .menuList, .generalPromoList, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .ourStoreListing:
             return .get
         case .editAddress, .notificationPref, .editProfile:
             return .put
@@ -77,7 +78,7 @@ enum Endpoint {
         let baseUrl = Environment().configuration(.kBaseUrl)
         let registerIntermediate = "/\(microService)/api/v1/"
         switch self {
-        case .login, .verifyMobileOtp, .signUp, .logout, .sendOtp, .socialLogIn, .socialSignup, .socialVerification, .addAddress, .getAddressList, .editAddress, .sendFeedback, .supportDetails, .menuList, .generalPromoList, .menuItemList, .deleteAccount, .getRestaurantSuggestions, . getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail:
+        case .login, .verifyMobileOtp, .signUp, .logout, .sendOtp, .socialLogIn, .socialSignup, .socialVerification, .addAddress, .getAddressList, .editAddress, .sendFeedback, .supportDetails, .menuList, .generalPromoList, .menuItemList, .deleteAccount, .getRestaurantSuggestions, . getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail, .ourStoreListing:
             return baseUrl + registerIntermediate + apiPath
         case .deleteAddress(let id):
             return baseUrl + registerIntermediate + apiPath + "/\(id)"
@@ -88,7 +89,7 @@ enum Endpoint {
     
     var microService: String {
         switch self {
-        case .generalPromoList, .menuList, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail:
+        case .generalPromoList, .menuList, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .ourStoreListing:
             return "userStore"
         default:
             return "userOnboard"
@@ -149,6 +150,8 @@ enum Endpoint {
             return "verifyEmailOtp"
         case .sendOtpOnMail:
             return "sendOtpOnEmail"
+        case .ourStoreListing:
+            return "myStoreList"
         default:
             return ""
         }
@@ -280,6 +283,10 @@ enum Endpoint {
                     Constants.APIKeys.emailOtp.rawValue: otp]
         case .sendOtpOnMail(let email):
             return [Constants.APIKeys.email.rawValue: email]
+        case .ourStoreListing(let searchKey, let lat, let long):
+            return [Constants.APIKeys.searchKey.rawValue: searchKey,
+                    Constants.APIKeys.latitude.rawValue: lat,
+                    Constants.APIKeys.longitude.rawValue: long]
         default:
             return [:]
         }

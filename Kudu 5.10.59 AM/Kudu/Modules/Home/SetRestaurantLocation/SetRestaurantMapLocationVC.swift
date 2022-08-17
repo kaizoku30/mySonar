@@ -11,10 +11,13 @@ import CoreLocation
 
 class SelectableMarker: GMSMarker {
     var isSelected: Bool = false
+    var restaurantId: String = ""
 }
 
 class SetRestaurantMapLocationVC: BaseVC {
     
+    @IBOutlet private weak var ourStoreView: UIView!
+    @IBOutlet private weak var noResultFoundView: NoResultFoundView!
     @IBOutlet private weak var listButton: AppButton!
     @IBOutlet private weak var mapView: GMSMapView!
     @IBOutlet private weak var titleLabel: UILabel!
@@ -31,8 +34,28 @@ class SetRestaurantMapLocationVC: BaseVC {
     @IBOutlet private weak var closeTimingLabel: UILabel!
     @IBOutlet private weak var shimmerView: UIView!
     @IBOutlet private weak var containerInfoStackView: UIStackView!
+    @IBOutlet private weak var mapImageView: UIImageView!
+    @IBOutlet private weak var pickUpButton: UIButton!
+    @IBOutlet private weak var curbsideButton: AppButton!
+    @IBOutlet private weak var storeName: UILabel!
+    @IBOutlet private weak var distanceLbl: UILabel!
+    @IBOutlet private weak var storeAddress: UILabel!
+    @IBOutlet private weak var deliveryAvailability: UILabel!
+    @IBOutlet private weak var rushHourLabel: UILabel!
     
-    @IBAction func confirmLocationTapped(_ sender: Any) {
+    @IBAction private func curbsideButtonTapped(_ sender: Any) {
+        guard let currentRestaurant = restaurantArray.first(where: { $0.isSelectedInApp ?? false == true }) else { return }
+        self.view.isUserInteractionEnabled = false
+        self.triggerMenuFlow(type: .curbside, storeId: currentRestaurant._id ?? "", lat: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, long: currentRestaurant.restaurantLocation?.coordinates?.first ?? 0.0)
+    }
+    
+    @IBAction private func pickUpButtonTapped(_ sender: Any) {
+        guard let currentRestaurant = restaurantArray.first(where: { $0.isSelectedInApp ?? false == true }) else { return }
+        self.view.isUserInteractionEnabled = false
+        self.triggerMenuFlow(type: .pickup, storeId: currentRestaurant._id ?? "", lat: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, long: currentRestaurant.restaurantLocation?.coordinates?.first ?? 0.0)
+    }
+    
+    @IBAction private func confirmLocationTapped(_ sender: Any) {
         let firstIndex = self.restaurantArray.firstIndex(where: { $0.isSelectedInApp ?? false == true })
         if let firstIndex = firstIndex, firstIndex < restaurantArray.count {
             let item = restaurantArray[firstIndex]
@@ -42,34 +65,14 @@ class SetRestaurantMapLocationVC: BaseVC {
         }
     }
     
-    @IBAction func backButtonPressed(_ sender: Any) {
+    @IBAction private func backButtonPressed(_ sender: Any) {
         goToListView()
     }
     
-//    @IBAction func clearButtonPressed(_ sender: Any) {
-//        self.searchTFView.currentText = ""
-//        self.searchTFView.unfocus()
-//        self.restaurantArray = []
-//        self.markers = []
-//        clearHandling()
-//    }
-    
-    private func clearHandling() {
-        self.clearButton.isHidden = true
-        self.kuduNearYouLabel.isHidden = true
-        self.containerInfoStackView.isHidden = true
-        self.mapView.clear()
-    }
-    
-    @IBAction func listButtonPressed(_ sender: Any) {
+    @IBAction private func listButtonPressed(_ sender: Any) {
         goToListView()
     }
-    
-    func goToListView() {
-        self.syncSearchBar?(self.searchTFView.currentText)
-        self.pop()
-    }
-    
+
     var restaurantSelected: ((RestaurantInfoModel) -> Void)?
     var restaurantArray: [RestaurantListItem] = []
     var type: HomeVM.SectionType = .pickup
@@ -77,13 +80,26 @@ class SetRestaurantMapLocationVC: BaseVC {
     var currentCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var lastTextQuery: String = ""
     var syncSearchBar: ((String) -> Void)?
+    var ourStoreFlow = false
+    var selectedRestaurant: RestaurantListItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        noResultFoundView.contentType = .noResultFound
+        mapImageView.isHidden = true
         toggleInfoLoading(true)
         mapView.delegate = self
+        if let selectedRestaurant = selectedRestaurant, let firstIndex = restaurantArray.firstIndex(where: { $0._id ?? "" == selectedRestaurant._id ?? ""}) {
+            restaurantArray[firstIndex].isSelectedInApp = true
+        } else {
+            restaurantArray[0].isSelectedInApp = true
+        }
         setMarkers()
-        setInfoView()
+        if ourStoreFlow {
+            setOurStoreView()
+        } else {
+            setInfoView()
+        }
         searchTFView.currentText = lastTextQuery
         clearButton.handleBtnTap = { [weak self] in
             guard let strongSelf = self else { return }
@@ -101,14 +117,31 @@ class SetRestaurantMapLocationVC: BaseVC {
         setupView()
     }
     
+    private func clearHandling() {
+        self.clearButton.isHidden = true
+        self.kuduNearYouLabel.isHidden = true
+        self.containerInfoStackView.isHidden = true
+        self.mapView.clear()
+        self.fetchOurStoreResults(text: "")
+    }
+    
+    func goToListView() {
+        self.syncSearchBar?(self.searchTFView.currentText)
+        self.pop()
+    }
+    
     func setupView() {
         searchTFView.textFieldType = .address
-        searchTFView.placeholderText = LocalizedStrings.SetRestaurant.selectBranch
+        if ourStoreFlow {
+            searchTFView.placeholderText = "Search store"
+        } else {
+            searchTFView.placeholderText = LocalizedStrings.SetRestaurant.selectBranch
+        }
         searchTFView.font = AppFonts.mulishBold.withSize(14)
         searchTFView.textColor = .black
         searchBarContainerView.roundTopCorners(cornerRadius: 4)
-        titleLabel.text = LocalizedStrings.SetRestaurant.setPickupLocation
-        if type == .curbside {
+        titleLabel.text = ourStoreFlow ? LocalizedStrings.Profile.ourStore : LocalizedStrings.SetRestaurant.setPickupLocation
+        if type == .curbside && !ourStoreFlow {
             titleLabel.text = LocalizedStrings.SetRestaurant.setCurbsideLocation
         }
         handleTextField()
@@ -137,7 +170,11 @@ class SetRestaurantMapLocationVC: BaseVC {
                 strongSelf.markers = []
                 strongSelf.clearHandling()
             } else {
-                strongSelf.fetchResults(text: text)
+                if strongSelf.ourStoreFlow {
+                    strongSelf.fetchOurStoreResults(text: text)
+                } else {
+                    strongSelf.fetchResults(text: text)
+                }
                 debugPrint("Textfield Unselected")
             }
             
@@ -176,16 +213,26 @@ class SetRestaurantMapLocationVC: BaseVC {
                     marker.isSelected = false
                     marker.title = ""
                     marker.isFlat = true
+                    marker.restaurantId = item._id ?? ""
                     marker.map = mapView
                     markers.append(marker)
                 }
             }
-            let coordinates = restaurantArray[0].restaurantLocation?.coordinates
-            let long = coordinates?[0] ?? 0.0
-            let lat = coordinates?[1] ?? 0.0
+            var coordinates = restaurantArray[0].restaurantLocation?.coordinates
+            var long = coordinates?[0] ?? 0.0
+            var lat = coordinates?[1] ?? 0.0
             if markers.count > 0 {
-                markers[0].isSelected = true
-                markers[0].icon = AppImages.SetRestaurantMap.markerLarge
+                if let selectedRestaurant = selectedRestaurant, ourStoreFlow, let firstIndex = markers.firstIndex(where: { $0.restaurantId == (selectedRestaurant._id ?? "") }) {
+                     markers[firstIndex].isSelected = true
+                     markers[firstIndex].icon = AppImages.SetRestaurantMap.markerLarge
+                    coordinates = restaurantArray.first(where: { $0.isSelectedInApp ?? false == true })?.restaurantLocation?.coordinates
+                    long = coordinates?[0] ?? 0.0
+                    lat = coordinates?[1] ?? 0.0
+                    
+                } else {
+                    markers[0].isSelected = true
+                    markers[0].icon = AppImages.SetRestaurantMap.markerLarge
+                }
             }
             fetchInitialPointInMap(initialCoordinates: CLLocationCoordinate2D(latitude: lat, longitude: long))
         }
@@ -203,6 +250,34 @@ class SetRestaurantMapLocationVC: BaseVC {
         }
     }
     
+    func setOurStoreView() {
+        let selected = restaurantArray.firstIndex(where: { $0.isSelectedInApp ?? false == true })
+        if let index = selected {
+            setOurStoreViewData(item: restaurantArray[index])
+        } else {
+            if restaurantArray.isEmpty == true { return }
+            restaurantArray[0].isSelectedInApp = true
+            setOurStoreViewData(item: restaurantArray[0])
+        }
+    }
+    
+    func setOurStoreViewData(item: RestaurantListItem) {
+        let selectedLang = AppUserDefaults.selectedLanguage()
+        storeName.text = selectedLang == .en ? item.nameEnglish : item.nameArabic
+        storeAddress.text = selectedLang == .en ? item.restaurantLocation?.areaNameEnglish : item.restaurantLocation?.areaNameArabic
+        let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
+        let distanceAttributedString = NSMutableAttributedString(string: "\(distance) \(LocalizedStrings.SetRestaurant.km) away | ", attributes: [.foregroundColor: AppColors.OurStore.distanceLblColor])
+        let openingTime = (item.workingHoursStartTimeInMinutes ?? 0).convertMinutesToAMPM(smallcase: true)
+        let closingTime = (item.workingHoursEndTimeInMinutes ?? 0).convertMinutesToAMPM(smallcase: true)
+        let timeString = NSAttributedString(string: "Open : \(openingTime) to \(closingTime)", attributes: [.foregroundColor: AppColors.OurStore.timeLblColor])
+        distanceAttributedString.append(timeString)
+        distanceLbl.attributedText = distanceAttributedString
+        rushHourLabel.isHidden = !(item.isRushHour ?? false)
+        let isDelivery = item.serviceDelivery ?? false
+        deliveryAvailability.text = isDelivery ? LocalizedStrings.OurStore.DeliveryAvailable : LocalizedStrings.OurStore.DeliveryUnavailable
+        deliveryAvailability.textColor = isDelivery ? AppColors.OurStore.deliveryAvailable : AppColors.OurStore.deliveryUnavailable
+    }
+    
     func setInfoData(item: RestaurantListItem) {
         let item = item
         let name = AppUserDefaults.selectedLanguage() == .en ? item.nameEnglish ?? "" : item.nameArabic ?? ""
@@ -212,10 +287,12 @@ class SetRestaurantMapLocationVC: BaseVC {
         let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
         distanceLabel.text = distance + LocalizedStrings.SetRestaurant.km
         restAddressLabel.text = areaName
-        let isOpen = self.isOpen(item: item, type: type)
+        let closingMinutes = type == .pickup ? (item.pickupTimingToInMinutes.isNotNil ? item.pickupTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0) : (item.curbSideTimingToInMinutes.isNotNil ? item.curbSideTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0)
+        let openingMinutes = type == .pickup ? (item.pickupTimingFromInMinutes.isNotNil ? item.pickupTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0) : (item.curbSideTimingFromInMinutes.isNotNil ? item.curbSideTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0)
+        let currentMinuteTimeStamp = Date().totalMinutes
+        let isOpen = currentMinuteTimeStamp >= openingMinutes && currentMinuteTimeStamp <= closingMinutes
         closeTimingStackView.isHidden = !isOpen
-        let closingTime = type == .pickup ? ((item.pickupTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.pickupTimingTo ?? ""))) : (((item.curbSideTimingTo.isNil ? (item.workingHoursEndTime ?? "") : (item.curbSideTimingTo ?? ""))))
-        closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) \(closingTime.replace(string: "AM", withString: LocalizedStrings.SetRestaurant.amString).replace(string: "PM", withString: LocalizedStrings.SetRestaurant.pmString))"
+        closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) " + closingMinutes.convertMinutesToAMPM()
         setButton(enabled: isOpen)
         openCloseLabel.text = isOpen ? LocalizedStrings.SetRestaurant.open : LocalizedStrings.SetRestaurant.closed
         openCloseLabel.textColor = isOpen ? AppColors.RestaurantListCell.openGreen : AppColors.RestaurantListCell.closedRed
@@ -304,4 +381,63 @@ extension SetRestaurantMapLocationVC {
             //self?.delegate?.listingAPIResponse(responseType: .failure(error))
         })
     }
+    
+    func fetchOurStoreResults(text: String) {
+        self.restaurantArray = []
+        self.markers = []
+        mainThread {
+            self.toggleInfoLoading(true)
+            self.mapView.clear()
+        }
+        
+        WebServices.HomeEndPoints.ourStoreListing(searchKey: text, latitude: currentCoordinates.latitude, longitude: currentCoordinates.longitude, success: { [weak self] (response) in
+            guard let strongSelf = self else { return }
+            mainThread {
+                if strongSelf.searchTFView.currentText.isEmpty && strongSelf.ourStoreFlow == false {
+                    return
+                }
+                
+                strongSelf.restaurantArray = (response.data?.list) ?? []
+                strongSelf.setMarkers()
+                if strongSelf.ourStoreFlow {
+                    strongSelf.setOurStoreView()
+                } else {
+                    strongSelf.setInfoView()
+                }
+            }
+        }, failure: { [weak self] in
+            self?.toggleInfoLoading(false)
+            let error = NSError(code: $0.code, localizedDescription: $0.msg)
+            SKToast.show(withMessage: error.localizedDescription)
+        })
+    }
+}
+
+extension SetRestaurantMapLocationVC {
+        private func triggerMenuFlow(type: HomeVM.SectionType, storeId: String, lat: Double, long: Double) {
+            var menuRequest: MenuListRequest = MenuListRequest(servicesType: type, lat: lat, long: long, storeId: storeId)
+            if type == .delivery {
+                menuRequest = MenuListRequest(servicesType: .delivery, lat: lat, long: long, storeId: nil)
+            }
+            WebServices.HomeEndPoints.getMenuList(request: menuRequest, success: { [weak self] (response) in
+                guard let strongSelf = self else { return }
+                strongSelf.view.isUserInteractionEnabled = true
+                var categories = response.data ?? []
+                if categories.isEmpty { return }
+                categories[0].isSelectedInApp = true
+                let vc = ExploreMenuVC.instantiate(fromAppStoryboard: .Home)
+                vc.viewModel = ExploreMenuVM(menuCategories: categories, delegate: vc)
+                mainThread {
+                    strongSelf.push(vc: vc)
+                    
+                }
+            }, failure: { [weak self] (error) in
+                guard let strongSelf = self else { return }
+                strongSelf.view.isUserInteractionEnabled = true
+                mainThread {
+                    let errorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: strongSelf.view.width - 32, height: 48))
+                    errorToast.show(message: error.msg, view: strongSelf.view)
+                }
+            })
+        }
 }

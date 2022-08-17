@@ -147,6 +147,10 @@ extension WebServices {
         static func sendOtpOnMail(email: String, success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
             Api.requestNew(endpoint: .sendOtpOnMail(email: email), successHandler: success, failureHandler: failure)
         }
+        
+        static func ourStoreListing(searchKey: String, latitude: Double, longitude: Double, success: @escaping SuccessCompletionBlock<RestaurantListResponseModel>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .ourStoreListing(searchKey: searchKey, lat: latitude, long: longitude), successHandler: success, failureHandler: failure)
+        }
     }
 }
 

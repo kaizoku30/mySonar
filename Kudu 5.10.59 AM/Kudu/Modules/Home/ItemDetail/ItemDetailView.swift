@@ -112,10 +112,9 @@ class ItemDetailView: UIView {
         guard let item = item else {
             return
         }
-        for i in 0..<5 {
-            self.allergenArray.append(AllergicComponent(_id: nil, name: "Testing \(i)", imageUrl: "https://source.unsplash.com/user/c_v_r/100x100"))
-        }
-        //self.allergenArray = item.allergicComponent ?? []
+        self.allergenArray = item.allergicComponent ?? []
+        allergenceTitleLabel.isHidden = self.allergenArray.isEmpty
+        allergenCollection.isHidden = self.allergenArray.isEmpty
         let name = AppUserDefaults.selectedLanguage() == .en ? item.nameEnglish ?? "" : item.nameArabic ?? ""
         let description = AppUserDefaults.selectedLanguage() == .en ? item.descriptionEnglish ?? "" : item.descriptionArabic ?? ""
         self.itemNameLabel.text = name

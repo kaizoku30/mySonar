@@ -9,6 +9,7 @@ import UIKit
 import TTTAttributedLabel
 
 class ItemTableViewCell: UITableViewCell {
+    @IBOutlet private weak var gradientImageView: UIImageView!
     @IBOutlet private weak var customisableLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: TTTAttributedLabel!
     @IBOutlet private weak var priceLabel: UILabel!
@@ -23,6 +24,10 @@ class ItemTableViewCell: UITableViewCell {
     @IBOutlet private weak var shimmerView: UIView!
     
     @IBAction func favouriteButtonTapped(_ sender: Any) {
+        
+        if resultItem?.isAvailable ?? true == false || item?.isAvailable ?? true == false {
+            return
+        }
         
         if AppUserDefaults.value(forKey: .loginResponse).isNil {
             triggerLoginFlow?()
@@ -56,6 +61,11 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     @IBAction private func addButtonPressed(_ sender: Any) {
+        
+        if resultItem?.isAvailable ?? true == false || item?.isAvailable ?? true == false {
+            return
+        }
+        
         itemCartCount += 1
         updateButtonView()
     }
@@ -74,6 +84,11 @@ class ItemTableViewCell: UITableViewCell {
     }
     
     @objc private func performRouting() {
+        
+        if resultItem?.isAvailable ?? true == false || item?.isAvailable ?? true == false {
+            return
+        }
+        
         if let item = resultItem {
             self.openItemDetailForSearch?(item)
         }
@@ -128,11 +143,13 @@ class ItemTableViewCell: UITableViewCell {
         descriptionLabel.numberOfLines = 3
         descriptionLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.itemNameLabel.text = AppUserDefaults.selectedLanguage() == .en ? (item.nameEnglish ?? "") : (item.nameArabic ?? "")
+        self.grayScaleContent(available: item.isAvailable ?? true)
         self.itemImgView.setImageKF(imageString: (item.itemImageUrl ?? ""), placeHolderImage: AppImages.MainImages.fixedPlaceholder, loader: false, loaderTintColor: .clear, completionHandler: { [weak self] _ in
             mainThread {
                 self?.isImageLoading = false
                 self?.shimmerView.isHidden = true
                 self?.shimmerView.stopShimmering()
+                self?.grayScaleContent(available: item.isAvailable ?? true)
             }
         })
         self.itemCartCount = item.currentCartCountInApp ?? 0
@@ -141,7 +158,7 @@ class ItemTableViewCell: UITableViewCell {
     
     func configure(_ item: MenuSearchResultItem) {
         self.resultItem = item
-        let menuItem = MenuItem(_id: item._id ?? "", nameArabic: item.nameArabic ?? "", descriptionEnglish: item.descriptionEnglish ?? "", nameEnglish: item.nameEnglish ?? "", isCustomised: item.isCustomised ?? false, price: item.price ?? 0.0, descriptionArabic: item.descriptionArabic ?? "", itemImageUrl: item.itemImageUrl ?? "", allergicComponent: item.allergicComponent ?? [])
+        let menuItem = MenuItem(_id: item._id ?? "", nameArabic: item.nameArabic ?? "", descriptionEnglish: item.descriptionEnglish ?? "", nameEnglish: item.nameEnglish ?? "", isCustomised: item.isCustomised ?? false, price: item.price ?? 0.0, descriptionArabic: item.descriptionArabic ?? "", itemImageUrl: item.itemImageUrl ?? "", allergicComponent: item.allergicComponent ?? [], isAvailable: item.isAvailable ?? true)
        setItemData(item: menuItem)
     }
 
@@ -154,10 +171,16 @@ class ItemTableViewCell: UITableViewCell {
     func configureLoading() {
         self.isImageLoading = true
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-    }
     
+    private func grayScaleContent(available: Bool) {
+        favouriteButton.isHidden = !available
+        addButton.backgroundColor = available ? AppColors.kuduThemeBlue : AppColors.ExploreMenuScreen.addButtonUnavailable
+        addButton.setTitleColor(available ? .white : AppColors.ExploreMenuScreen.addButtonUnavailableTextColor, for: .normal)
+        addButton.titleLabel?.lineBreakMode = .byWordWrapping
+        addButton.setFont(available ? AppFonts.mulishMedium.withSize(14) : AppFonts.mulishMedium.withSize(10))
+        addButton.titleLabel?.textAlignment = .center
+        addButton.setTitle(available ? LocalizedStrings.ExploreMenu.addButton : "Not\nAvailable", for: .normal)
+        self.itemImgView.image = available ? self.itemImgView.image : self.itemImgView.image?.grayscale()
+        self.gradientImageView.image = available ? AppImages.ExploreMenu.cellGradient : self.gradientImageView.image?.grayscale()
+    }
 }

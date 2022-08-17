@@ -25,6 +25,7 @@ struct MenuItem: Codable {
     let allergicComponent: [AllergicComponent]?
     var currentCartCountInApp: Int?
     var isLikedInApp: Bool?
+    let isAvailable: Bool?
 }
 
 struct AllergicComponent: Codable {

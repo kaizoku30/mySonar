@@ -96,5 +96,14 @@ extension GuestProfileVC: UITableViewDataSource, UITableViewDelegate {
         if row == .menu {
             self.triggerMenuFlow()
         }
+        if row == .ourStore {
+            goToOurStore()
+        }
+    }
+    
+    private func goToOurStore() {
+        let vc = OurStoreVC.instantiate(fromAppStoryboard: .Home)
+        vc.viewModel = OurStoreVM(delegate: vc)
+        dismissSideMenu(pushViewController: vc)
     }
 }
