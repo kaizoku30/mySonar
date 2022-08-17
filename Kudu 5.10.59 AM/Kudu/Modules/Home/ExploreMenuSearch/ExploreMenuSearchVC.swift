@@ -337,39 +337,43 @@ extension ExploreMenuSearchVC: UITableViewDataSource, UITableViewDelegate {
             }
             
             if let item = results[safe: row - 1] {
-                if item.isItem ?? false {
-                    let cell = tableView.dequeueCell(with: ItemTableViewCell.self)
-                    cell.configure(item)
-                    cell.openItemDetailForSearch = { [weak self] (result) in
-                        guard let `self` = self else { return }
-                        mainThread {
-                            self.searchTFView.unfocus()
-                            DataManager.shared.saveToRecentlySearchExploreMenu(result)
-                            let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-                            bottomSheet.configureForExploreMenu(container: self.view, item: result)
-                        }
-                    }
-                    cell.triggerLoginFlow = { [weak self] in
-                        let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
-                        loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
-                        self?.push(vc: loginVC)
-                    }
-                    return cell
-                } else {
-                    let cell = tableView.dequeueCell(with: ExploreSearchCategoryResultCell.self)
-                    cell.configure(item)
-                    cell.performOperation = { [weak self] in
-                        DataManager.shared.saveToRecentlySearchExploreMenu($0)
-                        let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
-                        self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
-                    }
-                    return cell
-                }
+                return handleItemCellForResults(tableView, cellForRowAt: indexPath, item: item)
             }
             return UITableViewCell()
         } else {
             //Pagination Loader
             return getLoaderCell(tableView, cellForRowAt: indexPath)
+        }
+    }
+    
+    private func handleItemCellForResults(_ tableView: UITableView, cellForRowAt indexPath: IndexPath, item: MenuSearchResultItem) -> UITableViewCell {
+        if item.isItem ?? false {
+            let cell = tableView.dequeueCell(with: ItemTableViewCell.self)
+            cell.configure(item)
+            cell.openItemDetailForSearch = { [weak self] (result) in
+                guard let `self` = self else { return }
+                mainThread {
+                    self.searchTFView.unfocus()
+                    DataManager.shared.saveToRecentlySearchExploreMenu(result)
+                    let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
+                    bottomSheet.configureForExploreMenu(container: self.view, item: result)
+                }
+            }
+            cell.triggerLoginFlow = { [weak self] in
+                let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
+                loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
+                self?.push(vc: loginVC)
+            }
+            return cell
+        } else {
+            let cell = tableView.dequeueCell(with: ExploreSearchCategoryResultCell.self)
+            cell.configure(item)
+            cell.performOperation = { [weak self] in
+                DataManager.shared.saveToRecentlySearchExploreMenu($0)
+                let title = AppUserDefaults.selectedLanguage() == .en ? $0.titleEnglish ?? "" : $0.titleArabic ?? ""
+                self?.getCategoryItems(forMenuId: $0._id ?? "", menuTitle: title)
+            }
+            return cell
         }
     }
     
