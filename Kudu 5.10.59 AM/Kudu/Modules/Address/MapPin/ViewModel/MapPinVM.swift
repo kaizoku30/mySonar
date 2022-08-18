@@ -71,7 +71,8 @@ extension GeoLocation {
         let info = object.info
         let formattedAdddress = (info[.formattedAddress] ?? "") ?? ""
         var city = (info[.locality] ?? "") ?? ""
-        if city.isEmpty { city = (info[.subAdministrativeArea3] ?? "") ?? ""}
+        if city.isEmpty {
+            city = (info[.subAdministrativeArea3] ?? "") ?? ""}
         let state = (info[.administrativeArea] ?? "") ?? ""
         let trimmedAddress = formattedAdddress//applyTrimmingAlgorithm(formattedAdddress, city: city, state: state)
         let coordinates = object.coordinates

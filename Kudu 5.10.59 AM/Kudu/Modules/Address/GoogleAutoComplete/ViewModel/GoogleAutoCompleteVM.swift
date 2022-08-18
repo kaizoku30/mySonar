@@ -73,9 +73,6 @@ class GoogleAutoCompleteVM {
             }
             switch result {
             case .success(let data):
-                if data.count <= 0 {
-                    
-                }
                 guard let detailMatch = data[0].place else {
                     return
                 }

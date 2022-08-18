@@ -74,14 +74,14 @@ extension MyAddressVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let type = MyAddressView.Sections(rawValue: section)
-        guard let type = type, let viewModel = viewModel else { return nil }
+        guard let type = MyAddressView.Sections(rawValue: section), let viewModel = viewModel else { return nil }
         let view = MyAddressHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.width, height: tableView.height))
         view.setTitle(type.title)
         if type == .DEFAULT && viewModel.getDefaultAddress.isNil {
             return nil
         }
-        return type == .DEFAULT ? view : (viewModel.getList.count == 0 ? nil : view)
+        let checkListCount = (viewModel.getList.count == 0 ? nil : view)
+        return type == .DEFAULT ? view : checkListCount
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

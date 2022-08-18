@@ -33,7 +33,10 @@ class SearchAddressCell: UITableViewCell {
     }
     
     func configure(address: String) {
-        if address.isEmpty { searchLabel.text = LocalizedStrings.AddNewAddress.searchLocation; searchLabel.textColor = AppColors.AddNewAddress.disabledTextColor;  return}
+        if address.isEmpty {
+            searchLabel.text = LocalizedStrings.AddNewAddress.searchLocation
+            searchLabel.textColor = AppColors.AddNewAddress.disabledTextColor
+            return }
         searchLabel.text = address
         searchLabel.textColor = .black
     }

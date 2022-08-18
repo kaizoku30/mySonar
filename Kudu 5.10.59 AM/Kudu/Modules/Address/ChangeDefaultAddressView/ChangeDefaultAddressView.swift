@@ -116,7 +116,8 @@ extension ChangeDefaultAddressView: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row >= list.count { return UITableViewCell() }
+        if indexPath.row >= list.count {
+            return UITableViewCell() }
         let cell = tableView.dequeueCell(with: AddressOptionTableCell.self)
         cell.configure(item: self.list[indexPath.row])
         return cell

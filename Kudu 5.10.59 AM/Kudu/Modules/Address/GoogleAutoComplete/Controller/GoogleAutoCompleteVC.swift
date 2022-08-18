@@ -81,7 +81,8 @@ class GoogleAutoCompleteVC: BaseVC {
                 DataManager.shared.currentDeliveryLocation = newLoc
                 let currentLocationSaved = DataManager.shared.fetchRecentSearchesForDeliveryLocation()
                 let contains = currentLocationSaved.contains(where: { $0.latitude == newLoc.latitude && $0.longitude == newLoc.longitude && $0.trimmedAddress == newLoc.trimmedAddress && $0.googleTitle == newLoc.googleTitle })
-                if contains == false { DataManager.shared.saveToRecentlySearchDeliveryLocation(newLoc) }
+                if contains == false {
+                    DataManager.shared.saveToRecentlySearchDeliveryLocation(newLoc) }
             }
             self?.prefillCallback?(newLoc)
             self?.pop()
@@ -120,13 +121,6 @@ extension GoogleAutoCompleteVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if baseView.showRecentSearches(tableView) {
-//            guard let viewModel = self.viewModel else { return 0 }
-//            if viewModel.isFetchingAddressList {
-//                return 1
-//            }
-//            let showRecentSearch: Int = viewModel.getRecentlySearchAddress.count > 0 ? 1 : 0
-//            let showAddress = viewModel.getMyAddressList.count > 0 ? 1 : 0
-//            return showRecentSearch + showAddress
             guard let viewModel = self.viewModel else { return 0 }
             if viewModel.isFetchingAddressList {
                 return 1
@@ -144,7 +138,8 @@ extension GoogleAutoCompleteVC: UITableViewDelegate, UITableViewDataSource {
                 return 1
             }
             let sectionType = GoogleAutoCompleteView.SetDeliveryLocationSection(rawValue: section)
-            if sectionType == nil { return 0 }
+            if sectionType == nil {
+                return 0 }
             let rows = sectionType! == .recentlySearched ? viewModel.getRecentlySearchAddress.count : viewModel.getMyAddressList.count
             return rows == 0 ? 0 : rows + 1
         }
@@ -236,43 +231,8 @@ extension GoogleAutoCompleteVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    private func getRecentlySearchedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(with: AutoCompleteResultCell.self)
-        if let viewModel = self.viewModel, indexPath.row < viewModel.getRecentlySearchAddress.count {
-            let item = viewModel.getRecentlySearchAddress[indexPath.row]
-            cell.configure(title: item.googleTitle ?? "", subtitle: item.googleSubtitle ?? "", index: indexPath.row)
-        }
-        return cell
-    }
-    
-    private func getSavedAddressCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueCell(with: AutoCompleteResultCell.self)
-        if let viewModel = self.viewModel, indexPath.row < viewModel.getMyAddressList.count {
-            let item = viewModel.getMyAddressList[indexPath.row]
-            cell.configure(title: item.addressLabel ?? "", subtitle: item.buildingName ?? "", index: indexPath.row, addressType: WebServices.AddressLabelType(rawValue: item.addressLabel ?? "") ?? .HOME)
-        }
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if baseView.showRecentSearches(tableView) {
-//            let section = GoogleAutoCompleteView.SetDeliveryLocationSection(rawValue: indexPath.section)
-//            guard let section = section, let viewModel = self.viewModel else { return }
-//            if section == .recentlySearched, (indexPath.row - 1) < viewModel.getRecentlySearchAddress.count {
-//                let item = viewModel.getRecentlySearchAddress[indexPath.row - 1]
-//                self.prefillCallback?(item)
-//                self.pop()
-//                return
-//            } else {
-//                if (indexPath.row - 1) < viewModel.getMyAddressList.count {
-//                    let item = viewModel.getMyAddressList[indexPath.row - 1]
-//                    let location = LocationInfoModel(trimmedAddress: item.buildingName ?? "", city: item.cityName ?? "", state: item.stateName ?? "", postalCode: item.zipCode ?? "", latitude: (item.location?.latitude) ?? 0.0, longitude: (item.location?.longitude) ?? 0.0)
-//                    self.prefillCallback?(location)
-//                    self.pop()
-//                    return
-//                }
-//            }
-            
             return
         }
         getDetails(index: indexPath.row)
@@ -333,7 +293,8 @@ extension GoogleAutoCompleteVC: GoogleAutoCompleteVMDelegate {
                 DataManager.shared.currentDeliveryLocation = prefillData
                 let currentLocationSaved = DataManager.shared.fetchRecentSearchesForDeliveryLocation()
                 let contains = currentLocationSaved.contains(where: { $0.latitude == prefillData.latitude && $0.longitude == prefillData.longitude && $0.trimmedAddress == prefillData.trimmedAddress && $0.googleTitle == prefillData.googleTitle })
-                if contains == false { DataManager.shared.saveToRecentlySearchDeliveryLocation(prefillData) }
+                if contains == false {
+                    DataManager.shared.saveToRecentlySearchDeliveryLocation(prefillData) }
                 
             }
             self.prefillCallback?(prefillData)

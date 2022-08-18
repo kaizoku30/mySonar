@@ -117,10 +117,6 @@ class AddressEntryFieldCell: UITableViewCell {
             setupEntryTextField()
             entryTFView.currentText = entry ?? ""
         }
-//        self.isUserInteractionEnabled = !(type == .state || type == .city)
-//        if type == .state || type == .city && prefillAttempted {
-//            self.isUserInteractionEnabled = true
-//        }
         setPlaceholder()
         entryContainerView.isHidden = (type == .phoneNum || type == .zipCode)
         phoneEntryContainerView.isHidden = (type != .phoneNum && type != .zipCode)
