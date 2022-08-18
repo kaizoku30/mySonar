@@ -32,7 +32,7 @@ struct MyAddressListItem: Codable {
     
     func convertToRequest() -> AddAddressRequest {
         let item = self
-        let addressLabel = WebServices.AddressLabelType(rawValue: item.addressLabel ?? "") ?? .HOME
+        let addressLabelEntered = WebServices.AddressLabelType(rawValue: item.addressLabel ?? "") ?? .HOME
         let name = item.name ?? ""
         let stateName = item.stateName ?? ""
         let cityName = item.cityName ?? ""
@@ -59,7 +59,7 @@ struct MyAddressListItem: Codable {
         } else {
             landmark = nil
         }
-        return AddAddressRequest(addressLabel: addressLabel, otherAddressLabel: otherAddressLabel, name: name, stateName: stateName, cityName: cityName, phoneNumber: phoneNumber, zipCode: zipCode, buildingName: buildingName, landmark: landmark, isDefault: isDefault, latitude: latitude, longitude: longitude)
+        return AddAddressRequest(addressLabel: addressLabelEntered, otherAddressLabel: otherAddressLabel, name: name, stateName: stateName, cityName: cityName, phoneNumber: phoneNumber, zipCode: zipCode, buildingName: buildingName, landmark: landmark, isDefault: isDefault, latitude: latitude, longitude: longitude)
     }
 }
 

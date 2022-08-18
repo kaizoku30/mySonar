@@ -89,14 +89,13 @@ extension MyAddressVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let type = MyAddressView.Sections(rawValue: section)
-        guard let type = type, let viewModel = viewModel else { return 0 }
-        return type == .DEFAULT ? (viewModel.getDefaultAddress == nil ? 0 : 1) : viewModel.getList.count
+        guard let type = MyAddressView.Sections(rawValue: section), let viewModel = viewModel else { return 0 }
+        let checkDefaultAddress = (viewModel.getDefaultAddress == nil ? 0 : 1)
+        return type == .DEFAULT ? checkDefaultAddress : viewModel.getList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let type = MyAddressView.Sections(rawValue: indexPath.section)
-        guard let type = type, let viewModel = viewModel else { return UITableViewCell() }
+        guard let type = MyAddressView.Sections(rawValue: indexPath.section), let viewModel = viewModel else { return UITableViewCell() }
         if type == .OTHER && indexPath.row >= viewModel.getList.count {
             return UITableViewCell()
         } else {
