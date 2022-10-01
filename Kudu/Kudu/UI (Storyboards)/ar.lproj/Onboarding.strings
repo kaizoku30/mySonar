@@ -1,0 +1,93 @@
+
+/* Class = "UIButton"; normalTitle = "Skip"; ObjectID = "0gL-jJ-QPT"; */
+"0gL-jJ-QPT.normalTitle" = "Skip";
+
+/* Class = "UILabel"; text = "+966"; ObjectID = "5Pr-db-8Lq"; */
+"5Pr-db-8Lq.text" = "+966";
+
+/* Class = "UIButton"; normalTitle = "Enter phone number"; ObjectID = "7jd-f6-OEB"; */
+"7jd-f6-OEB.normalTitle" = "Enter phone number";
+
+/* Class = "UILabel"; text = "UNDER DEVELOPMENT"; ObjectID = "7qY-nj-dLw"; */
+"7qY-nj-dLw.text" = "UNDER DEVELOPMENT";
+
+/* Class = "UILabel"; text = "Please check your number"; ObjectID = "83e-do-pEa"; */
+"83e-do-pEa.text" = "Please check your number";
+
+/* Class = "UILabel"; text = "Didn’t receive the OTP code?"; ObjectID = "CFG-x0-EO3"; */
+"CFG-x0-EO3.text" = "Didn’t receive the OTP code?";
+
+/* Class = "UILabel"; text = "Please enter your phone number"; ObjectID = "DQL-Zw-3zu"; */
+"DQL-Zw-3zu.text" = "Please enter your phone number";
+
+/* Class = "UILabel"; text = "English"; ObjectID = "E05-Rd-quO"; */
+"E05-Rd-quO.text" = "English";
+
+/* Class = "UILabel"; text = "+966"; ObjectID = "IVt-I2-v6n"; */
+"IVt-I2-v6n.text" = "+966";
+
+/* Class = "UILabel"; text = "Please enter the OTP code sent to"; ObjectID = "Jfz-EO-dFE"; */
+"Jfz-EO-dFE.text" = "Please enter the OTP code sent to";
+
+/* Class = "UILabel"; text = "+911 8789734792"; ObjectID = "Jrc-gm-Mo7"; */
+"Jrc-gm-Mo7.text" = "+911 8789734792";
+
+/* Class = "UILabel"; text = "مرحبا بك في كودو"; ObjectID = "K8i-J5-o3L"; */
+"K8i-J5-o3L.text" = "مرحبا بك في كودو";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "LzI-Vr-nLS"; */
+"LzI-Vr-nLS.normalTitle" = "Sign Up";
+
+/* Class = "UILabel"; text = "Welcome to KUDU"; ObjectID = "OOl-WM-mI2"; */
+"OOl-WM-mI2.text" = "Welcome to KUDU";
+
+/* Class = "UILabel"; text = "or continue with"; ObjectID = "Oew-yK-OC9"; */
+"Oew-yK-OC9.text" = "or continue with";
+
+/* Class = "UILabel"; text = "Different number? "; ObjectID = "PYT-3b-FxB"; */
+"PYT-3b-FxB.text" = "Different number? ";
+
+/* Class = "UIButton"; normalTitle = "My Address"; ObjectID = "Sqq-uB-eiR"; */
+"Sqq-uB-eiR.normalTitle" = "My Address";
+
+/* Class = "UIButton"; normalTitle = "Continue"; ObjectID = "SwX-55-V0S"; */
+"SwX-55-V0S.normalTitle" = "Continue";
+
+/* Class = "UILabel"; text = "You have entered invalid OTP"; ObjectID = "W2X-6q-Vzz"; */
+"W2X-6q-Vzz.text" = "You have entered invalid OTP";
+
+/* Class = "UIButton"; normalTitle = "Resend code"; ObjectID = "W8t-BB-dOP"; */
+"W8t-BB-dOP.normalTitle" = "Resend code";
+
+/* Class = "UILabel"; text = "Create Account"; ObjectID = "WzY-Vg-cDJ"; */
+"WzY-Vg-cDJ.text" = "Create Account";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "ZwA-Ns-yPz"; */
+"ZwA-Ns-yPz.normalTitle" = "Settings";
+
+/* Class = "UIButton"; normalTitle = "Skip"; ObjectID = "cm5-Ln-ToM"; */
+"cm5-Ln-ToM.normalTitle" = "Skip";
+
+/* Class = "UILabel"; text = "LOGIN"; ObjectID = "h3Z-QL-2Fi"; */
+"h3Z-QL-2Fi.text" = "LOGIN";
+
+/* Class = "UIButton"; normalTitle = "Verify"; ObjectID = "hOe-9U-0hx"; */
+"hOe-9U-0hx.normalTitle" = "Verify";
+
+/* Class = "UIButton"; normalTitle = "Get Started"; ObjectID = "hbd-MQ-vvR"; */
+"hbd-MQ-vvR.normalTitle" = "Get Started";
+
+/* Class = "UIButton"; normalTitle = "Logout"; ObjectID = "i8S-Ky-BFw"; */
+"i8S-Ky-BFw.normalTitle" = "Logout";
+
+/* Class = "UILabel"; text = "عربى"; ObjectID = "mFc-RC-0Tl"; */
+"mFc-RC-0Tl.text" = "عربى";
+
+/* Class = "UILabel"; text = "Choose Language "; ObjectID = "mPA-QE-w1C"; */
+"mPA-QE-w1C.text" = "Choose Language ";
+
+/* Class = "UILabel"; text = "Verify Phone Number"; ObjectID = "vLl-Tn-2Ty"; */
+"vLl-Tn-2Ty.text" = "Verify Phone Number";
+
+/* Class = "UILabel"; text = "60"; ObjectID = "yV1-QI-eL5"; */
+"yV1-QI-eL5.text" = "60";

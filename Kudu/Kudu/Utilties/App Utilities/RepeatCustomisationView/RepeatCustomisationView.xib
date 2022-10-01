@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RepeatCustomisationView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="alertMessage" destination="4Uk-dS-ZJZ" id="ZA4-Sy-9af"/>
+                <outlet property="alertTitle" destination="XH8-Hm-WU5" id="mHE-MU-tvy"/>
+                <outlet property="leftBtn" destination="u9b-Uk-nhX" id="p5I-oM-h5E"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="FMp-sx-Dk5"/>
+                <outlet property="rightBtn" destination="dTn-8J-UWy" id="5Km-Xa-XRJ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="296" height="212"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeat Previous Customization?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XH8-Hm-WU5">
+                    <rect key="frame" x="12" y="52" width="272" height="18"/>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Uk-dS-ZJZ">
+                    <rect key="frame" x="12" y="90" width="272" height="30.5"/>
+                    <string key="text">Do you want to repeat your last
+ added customization?</string>
+                    <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                    <color key="textColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTn-8J-UWy" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="161.5" y="156" width="122.5" height="40"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="D5Y-Sk-JnB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Customize">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u9b-Uk-nhX" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="12" y="156" width="122.5" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Repeat">
+                        <color key="titleColor" name="kuduThemeBlue"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="0.67843137254901964" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ILb-yF-vwh" userLabel="dismissButton" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="252" y="8" width="32" height="32"/>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.93333333333333335" blue="0.99607843137254903" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="9kF-Q0-HEg"/>
+                        <constraint firstAttribute="width" constant="32" id="GnU-Ae-3VM"/>
+                    </constraints>
+                    <inset key="contentEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="blackCross"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="pbq-4K-Sau"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="dTn-8J-UWy" firstAttribute="trailing" secondItem="XH8-Hm-WU5" secondAttribute="trailing" id="3ob-A1-Uyh"/>
+                <constraint firstItem="u9b-Uk-nhX" firstAttribute="width" secondItem="dTn-8J-UWy" secondAttribute="width" id="4a0-DH-JYX"/>
+                <constraint firstItem="4Uk-dS-ZJZ" firstAttribute="top" secondItem="XH8-Hm-WU5" secondAttribute="bottom" constant="20" id="8XF-rS-7Ck"/>
+                <constraint firstItem="u9b-Uk-nhX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4Uk-dS-ZJZ" secondAttribute="bottom" constant="12" id="Bej-ak-ODA"/>
+                <constraint firstAttribute="trailing" secondItem="4Uk-dS-ZJZ" secondAttribute="trailing" constant="12" id="GHj-tN-1Di"/>
+                <constraint firstItem="dTn-8J-UWy" firstAttribute="leading" secondItem="u9b-Uk-nhX" secondAttribute="trailing" constant="27" id="K8y-rz-na1"/>
+                <constraint firstItem="XH8-Hm-WU5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="LnO-mh-z6l"/>
+                <constraint firstItem="u9b-Uk-nhX" firstAttribute="height" secondItem="dTn-8J-UWy" secondAttribute="height" id="VEm-lM-Tfx"/>
+                <constraint firstAttribute="trailing" secondItem="XH8-Hm-WU5" secondAttribute="trailing" constant="12" id="Vqq-NC-6vP"/>
+                <constraint firstItem="u9b-Uk-nhX" firstAttribute="leading" secondItem="XH8-Hm-WU5" secondAttribute="leading" id="Wl4-ei-C35"/>
+                <constraint firstItem="ILb-yF-vwh" firstAttribute="trailing" secondItem="dTn-8J-UWy" secondAttribute="trailing" id="cdx-mK-SFP"/>
+                <constraint firstItem="XH8-Hm-WU5" firstAttribute="top" secondItem="ILb-yF-vwh" secondAttribute="bottom" constant="12" id="g9h-O0-udO"/>
+                <constraint firstAttribute="bottom" secondItem="dTn-8J-UWy" secondAttribute="bottom" constant="16" id="ja1-DQ-Maw"/>
+                <constraint firstItem="dTn-8J-UWy" firstAttribute="centerY" secondItem="u9b-Uk-nhX" secondAttribute="centerY" id="tle-Fs-OBL"/>
+                <constraint firstItem="4Uk-dS-ZJZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="vde-gV-xYM"/>
+                <constraint firstItem="ILb-yF-vwh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="z2W-FU-fLP"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="8"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="132" y="130"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="dTn-8J-UWy">
+            <size key="intrinsicContentSize" width="70" height="30"/>
+        </designable>
+        <designable name="u9b-Uk-nhX">
+            <size key="intrinsicContentSize" width="48" height="30"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="blackCross" width="20" height="20.5"/>
+        <namedColor name="kuduThemeBlue">
+            <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

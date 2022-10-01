@@ -1,0 +1,213 @@
+/*
+ Localizable.strings
+ Kudu
+ 
+ Created by Admin on 05/05/22.
+ 
+ */
+
+// MARK: Login
+"login" = "Login";
+"pleaseEnterYourPhoneNumber" = "ادخل رقم الجوال";
+"enterYourPhoneNumber" = "ادخل رقم الجوال";
+"getOtp" = "احصل على الرمز";
+"orContinueWith" = "او تابع التسجيل باستخدام";
+"dontHaveAnAccount" = "Don’t have an account? ";
+"signUp" = "تسجيل الدخول";
+"loginToUnlockAwesomeFeatures" = "LOGIN TO UNLOCK\nAWESOME\nNEW FEATURES";
+// MARK: SignUp
+"createAccountSignUpLbl" = "انشأ حساب";
+"enterYourName" = "ادخل اسمك";
+"enterYourEmailOptional" = "ادخل بريدك الالكتروني (اختياري)";
+"alreadyHaveAnAccount" = "لديك حساب مسبقا؟ ";
+"signIn" = "تسجيل الدخول";
+"showMergeAlertConfigureMessage" = "Seems like you already have an account with this number. Do you want to merge your accounts?";
+"continue" = "تابع";
+"cancel" = "الغاء";
+"pleaseEnterFullName" = "ادخل الاسم بالكامل";
+"pleaseEnterValidFullName" = "ادخل اسم كامل صالح";
+"pleaseEnterPhoneNumber" = "الرجاء ادخال رقم الجوال";
+"pleaseEnterValidPhoneNumber" = "الرجاء ادخال رقم جوال صالح";
+"pleaseEnterValidEmail" = "Please enter valid Email ID.";
+"socialAccountNotWithUs" = "This social account is not registered with us. Please fill the necessary details to complete Sign Up.";
+"bySigningUpYouAgree" = "By signing up, you agree to the ";
+"setupTermsAndConditionsViewtermsOfUse" = "Terms of use";
+"setupTermsAndConditionsViewAndText" = " and ";
+"setupTermsAndConditionsViewPrivacyPolicy" = "Privacy Policy";
+// MARK: Phone Verification
+"verifyPhoneNumber" = "تأكيد رقم الجوال";
+"pleaseEnterTheOtpCodeSentTo" = "الرجاء ادخال الرمز المرسل اليك";
+"differentNumber" = "رقم جوال اخر؟";
+"didntReceiveTheOTPCode" =" Didn’t receive the OTP code?";
+"resendCode" = "اعادة ارسال الرمز";
+"verify" = "تأكيد";
+"youHaveXNumberAttemptsRemaining" = "You have XNumber attempts remaining";
+"youHaveXNumberAttemptRemaining" = "You have XNumber attempt remaining";
+"verifyEmailAddressTitle" = "Verify Email Address";
+"differentEmail" = "بريد الكتروني مختلف؟";
+"emailAlreadyVerified" = "Email Already Verified";
+"emailAlreadyAssociated" = "This Email ID is already associated with some other Kudu account, please add and verify another Email ID.";
+"updateButton" = "Update";
+// MARK: Home Screen
+"deliverTo" = "التوصيل الى";
+"delivery" = "توصيل";
+"curbside" = "استلام في السيارة";
+"pickup" = "استلام";
+"exploreMenu" = "تصفح القائمة";
+"fullMenu" = "القائمة كامله";
+"recommendations" = "RECOMMENDATIONS";
+"viewAll" = "VIEW ALL";
+"favourites" = "المفضلات";
+"orderFromListOfFavourites" = "اطلب من قائمة المفضلات";
+"orderNow" = "اطلب الان";
+"pickupFrom" = "PICKUP FROM";
+"unableToFetchAddress" = "Unable To Fetch Address";
+"setDeliveryLocation" = "تحديد موقع التسليم";
+"setCurbsideLocation" = "Set Curbside Location";
+"setPickUpLocation" = "Set PickUp Location";
+"inStorePromos" = "مشاهدة الكل";
+// MARK: Profile
+"myAccount" = "حسابي";
+"edit" = "Edit";
+"orders" = "طلباتي";
+"payments" = "المدفوعات";
+"favouritesProfile" = "المفضلات";
+"address" = "العناوين";
+"ourStore" = "Our Store";
+"controlCentre" = "Control Centre";
+"menu" = "القائمة";
+"notificationPref" = "Notification Preferences";
+"language" = "اللغة";
+"verifyNow" = "التأكيد الان";
+// MARK: Explore Menu
+"exploreMenuTitle" = "تصفح المنيو";
+"addButton" = "اضف";
+"customizable" = "تغيير";
+"moreLabel" = "المزيد";
+// MARK: Search Menu
+"searchByNameOrCategories" = "تم اضافة العنصر للمفضلات";
+"topSearchedCategories" = "مفضلاتي";
+"recentSearchesTitle" = "عمليات البحث الأخيرة";
+"inDish" = "In dish";
+"inCategory" = "In category";
+// MARK: MyAddress
+"myAddressLabel" = "عناويني";
+"defaultAddressTitle" = "Default";
+"otherAddressTitle" =  "Other Address";
+"addNewAddressBtn" = "اضافة عنوان جديد";
+"delete" = "Delete";
+"editAddress" = "Edit Address";
+"somethingWentWrong" = "Something Went Wrong";
+"showAddDefaultAddressPopUpMessage" =  "This is the default address, If you want to delete this address, please add new default address.";
+"showDeletePopUpMessage" = "Are you sure you want to delete this address?";
+"add" = "Add";
+"addressAddedMessage" = "تمت إضافة عنوانك بنجاح.";
+"addressUpdatedMessage" = "تم تحديث عنوانك بنجاح.";
+"addressAddedTitle" = "تمت إضافة العنوان بنجاح!";
+"addressUpdatedTitle" = "تم تحديث العنوان بنجاح!";
+// MARK: AddNewAddress
+"saveButton" = "حفظ";
+"enterMobileNumberOptional" = "ادخل رقم جوالك";
+"buildingName" = "رقم الشقة / المنبى";
+"city" = "المدينة";
+"state" = "الولاية";
+"landmark" = "معلم معروف";
+"zipCode" = "الرمز السري";
+"searchLocation" = "Search location";
+"home" = "المنزل";
+"work" = "العمل";
+"other" = "اخرى";
+"setAsDefaultAddress" = "تعيين كعنوان افتراضي";
+"pleaseEnterName" = "Please Enter Name";
+"pleasAddLocation" = "Please add location";
+"pleaseEnterState" = "Please Enter State";
+"pleaseEnterCity" = "Please Enter City";
+"pleaseEnterZipcode" = "Please Enter Zipcode";
+"pleaseEnterBuildingName" = "Please Enter Building Name";
+"pleaseEnterAddressLabel" = "Please Enter Address Label";
+// MARK: Settings
+"setting" = "الاعدادات";
+"settings" = "الاعدادات";
+"help" = "المساعدة";
+"faq" = "الاسئلة الشائعة";
+"support" = "الدعم";
+"sendFeedback" = "Send Feedback";
+"content" = "المحتوى";
+"privacyAndPolicy" = "سياسة الخصوصية";
+"termsAndConditions" = "الشروط والاحكام";
+"ourVision" = "روؤيتنا";
+"aboutUs" = "نبذة عن الشركة";
+"accountControl" = "ادارة الحساب";
+"deleteAccount" = "حذف الحساب";
+"logOut" = "تسجيل الخروج";
+"logoutButton" = "تسجيل الخروج";
+"areYouSureYouWantToLogout" = "هل أنت متأكد أنك تريد تسجيل الخروج";
+"confirm" = "مأكد";
+"yourInformationWillBeErasedAsAResult" = "Your information will be erased as a result. Are you sure you want to permanently delete your account?";
+"itLooksLikeYouAreExperiencingProblems" = "It looks like you are experiencing problems with our process. We are here to help so please get in touch with us.";
+"callUs" = "اتصل بنا";
+"emailUs" = "ارسل لنا عبر البريد الإلكتروني";
+"pleasewaitWhileUploading" = "Please wait while uploading...";
+"pleaseEnterYourName" = "Please enter Your Name";
+"pleaseEnterValidName" = "Please enter valid name";
+"pleaseEnterYourMobileNumber" =  "Please enter your Mobile Number";
+"pleaseEnterValidNumber" = "Please enter valid number";
+"pleaseEnterYourFeedback" = "Please enter your Feedback";
+"pleaseEnterValidFeedback" = "Please enter valid feedback";
+"pleaseEnterValidEmailId" = "الرجاء ادخال بريد الكتروني صالح";
+"feedbackSentSuccessfully" = "Feedback has been submitted successfully.";
+"enterMobileNumber" = "Enter Mobile Number";
+"writeYourFeedbackHere" = "Write your feedback here...";
+"emailIdOptional" = "Email Id (Optional)";
+"submit" = "Submit";
+"uploadPhoto" = "Upload Photo";
+"attachedPhotos" = "Attached Photos";
+// MARK: Google AutoComplete
+"typeAddressToSearch" = "Type address to search...";
+"recentSearches" = "Recent Searches";
+"savedAddresses" =  "العنواين المحفوظة";
+"searchYourLocation" = "ابحث في موقعك";
+"setLocationTitle" = "Set Location";
+"confirmLocation" = "قم بتأكيد الموقع";
+"clear" = "Clear";
+// MARK: MapPin
+"movePinLabel" = "انقل الدبوس لتحديد الموقع";
+// MARK: Set Restaurant
+"selectBranch" = "Select branch";
+"open" = "مفتوح";
+"closed" = "مقفل";
+"xStoreNearYou" = "XNumber Store near you";
+"xStoresNearYou" = "XNumber Stores near you";
+"map" = "الخريطة";
+"km" = "كم";
+"confirmlocationSmall" = "قم بتأكيد الموقع";
+"list" = "قائمة";
+"xKuduNearYou" = "XNumber KUDU NEAR YOU";
+"amString" = "مساء";
+"pmString" = "صباحا";
+// MARK: NoInternetConnection
+"somethingWentWrong" = "Something went wrong";
+"pleaseCheckYourInternetconnection" = "Please check your internet connection";
+"tryAgain" = "حاول مرة اخرى";
+// MARK: Notification Preferences
+"pushNotifications" = "Push Notifications";
+"muteNotification" = "Mute Notification";
+"loyaltyProgram" = "Loyalty Program";
+"orderPurchase" = "Order and Purchase";
+"promosOffers" = "Promos and offer";
+"pushNotificationsSubtitle" = "Receive updates about orders and purchase, loyalty program, promos & offers";
+"muteNotificationSubtitle" = "Mute or Unmute all notifications";
+"loyaltyProgramSubtitle" = "Receive updates about loyalty program";
+"orderPurchaseSubtitle" = "Receive updates related to your order status, delivery and cancellations";
+"promosOffersSubtitle" = "Receive updates about coupons, promotions and money saving offers";
+// MARK: Edit Profile
+"editProfile" = "Edit Profile";
+"enterYourEmail" = "ادخل بريدك الالكتروني";
+"pleaseEnterEmail" = "Please enter Email ID.";
+// MARK: Browse Menu
+"browseMenu" = "Browse Menu";
+//MARK: OurStore
+"DeliveryAvailable" = "Delivery available";
+"DeliveryUnavailable" = "Delivery unavailable";
+// MARK: CustomisableDetail
+"select1OutOfXOptions" = "Select 1 out of XNumber options";

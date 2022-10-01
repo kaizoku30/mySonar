@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Notification PrefVC-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="NotificationPrefVC" id="Y6W-OH-hqX" customClass="NotificationPrefVC" customModule="Kudu" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc" customClass="NotificationPrefView" customModule="Kudu" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fX6-Pn-8db">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-sa-NH5" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="16" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="SKU-C0-tz5"/>
+                                            <constraint firstAttribute="width" constant="24" id="bmc-Uv-hQF"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="k_main_chevronLeft"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="imageDirection">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Preferences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="owd-Ba-jlF">
+                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8in-n9-JDf">
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="56"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="5EZ-qb-Rvc" eventType="touchUpInside" id="8B4-HJ-Ngh"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="YdZ-sa-NH5" firstAttribute="leading" secondItem="fX6-Pn-8db" secondAttribute="leading" constant="16" id="BHX-LL-gNY"/>
+                                    <constraint firstAttribute="height" constant="56" id="DQ6-oI-4jL"/>
+                                    <constraint firstItem="owd-Ba-jlF" firstAttribute="centerY" secondItem="fX6-Pn-8db" secondAttribute="centerY" id="GP4-mt-bsY"/>
+                                    <constraint firstItem="8in-n9-JDf" firstAttribute="leading" secondItem="fX6-Pn-8db" secondAttribute="leading" id="WaA-qa-Pzi"/>
+                                    <constraint firstItem="8in-n9-JDf" firstAttribute="top" secondItem="fX6-Pn-8db" secondAttribute="top" id="hfx-wb-UAH"/>
+                                    <constraint firstAttribute="bottom" secondItem="8in-n9-JDf" secondAttribute="bottom" id="nlt-qy-1ey"/>
+                                    <constraint firstItem="owd-Ba-jlF" firstAttribute="leading" secondItem="YdZ-sa-NH5" secondAttribute="trailing" constant="8" id="vnG-RF-Goc"/>
+                                    <constraint firstAttribute="trailing" secondItem="owd-Ba-jlF" secondAttribute="trailing" constant="5" id="wTS-00-np5"/>
+                                    <constraint firstItem="owd-Ba-jlF" firstAttribute="leading" secondItem="8in-n9-JDf" secondAttribute="trailing" id="x5G-ig-6qq"/>
+                                    <constraint firstItem="YdZ-sa-NH5" firstAttribute="centerY" secondItem="fX6-Pn-8db" secondAttribute="centerY" id="xGZ-9x-ZgJ"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lji-eh-cZ8">
+                                <rect key="frame" x="0.0" y="100" width="414" height="677"/>
+                                <color key="backgroundColor" name="offWhiteTableView"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationPrefTableViewCell" id="QtV-vI-GGK" customClass="NotificationPrefTableViewCell" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="91.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QtV-vI-GGK" id="nSe-lb-ZxE">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="91.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="68h-cS-3fI">
+                                                    <rect key="frame" x="16" y="12" width="382" height="67.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7r-87-mxO">
+                                                            <rect key="frame" x="12" y="14" width="36" height="18"/>
+                                                            <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bT3-Yk-EN0">
+                                                            <rect key="frame" x="12" y="40" width="303" height="15.5"/>
+                                                            <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                                                            <color key="textColor" red="0.44705882352941173" green="0.44705882352941173" blue="0.44705882352941173" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Cg-9U-AQN" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                                            <rect key="frame" x="337" y="14" width="33" height="18"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="18" id="NzN-eq-HZK"/>
+                                                                <constraint firstAttribute="width" constant="33" id="bCR-RU-IOn"/>
+                                                            </constraints>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" image="k_selected_switch"/>
+                                                            <connections>
+                                                                <action selector="switchPressed:" destination="QtV-vI-GGK" eventType="touchUpInside" id="kzs-Zy-hMn"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="bT3-Yk-EN0" firstAttribute="leading" secondItem="r7r-87-mxO" secondAttribute="leading" id="FjK-0D-rs1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="bT3-Yk-EN0" secondAttribute="trailing" constant="67" id="Ih7-P8-aMB"/>
+                                                        <constraint firstItem="bT3-Yk-EN0" firstAttribute="top" secondItem="r7r-87-mxO" secondAttribute="bottom" constant="8" id="QZo-eg-4u8"/>
+                                                        <constraint firstAttribute="bottom" secondItem="bT3-Yk-EN0" secondAttribute="bottom" constant="12" id="Sak-qJ-WIo"/>
+                                                        <constraint firstItem="r7r-87-mxO" firstAttribute="top" secondItem="68h-cS-3fI" secondAttribute="top" constant="14" id="bK9-lt-xTr"/>
+                                                        <constraint firstItem="6Cg-9U-AQN" firstAttribute="top" secondItem="r7r-87-mxO" secondAttribute="top" id="c0D-es-Tv7"/>
+                                                        <constraint firstItem="r7r-87-mxO" firstAttribute="leading" secondItem="68h-cS-3fI" secondAttribute="leading" constant="12" id="pbP-fH-OEo"/>
+                                                        <constraint firstAttribute="trailing" secondItem="6Cg-9U-AQN" secondAttribute="trailing" constant="12" id="s68-Mu-nGp"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="68h-cS-3fI" firstAttribute="leading" secondItem="nSe-lb-ZxE" secondAttribute="leading" constant="16" id="0Mb-5q-RVv"/>
+                                                <constraint firstAttribute="bottom" secondItem="68h-cS-3fI" secondAttribute="bottom" constant="12" id="4th-ds-goL"/>
+                                                <constraint firstItem="68h-cS-3fI" firstAttribute="top" secondItem="nSe-lb-ZxE" secondAttribute="top" constant="12" id="Yuk-Hc-yzG"/>
+                                                <constraint firstAttribute="trailing" secondItem="68h-cS-3fI" secondAttribute="trailing" constant="16" id="kya-aX-LFS"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="preferenceSwitch" destination="6Cg-9U-AQN" id="8Ql-bK-Rxv"/>
+                                            <outlet property="subtitleLabel" destination="bT3-Yk-EN0" id="KZb-bq-eSh"/>
+                                            <outlet property="titleLabel" destination="r7r-87-mxO" id="FGj-SE-Emk"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Y6W-OH-hqX" id="oRy-4e-McK"/>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="HWt-6v-Xhi"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3A-xI-S9Q" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                <rect key="frame" x="32" y="792" width="350" height="48"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="EYA-CP-xLl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Save Changes">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="saveChangesPressed:" destination="5EZ-qb-Rvc" eventType="touchUpInside" id="A21-hE-iP6"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="F3A-xI-S9Q" secondAttribute="trailing" constant="32" id="4uC-Tv-eLD"/>
+                            <constraint firstAttribute="bottom" secondItem="F3A-xI-S9Q" secondAttribute="bottom" constant="56" id="IuT-GS-dVr"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="lji-eh-cZ8" secondAttribute="trailing" id="NFY-RQ-RY3"/>
+                            <constraint firstItem="fX6-Pn-8db" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="R1Y-9i-zrU"/>
+                            <constraint firstItem="lji-eh-cZ8" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="TV1-so-Vm1"/>
+                            <constraint firstItem="F3A-xI-S9Q" firstAttribute="top" secondItem="lji-eh-cZ8" secondAttribute="bottom" constant="15" id="YBY-oW-OoZ"/>
+                            <constraint firstItem="lji-eh-cZ8" firstAttribute="top" secondItem="fX6-Pn-8db" secondAttribute="bottom" id="o7n-Ew-h23"/>
+                            <constraint firstItem="fX6-Pn-8db" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="t5b-bG-hOZ"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="fX6-Pn-8db" secondAttribute="trailing" id="uv7-ez-aaf"/>
+                            <constraint firstItem="F3A-xI-S9Q" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="32" id="yKG-bs-H2G"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="notificationTitleLabel" destination="owd-Ba-jlF" id="ZDE-Ht-Shf"/>
+                            <outlet property="saveChangesButton" destination="F3A-xI-S9Q" id="Rkl-xb-nqs"/>
+                            <outlet property="tableView" destination="lji-eh-cZ8" id="Jcu-qF-zTb"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="baseView" destination="5EZ-qb-Rvc" id="Het-vF-eaB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139" y="91"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="6Cg-9U-AQN">
+            <size key="intrinsicContentSize" width="33" height="22"/>
+        </designable>
+        <designable name="YdZ-sa-NH5">
+            <size key="intrinsicContentSize" width="24" height="24"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="k_main_chevronLeft" width="24" height="24"/>
+        <image name="k_selected_switch" width="33" height="18"/>
+        <namedColor name="offWhiteTableView">
+            <color red="0.97254901960784312" green="0.98431372549019602" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,192 @@
+//
+//  OurStoreVC.swift
+//  Kudu
+//
+//  Created by Admin on 16/08/22.
+//
+
+import UIKit
+import CoreLocation
+
+class OurStoreVC: BaseVC {
+    
+    @IBOutlet private weak var baseView: OurStoreView!
+    var viewModel: OurStoreVM!
+    private var debouncer = Debouncer(delay: 1)
+    private var textQuery: String = ""
+	private var selectedIndex: Int = -1
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        handleActions()
+        handleDebouncer()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkLocationState()
+    }
+    
+}
+
+extension OurStoreVC {
+    private func handleActions() {
+        baseView.handleViewActions = { [weak self] (action) in
+            guard let strongSelf = self else { return }
+            switch action {
+            case .backButtonPressed:
+                strongSelf.pop()
+            case .openSettings:
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            case .searchTextChanged(let updatedText):
+                strongSelf.textQuery = updatedText
+                strongSelf.debouncer.call()
+            case .clearButtonPressed:
+                strongSelf.textQuery = ""
+                strongSelf.viewModel.fetchRestaurants(searchKey: "")
+                strongSelf.baseView.handleAPIRequest(.restaurantListing)
+            case .editingStarted:
+                strongSelf.viewModel.clearData()
+            case .openMap:
+                strongSelf.openRestaurantMapVC(selected: nil)
+            }
+        }
+    }
+    
+    private func handleDebouncer() {
+        debouncer.callback = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel.fetchRestaurants(searchKey: strongSelf.textQuery)
+            strongSelf.baseView.handleAPIRequest(.restaurantListing)
+        }
+    }
+    
+    private func openRestaurantMapVC(selected: RestaurantListItem?) {
+        let vc = SetRestaurantMapLocationVC.instantiate(fromAppStoryboard: .Home)
+        vc.ourStoreFlow = true
+        vc.restaurantArray = self.viewModel.getRestaurants
+		if let selected = selected, let index = self.viewModel.getRestaurants.firstIndex(where: { $0._id ?? "" == selected._id ?? ""}) {
+			vc.selectedIndex = index
+		}
+        if let location = self.viewModel.getLocation {
+            vc.currentCoordinates = location
+            vc.lastTextQuery = self.textQuery
+            self.push(vc: vc)
+        } else {
+            SKToast.show(withMessage: "No Location Found")
+        }
+        vc.syncSearchBar = { [weak self] in
+            self?.baseView.syncSearchTextFromMap(text: $0)
+        }
+    }
+}
+
+extension OurStoreVC {
+    private func checkLocationState() {
+        
+        self.baseView.toggleOutOfReachView(DataManager.shared.currentDeliveryLocation.isNil)
+        
+        if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
+            self.baseView.isUserInteractionEnabled = true
+            self.showLocationPermissionAlert()
+            return
+        } else {
+            if DataManager.shared.currentDeliveryLocation.isNotNil {
+                self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: DataManager.shared.currentDeliveryLocation?.latitude ?? 0.0, longitude: DataManager.shared.currentDeliveryLocation?.longitude ?? 0.0))
+                self.baseView.isUserInteractionEnabled = true
+                self.baseView.setupView()
+                return
+            }
+            CommonLocationManager.getLocationOfDevice(foundCoordinates: {
+                if let coordinates = $0 {
+                    self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude))
+                    self.baseView.isUserInteractionEnabled = true
+                    self.baseView.setupView()
+                } else {
+                    self.baseView.isUserInteractionEnabled = true
+                    self.showLocationPermissionAlert()
+                }
+            })
+        }
+    }
+    
+    private func showLocationPermissionAlert() {
+        mainThread {
+            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
+            self.baseView.showLocationPermissionPopUp(errorType: type)
+        }
+    }
+}
+
+extension OurStoreVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if baseView.currenState == .noResultFound {
+            return 0
+        }
+        
+        if baseView.isFetchingRestaurants {
+            return 5
+        }
+        return viewModel.getRestaurants.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if baseView.isFetchingRestaurants {
+            let cell = tableView.dequeueCell(with: ResultShimmerTableViewCell.self)
+            return cell
+        }
+        
+        let cell = tableView.dequeueCell(with: OurStoreItemTableViewCell.self)
+        if let restaurantData = viewModel.getRestaurants[safe: indexPath.row] {
+            cell.configure(restaurant: restaurantData)
+        }
+        cell.openMapWithSelection = { [weak self] in
+            self?.openRestaurantMapVC(selected: $0)
+        }
+        cell.curbsideTapped = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.baseView.toggleViewInteraction(enabled: false)
+            let currentRestaurant = $0
+            let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+			DataManager.shared.currentCurbsideRestaurant = restaurant
+			NotificationCenter.postNotificationForObservers(.curbsideLocationUpdated)
+            strongSelf.triggerMenuFlow(type: .curbside, storeId: $0._id ?? "", lat: $0.restaurantLocation?.coordinates?.last ?? 0, long: $0.restaurantLocation?.coordinates?.first ?? 0)
+            
+        }
+        cell.pickUpTapped = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.baseView.toggleViewInteraction(enabled: false)
+            let currentRestaurant = $0
+            let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+			DataManager.shared.currentPickupRestaurant = restaurant
+			NotificationCenter.postNotificationForObservers(.pickupLocationUpdated)
+            strongSelf.triggerMenuFlow(type: .pickup, storeId: $0._id ?? "", lat: $0.restaurantLocation?.coordinates?.last ?? 0, long: $0.restaurantLocation?.coordinates?.first ?? 0)
+        }
+        return cell
+    }
+}
+
+extension OurStoreVC {
+    private func triggerMenuFlow(type: APIEndPoints.ServicesType, storeId: String, lat: Double, long: Double) {
+        mainThread {
+            self.baseView.toggleViewInteraction(enabled: true)
+            self.tabBarController?.selectedIndex = HomeTabBarVC.TabOptions.menu.rawValue
+            return
+        }
+    }
+}
+
+extension OurStoreVC: OurStoreVMDelegate {
+    func ourStoreAPIResponse(responseType: Result<String, Error>) {
+        switch responseType {
+        case .success(let string):
+            debugPrint(string)
+            self.baseView.handleAPIResponse(.restaurantListing, resultCount: viewModel.getRestaurants.count, isSuccess: true, errorMsg: nil)
+        case .failure(let error):
+            debugPrint(error.localizedDescription)
+            self.baseView.handleAPIResponse(.restaurantListing, resultCount: 0, isSuccess: false, errorMsg: error.localizedDescription)
+        }
+    }
+}

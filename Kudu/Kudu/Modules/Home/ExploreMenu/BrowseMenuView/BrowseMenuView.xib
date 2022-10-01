@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BrowseMenuView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="browseMenuHeaderView" destination="49n-hy-F8v" id="r2h-uO-rNs"/>
+                <outlet property="closeButtonView" destination="TM7-yk-Ufz" id="HTf-vT-aUj"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="9i7-r9-Jb9"/>
+                <outlet property="tableView" destination="KfK-Gi-zHd" id="eWU-XQ-vaL"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="412"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="49n-hy-F8v">
+                    <rect key="frame" x="0.0" y="61" width="240" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Browse Menu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4T-oz-nVV">
+                            <rect key="frame" x="5" y="10" width="230" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="koT-VZ-7ts"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="H4T-oz-nVV" firstAttribute="centerX" secondItem="49n-hy-F8v" secondAttribute="centerX" id="0Kz-5s-qNH"/>
+                        <constraint firstAttribute="height" constant="40" id="3Mi-6N-fR9"/>
+                        <constraint firstItem="H4T-oz-nVV" firstAttribute="leading" secondItem="49n-hy-F8v" secondAttribute="leading" constant="5" id="5cc-5S-RkX"/>
+                        <constraint firstItem="H4T-oz-nVV" firstAttribute="top" secondItem="49n-hy-F8v" secondAttribute="top" constant="10" id="63Z-WN-lVD"/>
+                        <constraint firstAttribute="trailing" secondItem="H4T-oz-nVV" secondAttribute="trailing" constant="5" id="FHg-Xf-q80"/>
+                        <constraint firstAttribute="bottom" secondItem="H4T-oz-nVV" secondAttribute="bottom" constant="10" id="fpU-ME-W5f"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TM7-yk-Ufz">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="61"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRr-Wb-qDV">
+                            <rect key="frame" x="100" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" name="kuduThemeBlue"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="HsJ-Ny-4cC"/>
+                                <constraint firstAttribute="height" constant="40" id="Nbb-FY-uVT"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="k_browseMenuCrossButton"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="20"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="dismissButtonPressed:" destination="-1" eventType="touchUpInside" id="Q8G-Af-Bke"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="eRr-Wb-qDV" firstAttribute="centerX" secondItem="TM7-yk-Ufz" secondAttribute="centerX" id="3Um-o9-zT5"/>
+                        <constraint firstAttribute="height" constant="61" id="ZDj-5H-ATe"/>
+                        <constraint firstItem="eRr-Wb-qDV" firstAttribute="top" secondItem="TM7-yk-Ufz" secondAttribute="top" id="ykz-Sp-Pvx"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="KfK-Gi-zHd">
+                    <rect key="frame" x="0.0" y="100" width="240" height="312"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="KfK-Gi-zHd" firstAttribute="top" secondItem="49n-hy-F8v" secondAttribute="bottom" constant="-1" id="1WQ-Pe-CNQ"/>
+                <constraint firstItem="TM7-yk-Ufz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7CG-2b-6ZT"/>
+                <constraint firstItem="49n-hy-F8v" firstAttribute="top" secondItem="TM7-yk-Ufz" secondAttribute="bottom" id="9eN-8K-XR2"/>
+                <constraint firstAttribute="trailing" secondItem="TM7-yk-Ufz" secondAttribute="trailing" id="PN7-VJ-Or2"/>
+                <constraint firstAttribute="bottom" secondItem="KfK-Gi-zHd" secondAttribute="bottom" id="Zq4-xQ-mdw"/>
+                <constraint firstAttribute="trailing" secondItem="KfK-Gi-zHd" secondAttribute="trailing" id="ZqL-dw-FN8"/>
+                <constraint firstItem="TM7-yk-Ufz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bnO-mU-C1F"/>
+                <constraint firstItem="KfK-Gi-zHd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="c4Z-Ae-gfu"/>
+                <constraint firstAttribute="trailing" secondItem="49n-hy-F8v" secondAttribute="trailing" id="f0d-qQ-6kI"/>
+                <constraint firstItem="49n-hy-F8v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="pbs-17-HDq"/>
+                <constraint firstItem="49n-hy-F8v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="61" id="xQs-X5-ete"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="0.0"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="133" y="113"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="k_browseMenuCrossButton" width="22" height="22"/>
+        <namedColor name="kuduThemeBlue">
+            <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
