@@ -60,7 +60,6 @@ extension CartUtility {
         let excludedStoreIDs = obj.excludeLocations ?? []
         let currentStoreId = CartUtility.getCartStoreID
         if let storeIdExists = currentStoreId, excludedStoreIDs.contains(where: { $0 == storeIdExists}) {
-            debugPrint("COUPON STORE MISMATCH")
             return .storeIdConflict(delivery: cartType == .delivery)
         }
         
@@ -68,7 +67,6 @@ extension CartUtility {
         let couponToDate = Date(timeIntervalSince1970: Double(obj.validTo ?? 0)/1000)
         let currentDate = Date()
         if currentDate < couponFromDate || currentDate > couponToDate {
-            debugPrint("COUPON TIME MISMATCH")
             return .timeBounds
         }
         
@@ -106,22 +104,18 @@ extension CartUtility {
         }
         
         if currentTime < couponFromTime {
-            debugPrint("COUPON TIME MISMATCH")
             return .timeBounds
         }
         if currentTime > couponToTime {
-            debugPrint("COUPON TIME MISMATCH")
             return .timeBounds
         }
         
         if let couponServiceType = APIEndPoints.ServicesType(rawValue: obj.promoData?.servicesAvailable ?? ""), cartType != couponServiceType {
-            debugPrint("COUPON SERVICE TYPE MISMATCH")
             return .serviceTypeMismatch(correctOrderType: couponServiceType)
         }
         let couponCartAmount = obj.promoData?.minimumCartAmount ?? 0
         let cartAmount = CartUtility.getPrice()
         if Int(cartAmount) < couponCartAmount {
-            debugPrint("COUPON AMOUNT MISMATCH")
             return .amountNotEnough(amountReq: couponCartAmount)
         }
         var menuIdExists = false

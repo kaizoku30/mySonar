@@ -18,19 +18,21 @@ struct CartDebugger {
         case itemMappedWithPlaceholder(itemName: String, hashId: String)
         
         var log: String {
+            let locally = "Locally"
+            let onServerString = "On Server"
             switch self {
             case .cartInitialised(let cartCount):
                 return "Local cart count \(cartCount)"
             case .cartSyncedWithServer(let updatedCount):
                 return "Updated cart count \(updatedCount)"
             case .cartCleared(let onServer):
-                return "Cart cleared \(!onServer ? "Locally" : "On Server")"
+                return "Cart cleared \(!onServer ? locally : onServerString)"
             case .itemAddedToCart(let onServer, let itemName, let hashId):
-                return "\(itemName) with hashId : \(hashId), added to cart \(!onServer ? "Locally" : "On Server")"
+                return "\(itemName) with hashId : \(hashId), added to cart \(!onServer ? locally : onServerString)"
             case .itemUpdatedInCart(let onServer, let itemName, let hashId, let updatedCount):
-                return "\(itemName) with hashId : \(hashId), updated in cart (NEW COUNT = \(updatedCount)) \(!onServer ? "Locally" : "On Server")"
+                return "\(itemName) with hashId : \(hashId), updated in cart (NEW COUNT = \(updatedCount)) \(!onServer ? locally : onServerString)"
             case .itemRemovedFromCart(let onServer, let itemName, let hashId):
-                return "\(itemName) with hashId : \(hashId), removed from cart \(!onServer ? "Locally" : "On Server")"
+                return "\(itemName) with hashId : \(hashId), removed from cart \(!onServer ? locally : onServerString)"
             case .itemMappedWithPlaceholder(let itemName, let hashId):
                 return "\(itemName) has been mapped with object of hash id : \(hashId) in Local Cart"
             }

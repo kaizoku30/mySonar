@@ -9,30 +9,30 @@ import UIKit
 import NVActivityIndicatorView
 
 class CartListView: UIView {
-	
+    
     @IBOutlet weak var backButton: AppButton!
     @IBOutlet weak var viewTitleLabel: UILabel!
-	@IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noItemInCartView: UIView!
     @IBOutlet weak var loaderView: UIView!
     @IBOutlet weak var activityIndicator: NVActivityIndicatorView!
     
     // MARK: Cart Outlets
     @IBOutlet weak var bottomCartInfoContainer: UIView!
-	@IBOutlet weak var makePaymentButton: AppButton!
-	@IBOutlet weak var priceLabel: UILabel!
-	@IBOutlet weak var totalPayableLabel: UILabel!
-	@IBOutlet weak var separatorView: UIView!
-	@IBOutlet weak var totalIsInclusiveLabel: UILabel!
-	@IBOutlet weak var orderOptionsContainer: UIView!
-	
-	// MARK: Address Time Outlets
+    @IBOutlet weak var makePaymentButton: AppButton!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var totalPayableLabel: UILabel!
+    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var totalIsInclusiveLabel: UILabel!
+    @IBOutlet weak var orderOptionsContainer: UIView!
+    
+    // MARK: Address Time Outlets
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var setDeliveryLocationLabel: UILabel!
-	@IBOutlet weak var addressButton: AppButton!
-	@IBOutlet weak var scheduleButton: UIButton!
-	@IBOutlet weak var deliveringToLabel: UILabel!
-	
+    @IBOutlet weak var addressButton: AppButton!
+    @IBOutlet weak var scheduleButton: UIButton!
+    @IBOutlet weak var deliveringToLabel: UILabel!
+    
     @IBAction func makePayment(_ sender: Any) {
         if makePaymentButton.backgroundColor == AppColors.kuduThemeYellow {
             handleViewActions?(.makePayment)
@@ -40,35 +40,36 @@ class CartListView: UIView {
     }
     
     @IBAction func scheduleButtonPressed(_ sender: Any) {
-	}
-	
-	@IBAction func addressButtonPressed(_ sender: Any) {
+        // Need to add scheduling functionality here
+    }
+    
+    @IBAction func addressButtonPressed(_ sender: Any) {
         addressButton.startBtnLoader(color: AppColors.kuduThemeYellow)
         if locationState == .noLocationAdded {
             handleViewActions?(serviceType == .delivery ? .addAddressFlow : .addRestaurantFlow)
         } else {
             handleViewActions?(serviceType == .delivery ? .changeAddressFlow : .changeRestaurantFlow)
         }
-	}
-	
-	@IBAction func backButtonPressed(_ sender: Any) {
-		handleViewActions?(.backButtonPressed)
-	}
+    }
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        handleViewActions?(.backButtonPressed)
+    }
     
     @IBAction func exploreMenuButtonPressed(_ sender: Any) {
         handleViewActions?(.exploreMenuPressed)
     }
-	
-	enum Sections: Int, CaseIterable {
-		case cartItems = 0
-		case youMayAlsoLike
-		case applyCoupon
-		case billDetails
+    
+    enum Sections: Int, CaseIterable {
+        case cartItems = 0
+        case youMayAlsoLike
+        case applyCoupon
+        case billDetails
         case vehicleDetails
-		case cancellationPolicy
-	}
-	
-	var handleViewActions: ((ViewAction) -> Void)?
+        case cancellationPolicy
+    }
+    
+    var handleViewActions: ((ViewAction) -> Void)?
     private var serviceType: APIEndPoints.ServicesType = .delivery
     private var locationState: LocationState = .noLocationAdded
     private lazy var refreshControl = UIRefreshControl()
@@ -78,9 +79,9 @@ class CartListView: UIView {
         case locationAdded
     }
     
-	enum ViewAction {
+    enum ViewAction {
         case makePayment
-		case backButtonPressed
+        case backButtonPressed
         case exploreMenuPressed
         case addAddressFlow
         case changeAddressFlow
@@ -89,15 +90,15 @@ class CartListView: UIView {
         case deleteItem(count: Int, index: Int)
         case pullToRefreshCalled
         //case addRemoveFreeItem(add: Bool)
-	}
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
         bringLoaderToFront()
-		initialSetup()
+        initialSetup()
         refreshControl.tintColor = AppColors.kuduThemeBlue
-
-	}
+        
+    }
     
     func addRefreshControl() {
         tableView.refreshControl = refreshControl
@@ -123,12 +124,12 @@ class CartListView: UIView {
             self.refreshControl.endRefreshing()
         }
     }
-	
-	private func initialSetup() {
-		bottomCartInfoContainer.roundTopCorners(cornerRadius: 32)
-		orderOptionsContainer.roundTopCorners(cornerRadius: 32)
-		bottomCartInfoContainer.layer.applySketchShadow(color: .black, alpha: 0.1, x: 0, y: -2, blur: 4, spread: 0)
-	}
+    
+    private func initialSetup() {
+        bottomCartInfoContainer.roundTopCorners(cornerRadius: 32)
+        orderOptionsContainer.roundTopCorners(cornerRadius: 32)
+        bottomCartInfoContainer.layer.applySketchShadow(color: .black, alpha: 0.1, x: 0, y: -2, blur: 4, spread: 0)
+    }
     
     func removeLoaderOverlay() {
         loaderView.isHidden = true
@@ -208,11 +209,11 @@ class CartListView: UIView {
     func stopAddressButtonLoader() {
         self.addressButton.stopBtnLoader(titleColor: AppColors.kuduThemeYellow)
     }
-	
-	func refreshYouMayAlsoLike() {
-		self.tableView.reloadSections(IndexSet(integer: Sections.youMayAlsoLike.rawValue), with: .fade)
-	}
-	
+    
+    func refreshYouMayAlsoLike() {
+        self.tableView.reloadSections(IndexSet(integer: Sections.youMayAlsoLike.rawValue), with: .fade)
+    }
+    
     func refreshBillSection() {
         mainThread {
             self.tableView.reloadSections(IndexSet(integer: Sections.billDetails.rawValue), with: .fade)
@@ -221,8 +222,8 @@ class CartListView: UIView {
         }
     }
     
-	func reloadSpecificCartCell(_ row: Int, _ section: Sections) {
-		self.tableView.reloadRowsWithoutAnimation(indexPaths: [IndexPath(row: row, section: section.rawValue)])
+    func reloadSpecificCartCell(_ row: Int, _ section: Sections) {
+        self.tableView.reloadRowsWithoutAnimation(indexPaths: [IndexPath(row: row, section: section.rawValue)])
         if section == .cartItems {
             self.tableView.reloadSections(IndexSet(integer: Sections.billDetails.rawValue), with: .none)
             self.tableView.reloadSections(IndexSet(integer: Sections.applyCoupon.rawValue), with: .none)
@@ -230,40 +231,40 @@ class CartListView: UIView {
         guard let coupon = CartUtility.getAttachedCoupon else { return }
         let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
         //self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
-	}
-	
-	func reloadCartItemSection(itemAddition: Int? = nil, itemDeletion: Int? = nil) {
-		
-		if itemAddition.isNil && itemDeletion.isNil {
-			self.tableView.reloadSections(IndexSet(integer: Sections.cartItems.rawValue), with: .none)
+    }
+    
+    func reloadCartItemSection(itemAddition: Int? = nil, itemDeletion: Int? = nil) {
+        
+        if itemAddition.isNil && itemDeletion.isNil {
+            self.tableView.reloadSections(IndexSet(integer: Sections.cartItems.rawValue), with: .none)
             self.tableView.reloadSections(IndexSet(integer: Sections.billDetails.rawValue), with: .none)
             self.tableView.reloadSections(IndexSet(integer: Sections.applyCoupon.rawValue), with: .none)
             guard let coupon = CartUtility.getAttachedCoupon else { return }
-           // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
-          //  self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
-			return
-		}
-		
-		self.tableView.performBatchUpdates({
-			if let itemAddition = itemAddition {
-				self.tableView.insertRows(at: [IndexPath(row: itemAddition, section: 0)], with: .bottom)
-			}
-			
-			if let itemDeletion = itemDeletion {
-				self.tableView.deleteRows(at: [IndexPath(row: itemDeletion, section: 0)], with: AppUserDefaults.selectedLanguage() == .en ? .left : .right)
-			}
-			
-		}, completion: {
-			if !$0 { return }
-			self.tableView.reloadData()
+            // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
+            //  self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
+            return
+        }
+        
+        self.tableView.performBatchUpdates({
+            if let itemAddition = itemAddition {
+                self.tableView.insertRows(at: [IndexPath(row: itemAddition, section: 0)], with: .bottom)
+            }
+            
+            if let itemDeletion = itemDeletion {
+                self.tableView.deleteRows(at: [IndexPath(row: itemDeletion, section: 0)], with: AppUserDefaults.selectedLanguage() == .en ? .left : .right)
+            }
+            
+        }, completion: {
+            if !$0 { return }
+            self.tableView.reloadData()
             //guard let coupon = CartUtility.getAttachedCoupon else { return }
-           // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
+            // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
             //self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
-		})
-	}
-	
+        })
+    }
+    
     func updateCartDetails(itemCount: Int, totalPrice: Double, deliveryCharge: Double?, addedCoupon: CouponObject?) {
-		self.viewTitleLabel.text = "\(itemCount) Items in Cart"
+        self.viewTitleLabel.text = "\(itemCount) Items in Cart"
         var finalPrice = totalPrice
         if let deliveryCharge = deliveryCharge, self.serviceType == .delivery {
             finalPrice += deliveryCharge
@@ -274,8 +275,8 @@ class CartListView: UIView {
                 finalPrice -= savings
             }
         }
-		self.priceLabel.text = "SR \(finalPrice.round(to: 2).removeZerosFromEnd())"
-	}
+        self.priceLabel.text = "SR \(finalPrice.round(to: 2).removeZerosFromEnd())"
+    }
     
     func setCartView(enabled: Bool) {
         bottomCartInfoContainer.backgroundColor = enabled ? AppColors.kuduThemeYellow : UIColor(r: 239, g: 239, b: 239, alpha: 1)

@@ -44,9 +44,6 @@ class MyFavouritesVC: BaseVC {
                 strongSelf.baseView.retainOffset()
                 let vc = CartListViewController.instantiate(fromAppStoryboard: .CartPayment)
                 vc.flow = .fromFavourites
-                vc.updateExploreMenu = { [weak self] in
-                    
-                }
                 strongSelf.push(vc: vc)
             case .handleCartConflict(let count, let index):
                 self?.viewModel.updateCountLocally(count: count, index: index)

@@ -50,7 +50,7 @@ class ContentContainerTableViewCell: UITableViewCell {
             } else {
                 self.collectionView.reloadItems(at: [IndexPath(item: self.metrics.currentColumnIndex, section: 0)])
             }
-            self.collectionView.performBatchUpdates({
+            self.collectionView.performBatchUpdates({ //Let collection view update
             }, completion: { _ in
                 self.collectionView.scrollToItem(at: IndexPath(item: self.metrics.currentColumnIndex, section: 0), at: .centeredHorizontally, animated: true)
             })
@@ -115,7 +115,8 @@ extension ContentContainerTableViewCell: UIScrollViewDelegate {
 		debugPrint("Current Page : \(pageNo)")
 		self.metrics.currentColumnIndex = pageNo
         self.collectionView.reloadItems(at: [IndexPath(item: self.metrics.currentColumnIndex, section: 0)])
-        self.collectionView.performBatchUpdates({}, completion: { [weak self] _ in
+        self.collectionView.performBatchUpdates({ //Let collectionview update
+        }, completion: { [weak self] _ in
             self?.cellSwipedToIndex?(pageNo)
         })
 	}

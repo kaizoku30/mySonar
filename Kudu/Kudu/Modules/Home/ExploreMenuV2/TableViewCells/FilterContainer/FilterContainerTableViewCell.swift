@@ -27,7 +27,8 @@ class FilterContainerTableViewCell: UITableViewCell {
             self.filterArray = filterArray
             self.selectedCategoryIndex = selectedCategoryIndex
             self.filterCollectionView.reloadData()
-            self.filterCollectionView.performBatchUpdates({}, completion: { _ in
+            self.filterCollectionView.performBatchUpdates({ //Let collection view update
+            }, completion: { _ in
                 self.filterCollectionView.scrollToItem(at: IndexPath(item: selectedCategoryIndex, section: 0), at: .centeredHorizontally, animated: true)
             })
         }

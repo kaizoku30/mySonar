@@ -164,7 +164,8 @@ class CartListViewController: BaseVC {
             self.viewModel.updateCountLocally(count: 0, index: index)
             if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
                 CartUtility.removeCouponFromCartLocally()
-                CartUtility.syncCart {}
+                CartUtility.syncCart { //No implementation needed here
+                }
                 self.baseView.showNoCartView()
                 return
             }
@@ -181,7 +182,8 @@ class CartListViewController: BaseVC {
                     self.viewModel.updateCountLocally(count: 0, index: index)
                     if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
                         CartUtility.removeCouponFromCartLocally()
-                        CartUtility.syncCart {}
+                        CartUtility.syncCart { //No implementation needed here
+                        }
                         self.baseView.showNoCartView()
                         return
                     }
@@ -837,7 +839,8 @@ extension CartListViewController {
                     self.viewModel.addToCart(req: addItemReq, itemDetails: item, added: { [weak self] in
                         self?.showCartPage()
                         return
-                    }, updated: {})
+                    }, updated: { //Only add flow matters here
+                    })
                 case .failure:
                     self.showCartPage()
                     return
@@ -865,7 +868,8 @@ extension CartListViewController {
                     self?.baseView.backButton.isHidden = false
                     self?.showCartPage()
                     return
-                }, updated: {})
+                }, updated: { //Only add flow matters here
+                })
             }
             self.present(viewController, animated: true)
             return

@@ -118,7 +118,8 @@ extension MyFavouritesView {
                 return
             }
             self.tableView.reloadData()
-            self.tableView.performBatchUpdates({}, completion: { _ in
+            self.tableView.performBatchUpdates({ //Let tableview update
+            }, completion: { _ in
                 if self.offSetToRetain != 0 {
                     self.tableView.setContentOffset(CGPoint(x: 0, y: self.offSetToRetain), animated: true)
                     self.offSetToRetain = 0

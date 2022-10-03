@@ -185,8 +185,9 @@ class ExploreMenuV2VC: BaseVC {
                                                 //self?.tabBarController?.removeLoaderOverlay()
                                             case .failure(let error):
                                                 debugPrint(error.localizedDescription)
-                                                debugPrint("Need to show error")
-                                                //self?.tabBarController?.removeLoaderOverlay()
+                                                let appErrorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: (self?.baseView.width ?? 0.0) - 32, height: 48))
+                                                guard let baseView = self?.baseView else { return }
+                                                appErrorToast.show(message: error.localizedDescription, view: baseView)
                                             }
                                         })
                                     } else {
@@ -438,8 +439,10 @@ extension ExploreMenuV2VC {
                             self?.tabBarController?.removeLoaderOverlay()
                         case .failure(let error):
                             debugPrint(error.localizedDescription)
-                            debugPrint("Need to show error")
                             self?.tabBarController?.removeLoaderOverlay()
+                            let appErrorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: (self?.baseView.width ?? 0.0) - 32, height: 48))
+                            guard let baseView = self?.baseView else { return }
+                            appErrorToast.show(message: error.localizedDescription, view: baseView)
                         }
                     })
                 } else {
@@ -545,7 +548,9 @@ extension ExploreMenuV2VC {
                             self?.openCustomisedItemDetail(result: self?.viewModel.getItemDetailResponse, prefillTempate: template, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0)
                         case .failure(let error):
                             debugPrint(error.localizedDescription)
-                            debugPrint("Need to show error")
+                            let appErrorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: (self?.baseView.width ?? 0.0) - 32, height: 48))
+                            guard let baseView = self?.baseView else { return }
+                            appErrorToast.show(message: error.localizedDescription, view: baseView)
                         }
                     })
                 }

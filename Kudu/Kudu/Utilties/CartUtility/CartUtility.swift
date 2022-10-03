@@ -306,7 +306,11 @@ final class CartUtility {
     static func removeFreeItemFromCart() {
         if let freeItem = CartUtility.fetchCart().first(where: { $0.offerdItem ?? false == true }), let offeredItem = freeItem.offerdItem, offeredItem == true, let hashId = freeItem.hashId {
             CartUtility.removeItemFromCart(hashId)
-            APIEndPoints.CartEndPoints.removeItemFromCart(req: RemoveItemFromCartRequest(itemId: freeItem.itemId ?? "", hashId: hashId, offeredItem: true), success: { _ in }, failure: { _ in })
+            APIEndPoints.CartEndPoints.removeItemFromCart(req: RemoveItemFromCartRequest(itemId: freeItem.itemId ?? "", hashId: hashId, offeredItem: true), success: { _
+                //No implementation needed
+                in }, failure: { _ in
+                    //No implementation needed
+                })
         }
     }
 }
