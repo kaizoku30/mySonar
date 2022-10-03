@@ -57,14 +57,14 @@ class MyAddressVM {
     }
     
     func checkIfAnyStoreNearby(lat: Double, long: Double, validAddress: ((StoreDetail) -> Void)?) {
-        APIEndPoints.HomeEndPoints.getStoreDetailsForDelivery(lat: lat, long: long, servicesType: .delivery, success: { [weak self] in
-            guard let store = $0.data else {
-                self?.delegate?.doesNotDeliverToThisLocation()
-                return }
-            self?.storeForCart = $0.data
-            validAddress?(store)
-        }, failure: { [weak self] _ in
-            self?.delegate?.doesNotDeliverToThisLocation()
+        StoreUtility.checkIfAnyStoreNearby(lat: lat, long: long, checked: {
+            switch $0 {
+            case .success(let store):
+                self.storeForCart = store
+                validAddress?(store)
+            case .failure:
+                self.delegate?.doesNotDeliverToThisLocation()
+            }
         })
     }
     
