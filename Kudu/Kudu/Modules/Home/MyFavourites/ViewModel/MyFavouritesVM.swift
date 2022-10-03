@@ -100,7 +100,7 @@ extension MyFavouritesVM {
         } else {
             if newCount == 0 {
                 items[index].cartCount = newCount
-                removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "")
+                CartUtility.removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "")
             } else {
                 items[index].cartCount = newCount
                 CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount)
@@ -131,17 +131,6 @@ extension MyFavouritesVM {
         })
     }
     
-    private func removeItemFromCart(menuItem: MenuItem, hashId: String) {
-        guard let itemId = menuItem._id else { return }
-        let removeCartReq = RemoveItemFromCartRequest(itemId: itemId, hashId: hashId)
-        CartUtility.removeItemFromCart(hashId)
-        APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { (response) in
-            debugPrint(response)
-        }, failure: { (error) in
-            debugPrint(error.msg)
-        })
-    }
-    
     func addToCartDirectly(menuItem: MenuItem, hashId: String, modGroups: [ModGroup]) {
         let cart = CartUtility.fetchCart()
         let hashIdExists = cart.firstIndex(where: { $0.hashId ?? "" == hashId })
@@ -151,14 +140,6 @@ extension MyFavouritesVM {
             return
         }
         let addToCartReq = AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: nil, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable!) ?? .delivery, modGroups: modGroups)
-        CartUtility.addItemToCart(addToCartReq.createPlaceholderCartObject(itemDetails: menuItem))
-        APIEndPoints.CartEndPoints.addItemToCart(req: addToCartReq, success: { (response) in
-            guard let cartItem = response.data else { return }
-            var copy = cartItem
-            copy.itemDetails = menuItem
-            CartUtility.mapObjectWithPlaceholder(copy)
-        }, failure: { (error) in
-            debugPrint(error.msg)
-        })
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
     }
 }

@@ -270,15 +270,7 @@ extension ExploreMenuV2VM {
 		}
 		guard let menuId = categories[safe: tableIndex]?._id, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
 		let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: self.storeId, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq.createPlaceholderCartObject(itemDetails: menuItem))
-		APIEndPoints.CartEndPoints.addItemToCart(req: addToCartReq, success: { (response) in
-			guard let cartItem = response.data else { return }
-			var copy = cartItem
-			copy.itemDetails = menuItem
-            CartUtility.mapObjectWithPlaceholder(copy)
-		}, failure: { (error) in
-			debugPrint(error.msg)
-		})
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
 	}
 	
 	private func updateCartCount(menuItem: MenuItem, hashId: String, tableIndex: Int, isIncrement: Bool, quantity: Int) {

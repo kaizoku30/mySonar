@@ -52,7 +52,7 @@ extension ExploreMenuSearchVC {
 				let templateCount = (newArray.filter({ $0.hashId ?? "" == lastHashId})).count
 				if templateCount == 0 {
 					// Remove api
-					removeItemFromCart(menuItem: menuItem, hashId: lastHashId)
+                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: lastHashId)
 				} else {
                     CartUtility.updateCartCount(menuItem: menuItem, hashId: lastHashId, isIncrement: false, quantity: newCount)
 				}
@@ -62,7 +62,7 @@ extension ExploreMenuSearchVC {
 				let hashIdForBaseItem = MD5Hash.generateHashForTemplate(itemId: menuItem._id ?? "", modGroups: nil)
 				if newCount == 0 {
 					//Remove api
-					removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem)
+                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem)
 				} else if newCount == 1 && oldCount == 0 {
 					addToCart(menuItem: menuItem, template: template)
 				} else {
@@ -94,27 +94,7 @@ extension ExploreMenuSearchVC {
 		}
 		guard let menuId = menuItem.menuId, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
         let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: self.storeId, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq.createPlaceholderCartObject(itemDetails: menuItem))
-		APIEndPoints.CartEndPoints.addItemToCart(req: addToCartReq, success: { (response) in
-            guard let cartItem = response.data else { return }
-			debugPrint(response)
-            var copy = cartItem
-            copy.itemDetails = menuItem
-            CartUtility.mapObjectWithPlaceholder(copy)
-		}, failure: { (error) in
-			debugPrint(error.msg)
-		})
-	}
-	
-	private func removeItemFromCart(menuItem: MenuItem, hashId: String) {
-		guard let itemId = menuItem._id else { return }
-		let removeCartReq = RemoveItemFromCartRequest(itemId: itemId, hashId: hashId)
-        CartUtility.removeItemFromCart(hashId)
-		APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { (response) in
-			debugPrint(response)
-		}, failure: { (error) in
-			debugPrint(error.msg)
-		})
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
 	}
 }
 
