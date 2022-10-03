@@ -45,6 +45,7 @@
 		840D0F732869DAEB00FD5491 /* RTOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D0F722869DAEB00FD5491 /* RTOtpView.swift */; };
 		840D0F752869DB0300FD5491 /* RTOtpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840D0F742869DB0300FD5491 /* RTOtpView.xib */; };
 		840DFE4428EA765500E18554 /* AppPoupViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DFE4328EA765500E18554 /* AppPoupViewType.swift */; };
+		840DFE4628EA784C00E18554 /* CartUtility+GlobalOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DFE4528EA784C00E18554 /* CartUtility+GlobalOperations.swift */; };
 		840ED7D128E2DF6300693770 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D028E2DF6300693770 /* ExpandableLabel.swift */; };
 		840ED7D428E2F4FC00693770 /* MultipleCarouselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D328E2F4FC00693770 /* MultipleCarouselVC.swift */; };
 		840ED7D828E2F54B00693770 /* MultipleCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D728E2F54B00693770 /* MultipleCarouselView.swift */; };
@@ -525,6 +526,7 @@
 		840D0F722869DAEB00FD5491 /* RTOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTOtpView.swift; sourceTree = "<group>"; };
 		840D0F742869DB0300FD5491 /* RTOtpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RTOtpView.xib; sourceTree = "<group>"; };
 		840DFE4328EA765500E18554 /* AppPoupViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPoupViewType.swift; sourceTree = "<group>"; };
+		840DFE4528EA784C00E18554 /* CartUtility+GlobalOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CartUtility+GlobalOperations.swift"; sourceTree = "<group>"; };
 		840ED7D028E2DF6300693770 /* ExpandableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		840ED7D328E2F4FC00693770 /* MultipleCarouselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleCarouselVC.swift; sourceTree = "<group>"; };
 		840ED7D728E2F54B00693770 /* MultipleCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleCarouselView.swift; sourceTree = "<group>"; };
@@ -2764,6 +2766,7 @@
 				84B2204B28D3BB9000ADE2DF /* CartUtility.swift */,
 				84C5BA0F28E0B58000491B56 /* CartUtility+Coupon.swift */,
 				84C5BA1128E0B59A00491B56 /* CartUtility+CartDebugger.swift */,
+				840DFE4528EA784C00E18554 /* CartUtility+GlobalOperations.swift */,
 			);
 			path = CartUtility;
 			sourceTree = "<group>";
@@ -4129,6 +4132,7 @@
 				840AFD06281F922E003CE5A0 /* AppStoryboard.swift in Sources */,
 				84AD379628C89F0100BA69B1 /* FeebackQueryTypeCell.swift in Sources */,
 				840AFCFA281F8C39003CE5A0 /* Router.swift in Sources */,
+				840DFE4628EA784C00E18554 /* CartUtility+GlobalOperations.swift in Sources */,
 				846942A728E28135009A7E12 /* SelectedStoresResponseModel.swift in Sources */,
 				8485724E28770AE0009A4BFA /* HomeRecommendationsContainerCell.swift in Sources */,
 				8485725328770EC2009A4BFA /* HomeRecommendationCollectionViewCell.swift in Sources */,

@@ -95,7 +95,7 @@ extension MyFavouritesVM {
             if oldCount == 0 {
                 addToCart(menuItem: menuItem, template: template, serviceType: serviceType)
             } else {
-                updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount)
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount)
             }
         } else {
             if newCount == 0 {
@@ -103,7 +103,7 @@ extension MyFavouritesVM {
                 removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "")
             } else {
                 items[index].cartCount = newCount
-                updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount)
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount)
             }
         }
     }
@@ -131,18 +131,6 @@ extension MyFavouritesVM {
         })
     }
     
-    private func updateCartCount(menuItem: MenuItem, hashId: String, isIncrement: Bool, quantity: Int) {
-        guard let itemId = menuItem._id else { return }
-        let updateCartReq = UpdateCartCountRequest(isIncrement: isIncrement, itemId: itemId, quantity: 1, hashId: hashId)
-        CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
-        APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateCartReq, success: { (response) in
-            debugPrint(response)
-        }, failure: { (error) in
-            CartUtility.updateCartCount(hashId, isIncrement: !isIncrement)
-            debugPrint(error.msg)
-        })
-    }
-    
     private func removeItemFromCart(menuItem: MenuItem, hashId: String) {
         guard let itemId = menuItem._id else { return }
         let removeCartReq = RemoveItemFromCartRequest(itemId: itemId, hashId: hashId)
@@ -159,7 +147,7 @@ extension MyFavouritesVM {
         let hashIdExists = cart.firstIndex(where: { $0.hashId ?? "" == hashId })
         if hashIdExists.isNotNil {
             let previousQuantity = cart[hashIdExists!].quantity ?? 0
-            updateCartCount(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1 )
+            CartUtility.updateCartCount(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1)
             return
         }
         let addToCartReq = AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: nil, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable!) ?? .delivery, modGroups: modGroups)

@@ -35,7 +35,7 @@ extension ExploreMenuSearchVC {
 			if templateCount == 0 {
 				addToCart(menuItem: menuItem, template: template)
 			} else {
-				updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", isIncrement: true, quantity: newCount)
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", isIncrement: true, quantity: newCount)
 			}
 			debugPrint("Count updated to \(newCount) for item : \(menuItem.nameEnglish ?? ""), added template with hashId : \(template.hashId ?? "")")
 			
@@ -54,7 +54,7 @@ extension ExploreMenuSearchVC {
 					// Remove api
 					removeItemFromCart(menuItem: menuItem, hashId: lastHashId)
 				} else {
-					updateCartCount(menuItem: menuItem, hashId: lastHashId, isIncrement: false, quantity: newCount)
+                    CartUtility.updateCartCount(menuItem: menuItem, hashId: lastHashId, isIncrement: false, quantity: newCount)
 				}
                 self.updateExploreMenu?(results[index])
 			} else {
@@ -66,7 +66,7 @@ extension ExploreMenuSearchVC {
 				} else if newCount == 1 && oldCount == 0 {
 					addToCart(menuItem: menuItem, template: template)
 				} else {
-					updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, isIncrement: newCount > oldCount, quantity: newCount)
+                    CartUtility.updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, isIncrement: newCount > oldCount, quantity: newCount)
 				}
                 self.updateExploreMenu?(arrayToSearch[index])
 			}
@@ -103,18 +103,6 @@ extension ExploreMenuSearchVC {
             CartUtility.mapObjectWithPlaceholder(copy)
 		}, failure: { (error) in
 			debugPrint(error.msg)
-		})
-	}
-	
-	private func updateCartCount(menuItem: MenuItem, hashId: String, isIncrement: Bool, quantity: Int) {
-		guard let itemId = menuItem._id else { return }
-		let updateCartReq = UpdateCartCountRequest(isIncrement: isIncrement, itemId: itemId, quantity: 1, hashId: hashId)
-        CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
-		APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateCartReq, success: { (response) in
-			debugPrint(response)
-		}, failure: { (error) in
-            CartUtility.updateCartCount(hashId, isIncrement: !isIncrement)
-            debugPrint(error.msg)
 		})
 	}
 	
