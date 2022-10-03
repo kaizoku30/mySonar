@@ -62,7 +62,8 @@ class GoogleAutoCompleteVC: BaseVC {
     }
     
     private func openMap() {
-        if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
+        //!CommonLocationManager.checkIfLocationServicesEnabled() ||
+        if !CommonLocationManager.isAuthorized() {
             self.showLocationPermissionAlert()
         } else {
             
@@ -97,8 +98,8 @@ class GoogleAutoCompleteVC: BaseVC {
     
     private func showLocationPermissionAlert() {
         mainThread {
-            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
-            self.baseView.showLocationServicesAlert(type: type)
+//            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
+            self.baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
         }
     }
     

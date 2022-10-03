@@ -103,7 +103,8 @@ class SetRestaurantLocationVC: BaseVC {
 	}
 	
 	private func checkLocationState(launchMap: Bool) {
-		if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
+        //!CommonLocationManager.checkIfLocationServicesEnabled() ||
+		if !CommonLocationManager.isAuthorized() {
 			self.baseView.isUserInteractionEnabled = true
 			self.showLocationPermissionAlert()
 			return
@@ -141,8 +142,8 @@ class SetRestaurantLocationVC: BaseVC {
 	
 	private func showLocationPermissionAlert() {
 		mainThread {
-			let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
-			self.baseView.showLocationServicesAlert(type: type)
+//			let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
+            self.baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
 		}
 	}
 }

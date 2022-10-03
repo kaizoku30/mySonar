@@ -85,53 +85,53 @@ class HomeVC: BaseVC {
         guard let viewModel = viewModel else {
             return
         }
-        
-        let state = viewModel.handleLocationState()
-        switch state {
-        case .servicesDisabled:
-            baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
-            baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
-            self.hitApis()
-        case .permissionDenied:
-            self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
-            baseView.showLocationServicesAlert(type: .locationPermissionDenied)
-            self.hitApis()
-        case .fetchCurrentLocation:
-            fetchCurrentLocation()
-        case .requestLocationAccess:
-            AppUserDefaults.save(value: true, forKey: .locationAccessRequested)
-            CommonLocationManager.requestLocationAccess({ [weak self] in
-                switch $0 {
-                case .authorizedWhenInUse, .authorizedAlways:
-                    self?.fetchCurrentLocation()
-                default:
-                    self?.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
-                    self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
-                    self?.hitApis()
+        viewModel.handleLocationState(foundState: {
+            switch $0 {
+            case .servicesDisabled:
+                self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self.baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
+                self.hitApis()
+            case .permissionDenied:
+                self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
+                self.hitApis()
+            case .fetchCurrentLocation:
+                self.fetchCurrentLocation()
+            case .requestLocationAccess:
+                AppUserDefaults.save(value: true, forKey: .locationAccessRequested)
+                CommonLocationManager.requestLocationAccess({ [weak self] in
+                    switch $0 {
+                    case .authorizedWhenInUse, .authorizedAlways:
+                        self?.fetchCurrentLocation()
+                    default:
+                        self?.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                        self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
+                        self?.hitApis()
+                    }
+                })
+            case .locationAlreadyPresent:
+                let savedLocation = DataManager.shared.currentDeliveryLocation
+                viewModel.setLocation(savedLocation!)
+                var title: String = ""
+                let isMyAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress.isNotNil ?? false
+                let addressType = APIEndPoints.AddressLabelType(rawValue: self.viewModel?.getCurrentLocationData?.associatedMyAddress?.addressLabel ?? "") ?? .HOME
+                if isMyAddress {
+                    let otherAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress?.otherAddressLabel ?? ""
+                    switch addressType {
+                    case .HOME:
+                        title = "Home"
+                    case .WORK:
+                        title = "Work"
+                    case .OTHER:
+                        title = otherAddress
+                    }
+                } else {
+                    title = (self.viewModel?.getCurrentLocationData?.trimmedAddress) ?? ""
                 }
-            })
-        case .locationAlreadyPresent:
-            let savedLocation = DataManager.shared.currentDeliveryLocation
-            viewModel.setLocation(savedLocation!)
-            var title: String = ""
-            let isMyAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress.isNotNil ?? false
-            let addressType = APIEndPoints.AddressLabelType(rawValue: self.viewModel?.getCurrentLocationData?.associatedMyAddress?.addressLabel ?? "") ?? .HOME
-            if isMyAddress {
-                let otherAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress?.otherAddressLabel ?? ""
-                switch addressType {
-                case .HOME:
-                    title = "Home"
-                case .WORK:
-                    title = "Work"
-                case .OTHER:
-                    title = otherAddress
-                }
-            } else {
-                title = (self.viewModel?.getCurrentLocationData?.trimmedAddress) ?? ""
+                self.baseView.updateLocationLabel(title)
+                self.hitApis()
             }
-            self.baseView.updateLocationLabel(title)
-            self.hitApis()
-        }
+        })
     }
     
     private func fetchCurrentLocation() {

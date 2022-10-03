@@ -45,14 +45,8 @@ class PhoneVerificationVC: BaseVC {
                 NotificationCenter.postNotificationForObservers(.resetLoginState)
                 strongSelf.pop()
             case .differentLabelPressed:
-                if viewModel.getCurrentFlow == .comingFromProfilePage {
-                    strongSelf.pop()
-                    strongSelf.differentEmailPressed?()
-                    
-                } else {
-                    strongSelf.pop()
-                    strongSelf.differentEmailPressed?()
-                }
+                strongSelf.pop()
+                strongSelf.differentEmailPressed?()
             }
         }
     }

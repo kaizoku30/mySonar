@@ -154,24 +154,26 @@ class HomeVM {
         self.delegate?.reverseGeocodingSuccess(trimmedAddress: self.currentLocationData?.trimmedAddress ?? "", isMyAddress: false)
     }
 	
-	func handleLocationState() -> LocationState {
+    func handleLocationState(foundState: @escaping ((LocationState) -> Void)) {
 		let savedLocation = DataManager.shared.currentDeliveryLocation
 		if savedLocation.isNil {
-			if CommonLocationManager.checkIfLocationServicesEnabled() == false {
-				return .servicesDisabled
-			} else {
-				if CommonLocationManager.isLocationRequested() {
-					if CommonLocationManager.isAuthorized() == false {
-						return .permissionDenied
-					} else {
-						return .fetchCurrentLocation
-					}
-				} else {
-					return .requestLocationAccess
-				}
+            CommonLocationManager.checkIfLocationServicesEnabled {
+                if $0 {
+                    if CommonLocationManager.isLocationRequested() {
+                        if CommonLocationManager.isAuthorized() == false {
+                            foundState(.permissionDenied)
+                        } else {
+                            foundState(.fetchCurrentLocation)
+                        }
+                    } else {
+                        foundState(.requestLocationAccess)
+                    }
+                } else {
+                    foundState(.servicesDisabled)
+                }
 			}
 		} else {
-			return .locationAlreadyPresent
+            foundState(.locationAlreadyPresent)
 		}
 	}
 	

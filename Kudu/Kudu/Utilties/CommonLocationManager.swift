@@ -34,9 +34,10 @@ class CommonLocationManager {
 		})
 	}
 	
-	static func checkIfLocationServicesEnabled() -> Bool {
-		return true
-        CLLocationManager.locationServicesEnabled()
+    static func checkIfLocationServicesEnabled(checked: @escaping ((Bool) -> Void)) {
+        DispatchQueue.backgroundQueueAsync {
+            checked(CLLocationManager.locationServicesEnabled())
+        }
 	}
 	
 	static func isLocationRequested() -> Bool {

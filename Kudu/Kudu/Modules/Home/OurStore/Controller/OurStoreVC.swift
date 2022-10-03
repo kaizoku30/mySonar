@@ -85,8 +85,8 @@ extension OurStoreVC {
     private func checkLocationState() {
         
         self.baseView.toggleOutOfReachView(DataManager.shared.currentDeliveryLocation.isNil)
-        
-        if !CommonLocationManager.checkIfLocationServicesEnabled() || !CommonLocationManager.isAuthorized() {
+        //!CommonLocationManager.checkIfLocationServicesEnabled() ||
+        if !CommonLocationManager.isAuthorized() {
             self.baseView.isUserInteractionEnabled = true
             self.showLocationPermissionAlert()
             return
@@ -112,8 +112,8 @@ extension OurStoreVC {
     
     private func showLocationPermissionAlert() {
         mainThread {
-            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
-            self.baseView.showLocationPermissionPopUp(errorType: type)
+//            let type: LocationServicesDeniedView.LocationAlertType = CommonLocationManager.checkIfLocationServicesEnabled() == false ? .locationServicesNotWorking : .locationPermissionDenied
+            self.baseView.showLocationPermissionPopUp(errorType: .locationServicesNotWorking)
         }
     }
 }
