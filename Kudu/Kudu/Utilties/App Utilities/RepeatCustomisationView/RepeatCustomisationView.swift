@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class RepeatCustomisationView: UIView {
+class RepeatCustomisationView: AppPopUpViewType {
     enum AlertButton {
         case repeatCustomisation
         case newCustomisation
@@ -23,7 +23,6 @@ class RepeatCustomisationView: UIView {
     @IBOutlet private weak var leftBtn: AppButton!
     private let titleFont = AppFonts.mulishBold.withSize(14)
     private let messageFont = AppFonts.mulishMedium.withSize(12)
-    private weak var containerView: UIView?
     var handleAction: ((AlertButton) -> Void)?
     var rightButtonBgColor: UIColor = AppColors.kuduThemeYellow {
         didSet {
@@ -60,16 +59,7 @@ class RepeatCustomisationView: UIView {
     }
     
     private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     func configure(container view: UIView) {

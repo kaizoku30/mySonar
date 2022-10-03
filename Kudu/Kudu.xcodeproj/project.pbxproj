@@ -44,6 +44,7 @@
 		840D0F702869C9A100FD5491 /* SingUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D0F6F2869C9A100FD5491 /* SingUpRequest.swift */; };
 		840D0F732869DAEB00FD5491 /* RTOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D0F722869DAEB00FD5491 /* RTOtpView.swift */; };
 		840D0F752869DB0300FD5491 /* RTOtpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840D0F742869DB0300FD5491 /* RTOtpView.xib */; };
+		840DFE4428EA765500E18554 /* AppPoupViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DFE4328EA765500E18554 /* AppPoupViewType.swift */; };
 		840ED7D128E2DF6300693770 /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D028E2DF6300693770 /* ExpandableLabel.swift */; };
 		840ED7D428E2F4FC00693770 /* MultipleCarouselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D328E2F4FC00693770 /* MultipleCarouselVC.swift */; };
 		840ED7D828E2F54B00693770 /* MultipleCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840ED7D728E2F54B00693770 /* MultipleCarouselView.swift */; };
@@ -523,6 +524,7 @@
 		840D0F6F2869C9A100FD5491 /* SingUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpRequest.swift; sourceTree = "<group>"; };
 		840D0F722869DAEB00FD5491 /* RTOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTOtpView.swift; sourceTree = "<group>"; };
 		840D0F742869DB0300FD5491 /* RTOtpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RTOtpView.xib; sourceTree = "<group>"; };
+		840DFE4328EA765500E18554 /* AppPoupViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPoupViewType.swift; sourceTree = "<group>"; };
 		840ED7D028E2DF6300693770 /* ExpandableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		840ED7D328E2F4FC00693770 /* MultipleCarouselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleCarouselVC.swift; sourceTree = "<group>"; };
 		840ED7D728E2F54B00693770 /* MultipleCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleCarouselView.swift; sourceTree = "<group>"; };
@@ -1147,6 +1149,7 @@
 				840AFD0D281F93C0003CE5A0 /* DeviceDetail.swift */,
 				840AFD11281F9476003CE5A0 /* AppGlobals.swift */,
 				840AFD13281F967A003CE5A0 /* AppFonts.swift */,
+				840DFE4328EA765500E18554 /* AppPoupViewType.swift */,
 			);
 			path = "App Utilities";
 			sourceTree = "<group>";
@@ -4107,6 +4110,7 @@
 				84C61F082892187300B9ED00 /* SuggestionTableViewCell.swift in Sources */,
 				84B99E6028CFF51800ACFFC0 /* ExploreMenuV2View.swift in Sources */,
 				84D0A516287ED6BA0069F90C /* SearchAddressCell.swift in Sources */,
+				840DFE4428EA765500E18554 /* AppPoupViewType.swift in Sources */,
 				84F1C7E2288096290036A1F4 /* AddAddressForm.swift in Sources */,
 				84719A042823B80100FECB8D /* URL+Ext.swift in Sources */,
 				84B2204C28D3BB9000ADE2DF /* CartUtility.swift in Sources */,

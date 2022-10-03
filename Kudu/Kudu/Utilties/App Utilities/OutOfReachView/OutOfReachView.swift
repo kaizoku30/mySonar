@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OutOfReachView: UIView {
+class OutOfReachView: AppPopUpViewType {
 	@IBOutlet private var mainContentView: UIView!
 	@IBOutlet private weak var titleLabel: UILabel!
 	@IBOutlet private weak var subtitleLabel: UILabel!
@@ -18,7 +18,6 @@ class OutOfReachView: UIView {
 	
 	static var HorizontalPadding: CGFloat { 2*47 }
 	static var VerticalPadding: CGFloat { 13 + 130 + 36}
-	private weak var containerView: UIView?
 	private let titleFont = AppFonts.mulishBold.withSize(16)
 	private let messageFont = AppFonts.mulishMedium.withSize(12)
     var handleDeallocation: (() -> Void)?
@@ -42,16 +41,7 @@ class OutOfReachView: UIView {
 	
 	private func removeFromContainer() {
         handleDeallocation?()
-		self.containerView?.subviews.forEach({
-			if $0.tag == Constants.CustomViewTags.alertTag {
-				$0.removeFromSuperview()
-			}
-		})
-		self.containerView?.subviews.forEach({
-			if $0.tag == Constants.CustomViewTags.dimViewTag {
-				$0.removeFromSuperview()
-			}
-		})
+		removeSelf()
 	}
 	
 	func configure(container view: UIView) {

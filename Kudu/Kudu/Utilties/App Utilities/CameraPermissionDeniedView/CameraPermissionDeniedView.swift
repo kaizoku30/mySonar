@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CameraPermissionDeniedView: UIView {
+class CameraPermissionDeniedView: AppPopUpViewType {
     
     enum AlertButton {
         case left
@@ -47,7 +47,6 @@ class CameraPermissionDeniedView: UIView {
     var handleAction: ((AlertButton) -> Void)?
     static var popUpHeight: CGFloat { 318 }
     static var popUpWidth: CGFloat { 308 }
-    private weak var containerView: UIView?
     
     override init(frame: CGRect) {
          super.init(frame: frame)
@@ -68,16 +67,7 @@ class CameraPermissionDeniedView: UIView {
     }
     
     private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     private func handleButtonTap() {

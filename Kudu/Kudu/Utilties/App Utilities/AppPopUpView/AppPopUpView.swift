@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppPopUpView: UIView {
+class AppPopUpView: AppPopUpViewType {
 
     enum AlertButton {
         case left
@@ -66,7 +66,6 @@ class AppPopUpView: UIView {
     private let titleFont = AppFonts.mulishBold.withSize(14)
     private let messageFont = AppFonts.mulishMedium.withSize(12)
     private var loaderButton: AlertButton?
-    private weak var containerView: UIView?
     var handleAction: ((AlertButton) -> Void)?
     var rightButtonBgColor: UIColor = AppColors.kuduThemeYellow {
         didSet {
@@ -114,16 +113,7 @@ class AppPopUpView: UIView {
     }
     
     func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     func setButtonConfiguration(for button: AlertButton, config: ButtonConfiguration, buttonLoader: AlertButton?) {

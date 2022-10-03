@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SuccessAlertView: UIView {
+class SuccessAlertView: AppPopUpViewType {
     
     enum AlertType {
         case addressAdded
@@ -44,7 +44,6 @@ class SuccessAlertView: UIView {
     var handleDismissal: (() -> Void)?
     static var Height: CGFloat { 251 }
     static var HorizontalPadding: CGFloat { 2*40 }
-    private weak var containerView: UIView?
     
     override init(frame: CGRect) {
          super.init(frame: frame)
@@ -64,16 +63,7 @@ class SuccessAlertView: UIView {
     }
     
     private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     func configure(type: AlertType, container view: UIView, displayTime: TimeInterval) {

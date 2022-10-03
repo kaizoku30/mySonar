@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ChangeDefaultAddressView: UIView {
+class ChangeDefaultAddressView: AppPopUpViewType {
 
     @IBOutlet private weak var actionSheet: UIView!
     @IBOutlet private weak var bottomSheet: UIView!
@@ -16,7 +16,6 @@ class ChangeDefaultAddressView: UIView {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var saveButton: AppButton!
     static var ContentHeight: CGFloat { 545 }
-    private weak var containerView: UIView?
     private var list: [MyAddressListItem] = []
     private var idToDelete: String = ""
     private var selectedIndex: Int = 0
@@ -63,16 +62,7 @@ class ChangeDefaultAddressView: UIView {
      }
     
     private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     func configure(container view: UIView, list: [MyAddressListItem], idToDelete: String) {

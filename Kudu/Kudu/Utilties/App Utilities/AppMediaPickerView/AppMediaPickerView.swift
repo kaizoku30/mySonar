@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppMediaPickerView: UIView {
+class AppMediaPickerView: AppPopUpViewType {
     
     enum MediaFlow {
         case camera
@@ -20,8 +20,6 @@ class AppMediaPickerView: UIView {
     @IBOutlet private weak var rightButtonLabel: UILabel!
     @IBOutlet private weak var leftBtnView: UIView!
     @IBOutlet private weak var rightBtnView: UIView!
-    
-    private weak var containerView: UIView?
     
     var handleAction: ((MediaFlow) -> Void)?
     @IBAction func dismissButtonPressed(_ sender: Any) {
@@ -66,16 +64,7 @@ class AppMediaPickerView: UIView {
     }
                                          
     private func removeFromContainer() {
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.alertTag {
-                $0.removeFromSuperview()
-            }
-        })
-        self.containerView?.subviews.forEach({
-            if $0.tag == Constants.CustomViewTags.dimViewTag {
-                $0.removeFromSuperview()
-            }
-        })
+        removeSelf()
     }
     
     func configure(container view: UIView) {
