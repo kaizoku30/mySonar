@@ -652,13 +652,13 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Query Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ld-sh-rbc">
-                                                            <rect key="frame" x="8" y="0.0" width="28" height="31"/>
+                                                            <rect key="frame" x="8" y="0.0" width="75" height="31"/>
                                                             <fontDescription key="fontDescription" name="Mulish-SemiBold" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NM6-SO-3XJ">
-                                                            <rect key="frame" x="36" y="0.0" width="50" height="31"/>
+                                                            <rect key="frame" x="83" y="0.0" width="3" height="31"/>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="31" id="b4e-lT-vtq"/>
@@ -1062,6 +1062,171 @@
             </objects>
             <point key="canvasLocation" x="2117" y="151"/>
         </scene>
+        <!--Change Phone NumberVC-->
+        <scene sceneID="dZF-sg-tYX">
+            <objects>
+                <viewController storyboardIdentifier="ChangePhoneNumberVC" id="tRy-cq-3UO" customClass="ChangePhoneNumberVC" customModule="Kudu" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yr7-cO-pmr">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egy-GZ-DSg">
+                                <rect key="frame" x="0.0" y="47" width="428" height="56"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38b-A6-ELF" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="16" width="24" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="24" id="MuM-AT-cLo"/>
+                                            <constraint firstAttribute="height" constant="24" id="ryL-HE-Bop"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="k_main_chevronLeft"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="imageDirection">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9f3-eK-yL4">
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="56"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="tRy-cq-3UO" eventType="touchUpInside" id="aQE-FS-Omi"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change your Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mp-Gp-1N2">
+                                        <rect key="frame" x="48" y="16.666666666666664" width="375" height="22.666666666666664"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="9mp-Gp-1N2" firstAttribute="leading" secondItem="38b-A6-ELF" secondAttribute="trailing" constant="8" id="8ep-HG-O2F"/>
+                                    <constraint firstItem="9f3-eK-yL4" firstAttribute="top" secondItem="Egy-GZ-DSg" secondAttribute="top" id="FTz-pA-fNg"/>
+                                    <constraint firstItem="38b-A6-ELF" firstAttribute="leading" secondItem="Egy-GZ-DSg" secondAttribute="leading" constant="16" id="Py5-FI-bvp"/>
+                                    <constraint firstItem="9f3-eK-yL4" firstAttribute="leading" secondItem="Egy-GZ-DSg" secondAttribute="leading" id="SuW-rx-cAY"/>
+                                    <constraint firstItem="9mp-Gp-1N2" firstAttribute="leading" secondItem="9f3-eK-yL4" secondAttribute="trailing" id="YFN-7G-Fel"/>
+                                    <constraint firstItem="38b-A6-ELF" firstAttribute="centerY" secondItem="Egy-GZ-DSg" secondAttribute="centerY" id="dwp-zN-n1m"/>
+                                    <constraint firstAttribute="height" constant="56" id="lsJ-sO-COy"/>
+                                    <constraint firstAttribute="bottom" secondItem="9f3-eK-yL4" secondAttribute="bottom" id="olN-aD-ds4"/>
+                                    <constraint firstItem="9mp-Gp-1N2" firstAttribute="centerY" secondItem="Egy-GZ-DSg" secondAttribute="centerY" id="vuV-lx-pHs"/>
+                                    <constraint firstAttribute="trailing" secondItem="9mp-Gp-1N2" secondAttribute="trailing" constant="5" id="zxj-U8-WVO"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJ8-Zn-TI8">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="47"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZN-lQ-ZTs">
+                                <rect key="frame" x="32" y="127" width="364" height="48"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+966" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIr-65-gaP">
+                                        <rect key="frame" x="15.999999999999996" y="15.333333333333345" width="33.666666666666657" height="17.666666666666671"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter new Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="st0-3m-84H">
+                                        <rect key="frame" x="54.666666666666657" y="14.333333333333341" width="304.33333333333337" height="19.333333333333329"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="tel"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="tRy-cq-3UO" id="6cA-wv-vX3"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="st0-3m-84H" secondAttribute="trailing" constant="5" id="1yE-0Y-pLI"/>
+                                    <constraint firstItem="NIr-65-gaP" firstAttribute="leading" secondItem="aZN-lQ-ZTs" secondAttribute="leading" constant="16" id="Fx1-T9-Bbx"/>
+                                    <constraint firstItem="NIr-65-gaP" firstAttribute="centerY" secondItem="aZN-lQ-ZTs" secondAttribute="centerY" id="G5U-en-vgD"/>
+                                    <constraint firstItem="st0-3m-84H" firstAttribute="centerY" secondItem="NIr-65-gaP" secondAttribute="centerY" id="NlH-aE-92s"/>
+                                    <constraint firstAttribute="height" constant="48" id="Y1g-vd-yIO"/>
+                                    <constraint firstItem="st0-3m-84H" firstAttribute="leading" secondItem="NIr-65-gaP" secondAttribute="trailing" constant="5" id="kmA-GC-yAj"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="K_toolTipAddCard" translatesAutoresizingMaskIntoConstraints="NO" id="zYL-93-P8w">
+                                <rect key="frame" x="32" y="186" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="42D-jL-NQB"/>
+                                    <constraint firstAttribute="width" constant="20" id="yCr-CQ-xLN"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NVF-AG-beK">
+                                <rect key="frame" x="62" y="186" width="334" height="45.333333333333343"/>
+                                <string key="text">Please note : If you proceed to change your phone number, you will be logged out of all your current devices. You will have to login again with new number to continue.</string>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPs-Mm-Bya" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                <rect key="frame" x="32" y="255.33333333333337" width="364" height="48"/>
+                                <color key="backgroundColor" name="kuduThemeBlue"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="cLM-zO-KLJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Verify Now">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="verifyButtonPressed:" destination="tRy-cq-3UO" eventType="touchUpInside" id="aRe-e7-vjp"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="4qB-OK-WUq"/>
+                        <color key="backgroundColor" name="offWhiteTableView"/>
+                        <constraints>
+                            <constraint firstItem="Egy-GZ-DSg" firstAttribute="top" secondItem="UJ8-Zn-TI8" secondAttribute="bottom" id="3Re-Sl-gNq"/>
+                            <constraint firstItem="4qB-OK-WUq" firstAttribute="trailing" secondItem="dPs-Mm-Bya" secondAttribute="trailing" constant="32" id="4Za-w6-zHo"/>
+                            <constraint firstItem="UJ8-Zn-TI8" firstAttribute="leading" secondItem="yr7-cO-pmr" secondAttribute="leading" id="A1p-Cq-UQA"/>
+                            <constraint firstItem="aZN-lQ-ZTs" firstAttribute="top" secondItem="Egy-GZ-DSg" secondAttribute="bottom" constant="24" id="BfH-Fg-mxQ"/>
+                            <constraint firstAttribute="trailing" secondItem="UJ8-Zn-TI8" secondAttribute="trailing" id="Ckh-dv-ioQ"/>
+                            <constraint firstItem="NVF-AG-beK" firstAttribute="trailing" secondItem="aZN-lQ-ZTs" secondAttribute="trailing" id="JnZ-1d-VM6"/>
+                            <constraint firstItem="4qB-OK-WUq" firstAttribute="trailing" secondItem="aZN-lQ-ZTs" secondAttribute="trailing" constant="32" id="Jth-Wh-7DP"/>
+                            <constraint firstItem="UJ8-Zn-TI8" firstAttribute="top" secondItem="yr7-cO-pmr" secondAttribute="top" id="KQV-TX-2qP"/>
+                            <constraint firstItem="Egy-GZ-DSg" firstAttribute="top" secondItem="4qB-OK-WUq" secondAttribute="top" id="P5Z-ko-B6p"/>
+                            <constraint firstItem="zYL-93-P8w" firstAttribute="leading" secondItem="aZN-lQ-ZTs" secondAttribute="leading" id="YW1-g7-cNj"/>
+                            <constraint firstItem="NVF-AG-beK" firstAttribute="top" secondItem="zYL-93-P8w" secondAttribute="top" id="bXq-MO-5I7"/>
+                            <constraint firstItem="dPs-Mm-Bya" firstAttribute="top" secondItem="NVF-AG-beK" secondAttribute="bottom" constant="24" id="dVy-fg-yB2"/>
+                            <constraint firstItem="aZN-lQ-ZTs" firstAttribute="leading" secondItem="4qB-OK-WUq" secondAttribute="leading" constant="32" id="qEi-Sc-sob"/>
+                            <constraint firstItem="dPs-Mm-Bya" firstAttribute="leading" secondItem="4qB-OK-WUq" secondAttribute="leading" constant="32" id="tDP-b6-pWZ"/>
+                            <constraint firstItem="zYL-93-P8w" firstAttribute="top" secondItem="aZN-lQ-ZTs" secondAttribute="bottom" constant="11" id="y4c-xT-ORp"/>
+                            <constraint firstAttribute="trailing" secondItem="Egy-GZ-DSg" secondAttribute="trailing" id="yTu-dS-kwb"/>
+                            <constraint firstItem="Egy-GZ-DSg" firstAttribute="leading" secondItem="4qB-OK-WUq" secondAttribute="leading" id="ydV-uq-QqQ"/>
+                            <constraint firstItem="NVF-AG-beK" firstAttribute="leading" secondItem="zYL-93-P8w" secondAttribute="trailing" constant="10" id="zd9-2o-FUg"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="changePhoneNumContainer" destination="aZN-lQ-ZTs" id="MvD-Uf-VdM"/>
+                        <outlet property="changePhoneNumberTF" destination="st0-3m-84H" id="ZcU-pE-WGH"/>
+                        <outlet property="verifyNowButton" destination="dPs-Mm-Bya" id="2zK-vv-yqN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h0h-ZW-gud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2894.8598130841119" y="152.91576673866092"/>
+        </scene>
         <!--Web ViewVC-->
         <scene sceneID="5O4-vC-LRS">
             <objects>
@@ -1159,6 +1324,9 @@
         </scene>
     </scenes>
     <designables>
+        <designable name="38b-A6-ELF">
+            <size key="intrinsicContentSize" width="24" height="24"/>
+        </designable>
         <designable name="4gQ-az-4NE">
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
@@ -1167,6 +1335,9 @@
         </designable>
         <designable name="QAX-kH-Ohd">
             <size key="intrinsicContentSize" width="24" height="24"/>
+        </designable>
+        <designable name="dPs-Mm-Bya">
+            <size key="intrinsicContentSize" width="85" height="33"/>
         </designable>
         <designable name="hHD-Dn-Rz7">
             <size key="intrinsicContentSize" width="24" height="24"/>
@@ -1182,6 +1353,7 @@
         </designable>
     </designables>
     <resources>
+        <image name="K_toolTipAddCard" width="20" height="20"/>
         <image name="blackCross" width="20" height="20.333333969116211"/>
         <image name="k_dropdownArrow" width="24" height="24"/>
         <image name="k_main_chevronLeft" width="24" height="24"/>
@@ -1193,6 +1365,9 @@
         <image name="mobileImage" width="248" height="248"/>
         <namedColor name="kuduThemeBlue">
             <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="offWhiteTableView">
+            <color red="0.97254901960784312" green="0.98431372549019602" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="yellowF5B21B">
             <color red="0.96078431372549022" green="0.69803921568627447" blue="0.10588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

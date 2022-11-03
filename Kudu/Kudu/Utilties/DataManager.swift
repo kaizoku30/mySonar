@@ -11,9 +11,25 @@ import UIKit
 final class DataManager {
     
     static let shared = DataManager()
+    var launchedFromNotification = false
     var noInternetViewAdded: Bool = false
-    private var valuesInitialized = false
     var showingToast: Bool = false
+    private var valuesInitialized = false
+    private var fcmToken: String = "123"
+    private var showNotificationBell = false
+    
+    var fetchToken: String {
+        fcmToken
+    }
+    
+    var isUserLoggedIn: Bool {
+        let loginData = self.decodeAndFetch(LoginUserData.self, key: .loginResponse)
+        return loginData.isNotNil
+    }
+    
+    var fetchNotificationStatus: Bool {
+        showNotificationBell
+    }
     
     var loginResponse: LoginUserData? {
         didSet {
@@ -91,6 +107,16 @@ final class DataManager {
 }
 
 extension DataManager {
+    func setfcmToken(token: String) {
+        self.fcmToken = token
+    }
+    
+    func setNotificationBellStatus(_ status: Bool) {
+        showNotificationBell = status
+    }
+}
+
+extension DataManager {
     
     func saveToRecentlySearchDeliveryLocation(_ data: LocationInfoModel) {
         var newArray = [data]
@@ -134,7 +160,6 @@ extension DataManager {
     
     static func syncHashIDs() {
         APIEndPoints.HomeEndPoints.syncHashIDsForFavourites(success: { (response) in
-            let hashIdsExisting = AppUserDefaults.value(forKey: .hashIdsForFavourites) as? [String] ?? []
             AppUserDefaults.save(value: response.data ?? [], forKey: .hashIdsForFavourites)
         }, failure: { _ in
             //No implementation needed

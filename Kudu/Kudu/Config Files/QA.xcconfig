@@ -8,7 +8,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 slash = /
-kBaseUrl = http:/$(slash)k8s-kuduqa-ingressq-31f633f38a-1294417493.us-east-1.elb.amazonaws.com
+kBaseUrl = https:/$(slash)api-qa.kudu.com.sa
 FacebookAppID = 715156706269661
 FacebookClientToken = 31ddf3b230c27b3cc9116e50c8f75907
 FacebookDisplayName = Kudu-Development

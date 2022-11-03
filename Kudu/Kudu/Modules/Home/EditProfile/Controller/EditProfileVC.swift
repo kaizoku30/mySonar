@@ -26,6 +26,9 @@ class EditProfileVC: BaseVC {
         baseView.handleViewActions = { [weak self] (action) in
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             switch action {
+            case .editPhoneNumberFlow:
+                let vc = ChangePhoneNumberVC.instantiate(fromAppStoryboard: .Setting)
+                self?.push(vc: vc)
             case .backButtonPressed:
                 strongSelf.pop()
             case .nameUpdated(let updatedText):
@@ -49,9 +52,11 @@ extension EditProfileVC: EditProfileVMDelegate {
     func editProfileAPIResponse(responseType: Result<Bool, Error>) {
         switch responseType {
         case .success(let triggerEmailFlow):
+            NotificationCenter.postNotificationForObservers(.updateProfilePage)
             self.baseView.handleAPIResponse(errorMsg: nil, errorCode: nil)
             if triggerEmailFlow, let email = viewModel?.getEmail, email.isEmpty == false {
                 debugPrint("Need to trigger verify email flow")
+                NotificationCenter.postNotificationForObservers(.updateProfilePage)
                 let vc = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
                 vc.viewModel = PhoneVerificationVM(_delegate: vc, flowType: .comingFromEditProfile, emailForVerification: email)
                 vc.differentEmailPressed = { [weak self] in

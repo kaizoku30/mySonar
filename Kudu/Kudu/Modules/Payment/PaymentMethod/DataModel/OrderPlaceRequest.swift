@@ -13,7 +13,9 @@ enum OrderTimeType: String {
 }
 
 enum PaymentType: String {
+    case Card = "1"
     case COD = "2"
+    case ApplePay = "3"
 }
 
 struct OrderPlaceRequest {
@@ -44,8 +46,11 @@ struct OrderPlaceRequest {
     let discount: Double?
     let offerType: PromoOfferType?
     let promoId: String?
+    let posId: Int?
     
-    let appVersion: String = "IOS V1"
+    let appVersion: String = "IOS \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")(\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""))"
+    
+    let scheduleTime: Int?
     
     func getRequest() -> [String: Any] {
         let key = Constants.APIKeys.self
@@ -64,12 +69,16 @@ struct OrderPlaceRequest {
                                                key.areaNameArabic.rawValue: restaurantLocation.restaurantLocation?.areaNameEnglish ?? "",
                                                key.cityName.rawValue: restaurantLocation.restaurantLocation?.cityName ?? "",
                                                key.stateName.rawValue: restaurantLocation.restaurantLocation?.stateName ?? "",
-                                               key.countryName.rawValue: restaurantLocation.restaurantLocation?.countryName ?? ""]
+                                               key.countryName.rawValue: restaurantLocation.restaurantLocation?.countryName ?? "",
+                                               key.zipCode.rawValue: restaurantLocation.restaurantLocation?.zipCode ?? "123"]
         params[key.restaurantLocation.rawValue] = restaurantObject
         if servicesType == .delivery {
             params[key.deliveryCharge.rawValue] = deliveryCharge!
             params[key.addressId.rawValue] = addressId!
             params[key.userAddress.rawValue] = userAddress!.convertToRequest().getRequestJson()
+            var address = params[key.userAddress.rawValue] as? [String: Any] ?? [:]
+            address["sdmId"] = 0
+            params[key.userAddress.rawValue] = address
             
         }
         if servicesType == .curbside {
@@ -85,6 +94,10 @@ struct OrderPlaceRequest {
             params[key.couponId.rawValue] = couponId!
             params[key.offerType.rawValue] = offerType?.rawValue ?? ""
             params[key.promoId.rawValue] = promoId
+            params[key.posId.rawValue] = posId
+        }
+        if let scheduleTime = scheduleTime, scheduleTime > 0 {
+            params[key.scheduleTime.rawValue] = scheduleTime*1000
         }
         return params
     }

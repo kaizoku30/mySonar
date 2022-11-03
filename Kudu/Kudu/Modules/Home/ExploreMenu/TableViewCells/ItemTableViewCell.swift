@@ -35,7 +35,7 @@ class ItemTableViewCell: UITableViewCell {
 	var openItemDetail: ((MenuItem) -> Void)?
 	var openItemDetailForFavourites: ((MenuItem, Int) -> Void)?
 	var likeStatusUpdated: ((Bool, MenuItem) -> Void)?
-	var triggerLoginFlow: (() -> Void)?
+	var triggerLoginFlow: ((AddCartItemRequest?, FavouriteRequest?) -> Void)?
 	var removeFromFavourites: ((String, Int) -> Void)?
     var cartConflict: ((Int, MenuItem) -> Void)?
     
@@ -58,8 +58,8 @@ extension ItemTableViewCell {
 	// MARK: IBActions
 	@IBAction private func favouriteButtonTapped(_ sender: Any) {
         
-        if AppUserDefaults.value(forKey: .loginResponse).isNil {
-            triggerLoginFlow?()
+        if DataManager.shared.isUserLoggedIn == false {
+            triggerLoginFlow?(nil, FavouriteRequest(itemId: item._id ?? "", hashId: MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: item.modGroups ?? []), menuId: item.menuId ?? "", itemSdmId: item.itemId ?? 0, isFavourite: true, servicesAvailable: self.serviceType, modGroups: item.modGroups ?? []))
             return
         }
         
@@ -80,7 +80,7 @@ extension ItemTableViewCell {
 				favouriteImageView.animationImages = AppGifs.likeAnim.animationImages
 				favouriteImageView.animationDuration = 0.75
 				favouriteImageView.animationRepeatCount = 1
-				self.favouriteImageView.image = AppGifs.likeAnim.animationImages.last!
+				favouriteImageView.image = AppGifs.likeAnim.animationImages.last!
 				favouriteImageView.startAnimating()
 			} else {
 				favouriteImageView.image = unliked
@@ -91,11 +91,12 @@ extension ItemTableViewCell {
     
     @IBAction private func deleteButtonPressed(_ sender: Any) {
         if itemCartCount > 0 {
-            itemCartCount -= 1
-            updateButtonView()
+            //itemCartCount -= 1
+            //updateButtonView()
+            self.counterLabelButton.startBtnLoader(color: .white, small: true)
 			HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-            self.cartCountUpdatedForFavourites?(self.item, itemCartCount, self.index)
-            self.cartCountUpdated?(itemCartCount, self.item)
+            self.cartCountUpdatedForFavourites?(self.item, itemCartCount - 1, self.index)
+            self.cartCountUpdated?(itemCartCount - 1, self.item)
         }
     }
     
@@ -111,11 +112,12 @@ extension ItemTableViewCell {
             return
         }
         
-        itemCartCount += 1
-        updateButtonView()
+//        itemCartCount += 1
+//        updateButtonView()
+        self.counterLabelButton.startBtnLoader(color: .white, small: true)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-        self.cartCountUpdatedForFavourites?(self.item, itemCartCount, self.index)
-        self.cartCountUpdated?(itemCartCount, self.item)
+        self.cartCountUpdatedForFavourites?(self.item, itemCartCount + 1, self.index)
+        self.cartCountUpdated?(itemCartCount + 1, self.item)
     }
     
     @IBAction private func addButtonPressed(_ sender: Any) {
@@ -124,8 +126,9 @@ extension ItemTableViewCell {
             return
         }
         
-        if AppUserDefaults.value(forKey: .loginResponse).isNil {
-            triggerLoginFlow?()
+        if DataManager.shared.isUserLoggedIn == false && !(item.isCustomised ?? false) {
+            let addItemRequest = AddCartItemRequest(itemId: self.item._id ?? "", menuId: self.item.menuId ?? "", hashId: MD5Hash.generateHashForTemplate(itemId: self.item._id ?? "", modGroups: nil), storeId: DataManager.shared.currentStoreId, itemSdmId: self.item.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: nil)
+            triggerLoginFlow?(addItemRequest, nil)
             return
         }
         
@@ -144,11 +147,12 @@ extension ItemTableViewCell {
             return
         }
         
-        itemCartCount += 1
-        updateButtonView()
+//        itemCartCount += 1
+//        updateButtonView()
+        addButton.startBtnLoader(color: .white, small: true)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-        self.cartCountUpdatedForFavourites?(self.item, itemCartCount, self.index)
-        cartCountUpdated?(itemCartCount, self.item)
+        self.cartCountUpdatedForFavourites?(self.item, itemCartCount + 1, self.index)
+        cartCountUpdated?(itemCartCount + 1, self.item)
     }
 	
 	@objc private func performRouting() {
@@ -222,6 +226,8 @@ extension ItemTableViewCell {
 	}
     
     func configure(_ item: MenuItem, serviceType: APIEndPoints.ServicesType) {
+        self.counterLabelButton.stopBtnLoader(titleColor: .white)
+        self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = serviceType
         self.item = item
         setItemData(item: item)
@@ -232,9 +238,11 @@ extension ItemTableViewCell {
     }
     
     func configure(_ item: FavouriteItem, index: Int) {
+        self.counterLabelButton.stopBtnLoader(titleColor: .white)
+        self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = APIEndPoints.ServicesType(rawValue: item.itemDetails?.servicesAvailable ?? "") ?? .delivery
         self.index = index
-        self.item = MenuItem(menuId: item.itemDetails?.menuId ?? "", _id: item.itemId ?? "", nameArabic: item.itemDetails?.nameArabic ?? "", descriptionEnglish: item.itemDetails?.descriptionEnglish ?? "", nameEnglish: item.itemDetails?.nameEnglish ?? "", isCustomised: item.itemDetails?.isCustomised ?? false, price: item.itemDetails?.price ?? 0.0, descriptionArabic: item.itemDetails?.descriptionArabic ?? "", itemImageUrl: item.itemDetails?.itemImageUrl ?? "", allergicComponent: item.itemDetails?.allergicComponent ?? [], isAvailable: item.itemDetails?.isAvailable ?? false, modGroups: item.modGroups ?? [], cartCount: item.cartCount ?? 0, templates: item.templates ?? [], titleArabic: nil, titleEnglish: nil, itemId: item.itemDetails?.itemId ?? 0, servicesAvailable: item.itemDetails?.servicesAvailable, calories: item.itemDetails?.calories)
+        self.item = MenuItem(menuId: item.itemDetails?.menuId ?? "", _id: item.itemId ?? "", nameArabic: item.itemDetails?.nameArabic ?? "", descriptionEnglish: item.itemDetails?.descriptionEnglish ?? "", nameEnglish: item.itemDetails?.nameEnglish ?? "", isCustomised: item.itemDetails?.isCustomised ?? false, price: item.itemDetails?.price ?? 0.0, descriptionArabic: item.itemDetails?.descriptionArabic ?? "", itemImageUrl: item.itemDetails?.itemImageUrl ?? "", allergicComponent: item.itemDetails?.allergicComponent ?? [], isAvailable: item.itemDetails?.isAvailable ?? false, modGroups: item.modGroups ?? [], cartCount: item.cartCount ?? 0, templates: item.templates ?? [], titleArabic: nil, titleEnglish: nil, itemId: item.itemDetails?.itemId ?? 0, servicesAvailable: item.itemDetails?.servicesAvailable, calories: item.itemDetails?.calories, excludeLocations: [])
         setItemData(item: self.item)
 		favouriteImageView.image = liked
 		shimmerView.stopShimmering()
@@ -244,6 +252,8 @@ extension ItemTableViewCell {
     }
 	
 	func configure(_ item: MenuSearchResultItem, serviceType: APIEndPoints.ServicesType) {
+        self.counterLabelButton.stopBtnLoader(titleColor: .white)
+        self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = serviceType
 		self.resultItem = item
 		let menuItem = item.convertToMenuItem()

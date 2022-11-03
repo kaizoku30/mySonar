@@ -81,7 +81,17 @@ class ExploreMenuV2View: UIView {
         }
     }
     
-    func refreshCartLocally() {
+    func syncCart() {
+        self.cartBanner.syncCart(showCart: { [weak self] (show) in
+            mainThread({
+                self?.cartBanner.isHidden = !show
+                self?.refreshCartLocally()
+            })
+            
+        })
+    }
+    
+    private func refreshCartLocally() {
         mainThread {
             if self.cartBanner.cartShouldBeVisible {
                 self.cartBanner.configure()
@@ -100,14 +110,6 @@ class ExploreMenuV2View: UIView {
                 self.browseMenuBottomPadding.constant = 10
             }
         }
-    }
-    
-    func toggleBrowseMenu(show: Bool) {
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0, animations: {
-            let showPadding = self.cartBanner.cartShouldBeVisible ? self.cartBanner.height + 10 : 10
-            self.browseMenuBottomPadding.constant = show ? showPadding : -80
-            self.layoutIfNeeded()
-        })
     }
     
     func showTableView(_ show: Bool) {
@@ -190,6 +192,19 @@ class ExploreMenuV2View: UIView {
     }
     
     private var rotatedToCircle = false
+    
+    func toggleBrowseMenu(show: Bool) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0, animations: {
+            let showPadding = self.cartBanner.cartShouldBeVisible ? self.cartBanner.height + 10 : 10
+            self.browseMenuBottomPadding.constant = show ? showPadding : -80
+            self.rotatedToCircle = false
+            self.browseMenuWidth.constant = 141
+            self.setBrowseMenuInsets()
+            self.browseMenuButton.setTitle("Browse Menu", for: .normal)
+            self.browseMenuButton.layoutIfNeeded()
+            self.layoutIfNeeded()
+        })
+    }
     
     func triggerAnimationBrowseMenu(show: Bool) {
         //		if show {

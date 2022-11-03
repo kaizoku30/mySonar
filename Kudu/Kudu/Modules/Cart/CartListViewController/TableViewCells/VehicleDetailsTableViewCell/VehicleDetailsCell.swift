@@ -9,6 +9,7 @@ import UIKit
 
 class VehicleDetailsCell: UITableViewCell {
     @IBOutlet weak var carImageView: UIImageView!
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var addedVehicleStack: UIView!
     @IBOutlet weak var addUpdateBtn: AppButton!
     @IBOutlet weak var addedVehicleName: UILabel!

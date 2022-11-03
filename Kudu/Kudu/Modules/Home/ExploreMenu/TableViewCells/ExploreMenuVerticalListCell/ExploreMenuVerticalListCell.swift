@@ -84,7 +84,7 @@ extension ExploreMenuVerticalListCell: UITableViewDataSource, UITableViewDelegat
 			copy.verticalOffset = Double(self?.tableView.contentOffset.y ?? 0)
             strongSelf.likeStatusUpdated?($0, copy, strongSelf.tableIndex)
         }
-        cell.triggerLoginFlow = { [weak self] in
+        cell.triggerLoginFlow = { [weak self] (addReq, favReq) in
             guard let strongSelf = self else { return }
             strongSelf.triggerLoginFlow?()
         }

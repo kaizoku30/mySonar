@@ -61,6 +61,7 @@ extension ExploreMenuSearchVC {
 			let result = $0
 			self?.tableView.isUserInteractionEnabled = true
 			self?.topSearchedCategories = result.data ?? []
+            self?.topSearchedCategories = TimeRange.filterArrayOfCategories(categories: self?.topSearchedCategories ?? [])
 			self?.isFetchingTopSearchCategories = false
 			mainThread {
 				self?.tableView.reloadData()
@@ -74,6 +75,12 @@ extension ExploreMenuSearchVC {
         APIEndPoints.HomeEndPoints.getSearchSuggestionsMenu(storeId: self.storeId, searchKey: self.textQuery, type: self.serviceType, success: { [weak self] in
 			let result = $0
 			self?.suggestions = result.data ?? []
+            self?.suggestions = self?.suggestions.filter({ (result) in
+                if result.isCategory ?? false {
+                    return TimeRange.checkIfCategoryAllowedTimeWise(category: result)
+                }
+                return true
+            }) ?? []
 			self?.isFetchingSuggestions = false
 			mainThread {
 				self?.tableView.reloadData()

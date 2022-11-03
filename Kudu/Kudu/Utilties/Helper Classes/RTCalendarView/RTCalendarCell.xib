@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Regular.ttf">
+            <string>Mulish-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RTCalendarCell" id="gTV-IL-0wX" customClass="RTCalendarCell" customModule="Kudu" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HWy-KD-OUF">
+                        <rect key="frame" x="2.6666666666666679" y="2.6666666666666679" width="45" height="45"/>
+                        <color key="backgroundColor" name="kuduThemeBlue"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="HWy-KD-OUF" secondAttribute="height" multiplier="1:1" id="Qjf-Rz-yEc"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVa-qb-qOR">
+                        <rect key="frame" x="21" y="16.333333333333329" width="8" height="17.666666666666671"/>
+                        <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="14"/>
+                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="HWy-KD-OUF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2.5" id="Wzy-8p-aJr"/>
+                <constraint firstItem="HWy-KD-OUF" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="XIF-Vq-4bc"/>
+                <constraint firstItem="zVa-qb-qOR" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="f32-Yf-Yhg"/>
+                <constraint firstItem="zVa-qb-qOR" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="kL2-MS-Rn2"/>
+                <constraint firstAttribute="bottom" secondItem="HWy-KD-OUF" secondAttribute="bottom" constant="2.5" id="q99-5y-0ca"/>
+                <constraint firstItem="HWy-KD-OUF" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="uFF-WL-RfX"/>
+            </constraints>
+            <connections>
+                <outlet property="dateLabel" destination="zVa-qb-qOR" id="xeg-5p-hea"/>
+                <outlet property="selectionView" destination="HWy-KD-OUF" id="F8A-0v-tR2"/>
+            </connections>
+            <point key="canvasLocation" x="88" y="21"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="kuduThemeBlue">
+            <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

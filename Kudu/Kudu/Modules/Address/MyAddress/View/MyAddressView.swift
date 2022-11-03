@@ -21,6 +21,7 @@ class MyAddressView: UIView {
     @IBOutlet private weak var addNewAddressBtn: AppButton!
     // MARK: Actions
     @IBAction private func addNewAddressPressed(_ sender: Any) {
+        addNewAddressBtn.becomeFirstResponder()
         handleViewActions?(.addNewAddress)
     }
     
@@ -65,7 +66,7 @@ class MyAddressView: UIView {
         tableView.showsVerticalScrollIndicator = false
         noResult.backgroundColor = backgroundView.backgroundColor
         tableView.backgroundColor = backgroundView.backgroundColor
-        noResult.contentType = .noMyAddress
+        noResult.contentType = .none
         toggleLoader(start: false)
         toggleNoResult(show: true)
         myAddressLabel.text = LocalizedStrings.MyAddress.myAddressLabel

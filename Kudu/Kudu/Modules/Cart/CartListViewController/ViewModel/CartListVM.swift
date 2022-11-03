@@ -56,8 +56,27 @@ class CartListVM {
             //Out of stock check
             return false
         }
+        if items.contains(where: { $0.itemDetails?.excludeLocations?.contains(where: { $0 == self.store?._id ?? "" }) ?? false == true && $0.offerdItem ?? false == false }) {
+            //Out of stock check
+            return false
+        }
         if serviceType == .curbside {
-            if cartConfig?.vehicleDetails.isNil ?? false {
+            if let vehicle = cartConfig?.vehicleDetails, let vehicleId = vehicle._id, !vehicleId.isEmpty {
+                // Let the flow go on
+            } else {
+                return false
+            }
+        }
+        if serviceType == .delivery {
+            if let id = deliveryLocation?.associatedMyAddress?.id, !id.isEmpty {
+                
+            } else {
+                return false
+            }
+        } else {
+            if let id = store?._id, id.isEmpty == false {
+                
+            } else {
                 return false
             }
         }
@@ -140,18 +159,22 @@ class CartListVM {
         CartUtility.getCartConfig(storeId: store?._id, fetched: { [weak self] in
             self?.fetchingCartConfig = false
             self?.cartConfig = $0
+            if let details = $0?.storeDetails {
+                debugPrint("Store Details Updated")
+                self?.store = details
+            }
             fetched()
         })
     }
     
-    func checkIfNoStoreExists(lat: Double, long: Double, checked: @escaping ((Bool) -> Void)) {
-        APIEndPoints.HomeEndPoints.getStoreDetailsForDelivery(lat: lat, long: long, servicesType: self.serviceType, success: { _ in
-            checked(true)
+    func checkIfNoStoreExists(lat: Double, long: Double, checked: @escaping ((StoreDetail?) -> Void)) {
+        APIEndPoints.HomeEndPoints.getStoreDetailsForDelivery(lat: lat, long: long, servicesType: self.serviceType, success: {
+            checked($0.data)
         }, failure: { (error) in
             if error.code == 422 {
-                checked(false)
+                checked(nil)
             } else {
-                checked(true)
+                checked(nil)
             }
         })
     }
@@ -203,11 +226,13 @@ class CartListVM {
                 // Case should never happen
                 debugPrint("INVALID STATE")
             } else {
-                let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
-                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                 //                updateExploreMenuCellCount?(object.menuId ?? "", object.itemId ?? "", object.hashId ?? "", true, object.modGroups ?? [])
                 objects[index].quantity = newCount
-                updateCartCount(object: object, isIncrement: true, completionHandler: completionHandler)
+                updateCartCount(object: object, isIncrement: true, completionHandler: {
+                    let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    completionHandler?()
+                })
             }
         } else {
             if newCount == 0 {
@@ -217,11 +242,13 @@ class CartListVM {
                 objects.remove(at: index)
                 removeItemFromCart(object: object, completionHandler: completionHandler)
             } else {
-                let cartNotification = CartCountNotifier(isIncrement: false, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
-                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                 //    updateExploreMenuCellCount?(object.menuId ?? "", object.itemId ?? "", object.hashId ?? "", false, object.modGroups ?? [])
                 objects[index].quantity = newCount
-                updateCartCount(object: object, isIncrement: false, completionHandler: completionHandler)
+                updateCartCount(object: object, isIncrement: false, completionHandler: {
+                    let cartNotification = CartCountNotifier(isIncrement: false, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    completionHandler?()
+                })
             }
         }
     }
@@ -305,5 +332,13 @@ extension CartListVM {
         if index < self.objects.count {
             self.objects.remove(at: index)
         }
+    }
+    
+    func validateOrder(req: OrderPlaceRequest, validated: @escaping (Result<String, Error>) -> Void) {
+        APIEndPoints.OrderEndPoints.validateOrder(req: req, success: {
+            validated(.success($0.data?.orderId ?? ""))
+        }, failure: { (error) in
+            validated(.failure(NSError(localizedDescription: error.msg)))
+        })
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol PhoneVerificationVMDelegate: AnyObject {
+    func changeNumberAPIResponse(responseType: Result<Bool, Error>)
     func verifyMobileAPIResponse(responseType: Result<LoginUserData?, Error>)
     func verifyEmailAPIResponse(responseType: Result<String, Error>, flowType: PhoneVerificationVM.PhoneVerificationFlow)
 }
@@ -19,6 +20,7 @@ class PhoneVerificationVM {
         case comingFromLogin
         case comingFromEditProfile
         case comingFromProfilePage
+        case comingFromChangeNumberFlow
     }
     
     private var signUpRequest: SignUpRequest?
@@ -28,6 +30,8 @@ class PhoneVerificationVM {
     private let webService = APIEndPoints.OnboardingEndPoints.self
     private var loginMobileNumber: String?
     private var emailForVerification: String?
+    private var changePhoneNumberReq: ChangePhoneNumberRequest?
+    var getChangeRequest: ChangePhoneNumberRequest? { changePhoneNumberReq }
     var getEmailForVerification: String? { emailForVerification }
     var getCurrentFlow: PhoneVerificationFlow { self.flow }
     var getMobileNumber: String {
@@ -49,7 +53,28 @@ class PhoneVerificationVM {
         self.emailForVerification = emailForVerification
     }
     
+    func setChangePhoneRequest(req: ChangePhoneNumberRequest) {
+        self.changePhoneNumberReq = req
+    }
+    
+    func changeNumberAPIHit(mobileOtp: String) {
+        self.changePhoneNumberReq?.mobileOTP = mobileOtp
+        self.changePhoneNumberReq?.isSendOtp = false
+        guard let req = changePhoneNumberReq else { return }
+        APIEndPoints.SettingsEndPoints.changePhoneNumber(req: req, success: { [weak self] _ in
+            self?.delegate?.changeNumberAPIResponse(responseType: .success(true))
+        }, failure: { [weak self] (error) in
+            self?.delegate?.changeNumberAPIResponse(responseType: .failure(NSError(localizedDescription: error.msg)))
+        })
+    }
+    
     func verifyMobileOTP(_ otp: String) {
+        
+        if flow == .comingFromChangeNumberFlow {
+            changeNumberAPIHit(mobileOtp: otp)
+            return
+        }
+        
         if flow == .comingFromSignUp {
             
             if self.socialSignUpRequest.isNotNil {

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTCalendarView" customModule="Kudu" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionView" destination="uS8-og-S2h" id="ObH-K3-Tag"/>
+                <outlet property="mainContentView" destination="iN0-l3-epB" id="AaE-jn-pT4"/>
+                <outlet property="monthYearLabel" destination="jUh-NF-gWk" id="Zbm-od-UMu"/>
+                <outlet property="weekdayCollection" destination="a36-1H-4ei" id="Lia-fm-Akk"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="337" height="315"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="uS8-og-S2h">
+                    <rect key="frame" x="30" y="100" width="277" height="195"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Rsx-mz-Nef">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="a36-1H-4ei">
+                    <rect key="frame" x="30" y="61" width="277" height="24"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="gtz-0K-V7Y"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="C1O-os-xLP">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month 2000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUh-NF-gWk">
+                    <rect key="frame" x="29.999999999999993" y="24" width="97.333333333333314" height="21.666666666666671"/>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="17"/>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUb-qF-pdf" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="289" y="26" width="18" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="18" id="pfA-Cl-RlU"/>
+                        <constraint firstAttribute="height" constant="18" id="tYh-ty-mvG"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" image="k_myaddress_cross"/>
+                    <connections>
+                        <action selector="crossButtonPressed:" destination="-1" eventType="touchUpInside" id="yhx-3d-YkL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="zUb-qF-pdf" firstAttribute="trailing" secondItem="a36-1H-4ei" secondAttribute="trailing" id="3x2-iA-aqs"/>
+                <constraint firstItem="uS8-og-S2h" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="6K8-9e-XI5"/>
+                <constraint firstAttribute="bottom" secondItem="uS8-og-S2h" secondAttribute="bottom" constant="20" id="C42-HJ-yBd"/>
+                <constraint firstItem="uS8-og-S2h" firstAttribute="top" secondItem="a36-1H-4ei" secondAttribute="bottom" constant="15" id="GgC-Ca-nnG"/>
+                <constraint firstItem="a36-1H-4ei" firstAttribute="trailing" secondItem="uS8-og-S2h" secondAttribute="trailing" id="JVB-UE-sVl"/>
+                <constraint firstItem="zUb-qF-pdf" firstAttribute="centerY" secondItem="jUh-NF-gWk" secondAttribute="centerY" id="XGY-pe-1cB"/>
+                <constraint firstItem="jUh-NF-gWk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="XIw-a6-md2"/>
+                <constraint firstItem="jUh-NF-gWk" firstAttribute="leading" secondItem="a36-1H-4ei" secondAttribute="leading" id="eBf-qk-0nC"/>
+                <constraint firstItem="uS8-og-S2h" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="gCb-5u-WJn"/>
+                <constraint firstItem="a36-1H-4ei" firstAttribute="leading" secondItem="uS8-og-S2h" secondAttribute="leading" id="mab-pg-9HG"/>
+                <constraint firstAttribute="trailing" secondItem="uS8-og-S2h" secondAttribute="trailing" constant="30" id="svp-g7-d9r"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="22" y="21"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="k_myaddress_cross" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -13,6 +13,7 @@ protocol HomeVMDelegate: AnyObject {
     func reverseGeocodingSuccess(trimmedAddress: String, isMyAddress: Bool)
     func reverseGeocodingFailed(reason: String)
     func bannerAPIResponse(responseType: Result<String, Error>)
+    func inStorePromoAPIResponse(responseType: Result<String, Error>)
 	func menuListAPIResponse(forSection: APIEndPoints.ServicesType, responseType: Result<String, Error>)
 	func doesNotDeliverToThisLocation()
     func recommendationsAPIResponse(responseType: Result<Bool, Error>)
@@ -26,6 +27,7 @@ class HomeVM {
     private var selectedSection: APIEndPoints.ServicesType = .delivery
     private let webService = APIEndPoints.HomeEndPoints.self
     private var bannerItems: [BannerItem]?
+    private var promos: [CouponObject]?
     private var recommendationList: [RecommendationObject]?
     private var menuList: [MenuCategory]?
     var getCurrentLocationData: LocationInfoModel? { currentLocationData }
@@ -33,6 +35,7 @@ class HomeVM {
     var getBannerItems: [BannerItem]? { bannerItems }
     var getMenuList: [MenuCategory]? { menuList }
     var getRecommendationList: [RecommendationObject]? { recommendationList }
+    var getInStorePromos: [CouponObject]? { promos }
     
 	enum LocationState {
 		case servicesDisabled
@@ -54,7 +57,16 @@ class HomeVM {
         selectedSection = section
     }
     
-    func hitPromoAPI() {
+    func checkNotificationStatus(statusUpdated: @escaping (Result<Bool, Error>) -> Void) {
+        APIEndPoints.CartEndPoints.getCartConfig(storeId: nil, success: { (response) in
+            DataManager.shared.setNotificationBellStatus(response.data?.newNotification ?? false)
+            statusUpdated(.success(true))
+        }, failure: { _ in
+            statusUpdated(.success(true))
+        })
+    }
+    
+    func hitBannerAPI() {
         self.bannerItems = nil
         webService.getBanners(serviceType: self.selectedSection, success: { [weak self] (response) in
             self?.bannerItems = response.data ?? []
@@ -62,6 +74,21 @@ class HomeVM {
         }, failure: { [weak self] (error) in
             let error = NSError(code: error.code, localizedDescription: error.msg)
             self?.delegate?.bannerAPIResponse(responseType: .failure(error))
+        })
+    }
+    
+    func hitInStorePromoAPI() {
+        self.promos = nil
+        if DataManager.shared.isUserLoggedIn == false {
+            self.promos = nil
+            self.delegate?.inStorePromoAPIResponse(responseType: .success(""))
+            return
+        }
+        APIEndPoints.CouponEndPoints.getInStoreCouponList(storeId: DataManager.shared.currentStoreId == "" || DataManager.shared.currentServiceType == .delivery ? nil : DataManager.shared.currentStoreId, success: { [weak self] (response) in
+            self?.promos = response.data ?? []
+            self?.delegate?.inStorePromoAPIResponse(responseType: .success(response.message ?? ""))
+        }, failure: { [weak self] (error) in
+            self?.delegate?.inStorePromoAPIResponse(responseType: .failure(NSError(localizedDescription: error.msg)))
         })
     }
     
@@ -136,6 +163,7 @@ class HomeVM {
 				})
 			}
 		}, failure: { [weak self] _ in
+            DataManager.shared.currentDeliveryLocation = nil
 			self?.delegate?.doesNotDeliverToThisLocation()
 		})
     }
@@ -176,5 +204,4 @@ class HomeVM {
             foundState(.locationAlreadyPresent)
 		}
 	}
-	
 }

@@ -204,13 +204,15 @@ class SetRestaurantLocationView: UIView {
     }
     
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
-        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-        alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
-        alert.handleActionOnLocationView = { [weak self] in
-            if $0 == .right {
-                self?.handleViewActions?(.openSettings)
-            } else {
-                self?.handleViewActions?(.backButtonPressed)
+        mainThread {
+            let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
+            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
+            alert.handleActionOnLocationView = { [weak self] in
+                if $0 == .right {
+                    self?.handleViewActions?(.openSettings)
+                } else {
+                    self?.handleViewActions?(.backButtonPressed)
+                }
             }
         }
     }

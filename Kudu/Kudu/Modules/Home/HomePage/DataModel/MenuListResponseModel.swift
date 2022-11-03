@@ -58,6 +58,59 @@ struct TimeRange: Codable {
         return copyArray
     }
     
+    static func checkIfCategoryAllowedTimeWise(category: MenuSearchResultItem) -> Bool {
+        let timeRanges = category.timeRange
+        var addCategory = false
+        if !(category.isTimeRangeSet ?? false) {
+            return true
+        }
+        timeRanges?.forEach({ (timeRange) in
+            let day = WeekDay(rawValue: timeRange.day ?? "")
+            guard let day = day else { return }
+            if day.checkIfToday() {
+                let startTime = timeRange.startTime ?? 0
+                let endTime = timeRange.endTime ?? 0
+                let now = Date().totalMinutes
+                if now >= startTime && now <= endTime {
+                    addCategory = true
+                    return
+                }
+            }
+        })
+        if addCategory == false {
+            debugPrint("CATEGORY REMOVED : \(category.titleEnglish ?? "")")
+        }
+        return addCategory
+    }
+    
+    static func filterArrayOfCategories(categories: [MenuSearchResultItem]) -> [MenuSearchResultItem] {
+        let copyArray: [MenuSearchResultItem] = categories.filter({
+            let timeRanges = $0.timeRange
+            var addCategory = false
+            if !($0.isTimeRangeSet ?? false) {
+                return true
+            }
+            timeRanges?.forEach({ (timeRange) in
+                let day = WeekDay(rawValue: timeRange.day ?? "")
+                guard let day = day else { return }
+                if day.checkIfToday() {
+                    let startTime = timeRange.startTime ?? 0
+                    let endTime = timeRange.endTime ?? 0
+                    let now = Date().totalMinutes
+                    if now >= startTime && now <= endTime {
+                        addCategory = true
+                        return
+                    }
+                }
+            })
+            if addCategory == false {
+                debugPrint("CATEGORY REMOVED : \($0.titleEnglish ?? "")")
+            }
+            return addCategory
+        })
+        return copyArray
+    }
+    
     enum WeekDay: String {
         case Everyday
         case Monday
@@ -87,6 +140,26 @@ struct TimeRange: Codable {
                 return today == 7
             case .Sunday:
                 return today == 1
+            }
+        }
+        
+        static func getWeekDay(date: Date = Date()) -> WeekDay {
+            let weekday = date.weekday
+            switch weekday {
+            case 2:
+                return .Monday
+            case 3:
+                return .Tuesday
+            case 4:
+                return .Wednesday
+            case 5:
+                return .Thursday
+            case 6:
+                return .Friday
+            case 7:
+                return .Saturday
+            default:
+                return .Sunday
             }
         }
     }

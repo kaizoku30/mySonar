@@ -8,6 +8,7 @@
 import UIKit
 
 class CartCouponListView: UIView {
+    @IBOutlet private weak var noResultView: UIView!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var couponCodeTF: AppTextFieldView!
     @IBOutlet private weak var applyButton: AppButton!
@@ -45,6 +46,13 @@ class CartCouponListView: UIView {
     func prepareForCouponApplication() {
         self.tableView.isUserInteractionEnabled = false
         self.textFieldContainer.isUserInteractionEnabled = false
+    }
+    
+    func showNoResultView() {
+        mainThread {
+            self.noResultView.isHidden = false
+            self.bringSubviewToFront(self.noResultView)
+        }
     }
     
     private func enableViews() {

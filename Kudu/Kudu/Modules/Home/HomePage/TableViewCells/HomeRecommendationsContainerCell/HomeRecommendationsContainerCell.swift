@@ -46,12 +46,16 @@ extension HomeRecommendationsContainerCell: UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recommendations.count
+        return recommendations.isEmpty ? 4 : recommendations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(with: HomeRecommendationCollectionViewCell.self, indexPath: indexPath)
-        cell.configure(recommendations[indexPath.item])
+        if indexPath.item < recommendations.count {
+            cell.configure(recommendations[indexPath.item])
+        } else {
+            cell.configureForNoObj()
+        }
         return cell
     }
     

@@ -12,39 +12,66 @@ import FBSDKCoreKit
 import GoogleMaps
 import SwiftLocation
 import DropDown
+import Firebase
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    
+    private let locationManager = CLLocationManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        initialSetup(application, didFinishLaunchingWithOptions: launchOptions)
+        setupForNotifications(application, launchOptions: launchOptions)
+        locationSetup()
+        return true
+    }
+    
+    private func initialSetup(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         GMSServices.provideAPIKey(Constants.GooglePaidAPIKey.apiKey)
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.toolbarTintColor = .black
         AWSUploadController.setupAmazonS3(withPoolID: Constants.S3BucketCredentials.s3PoolApiKey)
         ApplicationDelegate.shared.application(
-                    application,
-                    didFinishLaunchingWithOptions: launchOptions
-                )
-		configureUserNotifications()
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         CartUtility.logStart()
+        DropDown.startListeningToKeyboard()
+    }
+    
+    private func setupForNotifications(_ application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         NotificationScheduler.requestAuthorization(completion: {
             if $0 {
                 self.configureUserNotifications()
             }
         })
-        DropDown.startListeningToKeyboard()
-        return true
+        FirebaseApp.configure()
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+        application.registerForRemoteNotifications()
+        Messaging.messaging().delegate = self
+        if launchOptions.isNotNil {
+            let notification = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] ?? [:]
+            debugPrint("Launched from notification")
+            debugPrint(notification)
+        }
     }
+    
+}
 
+extension AppDelegate {
     // MARK: UISceneSession Lifecycle
-
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
@@ -66,19 +93,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         NotificationScheduler.removeScheduledNotification(type: .idleCartReminder)
     }
-    
-    private func scheduleCartNotification() {
-        if CartUtility.fetchCart().count > 0 {
-            let timeForNotif = DataManager.shared.currentCartConfig?.notificationWaitTime ?? 0
-            NotificationScheduler.scheduleNotification(type: .idleCartReminder, timeInterval: Double(timeForNotif*60))
-        }
-    }
+}
+
+extension AppDelegate {
+    // MARK: Google Handling
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-          let googleHandled: Bool = GIDSignIn.sharedInstance.handle(url)
-          if googleHandled {
+        let googleHandled: Bool = GIDSignIn.sharedInstance.handle(url)
+        if googleHandled {
             return true
-          }
+        }
         return  ApplicationDelegate.shared.application(
             app,
             open: url,
@@ -88,20 +112,107 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UNUserNotificationCenterDelegate {
-	
-	private func configureUserNotifications() {
-		UNUserNotificationCenter.current().delegate = self
-	}
-	
-	func userNotificationCenter(
-		_ center: UNUserNotificationCenter,
-		willPresent notification: UNNotification,
-		withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void
-	) {
+extension AppDelegate {
+    // MARK: Location Handling
+    private func locationSetup() {
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let locationFound = locations.first {
+            debugPrint("LOCATION FOUND IN APP DELEGATE")
+            CommonLocationManager.updateLocation(locationFound.coordinate)
+            locationManager.stopUpdatingLocation()
+        }
+    }
+    
+    private func scheduleCartNotification() {
+        if CartUtility.fetchCart().count > 0 {
+            let timeForNotif = DataManager.shared.currentCartConfig?.notificationWaitTime ?? 0
+            NotificationScheduler.scheduleNotification(type: .idleCartReminder, timeInterval: Double(timeForNotif*60))
+        }
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    // MARK: Notification Handling
+    private func configureUserNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+    }
+    
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async
+      -> UIBackgroundFetchResult {
+      // If you are receiving a notification message while your app is in the background,
+      // this callback will not be fired till the user taps on the notification launching the application.
+
+      // With swizzling disabled you must let Messaging know about the message, for Analytics
+      // Messaging.messaging().appDidReceiveMessage(userInfo)
+
+      // Print message ID.
+
+      // Print full message.
+      print(userInfo)
+      return UIBackgroundFetchResult.newData
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                print("FCM registration token: \(token)")
+                DataManager.shared.setfcmToken(token: token)
+            }
+        }
+    }
+    
+    // Receive displayed notifications for iOS 10 devices.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async
+    -> UNNotificationPresentationOptions {
+        
+        debugPrint("NOTIFICATION RECEIVED")
+        
         if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCart().isEmpty == false {
             let timeForNotif = DataManager.shared.currentCartConfig?.notificationWaitTime ?? 0
             NotificationScheduler.scheduleNotification(type: .idleCartReminder, timeInterval: Double(timeForNotif*60))
         }
-	}
+        
+        if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCart().isEmpty == true {
+            return [[]]
+        }
+        
+        let userInfo = notification.request.content.userInfo
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // ...
+        // Print full message.
+        print(userInfo)
+        
+        // Change this to your preferred presentation option
+        return [[.banner, .list, .sound]]
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse) async {
+        
+        debugPrint("NOTIFICATION RECEIVED")
+        
+        let userInfo = response.notification.request.content.userInfo
+        if response.notification.request.identifier != "CART_REMINDER" {
+            NotificationCenter.postNotificationForObservers(.goToNotifications)
+        }
+        // ...
+        
+        // With swizzling disabled you must let Messaging know about the message, for Analytics
+        // Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Print full message.
+        print(userInfo)
+    }
+    
 }

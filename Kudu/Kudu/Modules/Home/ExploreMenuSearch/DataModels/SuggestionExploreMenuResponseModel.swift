@@ -38,9 +38,11 @@ struct MenuSearchResultItem: Codable {
     var modGroups: [ModGroup]?
     var templates: [CustomisationTemplate]?
 	var cartRefrences: CartReference?
+    let timeRange: [TimeRange]?
+    let isTimeRangeSet: Bool?
 	
 	private enum CodingKeys: String, CodingKey {
-		case menuId, _id, titleEnglish, titleArabic, nameEnglish, isCategory, isItem, descriptionEnglish, descriptionArabic, nameArabic, itemImageUrl, price, allergicComponent, isCustomised, menuImageUrl, itemCount, cartCount, isFavourites, isAvailable, itemId, modGroups, templates, cartRefrences, calories }
+        case menuId, _id, titleEnglish, titleArabic, nameEnglish, isCategory, isItem, descriptionEnglish, descriptionArabic, nameArabic, itemImageUrl, price, allergicComponent, isCustomised, menuImageUrl, itemCount, cartCount, isFavourites, isAvailable, itemId, modGroups, templates, cartRefrences, calories, timeRange, isTimeRangeSet }
 	
     init(menuId: String?, _id: String?, titleEnglish: String?, titleArabic: String?, isCategory: Bool?, isItem: Bool?, descriptionEnglish: String?, descriptionArabic: String?, nameEnglish: String?, nameArabic: String?, itemImageUrl: String?, price: Double?, allergicComponent: [AllergicComponent]?, isCustomised: Bool?, menuImageUrl: String?, itemCount: Int?, cartCount: Int?, isAvailable: Bool?, itemId: Int?, calories: Int?) {
 		self.menuId = menuId
@@ -63,6 +65,8 @@ struct MenuSearchResultItem: Codable {
 		self.isAvailable = isAvailable
 		self.itemId = itemId
         self.calories = calories
+        self.timeRange = []
+        self.isTimeRangeSet = false
 	}
 	
 	init(from decoder: Decoder) throws {
@@ -91,6 +95,8 @@ struct MenuSearchResultItem: Codable {
 		itemCount = try? container.decode(Int?.self, forKey: .itemCount)
 		cartRefrences = try? container.decode(CartReference?.self, forKey: .cartRefrences)
         calories = try? container.decode(Int?.self, forKey: .calories)
+        timeRange = try? container.decode([TimeRange]?.self, forKey: .timeRange)
+        isTimeRangeSet = try? container.decode(Bool?.self, forKey: .isTimeRangeSet)
 		self.templates = []
 		self.cartCount = cartRefrences?.quantity ?? 0
 		for templateObject in cartRefrences?.customised ?? [] {
@@ -103,7 +109,7 @@ struct MenuSearchResultItem: Codable {
 	}
     
     func convertToMenuItem() -> MenuItem {
-        return MenuItem(menuId: self.menuId ?? "", _id: self._id ?? "", nameArabic: self.nameArabic ?? "", descriptionEnglish: self.descriptionEnglish ?? "", nameEnglish: self.nameEnglish ?? "", isCustomised: self.isCustomised ?? false, price: self.price ?? 0.0, descriptionArabic: self.descriptionArabic ?? "", itemImageUrl: self.itemImageUrl ?? "", allergicComponent: self.allergicComponent ?? [], isAvailable: self.isAvailable ?? false, modGroups: self.modGroups ?? [], cartCount: self.cartCount ?? 0, templates: self.templates ?? [], titleArabic: self.titleArabic ?? "", titleEnglish: self.titleEnglish ?? "", itemId: self.itemId ?? 0, servicesAvailable: "", calories: self.calories)
+        return MenuItem(menuId: self.menuId ?? "", _id: self._id ?? "", nameArabic: self.nameArabic ?? "", descriptionEnglish: self.descriptionEnglish ?? "", nameEnglish: self.nameEnglish ?? "", isCustomised: self.isCustomised ?? false, price: self.price ?? 0.0, descriptionArabic: self.descriptionArabic ?? "", itemImageUrl: self.itemImageUrl ?? "", allergicComponent: self.allergicComponent ?? [], isAvailable: self.isAvailable ?? false, modGroups: self.modGroups ?? [], cartCount: self.cartCount ?? 0, templates: self.templates ?? [], titleArabic: self.titleArabic ?? "", titleEnglish: self.titleEnglish ?? "", itemId: self.itemId ?? 0, servicesAvailable: "", calories: self.calories, excludeLocations: [])
     }
 	
 	static func getFormatForRecentlySearched(forItem item: MenuItem) -> MenuSearchResultItem {

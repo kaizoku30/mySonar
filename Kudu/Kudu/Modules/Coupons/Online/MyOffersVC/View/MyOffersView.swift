@@ -8,9 +8,12 @@
 import UIKit
 
 class MyOffersView: UIView {
-    @IBOutlet private weak var tableView: UITableView!
     
-    @IBAction func backButtonPress(_ sender: Any) {
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var noResultView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBAction private func backButtonPress(_ sender: Any) {
         dismissPressed?()
     }
     
@@ -28,6 +31,13 @@ class MyOffersView: UIView {
     func refreshTable() {
         mainThread {
             self.tableView.reloadData()
+        }
+    }
+    
+    func showNoResult() {
+        mainThread {
+            self.noResultView.isHidden = false
+            self.bringSubviewToFront(self.noResultView)
         }
     }
 }

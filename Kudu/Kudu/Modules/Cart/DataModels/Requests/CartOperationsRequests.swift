@@ -37,7 +37,7 @@ struct AddCartItemRequest {
 	}
     
     func createPlaceholderCartObject(itemDetails: MenuItem) -> CartListObject {
-        let object = CartListObject(_id: nil, itemId: self.itemId, menuId: self.menuId, hashId: self.hashId, isCustomised: self.modGroups?.count ?? 0 > 0, quantity: 1, servicesAvailable: self.servicesAvailable.rawValue, itemSdmId: self.itemSdmId, storeId: self.storeId, modGroups: self.modGroups, offerdItem: self.offerdItem, itemDetails: itemDetails)
+        let object = CartListObject(_id: nil, itemId: self.itemId, menuId: self.menuId, hashId: self.hashId, isCustomised: itemDetails.isCustomised, quantity: 1, servicesAvailable: self.servicesAvailable.rawValue, itemSdmId: self.itemSdmId, storeId: self.storeId, modGroups: self.modGroups, offerdItem: self.offerdItem, itemDetails: itemDetails)
         return object
     }
 	

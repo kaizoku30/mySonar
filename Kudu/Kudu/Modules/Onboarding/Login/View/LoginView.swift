@@ -29,10 +29,11 @@ class LoginView: UIView {
     
     // MARK: Actions
     @IBAction private func continueWithGoogle(_ sender: Any) {
-         self.handleViewActions?(.googleLogin)
+        self.handleViewActions?(.googleLogin)
     }
     
     @IBAction private func backButtonPressed(_ sender: Any) {
+        GuestUserCache.shared.clearCache()
         self.handleViewActions?(.backButtonPressed)
     }
     
@@ -80,6 +81,8 @@ class LoginView: UIView {
         initialSetup()
     }
     
+    // MARK: Setup Functions
+    
     private func initialSetup() {
         phoneNumberView.semanticContentAttribute = .forceLeftToRight
         countryCodeView.semanticContentAttribute = .forceLeftToRight
@@ -102,6 +105,37 @@ class LoginView: UIView {
         setUpSignUpLabel()
         setupTextField()
     }
+    
+    private func setupButton(state: ButtonState) {
+        if state == .enabled {
+            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
+            getOtpButton.isUserInteractionEnabled = true
+            getOtpButton.backgroundColor = AppColors.LoginScreen.selectedBgButtonColor
+            getOtpButton.setTitleColor(.white, for: .normal)
+        } else {
+            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
+            getOtpButton.isUserInteractionEnabled = false
+            getOtpButton.backgroundColor = AppColors.LoginScreen.unselectedButtonBg
+            getOtpButton.setTitleColor(AppColors.LoginScreen.unselectedButtonTextColor, for: .normal)
+        }
+    }
+    
+    private func setUpSignUpLabel() {
+        let regularText = NSMutableAttributedString(string: LocalizedStrings.Login.dontHaveAnAccount, attributes: [NSAttributedString.Key.font: AppFonts.mulishRegular.withSize(12), NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.6)])
+        let tappableText = NSMutableAttributedString(string: LocalizedStrings.Login.signUp)
+        tappableText.addAttributes([.font: AppFonts.mulishRegular.withSize(12), .link: "SignUp", .foregroundColor: AppColors.kuduThemeBlue], range: NSRange(location: 0, length: LocalizedStrings.Login.signUp.count))
+        signUpTextView.tintColor = AppColors.kuduThemeBlue
+        signUpTextView.isSelectable = true
+        signUpTextView.isUserInteractionEnabled = true
+        regularText.append(tappableText)
+        signUpTextView.attributedText = regularText
+        signUpTextView.textAlignment = .center
+    }
+}
+
+extension LoginView {
+    
+    // MARK: Error Handling
     
     func resetLoginField(msg: String) {
         getOtpButton.stopBtnLoader()
@@ -141,35 +175,10 @@ class LoginView: UIView {
         setupButton(state: .disabled)
     }
     
-    private func setupButton(state: ButtonState) {
-        if state == .enabled {
-            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
-            getOtpButton.isUserInteractionEnabled = true
-            getOtpButton.backgroundColor = AppColors.LoginScreen.selectedBgButtonColor
-            getOtpButton.setTitleColor(.white, for: .normal)
-        } else {
-            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
-            getOtpButton.isUserInteractionEnabled = false
-            getOtpButton.backgroundColor = AppColors.LoginScreen.unselectedButtonBg
-            getOtpButton.setTitleColor(AppColors.LoginScreen.unselectedButtonTextColor, for: .normal)
-        }
-    }
-    
-    private func setUpSignUpLabel() {
-        let regularText = NSMutableAttributedString(string: LocalizedStrings.Login.dontHaveAnAccount, attributes: [NSAttributedString.Key.font: AppFonts.mulishRegular.withSize(12), NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.6)])
-        let tappableText = NSMutableAttributedString(string: LocalizedStrings.Login.signUp)
-        tappableText.addAttributes([.font: AppFonts.mulishRegular.withSize(12), .link: "SignUp", .foregroundColor: AppColors.kuduThemeBlue], range: NSRange(location: 0, length: LocalizedStrings.Login.signUp.count))
-        signUpTextView.tintColor = AppColors.kuduThemeBlue
-        signUpTextView.isSelectable = true
-        signUpTextView.isUserInteractionEnabled = true
-        regularText.append(tappableText)
-        signUpTextView.attributedText = regularText
-        signUpTextView.textAlignment = .center
-    }
-    
 }
 
 extension LoginView: UITextFieldDelegate {
+    // MARK: Textfield Handling
     
     private func setupTextField() {
         phoneNumberTxtField.keyboardType = .phonePad
@@ -204,24 +213,29 @@ extension LoginView: UITextFieldDelegate {
 }
 
 extension LoginView {
+    
+    // MARK: API Handling
+    
     func handleAPIRequest(_ api: APICalled) {
+        self.isUserInteractionEnabled = false
         switch api {
         case .loginAPI:
-            toggleErrorLabel("", show: false)
-            getOtpButton.startBtnLoader(color: .white)
+            self.toggleErrorLabel("", show: false)
+            self.getOtpButton.startBtnLoader(color: .white)
         case .socialAPI:
-            toggleErrorLabel("", show: false)
-            getOtpButton.startBtnLoader(color: .white)
+            self.toggleErrorLabel("", show: false)
+            self.getOtpButton.startBtnLoader(color: .white)
         }
     }
     
     func handleAPIResponse( _ api: APICalled, isSuccess: Bool, errorMsg: String?) {
+        self.isUserInteractionEnabled = true
         switch api {
         case .loginAPI:
             self.getOtpButton.stopBtnLoader()
             if isSuccess {
-                toggleErrorLabel("", show: false)
-                getOtpButton.stopBtnLoader()
+                self.toggleErrorLabel("", show: false)
+                self.getOtpButton.stopBtnLoader()
             } else {
                 self.toggleErrorLabel(errorMsg ?? "", show: true)
             }

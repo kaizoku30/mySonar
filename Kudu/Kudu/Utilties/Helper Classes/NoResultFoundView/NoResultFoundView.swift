@@ -82,7 +82,7 @@ extension NoResultFoundView {
         case .noResultFound:
             resultLabel.text = "No result found"
         default:
-            resultLabel.text = "Under Development"
+            resultLabel.text = ""
         }
     }
 }

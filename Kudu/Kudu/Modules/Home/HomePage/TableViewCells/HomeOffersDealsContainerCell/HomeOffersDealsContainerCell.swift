@@ -53,7 +53,7 @@ extension HomeOffersDealsContainerCell: UICollectionViewDataSource, UICollection
         if indexPath.row < list.count {
             cell.configure(item: list[indexPath.row])
         } else {
-            cell.configure(item: nil)
+            cell.configureForNoObject()
         }
         return cell
     }

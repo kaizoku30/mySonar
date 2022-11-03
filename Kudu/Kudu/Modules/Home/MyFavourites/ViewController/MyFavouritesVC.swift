@@ -47,8 +47,8 @@ class MyFavouritesVC: BaseVC {
                 strongSelf.push(vc: vc)
             case .handleCartConflict(let count, let index):
                 self?.viewModel.updateCountLocally(count: count, index: index)
-                self?.baseView.refreshTableView()
-                self?.baseView.refreshCartLocally()
+               // self?.baseView.refreshTableView()
+               // self?.baseView.refreshCartLocally()
             }
         }
     }
@@ -105,7 +105,7 @@ extension MyFavouritesVC: UITableViewDataSource, UITableViewDelegate {
         }
         cell.cartCountUpdatedForFavourites = { [weak self] (_, count, index) in
             self?.viewModel.updateCountLocally(count: count, index: index)
-            self?.baseView.refreshCartLocally()
+          //  self?.baseView.refreshCartLocally()
         }
         cell.cartConflictForFavourites = { [weak self] in
             self?.baseView.showCartConflictAlert($0, index: $1)
@@ -131,7 +131,7 @@ extension MyFavouritesVC: UITableViewDataSource, UITableViewDelegate {
                         let hashId = MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: nil)
                         guard let indexofIncomingItem = self?.viewModel.getItems.firstIndex(where: { $0.hashId ?? "" == hashId}) else { return }
                         strongSelf.viewModel.updateCountLocally(count: count, index: indexofIncomingItem)
-                        strongSelf.baseView.refreshTableView()
+                      //  strongSelf.baseView.refreshTableView()
                     }
                     itemDetailSheet.handleDeallocation = {
                         vc.dismiss(animated: true, completion: { [weak self] in
@@ -201,13 +201,14 @@ extension MyFavouritesVC {
                     if hashIdExists.isNotNil {
                         let previousCount = strongSelf.viewModel.getItems[hashIdExists!].cartCount ?? 0
                         strongSelf.viewModel.updateCountLocally(count: previousCount + 1, index: hashIdExists!)
-                        strongSelf.baseView.refreshCartLocally()
-                        strongSelf.baseView.refreshTableView()
+                        //strongSelf.baseView.refreshCartLocally()
+                        //strongSelf.baseView.refreshTableView()
                     } else {
                         var copy = result
                         copy.servicesAvailable = serviceAvailable
+                        strongSelf.baseView.addLoadingOverlay()
                         strongSelf.viewModel.addToCartDirectly(menuItem: copy, hashId: hashId, modGroups: modGroupArray ?? [])
-                        strongSelf.baseView.refreshCartLocally()
+                       // strongSelf.baseView.refreshCartLocally()
                     }
                 }
                 bottomSheet.handleDeallocation = { [weak self] in
@@ -231,7 +232,8 @@ extension MyFavouritesVC {
             mainThread {
                 if action == .repeatCustomisation {
                     self?.viewModel.updateCountLocally(count: count, index: index)
-                    self?.baseView.refreshCartLocally()
+                   // self?.baseView.refreshCartLocally()
+                   // self?.baseView.refreshTableView()
                 } else {
                     //No Customisation
                     self?.baseView.addLoadingOverlay()
@@ -239,5 +241,14 @@ extension MyFavouritesVC {
                 }
             }
         }
+    }
+}
+
+extension MyFavouritesVC {
+    func reloadTable() {
+        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+        self.baseView.refreshTableView()
+        self.baseView.refreshCartLocally()
+        self.baseView.removeLoadingOverlay()
     }
 }

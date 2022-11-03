@@ -57,8 +57,9 @@ class ApplyCouponTableViewCell: UITableViewCell {
         }
         let savings = CartUtility.calculateSavingsAfterCoupon(obj: coupon).round(to: 2).removeZerosFromEnd()
         appliedCouponMarker.tintColor = isNotValid ? inValidColor : AppColors.kuduThemeBlue
-        appliedCouponCode.text = coupon.couponCode?.first?.couponCode ?? ""
+        appliedCouponCode.text = coupon.couponCode?.first(where: { $0.status ?? "" == "notredeemed"})?.couponCode ?? ""
         appliedCouponCode.tintColor = isNotValid ? inValidColor : validColor
+        let offerNotApplicableReason = CartUtility.checkCouponValidationError(coupon)?.errorMsg ?? "Offer doesn't apply on the bill"
         appliedNotAppliedLabel.text = isNotValid ? notApplicableText : applicableText
         appliedNotAppliedLabel.textColor = isNotValid ? inValidColor : .black
         savingsLabel.text = "SR " + "\(savings)"
@@ -69,6 +70,8 @@ class ApplyCouponTableViewCell: UITableViewCell {
             savingsLabel.text = "Free item"
             couponSavingsTextLabel.text = "added in cart"
         }
+        offerNotApplicableLabel.text = offerNotApplicableReason
+        offerNotApplicableLabel.adjustsFontSizeToFitWidth = true
         offerNotApplicableLabel.isHidden = !isNotValid
         applyCouponView.isHidden = true
     }

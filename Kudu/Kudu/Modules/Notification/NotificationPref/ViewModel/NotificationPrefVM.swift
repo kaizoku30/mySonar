@@ -26,8 +26,8 @@ class NotificationPrefVM {
             prefRequest.isPromoOffers = value
         case .orderPurchase:
             prefRequest.isOrderPurchase = value
-        case .loyaltyProgram:
-            prefRequest.isLoyaltyProgram = value
+//        case .loyaltyProgram:
+//            prefRequest.isLoyaltyProgram = value
         case .pushNotifications:
             prefRequest.isPushNotify = value
         case .muteNotification:
@@ -41,8 +41,8 @@ class NotificationPrefVM {
             return prefRequest.isPromoOffers
         case .orderPurchase:
             return prefRequest.isOrderPurchase
-        case .loyaltyProgram:
-            return prefRequest.isLoyaltyProgram
+//        case .loyaltyProgram:
+//            return prefRequest.isLoyaltyProgram
         case .pushNotifications:
             return prefRequest.isPushNotify
         case .muteNotification:

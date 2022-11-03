@@ -363,8 +363,10 @@ extension SendFeedbackVC {
     func sendFeedback(_ req: SendFeedbackRequest) {
         APIEndPoints.SettingsEndPoints.sendFeedback(request: req, success: { [weak self] in
             debugPrint($0.message ?? "")
-            SKToast.show(withMessage: LocalizedStrings.Setting.feedbackSentSuccessfully)
-            self?.pop()
+            self?.baseView.submitButton.stopBtnLoader()
+            self?.baseView.showSuccessPopUp(completion: { [weak self] in
+                self?.pop()
+            })
         }, failure: { [weak self] in
             debugPrint($0.msg)
             self?.baseView.submitButton.stopBtnLoader()

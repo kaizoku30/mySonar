@@ -37,11 +37,12 @@ struct MenuItem: Codable {
     let itemId: Int?
     var cartRefrences: CartReference?
     var servicesAvailable: String?
+    var excludeLocations: [String]?
     
     private enum CodingKeys: String, CodingKey {
-        case menuId, _id, nameArabic, descriptionEnglish, nameEnglish, isCustomised, price, descriptionArabic, itemImageUrl, allergicComponent, isAvailable, isFavourites, modGroups, cartCount, templates, verticalOffset, titleArabic, titleEnglish, itemId, cartRefrences, servicesAvailable, calories }
+        case menuId, _id, nameArabic, descriptionEnglish, nameEnglish, isCustomised, price, descriptionArabic, itemImageUrl, allergicComponent, isAvailable, isFavourites, modGroups, cartCount, templates, verticalOffset, titleArabic, titleEnglish, itemId, cartRefrences, servicesAvailable, calories, excludeLocations }
     
-    init(menuId: String?, _id: String?, nameArabic: String?, descriptionEnglish: String?, nameEnglish: String?, isCustomised: Bool?, price: Double?, descriptionArabic: String?, itemImageUrl: String?, allergicComponent: [AllergicComponent]?, isAvailable: Bool?, modGroups: [ModGroup]?, cartCount: Int?, templates: [CustomisationTemplate]?, titleArabic: String?, titleEnglish: String?, itemId: Int?, servicesAvailable: String?, calories: Int?) {
+    init(menuId: String?, _id: String?, nameArabic: String?, descriptionEnglish: String?, nameEnglish: String?, isCustomised: Bool?, price: Double?, descriptionArabic: String?, itemImageUrl: String?, allergicComponent: [AllergicComponent]?, isAvailable: Bool?, modGroups: [ModGroup]?, cartCount: Int?, templates: [CustomisationTemplate]?, titleArabic: String?, titleEnglish: String?, itemId: Int?, servicesAvailable: String?, calories: Int?, excludeLocations: [String]?) {
         self.menuId = menuId
         self._id = _id
         self.nameArabic = nameArabic
@@ -61,6 +62,7 @@ struct MenuItem: Codable {
         self.cartCount = cartCount
         self.servicesAvailable = servicesAvailable
         self.calories = calories
+        self.excludeLocations = excludeLocations
     }
     
     init(from decoder: Decoder) throws {
@@ -86,6 +88,7 @@ struct MenuItem: Codable {
         itemId = try? container.decode(Int?.self, forKey: .itemId)
         cartRefrences = try? container.decode(CartReference?.self, forKey: .cartRefrences)
         servicesAvailable = try? container.decode(String?.self, forKey: .servicesAvailable)
+        excludeLocations = try? container.decode([String]?.self, forKey: .excludeLocations)
         self.templates = []
         self.cartCount = cartRefrences?.quantity ?? 0
         for templateObject in cartRefrences?.customised ?? [] {

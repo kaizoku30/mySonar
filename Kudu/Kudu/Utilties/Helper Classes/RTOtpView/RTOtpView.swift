@@ -181,7 +181,6 @@ extension RTOtpView: UITextFieldDelegate {
     }
     
     
-    
     private func handleTextFieldReplacementEmptyString(_ textField: UITextField, string: String) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
             debugPrint("Current TF : \(textField.tag)")

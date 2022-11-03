@@ -70,7 +70,6 @@ class CustomisableItemDetailView: UIView {
 			})
 			modGroups = modGroupsToAdd
 		}
-		debugPrint("Some customisation added : \(templateChanged)")
 		let hash = MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: modGroups)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
         if self.serviceType != CartUtility.getCartServiceType && CartUtility.fetchCart().isEmpty == false {
@@ -281,23 +280,17 @@ extension CustomisableItemDetailView {
 	}
 	
 	private func calculateHeight() {
-//		let window = UIApplication.shared.windows.first
-        let bottomPadding: CGFloat = 0//window?.safeAreaInsets.bottom
-        debugPrint("Safe Area Bottom : \(bottomPadding )")
 		var tableHeight: CGFloat = 0
 		for cell in tableView.visibleCells {
 			tableHeight += cell.bounds.height
 		}
-		debugPrint("Total tableview height after reload : \(tableHeight)")
         let totalHeight = tableHeight + 16 + 32 + 70
 		//70 is for cart
 		let difference = self.containerView.height - totalHeight
 		if difference >= 99 {
 			self.topPaddingConstraint.constant = difference
 		}
-		// else topPadding = 99 which it already is
 		self.totalHeight = totalHeight
-	//	bottomSheet.transform = CGAffineTransform(translationX: 0, y: totalHeight)
 	}
 }
 
@@ -377,7 +370,6 @@ extension CustomisableItemDetailView: UITableViewDataSource, UITableViewDelegate
 extension CustomisableItemDetailView {
 	private func getItemDetailCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueCell(with: ItemDetailTableViewCell.self)
-		debugPrint("Cell received width : \(containerView.width)")
 		cell.configure(item: self.item, expandedState: self.allergenExpanded, containerWidth: containerView.width)
 		return cell
 	}

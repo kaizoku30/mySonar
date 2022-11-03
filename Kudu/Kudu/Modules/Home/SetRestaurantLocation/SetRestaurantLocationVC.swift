@@ -97,7 +97,7 @@ class SetRestaurantLocationVC: BaseVC {
 	
 	private func confirmLocationPressed() {
 		guard let item = viewModel?.getList[safe: self.selectedIndex] else { return }
-        let restaurant = RestaurantInfoModel(restaurantNameEnglish: item.nameEnglish ?? "", restaurantNameArabic: item.nameArabic ?? "", areaNameEnglish: item.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: item.restaurantLocation?.areaNameArabic ?? "", latitude: item.restaurantLocation?.coordinates?.last ?? 0.0, longitude: item.restaurantLocation?.coordinates?.first ?? 0.0, cityName: item.restaurantLocation?.cityName ?? "", stateName: item.restaurantLocation?.stateName ?? "", countryName: item.restaurantLocation?.countryName ?? "", storeId: item._id ?? "", sdmId: item.sdmId ?? 0)
+        let restaurant = item.convertToRestaurantInfo()
 		self.restaurantSelected?(restaurant)
 		self.pop()
 	}
@@ -230,12 +230,18 @@ extension SetRestaurantLocationVC: UITableViewDataSource, UITableViewDelegate {
 			let name = AppUserDefaults.selectedLanguage() == .en ? (item.nameEnglish ?? "") : (item.nameArabic ?? "")
 			let area = AppUserDefaults.selectedLanguage() == .en ? (item.restaurantLocation?.areaNameEnglish) ?? "" : (item.restaurantLocation?.areaNameArabic) ?? ""
 			cell.configure(title: name, subtitle: area, index: indexPath.row)
+            if !StoreUtility.checkStoreOpen(item, serviceType: viewModel.getFlow) {
+                cell.setClosedMarker()
+            }
 		}
 		cell.cellTapped = { [weak self] (indexOfSuggestion) in
 			guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
 			if indexOfSuggestion < viewModel.getSuggestions.count {
 				let item = viewModel.getSuggestions[indexOfSuggestion]
-                let restaurant = RestaurantInfoModel(restaurantNameEnglish: item.nameEnglish ?? "", restaurantNameArabic: item.nameArabic ?? "", areaNameEnglish: item.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: item.restaurantLocation?.areaNameArabic ?? "", latitude: item.restaurantLocation?.coordinates?.last ?? 0.0, longitude: item.restaurantLocation?.coordinates?.first ?? 0.0, cityName: item.restaurantLocation?.cityName ?? "", stateName: item.restaurantLocation?.stateName ?? "", countryName: item.restaurantLocation?.countryName ?? "", storeId: item._id ?? "", sdmId: item.sdmId ?? 0)
+                if !StoreUtility.checkStoreOpen(item, serviceType: viewModel.getFlow) {
+                    return
+                }
+                let restaurant = item.convertToRestaurantInfo()
 				strongSelf.restaurantSelected?(restaurant)
 				strongSelf.pop()
 			}

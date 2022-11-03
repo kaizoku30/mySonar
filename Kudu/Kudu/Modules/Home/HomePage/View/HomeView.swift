@@ -25,12 +25,13 @@ class HomeView: UIView {
     @IBOutlet private weak var navBarHeight: NSLayoutConstraint!
     @IBOutlet private weak var addressHeight: NSLayoutConstraint!
     @IBOutlet private weak var errorToastView: AppErrorToastView!
+    @IBOutlet private weak var notificationBellButton: AppButton!
     
     @IBAction private func sideMenuButtonPressed(_ sender: Any) {
         self.handleViewActions?(.openSideMenu)
     }
-    @IBAction private func loyaltyProgBtnPressed(_ sender: Any) {
-        handleViewActions?(.triggerLoyaltyFlow)
+    @IBAction private func notificationBellPressed(_ sender: Any) {
+        handleViewActions?(.openNotificationListing)
     }
     
     private var buttonContainers: [UIView] = []
@@ -38,9 +39,10 @@ class HomeView: UIView {
     private var selectedSection: APIEndPoints.ServicesType = .delivery
     private var fetchingRecommendations = false
     private var fetchingBanners = false
+    private var fetchingInStorePromos = false
+    var isFetchingInStorePromos: Bool { fetchingInStorePromos }
     var isFetchingRecommendations: Bool { fetchingRecommendations }
     var isFetchingBanners: Bool { fetchingBanners }
-    
     
     private enum LocationType: Int {
         case delivery = 0
@@ -54,7 +56,7 @@ class HomeView: UIView {
         case setDeliveryLocationFlow
         case setCurbsideLocationFlow
         case setPickupLocationFlow
-        case triggerLoyaltyFlow
+        case openNotificationListing
         case sectionButtonPressed(section: APIEndPoints.ServicesType)
         case handleEmailConflict
 		case viewCart
@@ -65,6 +67,8 @@ class HomeView: UIView {
         case getPromoList
         case getMenuList
         case getRecommendations
+        case getInstorePromo
+        case sectionChangedAPIs
     }
     
     var handleViewActions: ((ViewActions) -> Void)?
@@ -76,6 +80,7 @@ class HomeView: UIView {
 		cartBanner.viewCart = { [weak self] in
 			self?.handleViewActions?(.viewCart)
 		}
+        notificationBellButton.isHidden = DataManager.shared.isUserLoggedIn == false
     }
     
     private func initialSetup() {
@@ -127,17 +132,24 @@ class HomeView: UIView {
         tableView.dataSource = delegate
         tableView.delegate = delegate
     }
+    
+    func setNotificationBell() {
+        mainThread {
+            self.notificationBellButton.setImage(DataManager.shared.fetchNotificationStatus ? AppImages.MainImages.notificationBell : AppImages.MainImages.noNotificationBell, for: .normal)
+        }
+    }
 	
 	func syncCart() {
 		cartBanner.syncCart(showCart: { (show) in
 			mainThread { [weak self] in
 				guard let strongSelf = self else { return }
+                strongSelf.refreshCartLocally()
 				strongSelf.toggleCartBanner(show)
 			}
 		})
 	}
 	
-    func refreshCartLocally() {
+    private func refreshCartLocally() {
         mainThread {
             self.cartBanner.configure()
         }
@@ -168,11 +180,12 @@ class HomeView: UIView {
     
     func updateSection(_ section: APIEndPoints.ServicesType) {
         selectedSection = section
+        scrollToTop()
     }
     
     func scrollToTop() {
         mainThread {
-            self.tableView.scrollToTop(animated: true)
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
@@ -228,11 +241,13 @@ class HomeView: UIView {
     }
     
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
-        let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-        alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self)
-        alert.handleActionOnLocationView = { [weak self] in
-            if $0 == .right {
-                self?.handleViewActions?(.openSettings)
+        mainThread {
+            let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
+            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self)
+            alert.handleActionOnLocationView = { [weak self] in
+                if $0 == .right {
+                    self?.handleViewActions?(.openSettings)
+                }
             }
         }
     }
@@ -264,7 +279,7 @@ extension HomeView {
 
 extension HomeView {
     
-    func handleAPIRequest(_ api: APICalled, sectionSwitched: Bool = false) {
+    func handleAPIRequest(_ api: APICalled) {
         mainThread {
             switch api {
             case .reverseGeoCodeAddress:
@@ -272,34 +287,10 @@ extension HomeView {
                 self.deliveryAddressBtn.isHidden = false
                 self.deliveryAddressBtn.startBtnLoader(color: AppColors.kuduThemeBlue)
             default:
-                if sectionSwitched {
-                    self.fetchingBanners = true
-                    self.fetchingRecommendations = true
-                }
-                
-                if api == .getRecommendations {
-                    self.fetchingRecommendations = true
-                }
-                if api == .getPromoList {
-                    self.fetchingBanners = true
-                }
-                self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
-//            case .getPromoList:
-//                self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-//            case .getMenuList:
-//                if sectionSwitched {
-//                    self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-//                    self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 3, section: 0), IndexPath(row: 4, section: 0)], with: .fade)
-//                    return
-//                }
-//                self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .fade)
-//                if self.selectedSection == .delivery {
-//                    self.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .fade)
-//                }
-//            case .getRecommendations:
-//                if self.selectedSection == .delivery {
-//                    self.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .fade)
-//                }
+                self.fetchingRecommendations = true
+                self.fetchingBanners = true
+                self.fetchingInStorePromos = true
+                self.tableView.reloadData()
             }
         }
     }
@@ -315,35 +306,25 @@ extension HomeView {
                 self.fetchingBanners = false
             }
             
+            if api == .getInstorePromo {
+                self.fetchingInStorePromos = false
+            }
+            
+            if !isSuccess && api != .reverseGeoCodeAddress {
+                let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
+                toast.show(message: errorMsg ?? "", view: self)
+            }
+            
             switch api {
+            case .sectionChangedAPIs:
+                break
             case .reverseGeoCodeAddress:
                 self.deliveryAddLbl.isHidden = false
                 self.deliveryAddressBtn.isHidden = true
                 self.deliveryAddressBtn.stopBtnLoader(titleColor: AppColors.HomeScreen.buttonColor)
-            case .getPromoList:
-                if !isSuccess {
-                    let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
-                    toast.show(message: errorMsg ?? "", view: self)
-                }
-                self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-            case .getMenuList:
-                if !isSuccess {
-                    let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
-                    toast.show(message: errorMsg ?? "", view: self)
-                }
-                self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .fade)
-            case .getRecommendations:
-                if !isSuccess {
-                    let toast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
-                    toast.show(message: errorMsg ?? "", view: self)
-                }
-                if self.selectedSection == .delivery {
-                    self.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .fade)
-                } else {
-                    self.tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .fade)
-                }
+            default:
+                self.tableView.reloadData()
             }
-           
         }
     }
 }

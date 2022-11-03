@@ -10,6 +10,7 @@ import NVActivityIndicatorView
 
 class CartListView: UIView {
     
+    @IBOutlet weak var scheduleTimeLabel: UILabel!
     @IBOutlet weak var backButton: AppButton!
     @IBOutlet weak var viewTitleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -41,6 +42,7 @@ class CartListView: UIView {
     
     @IBAction func scheduleButtonPressed(_ sender: Any) {
         // Need to add scheduling functionality here
+        handleViewActions?(.scheduleOrder)
     }
     
     @IBAction func addressButtonPressed(_ sender: Any) {
@@ -89,7 +91,7 @@ class CartListView: UIView {
         case changeRestaurantFlow
         case deleteItem(count: Int, index: Int)
         case pullToRefreshCalled
-        //case addRemoveFreeItem(add: Bool)
+        case scheduleOrder
     }
     
     override func awakeFromNib() {
@@ -119,6 +121,13 @@ class CartListView: UIView {
         self.handleViewActions?(.pullToRefreshCalled)
     }
     
+    func safelyDisableOutlets(disable: Bool) {
+        self.tableView.isUserInteractionEnabled = !disable
+        self.makePaymentButton.isUserInteractionEnabled = !disable
+        self.addressButton.isUserInteractionEnabled = !disable
+        self.scheduleButton.isUserInteractionEnabled = !disable
+    }
+    
     func endRefreshing() {
         mainThread {
             self.refreshControl.endRefreshing()
@@ -137,8 +146,20 @@ class CartListView: UIView {
         activityIndicator.stopAnimating()
     }
     
-    func updateServiceType(_ type: APIEndPoints.ServicesType) {
+    func updateServiceType(_ type: APIEndPoints.ServicesType, scheduleTime: Int?) {
         serviceType = type
+        if scheduleTime.isNotNil {
+            self.scheduleTimeLabel.text = Date(timeIntervalSince1970: Double(scheduleTime!)).toString(dateFormat: Date.DateFormat.dMMMyyyyHHmma.rawValue)
+        } else {
+            switch serviceType {
+            case .curbside:
+                self.scheduleTimeLabel.text = "Pickup now"
+            case .delivery:
+                self.scheduleTimeLabel.text = "Delivering now"
+            case .pickup:
+                self.scheduleTimeLabel.text = "Pickup now"
+            }
+        }
     }
     
     func stopLoaderTemporarily() {
@@ -202,6 +223,7 @@ class CartListView: UIView {
     }
     
     func showNoCartView() {
+        NotificationCenter.postNotificationForObservers(.syncCartBanner)
         self.viewTitleLabel.text = ""
         self.bringSubviewToFront(noItemInCartView)
     }
@@ -211,7 +233,8 @@ class CartListView: UIView {
     }
     
     func refreshYouMayAlsoLike() {
-        self.tableView.reloadSections(IndexSet(integer: Sections.youMayAlsoLike.rawValue), with: .fade)
+        self.tableView.reloadData()
+        //self.tableView.reloadSections(IndexSet(integer: Sections.youMayAlsoLike.rawValue), with: .fade)
     }
     
     func refreshBillSection() {
@@ -279,14 +302,16 @@ class CartListView: UIView {
     }
     
     func setCartView(enabled: Bool) {
-        bottomCartInfoContainer.backgroundColor = enabled ? AppColors.kuduThemeYellow : UIColor(r: 239, g: 239, b: 239, alpha: 1)
-        makePaymentButton.backgroundColor = enabled ? AppColors.kuduThemeYellow : UIColor(r: 239, g: 239, b: 239, alpha: 1)
-        makePaymentButton.borderColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
-        makePaymentButton.setTitleColor(enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1), for: .normal)
-        totalPayableLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
-        separatorView.backgroundColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
-        priceLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
-        totalIsInclusiveLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+        mainThread {
+            self.bottomCartInfoContainer.backgroundColor = enabled ? AppColors.kuduThemeYellow : UIColor(r: 239, g: 239, b: 239, alpha: 1)
+            self.makePaymentButton.backgroundColor = enabled ? AppColors.kuduThemeYellow : UIColor(r: 239, g: 239, b: 239, alpha: 1)
+            self.makePaymentButton.borderColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+            self.makePaymentButton.setTitleColor(enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1), for: .normal)
+            self.totalPayableLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+            self.separatorView.backgroundColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+            self.priceLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+            self.totalIsInclusiveLabel.textColor = enabled ? .white : UIColor(r: 91, g: 90, b: 90, alpha: 1)
+        }
     }
 }
 
@@ -300,5 +325,17 @@ extension CartListView {
                 self?.handleViewActions?(.deleteItem(count: count, index: index))
             }
         }
+    }
+    
+    func toggleMakePaymentLoader(_ show: Bool) {
+        mainThread({
+            if show {
+                self.makePaymentButton.setTitle("", for: .normal)
+                self.makePaymentButton.startBtnLoader(color: .white)
+            } else {
+                self.makePaymentButton.stopBtnLoader(titleColor: .white)
+                self.makePaymentButton.setTitle("Make Payment", for: .normal)
+            }
+        })
     }
 }

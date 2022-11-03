@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Mulish-Medium.ttf">
+            <string>Mulish-Medium</string>
+        </array>
+        <array key="Mulish-Regular.ttf">
+            <string>Mulish-Regular</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -17,12 +26,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="331" height="117"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YhX-Xa-CIC">
+                        <rect key="frame" x="1" y="6" width="329" height="105"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cvc-Da-eBZ">
-                        <rect key="frame" x="16" y="6" width="299" height="105"/>
+                        <rect key="frame" x="1" y="6" width="329" height="105"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Your payment is successfully" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-aa-r8e">
-                                <rect key="frame" x="41" y="16" width="187" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Order is in on its way! It will reach your location in 10 mins." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-aa-r8e">
+                                <rect key="frame" x="41" y="16" width="278" height="35.5"/>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -33,9 +46,9 @@
                                     <constraint firstAttribute="width" constant="17" id="lXt-Xa-evf"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="01/08/2022 " textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAt-8C-h3c">
-                                <rect key="frame" x="41" y="37" width="68.5" height="14.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="11 November, 2022" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAt-8C-h3c">
+                                <rect key="frame" x="41" y="55.5" width="109.5" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.6044081125827816" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -66,11 +79,15 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="Cvc-Da-eBZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="5n7-SC-uTL"/>
-                    <constraint firstAttribute="trailing" secondItem="Cvc-Da-eBZ" secondAttribute="trailing" constant="16" id="fYP-Sy-Zyc"/>
-                    <constraint firstAttribute="bottom" secondItem="Cvc-Da-eBZ" secondAttribute="bottom" constant="6" id="iEN-8k-x0U"/>
+                    <constraint firstItem="Cvc-Da-eBZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="1" id="5n7-SC-uTL"/>
+                    <constraint firstItem="YhX-Xa-CIC" firstAttribute="centerX" secondItem="Cvc-Da-eBZ" secondAttribute="centerX" id="8Lw-B3-Qce"/>
+                    <constraint firstItem="YhX-Xa-CIC" firstAttribute="height" secondItem="Cvc-Da-eBZ" secondAttribute="height" id="IAh-QT-tjW"/>
+                    <constraint firstItem="YhX-Xa-CIC" firstAttribute="centerY" secondItem="Cvc-Da-eBZ" secondAttribute="centerY" id="Oin-WG-EJy"/>
+                    <constraint firstAttribute="trailing" secondItem="Cvc-Da-eBZ" secondAttribute="trailing" constant="1" id="fYP-Sy-Zyc"/>
+                    <constraint firstItem="YhX-Xa-CIC" firstAttribute="width" secondItem="Cvc-Da-eBZ" secondAttribute="width" id="gkv-3b-N6O"/>
+                    <constraint firstAttribute="bottom" secondItem="Cvc-Da-eBZ" secondAttribute="bottom" priority="999" constant="6" id="iEN-8k-x0U"/>
                     <constraint firstItem="Cvc-Da-eBZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="p39-L6-Jih"/>
                 </constraints>
                 <userDefinedRuntimeAttributes>
@@ -86,8 +103,9 @@
                 </userDefinedRuntimeAttributes>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="notificationDate" destination="lAt-8C-h3c" id="Yrf-js-uvC"/>
+                <outlet property="notificationSubtitle" destination="lAt-8C-h3c" id="Yrf-js-uvC"/>
                 <outlet property="notificationTitle" destination="ja9-aa-r8e" id="AqL-eC-N9k"/>
             </connections>
             <point key="canvasLocation" x="-12.318840579710146" y="116.18303571428571"/>
@@ -95,5 +113,8 @@
     </objects>
     <resources>
         <image name="k_notification" width="18" height="33"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

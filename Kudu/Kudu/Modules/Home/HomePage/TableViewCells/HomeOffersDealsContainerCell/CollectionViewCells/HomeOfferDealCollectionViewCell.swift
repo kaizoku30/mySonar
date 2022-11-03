@@ -30,11 +30,23 @@ class HomeOfferDealCollectionViewCell: UICollectionViewCell {
         
     }
     
-    func configureForInStorePromos() {
-        imageView.isHidden = false
-        imageView.stopShimmering()
-        imageView.image = UIImage(named: "k_promo_tempPlaceholder")
-        imageView.contentMode = .scaleAspectFill
+    func configureForNoObject() {
+        imageView.isHidden = true
+        shimmer_imageView.startShimmering()
     }
-
+    
+    func configure(item: CouponObject?) {
+        imageView.isHidden = true
+        shimmer_imageView.startShimmering()
+        guard let item = item else {
+            return
+        }
+        imageView.contentMode = .scaleAspectFill
+        let image = AppUserDefaults.selectedLanguage() == .en ? item.imageEnglish ?? "" : item.imageArabic ?? ""
+        imageView.setImageKF(imageString: image, placeHolderImage: AppImages.Home.footerImg, loader: false, loaderTintColor: .clear, completionHandler: { [weak self] _ in
+            self?.imageView.isHidden = false
+            self?.shimmer_imageView.stopShimmering()
+        })
+        
+    }
 }

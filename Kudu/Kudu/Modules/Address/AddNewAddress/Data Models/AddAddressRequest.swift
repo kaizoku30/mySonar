@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AddAddressRequest {
+struct AddAddressRequest: Equatable {
     let addressLabel: APIEndPoints.AddressLabelType
     let otherAddressLabel: String?
     let name: String

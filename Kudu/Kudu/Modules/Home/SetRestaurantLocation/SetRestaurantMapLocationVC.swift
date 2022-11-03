@@ -42,7 +42,7 @@ class SetRestaurantMapLocationVC: BaseVC {
 		
 		if selectedIndex < restaurantArray.count {
 			let item = restaurantArray[selectedIndex]
-            let restaurant = RestaurantInfoModel(restaurantNameEnglish: item.nameEnglish ?? "", restaurantNameArabic: item.nameArabic ?? "", areaNameEnglish: item.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: item.restaurantLocation?.areaNameArabic ?? "", latitude: item.restaurantLocation?.coordinates?.last ?? 0.0, longitude: item.restaurantLocation?.coordinates?.first ?? 0.0, cityName: item.restaurantLocation?.cityName ?? "", stateName: item.restaurantLocation?.stateName ?? "", countryName: item.restaurantLocation?.countryName ?? "", storeId: item._id ?? "", sdmId: item.sdmId ?? 0)
+            let restaurant = item.convertToRestaurantInfo()
 			self.restaurantSelected?(restaurant)
 			self.pop()
 		}
@@ -51,21 +51,21 @@ class SetRestaurantMapLocationVC: BaseVC {
    private func curbsideButtonTapped() {
 	   if selectedIndex >= restaurantArray.count { return }
         self.view.isUserInteractionEnabled = false
-	    let currentRestaurant = restaurantArray[selectedIndex]
-       let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+	    let item = restaurantArray[selectedIndex]
+       let restaurant = item.convertToRestaurantInfo()
 	   DataManager.shared.currentCurbsideRestaurant = restaurant
 	   NotificationCenter.postNotificationForObservers(.curbsideLocationUpdated)
-        self.triggerMenuFlow(type: .curbside, storeId: currentRestaurant._id ?? "", lat: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, long: currentRestaurant.restaurantLocation?.coordinates?.first ?? 0.0)
+        self.triggerMenuFlow(type: .curbside, storeId: item._id ?? "", lat: item.restaurantLocation?.coordinates?.last ?? 0.0, long: item.restaurantLocation?.coordinates?.first ?? 0.0)
     }
 	
 	private func pickUpButtonTapped() {
 		if selectedIndex >= restaurantArray.count { return }
 		self.view.isUserInteractionEnabled = false
-		let currentRestaurant = restaurantArray[selectedIndex]
-        let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+		let item = restaurantArray[selectedIndex]
+        let restaurant = item.convertToRestaurantInfo()
 		DataManager.shared.currentPickupRestaurant = restaurant
 		NotificationCenter.postNotificationForObservers(.pickupLocationUpdated)
-		self.triggerMenuFlow(type: .pickup, storeId: currentRestaurant._id ?? "", lat: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, long: currentRestaurant.restaurantLocation?.coordinates?.first ?? 0.0)
+		self.triggerMenuFlow(type: .pickup, storeId: item._id ?? "", lat: item.restaurantLocation?.coordinates?.last ?? 0.0, long: item.restaurantLocation?.coordinates?.first ?? 0.0)
 	}
 
     @IBAction private func backButtonPressed(_ sender: Any) {

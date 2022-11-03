@@ -7,21 +7,38 @@
 
 import UIKit
 
-class NotificationListingTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var notificationTitle: UILabel!
-    @IBOutlet weak var notificationDate: UILabel!
+class NotificationShimmerCell: UITableViewCell {
+    @IBOutlet private weak var shimmerView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+        selectionStyle = .none
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        //     contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 0))
+        shimmerView.startShimmering()
+    }
+}
+
+class NotificationListingTableViewCell: UITableViewCell {
+    // MARK: IBOutlets.
+    @IBOutlet private weak var notificationTitle: UILabel!
+    @IBOutlet private weak var notificationSubtitle: UILabel!
+    
+    override func awakeFromNib(){
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool){
+        super.setSelected(selected, animated: animated)
+    }
+    
+    // MARK: Private Functions.
+    func configureCell(indexPath: IndexPath, data: NotificationList){
+        let lang = AppUserDefaults.selectedLanguage()
+        notificationTitle.text = lang == .en ? data.subject : data.subjectAr
+        notificationSubtitle.text = lang == .en ? data.description : data.descriptionAr
     }
 }

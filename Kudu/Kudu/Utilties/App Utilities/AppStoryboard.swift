@@ -9,6 +9,8 @@ enum AppStoryboard: String {
     case Notification
 	case CartPayment
     case Coupon
+    case Rating
+    case Payment
 }
 
 extension AppStoryboard {

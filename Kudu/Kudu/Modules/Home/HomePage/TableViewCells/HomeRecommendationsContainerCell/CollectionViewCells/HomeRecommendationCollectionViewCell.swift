@@ -28,4 +28,9 @@ class HomeRecommendationCollectionViewCell: UICollectionViewCell {
             }
         })
     }
+    
+    func configureForNoObj() {
+        objImgView_shimmerView.startShimmering()
+        objImgView_shimmerView.isHidden = false
+    }
 }

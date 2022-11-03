@@ -29,10 +29,12 @@ class ItemDetailView: UIView {
     @IBOutlet private weak var deleteBtn: AppButton!
     
     @IBAction func incrementButtonPressed(_ sender: Any) {
-        itemCartCount += 1
-        updateButtonView()
+//        itemCartCount += 1
+//        updateButtonView()
+        self.incrementorStackView.isUserInteractionEnabled = false
+        self.counterLblBtn.startBtnLoader(color: .white, small: true)
         HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-        self.cartCountUpdated?(itemCartCount, self.item)
+        self.cartCountUpdated?(itemCartCount + 1, self.item)
     }
     
     @IBAction func deleteButtonPressed(_ sender: Any) {
@@ -43,17 +45,20 @@ class ItemDetailView: UIView {
                 showConfirmDeletePop()
                 return
             }
-            itemCartCount -= 1
-            updateButtonView()
-            self.cartCountUpdated?(itemCartCount, self.item)
+//            itemCartCount -= 1
+//            updateButtonView()
+            self.incrementorStackView.isUserInteractionEnabled = false
+            self.counterLblBtn.startBtnLoader(color: .white, small: true)
+            self.cartCountUpdated?(itemCartCount - 1, self.item)
         }
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
         HapticFeedbackGenerator.triggerVibration(type: .lightTap)
         
-        if AppUserDefaults.value(forKey: .loginResponse).isNil {
-            triggerLoginFlow?()
+        if DataManager.shared.isUserLoggedIn == false {
+            let addRequest = AddCartItemRequest(itemId: self.item._id ?? "", menuId: self.item.menuId ?? "", hashId: MD5Hash.generateHashForTemplate(itemId: self.item._id ?? "", modGroups: nil), storeId: DataManager.shared.currentStoreId, itemSdmId: self.item.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: nil)
+            triggerLoginFlow?(addRequest)
             return
         }
         
@@ -67,9 +72,10 @@ class ItemDetailView: UIView {
             removeFromContainer()
             return
         }
-        itemCartCount += 1
-        updateButtonView()
-        cartCountUpdated?(itemCartCount, self.item)
+//        itemCartCount += 1
+//        updateButtonView()
+        self.addButton.startBtnLoader(color: .white, small: true)
+        cartCountUpdated?(itemCartCount + 1, self.item)
     }
     
     private func updateButtonView() {
@@ -95,7 +101,7 @@ class ItemDetailView: UIView {
     var handleDeallocation: (() -> Void)?
     private var itemCartCount: Int = 0
     var cartCountUpdated: ((Int, MenuItem) -> Void)?
-    var triggerLoginFlow: (() -> Void)?
+    var triggerLoginFlow: ((AddCartItemRequest) -> Void)?
     private var comingFromRecommendations = false
     
     override init(frame: CGRect) {
@@ -118,11 +124,36 @@ class ItemDetailView: UIView {
 //        bottomSheet.transform = CGAffineTransform(translationX: 0, y: ItemDetailView.ContentHeight)
         addButton.setTitle(LocalizedStrings.ExploreMenu.addButton, for: .normal)
         tapGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(removeFromContainer)))
+          NotificationCenter.default.addObserver(self, selector: #selector(handleItemUpdate(notification:)), name: NSNotification.Name.init(rawValue: Constants.NotificationObservers.itemCountUpdatedFromCart.rawValue), object: nil)
      }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     @objc private func removeFromContainer() {
         self.handleDeallocation?()
         
+    }
+    
+    @objc private func handleItemUpdate(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let update = CartCountNotifier.getFromUserInfo(userInfo)
+            let isIncrement = update.isIncrement
+            self.itemCartCount = isIncrement ? self.itemCartCount + 1 : self.itemCartCount - 1
+            self.stopLoading()
+        } else {
+            self.stopLoading()
+        }
+    }
+    
+    @objc private func stopLoading() {
+        mainThread({
+            self.incrementorStackView.isUserInteractionEnabled = true
+            self.addButton.stopBtnLoader(titleColor: .white)
+            self.counterLblBtn.stopBtnLoader(titleColor: .white)
+            self.updateButtonView()
+        })
     }
     
     func configure(container view: UIView, item: MenuItem, serviceType: APIEndPoints.ServicesType) {

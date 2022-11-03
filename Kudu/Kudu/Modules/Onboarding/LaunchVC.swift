@@ -13,7 +13,6 @@ class LaunchVC: BaseVC {
     // MARK: ViewLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       // underDevelopmentFlow()
         delayAndGoToNextVC()
     }
     
@@ -38,16 +37,16 @@ class LaunchVC: BaseVC {
     // MARK: Flow Function
     private func handleFlow() {
         weak var weakSelf = self
-        if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+        if DataManager.shared.isUserLoggedIn, let userId = DataManager.shared.loginResponse?.userId, !userId.isEmpty {
             //User Logged In
            Router.shared.configureTabBar()
         } else if AppUserDefaults.value(forKey: .selectedLanguage).isNotNil {
             //Language Selected
+            AppUserDefaults.removeUserData()
             Router.shared.configureTabBar()
         } else {
             //Language Selection View
             Router.shared.goToLanguagePrefSelectionVC(fromVC: weakSelf)
         }
     }
-    
 }

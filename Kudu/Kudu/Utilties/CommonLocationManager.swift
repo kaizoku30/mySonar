@@ -13,10 +13,14 @@ class CommonLocationManager {
 	
 	static let shared = CommonLocationManager()
 	private var currentLocation: CLLocationCoordinate2D?
-	
+    
 	private init() {
 	// Preserving initialisation
 	}
+    
+    static func updateLocation(_ loc: CLLocationCoordinate2D) {
+        CommonLocationManager.shared.currentLocation = loc
+    }
 	
 	static func getLocationOfDevice(foundCoordinates: @escaping ((CLLocationCoordinate2D?) -> Void)) {
 		if let location = CommonLocationManager.shared.currentLocation {
@@ -25,9 +29,11 @@ class CommonLocationManager {
 		}
 		SwiftLocation.gpsLocation(accuracy: .block, timeout: .immediate(2)).then({
 			if $0.location.isNotNil {
+                CommonLocationManager.shared.currentLocation = $0.location?.coordinate
 				foundCoordinates($0.location?.coordinate)
 			} else {
 				SwiftLocation.gpsLocation(accuracy: .any, timeout: .immediate(2)).then({
+                    CommonLocationManager.shared.currentLocation = $0.location?.coordinate
 					foundCoordinates($0.location?.coordinate)
 				})
 			}

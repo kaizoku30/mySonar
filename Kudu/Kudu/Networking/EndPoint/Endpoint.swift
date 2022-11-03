@@ -29,6 +29,7 @@ enum Endpoint {
     case supportDetails
     case logout
     case deleteAccount
+    case changePhoneNumber(req: ChangePhoneNumberRequest)
     
     // MARK: HOME END POINTS
     case menuList(request: MenuListRequest)
@@ -70,8 +71,31 @@ enum Endpoint {
     case getCouponDetail(id: String)
     case getCouponCodeDetail(couponCode: String)
     case selectedRestaurantList(exclude: [String], pageNo: Int, limit: Int = 10, searchKey: String?)
-    case payment(cardToken: String)
+    case inStoreCouponList(storeId: String?)
+    case inStoreCouponDetails(id: String)
+    case redeemInStoreCoupon(couponId: String, promoId: String, couponCode: String)
     
     // MARK: ORDER END POINTS
     case placeOrder(req: OrderPlaceRequest)
+    case orderList(pageNo: Int, limit: Int = 10)
+    case orderDetails(orderId: String)
+    case arrivedAtStore(orderId: String)
+    case cancelOrder(orderId: String)
+    case rating(req: RatingRequestModel)
+    case reorderItems(orderId: String)
+    case validateOrder(req: OrderPlaceRequest)
+
+    // MARK: Notification
+    case notificationList(pageNo: Int, limit: Int)
+    case deleteNotification(id: String)
+    case deleteAllNotification
+    
+    // MARK: PAYMENT END POINTS
+    case payment(cardToken: String)
+    case tokenCardPayment(req: AddCardPaymentRequest, isApplePay: Bool)
+    case savedCardPayment(orderId: String, cardId: String, cvv: String, amount: Double)
+    case codPayment(orderId: String, amount: Double)
+    case getCards
+    case deleteCard(cardId: String)
+    case changeDeviceLang(language: String)
 }

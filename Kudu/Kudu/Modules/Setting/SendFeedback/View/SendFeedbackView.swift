@@ -52,4 +52,12 @@ class SendFeedbackView: UIView {
             toast.show(message: message, view: self)
         }
     }
+    
+    func showSuccessPopUp(completion: (() -> Void)?) {
+        let successPopUp = SuccessAlertView(frame: CGRect(x: 0, y: 0, width: self.width - SuccessAlertView.HorizontalPadding, height: SuccessAlertView.Height))
+        successPopUp.configure(type: .feedbackSubmitted, container: self, displayTime: 2)
+        successPopUp.handleDismissal = {
+            completion?()
+        }
+    }
 }

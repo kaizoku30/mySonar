@@ -24,5 +24,9 @@ extension APIEndPoints {
 		static func deleteAccount(success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
 			Api.requestNew(endpoint: .deleteAccount, successHandler: success, failureHandler: failure)
 		}
+        
+        static func changePhoneNumber(req: ChangePhoneNumberRequest, success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .changePhoneNumber(req: req), successHandler: success, failureHandler: failure)
+        }
 	}
 }

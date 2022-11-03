@@ -97,7 +97,42 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a01-g0-g7Y" customClass="NoResultFoundView" customModule="Kudu" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="104" width="414" height="644"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BSf-d4-JB7">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="644"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_noAddressFound" translatesAutoresizingMaskIntoConstraints="NO" id="xUr-cF-JLx">
+                                                <rect key="frame" x="16" y="127" width="382" height="270"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="xUr-cF-JLx" secondAttribute="height" multiplier="328:232" id="VXW-2M-wF9"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Address found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAo-i2-OJu">
+                                                <rect key="frame" x="16" y="417" width="382" height="26"/>
+                                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="20"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" name="offWhiteTableView"/>
+                                        <constraints>
+                                            <constraint firstItem="kAo-i2-OJu" firstAttribute="centerX" secondItem="xUr-cF-JLx" secondAttribute="centerX" id="BWO-Bi-fgr"/>
+                                            <constraint firstItem="kAo-i2-OJu" firstAttribute="leading" secondItem="BSf-d4-JB7" secondAttribute="leading" constant="16" id="CxD-bm-b2p"/>
+                                            <constraint firstItem="kAo-i2-OJu" firstAttribute="top" secondItem="xUr-cF-JLx" secondAttribute="bottom" constant="20" id="S4W-XV-CNq"/>
+                                            <constraint firstAttribute="trailing" secondItem="kAo-i2-OJu" secondAttribute="trailing" constant="16" id="ZPH-aw-UUV"/>
+                                            <constraint firstItem="xUr-cF-JLx" firstAttribute="centerY" secondItem="BSf-d4-JB7" secondAttribute="centerY" constant="-60" id="d3O-ih-LdG"/>
+                                            <constraint firstAttribute="trailing" secondItem="xUr-cF-JLx" secondAttribute="trailing" constant="16" id="iaL-Qy-cMm"/>
+                                            <constraint firstItem="xUr-cF-JLx" firstAttribute="leading" secondItem="BSf-d4-JB7" secondAttribute="leading" constant="16" id="xLb-Pz-eyn"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="BSf-d4-JB7" firstAttribute="leading" secondItem="a01-g0-g7Y" secondAttribute="leading" id="ZHa-6Y-EqF"/>
+                                    <constraint firstAttribute="bottom" secondItem="BSf-d4-JB7" secondAttribute="bottom" id="iNw-Dp-F6C"/>
+                                    <constraint firstItem="BSf-d4-JB7" firstAttribute="top" secondItem="a01-g0-g7Y" secondAttribute="top" id="tbo-7T-9nm"/>
+                                    <constraint firstAttribute="trailing" secondItem="BSf-d4-JB7" secondAttribute="trailing" id="ykw-L3-TkM"/>
+                                </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XQ1-zg-6Zk">
                                 <rect key="frame" x="0.0" y="104" width="414" height="644"/>
@@ -281,7 +316,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFi-Hd-7f3">
-                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
+                                        <rect key="frame" x="48" y="17.5" width="361" height="21"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -772,7 +807,7 @@
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="JkQ-qE-qcy">
-            <size key="intrinsicContentSize" width="38" height="33"/>
+            <size key="intrinsicContentSize" width="36" height="31"/>
         </designable>
         <designable name="Ny3-Sj-hVK">
             <size key="intrinsicContentSize" width="139" height="33"/>
@@ -794,11 +829,15 @@
         <image name="k_main_chevronLeft" width="24" height="24"/>
         <image name="k_myaddress_cross" width="24" height="24"/>
         <image name="k_myaddress_searchIcon" width="24" height="24"/>
+        <image name="k_noAddressFound" width="328" height="232"/>
         <image name="k_pinMap_addressIcon" width="32" height="32"/>
         <image name="k_pinMap_markerIcon" width="65" height="80"/>
         <image name="k_set_location_myLocation" width="24" height="24"/>
         <namedColor name="kuduThemeBlue">
             <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="offWhiteTableView">
+            <color red="0.97254901960784312" green="0.98431372549019602" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

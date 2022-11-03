@@ -10,6 +10,7 @@ import Foundation
 protocol MyFavouritesVMDelegate: AnyObject {
     func favouriteAPIResponse(responseType: Result<String, Error>)
     func itemDetailAPIResponse(responseType: Result<CustomisationTemplate?, Error>)
+    func reloadTable()
 }
 
 class MyFavouritesVM {
@@ -91,26 +92,68 @@ extension MyFavouritesVM {
         let oldCount = object.cartCount ?? 0
         let newCount = count
         if newCount > oldCount {
-            items[index].cartCount = newCount
+            //items[index].cartCount = newCount
             if oldCount == 0 {
-                addToCart(menuItem: menuItem, template: template, serviceType: serviceType)
+                addToCart(menuItem: menuItem, template: template, serviceType: serviceType, favouriteObjectId: items[index]._id ?? "", newCount: newCount)
             } else {
-                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount)
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount, completion: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    switch $0 {
+                    case .success:
+                        if let findIndex = strongSelf.items.firstIndex(where: { $0._id ?? "" == strongSelf.items[index]._id ?? ""}) {
+                            strongSelf.items[findIndex].cartCount = newCount
+                        }
+                        let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                        strongSelf.delegate?.reloadTable()
+                    case .failure(let error):
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+                        strongSelf.delegate?.reloadTable()
+                    }
+                })
             }
         } else {
             if newCount == 0 {
-                items[index].cartCount = newCount
-                CartUtility.removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "")
+               // items[index].cartCount = newCount
+                CartUtility.removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "", completion: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    switch $0 {
+                    case .success:
+                        if let findIndex = strongSelf.items.firstIndex(where: { $0._id ?? "" == strongSelf.items[index]._id ?? ""}) {
+                            strongSelf.items[findIndex].cartCount = newCount
+                        }
+                        let cartNotification = CartCountNotifier(isIncrement: false, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                        strongSelf.delegate?.reloadTable()
+                    case .failure(let error):
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+                        strongSelf.delegate?.reloadTable()
+                    }
+                })
             } else {
-                items[index].cartCount = newCount
-                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount)
+                //items[index].cartCount = newCount
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount, completion: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    switch $0 {
+                    case .success:
+                        if let findIndex = strongSelf.items.firstIndex(where: { $0._id ?? "" == strongSelf.items[index]._id ?? ""}) {
+                            strongSelf.items[findIndex].cartCount = newCount
+                        }
+                        let cartNotification = CartCountNotifier(isIncrement: false, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                        strongSelf.delegate?.reloadTable()
+                    case .failure(let error):
+                        NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+                        strongSelf.delegate?.reloadTable()
+                    }
+                })
             }
         }
     }
 }
 
 extension MyFavouritesVM {
-    private func addToCart(menuItem: MenuItem, template: CustomisationTemplate?, serviceType: APIEndPoints.ServicesType) {
+    private func addToCart(menuItem: MenuItem, template: CustomisationTemplate?, serviceType: APIEndPoints.ServicesType, favouriteObjectId: String, newCount: Int) {
         var hashId: String!
         if let template = template {
             hashId = template.hashId ?? ""
@@ -119,15 +162,22 @@ extension MyFavouritesVM {
         }
         guard let menuId = menuItem.menuId, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
         let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: nil, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq.createPlaceholderCartObject(itemDetails: menuItem))
         APIEndPoints.CartEndPoints.addItemToCart(req: addToCartReq, success: { (response) in
             guard let cartItem = response.data else { return }
             debugPrint(response)
             var copy = cartItem
             copy.itemDetails = menuItem
-            CartUtility.mapObjectWithPlaceholder(copy)
+            CartUtility.addItemToCart(copy)
+            if let findIndex = self.items.firstIndex(where: { $0._id ?? "" == favouriteObjectId}) {
+                self.items[findIndex].cartCount = newCount
+            }
+            let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: addToCartReq.modGroups)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+            self.delegate?.reloadTable()
         }, failure: { (error) in
             debugPrint(error.msg)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+            self.delegate?.reloadTable()
         })
     }
     
@@ -136,10 +186,24 @@ extension MyFavouritesVM {
         let hashIdExists = cart.firstIndex(where: { $0.hashId ?? "" == hashId })
         if hashIdExists.isNotNil {
             let previousQuantity = cart[hashIdExists!].quantity ?? 0
-            CartUtility.updateCartCount(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1)
+            CartUtility.updateCartCount(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1, completion: {
+                switch $0 {
+                case .success:
+                    let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: modGroups)
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    self.delegate?.reloadTable()
+                case .failure:
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+                    self.delegate?.reloadTable()
+                }
+            })
             return
         }
         let addToCartReq = AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: nil, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable!) ?? .delivery, modGroups: modGroups)
-        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem, completion: { [weak self] _ in
+            let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: addToCartReq.modGroups)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+            self?.delegate?.reloadTable()
+        })
     }
 }

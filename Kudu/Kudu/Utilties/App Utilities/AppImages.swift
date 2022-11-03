@@ -17,6 +17,8 @@ final class AppImages {
         static var likedHeart: UIImage { #imageLiteral(resourceName: "k_likedGIFStartFrame") }
         static var placeholder16x9: UIImage { #imageLiteral(resourceName: "k_placeholder_16x9") }
         static var fixedPlaceholder: UIImage { #imageLiteral(resourceName: "k_kudu_fixedPlaceholder") }
+        static var notificationBell: UIImage { #imageLiteral(resourceName: "k_notification_yes") }
+        static var noNotificationBell: UIImage { #imageLiteral(resourceName: "k_notification_no") }
         
     }
     
@@ -101,5 +103,12 @@ final class AppImages {
         static var menuSelected: UIImage { #imageLiteral(resourceName: "k_tab_menuSelected") }
         static var homeUnselected: UIImage { #imageLiteral(resourceName: "k_tab_home_unSelected") }
         static var homeSelected: UIImage { #imageLiteral(resourceName: "k_tab_home_selected") }
+    }
+    
+    struct Orders {
+        static var successOrderListImg: UIImage { #imageLiteral(resourceName: "k_boxOfFood") }
+        static var cancelOrderListImg: UIImage { #imageLiteral(resourceName: "k_cancelledOrderList") }
+        static var redExclamation: UIImage { #imageLiteral(resourceName: "k_redExclamation") }
+        static var cancelCircle: UIImage { #imageLiteral(resourceName: "k_cancelCircle") }
     }
 }

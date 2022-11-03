@@ -282,4 +282,17 @@ final class LocalizedStrings {
     struct CustomisableDetail {
         static var select1OutOfXOptions: String { "select1OutOfXOptions".getLocalized() }
     }
+    struct Rating {
+        static var description: String { "description".getLocalized() }
+        static var rating: String { "rating".getLocalized() }
+    }
+    
+    struct MyOfferScreenTtile {
+        static var offers_and_Deals: String { "Offers_and_Deals".getLocalized() }
+        static var in_Store_Promos: String { "In_Store_Promos".getLocalized() }
+    }
+    
+    struct CouponDetail {
+        static var couponAlreadyRedeemed: String { "couponAlreadyRedeemed".getLocalized() }
+    }
 }

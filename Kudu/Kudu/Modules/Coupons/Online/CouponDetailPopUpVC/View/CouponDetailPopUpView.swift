@@ -7,9 +7,22 @@
 
 import UIKit
 
+protocol CouponDetailPopUpViewDelegate: AnyObject {
+    func setTableHeight()
+}
+
 class CouponDetailPopUpView: UIView {
-    @IBOutlet private weak var validationErrorLabel: UILabel!
-    @IBOutlet private weak var redeemButton: AppButton!
+    
+    @IBOutlet weak var safeAreaHeight: NSLayoutConstraint!
+    @IBOutlet weak var validationLabelView: UIView!
+    @IBOutlet weak var bottomActionView: UIView!
+    @IBOutlet weak var lblCouponCode: UILabel!
+    @IBOutlet weak var couponCodeView: UIView!
+    @IBOutlet weak var qrCodeView: UIView!
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var qrImageView: UIImageView!
+    @IBOutlet weak var validationErrorLabel: UILabel!
+    @IBOutlet weak var redeemButton: AppButton!
     @IBOutlet private weak var tapGestureView: UIView!
     @IBOutlet private weak var safeAreaView: UIView!
     @IBOutlet private weak var stackView: UIStackView!
@@ -23,6 +36,7 @@ class CouponDetailPopUpView: UIView {
     @IBOutlet private weak var offerInfoSubtitle2: UILabel!
     @IBOutlet private weak var applicableOnStoresText: UILabel!
     @IBAction private func closeButtonPressed(_ sender: Any) {
+        //self.stopTimer()
         self.handleViewActions?(.dismiss)
     }
     @IBAction private func redeemButtonPressed(_ sender: Any) {
@@ -31,6 +45,11 @@ class CouponDetailPopUpView: UIView {
             self.handleViewActions?(.redeem)
         }
     }
+    weak var delegate: CouponDetailPopUpViewDelegate?
+    var timer: Timer?
+    private var counter: Int = 0
+    var minutes: Int = 0
+    private var timeRefForBackground: Date = Date()
     var handleViewActions: ((ViewActions) -> Void)?
     
     enum ViewActions {
@@ -39,12 +58,51 @@ class CouponDetailPopUpView: UIView {
         case openStoreList
     }
     
+    func showInStoreDismissConfirmation(dismiss: @escaping (() -> Void)) {
+        mainThread {
+            let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
+            popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
+            popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
+            popUpAlert.configure(title: "Alert", message: "Your coupon will be marked as redeemed if you close this window. Make sure to get it scanned at the store before you close or before the time gets lapsed.", leftButtonTitle: "Confirm", rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: false)
+            popUpAlert.handleAction = {
+                if $0 == .right { return }
+                dismiss()
+            }
+        }
+    }
+    
+    func showQRStartTimer() {
+        mainThread({
+            self.safeAreaHeight.constant = 0
+            self.layoutIfNeeded()
+            self.bottomActionView.isHidden = true
+            self.counter = self.minutes * 60
+            self.redeemButton.stopBtnLoader(titleColor: AppColors.white)
+            self.redeemButton.isHidden = true
+            // MARK: Remove extra whitespace at the bottom
+            self.startTimer()
+            self.setButtonState(enabled: false)
+            self.validationLabelView.isHidden = true
+        })
+    }
+    
+    func updateQRImage(couponCode: String) {
+        mainThread({
+            self.qrImageView.image = CommonFunctions.generateQRCode(from: couponCode)
+            self.lblCouponCode.text = couponCode
+        })
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        //self.couponCodeView.dashBorder()
+        qrCodeView.isHidden = true
         couponImgView.roundTopCorners(cornerRadius: 32)
         tapGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))
         setButtonState(enabled: true)
         applicableOnStoresText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToStoreList)))
+        NotificationCenter.default.addObserver(self, selector: #selector(enteredForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(movedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     @objc private func goToStoreList() {
@@ -63,6 +121,7 @@ class CouponDetailPopUpView: UIView {
     }
     
     @objc private func dismissView() {
+        //self.stopTimer()
         self.handleViewActions?(.dismiss)
     }
     
@@ -74,6 +133,8 @@ class CouponDetailPopUpView: UIView {
         couponImgView.backgroundColor = .white
         couponImgView.setImageKF(imageString: imageString, placeHolderImage: AppImages.MainImages.placeholder16x9, loader: true, loaderTintColor: AppColors.kuduThemeYellow, completionHandler: nil)
         couponTitleLabel.text = language == .en ? coupon.nameEnglish ?? "" : coupon.nameArabic ?? ""
+        couponTitleLabel.semanticContentAttribute = AppUserDefaults.selectedLanguage() == .en ? .forceLeftToRight : .forceRightToLeft
+        offerInfoSubtitle1.semanticContentAttribute = AppUserDefaults.selectedLanguage() == .en ? .forceLeftToRight : .forceRightToLeft
         let promoOfferTypeString = coupon.promoData?.offerType ?? ""
         let promoOfferType = PromoOfferType(rawValue: promoOfferTypeString) ?? .item
         offerTypeLabel.text = promoOfferType.typeName
@@ -123,16 +184,18 @@ class CouponDetailPopUpView: UIView {
         validationErrorLabel.text = ""
         if let someError = couponValidationError, someError == .timeBounds {
             setButtonState(enabled: false)
+            validationErrorLabel.isHidden = false
             validationErrorLabel.text = couponValidationError?.errorMsg ?? ""
         } else {
             setButtonState(enabled: true)
             validationErrorLabel.text = ""
+            validationErrorLabel.isHidden = true
         }
     }
 }
 
 extension CouponDetailPopUpView {
-    private func setButtonState(enabled: Bool) {
+     func setButtonState(enabled: Bool) {
         mainThread {
             self.redeemButton.backgroundColor = enabled ? AppColors.kuduThemeYellow : AppColors.unselectedButtonBg
             self.redeemButton.setTitleColor(enabled ? .white : AppColors.unselectedButtonTextColor, for: .normal)
@@ -145,5 +208,75 @@ extension CouponDetailPopUpView {
             let error = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.width - 32, height: 48))
             error.show(message: msg, view: self, completionBlock: completionBlock)
         }
+    }
+}
+
+extension CouponDetailPopUpView {
+    // MARK: Handling Background/Foreground Mgmt
+    @objc func movedToBackground() {
+        debugPrint("Moved to background at \(Date().toString(dateFormat: Date.DateFormat.hmmazzz.rawValue))")
+        timeRefForBackground = Date()
+        //self.stopTimer()
+    }
+    
+    @objc func enteredForeground() {
+        debugPrint("Entered foreground at \(Date().toString(dateFormat: Date.DateFormat.hmmazzz.rawValue))")
+        let timeElapsed = Date().secondsFrom(timeRefForBackground)
+        if counter - timeElapsed > 0 {
+            counter -= timeElapsed
+            //self.startTimer()
+        } else {
+            counter = 0
+            self.stopTimer()
+        }
+    }
+    
+    func startTimer() {
+        self.timer?.invalidate()
+        self.timerLabel.text = "\(self.getTime())"
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+            guard let strongSelf = self else { return }
+            if strongSelf.counter != 0 {
+                strongSelf.counter -= 1
+                debugPrint("Counter : \(strongSelf.counter)")
+                //strongSelf.minutes = strongSelf.counter/60
+                strongSelf.timerLabel.text = "\(strongSelf.getTime())"
+            } else {
+                strongSelf.stopTimer()
+            }
+        })
+        self.timer?.fire()
+    }
+    
+    private func getTime() -> String {
+        if counter < 10 {
+            return "0:0\(counter)"
+        } else if counter < 60 {
+            return "0:\(counter)"
+        } else {
+            let minuteMark = counter/60
+            let seconds = counter%60
+            if seconds == 0 {
+                return "\(minuteMark):00"
+            } else if seconds < 10 {
+                return "\(minuteMark):0\(seconds)"
+            } else {
+                return "\(minuteMark):\(seconds)"
+            }
+        }
+    }
+    
+    func stopTimer() {
+        self.safeAreaHeight.constant = 34
+        self.layoutIfNeeded()
+        self.bottomActionView.isHidden = false
+        self.redeemButton.isHidden = false
+        self.validationLabelView.isHidden = false
+        self.validationErrorLabel.isHidden = false
+        self.validationErrorLabel.text = "This coupon is already redeemed"
+        self.qrCodeView.isHidden = true
+        self.delegate?.setTableHeight()
+        self.timer?.invalidate()
+        
     }
 }

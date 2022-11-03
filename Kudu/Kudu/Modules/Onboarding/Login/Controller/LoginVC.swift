@@ -28,6 +28,7 @@ class LoginVC: BaseVC {
         addObservers()
         if let viewModel = viewModel {
             if let expiryError = viewModel.getExpiryError {
+                GuestUserCache.shared.clearCache()
                 self.baseView.resetLoginField(msg: expiryError)
             }
         }
@@ -58,6 +59,7 @@ class LoginVC: BaseVC {
     // MARK: Observers
     @objc private func resetLoginState(notification: NSNotification) {
         mainThread {
+            GuestUserCache.shared.clearCache()
             let msg = notification.userInfo?["msg"] as? String ?? ""
             self.baseView.resetLoginField(msg: msg)
         }

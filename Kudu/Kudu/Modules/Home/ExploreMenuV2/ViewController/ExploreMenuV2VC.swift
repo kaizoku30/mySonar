@@ -41,11 +41,17 @@ class ExploreMenuV2VC: BaseVC {
         self.observeFor(.itemCountUpdatedFromCart, selector: #selector(handleItemUpdate(notification:)))
         self.observeFor(.favouriteStateUpdatedFromCart, selector: #selector(handleItemFavourite))
         self.observeFor(.clearCartEverywhere, selector: #selector(clearCartRef))
+        self.observeFor(.syncCartBanner, selector: #selector(syncCartBackground))
+    }
+    
+    @objc private func syncCartBackground() {
+        self.baseView.syncCart()
     }
     
     @objc private func clearCartRef() {
        self.viewModel.updateQueueScrollIndex(index: self.scrollMetrics.currentColumnIndex)
        checkContent()
+       self.baseView.syncCart()
     }
     
     @objc private func handleItemFavourite() {
@@ -61,10 +67,12 @@ class ExploreMenuV2VC: BaseVC {
                 guard let columnData = viewModel.getColumnData[safe: menuIndex], columnData.firstIndex(where: { $0._id ?? "" == update.itemId }).isNotNil else { return }
                 //Service type found, menu found, item found
                 //Update count first in viewModel
-                guard let syncSuccess = viewModel.syncWithCart(menuId: update.menuId, itemId: update.itemId, hashId: update.hashId, increment: update.isIncrement, modGroups: update.modGroups) else { return }
+                guard let syncSuccess = viewModel.syncWithCart(menuId: update.menuId, itemId: update.itemId, hashId: update.hashId, increment: update.isIncrement, modGroups: update.modGroups, apiFailed: update.apiFailed) else { return }
                 weak var cell = self.baseView.mainTableView.visibleCells.last as? ContentContainerTableViewCell
                 cell?.columnData = syncSuccess
                 cell?.refreshTable()
+                self.tabBarController?.removeLoaderOverlay()
+                self.baseView.syncCart()
             }
         }
     }
@@ -90,7 +98,7 @@ class ExploreMenuV2VC: BaseVC {
             // No need to call if view is not even set yet
             checkContent()
         }
-        self.baseView.refreshCartLocally()
+        self.baseView.syncCart()
     }
     
     private func checkContent() {
@@ -156,7 +164,12 @@ class ExploreMenuV2VC: BaseVC {
                     
                     if let lookUpIndexForMenu = self?.viewModel.getCategories.firstIndex(where: { $0._id ?? "" == menuLookUpID }) {
                         self?.viewModel.updateQueueScrollIndex(index: lookUpIndexForMenu)
+                    } else {
+                        if itemLookUpID.isEmpty && menuLookUpID.isEmpty == false {
+                            self?.viewModel.updateQueueScrollIndex(index: 0)
+                        }
                     }
+                    
                     if !itemLookUpID.isEmpty {
                         var requiredColumn: Int?
                         var requiredItemIndex: Int?
@@ -164,6 +177,11 @@ class ExploreMenuV2VC: BaseVC {
                         if let columnFound = requiredColumn {
                             requiredItemIndex = self?.viewModel.getColumnData[columnFound].firstIndex(where: { $0._id ?? "" == itemLookUpID})
                         }
+                        
+                        if requiredColumn.isNil {
+                            self?.viewModel.updateQueueScrollIndex(index: 0)
+                        }
+                        
                         if requiredColumn.isNotNil && requiredItemIndex.isNotNil {
                             self?.viewModel.updateQueueScrollIndex(index: requiredColumn!)
                             if let result = self?.viewModel.getColumnData[requiredColumn!][requiredItemIndex!] {
@@ -208,7 +226,7 @@ class ExploreMenuV2VC: BaseVC {
                 categories.forEach({ _ in
                     self?.scrollMetrics.columnOffsetArray.append(0)
                 })
-                self?.baseView.refreshCartLocally()
+                self?.baseView.syncCart()
             } else {
                 self?.baseView.showTableView(false)
                 debugPrint("Some error occured while fetching on VC")
@@ -236,8 +254,8 @@ class ExploreMenuV2VC: BaseVC {
     
     private func updateCartConflict(_ count: Int, _ item: MenuItem, _ template: CustomisationTemplate?) {
         self.viewModel.updateCountLocally(count: count, menuItem: item, template: template, tableIndex: self.scrollMetrics.currentColumnIndex)
-        self.triggerReload()
-        self.baseView.refreshCartLocally()
+//        self.triggerReload()
+//        self.baseView.refreshCartLocally()
     }
 }
 
@@ -339,7 +357,7 @@ extension ExploreMenuV2VC: UIScrollViewDelegate {
             }
         }
         
-        if columnHeight < contentContainerHeight {
+        if columnHeight <= contentContainerHeight {
             if scrollView.contentOffset.y >= 89 {
                 scrollView.contentOffset.y = 89
                 scrollMetrics.columnOffsetArray[currentIndex] = 89
@@ -397,7 +415,13 @@ extension ExploreMenuV2VC {
         cell.cartConflict = { [weak self] in
             self?.baseView.showCartConflictAlert($0, $1)
         }
-        cell.triggerLoginFlow = { [weak self] in
+        cell.triggerLoginFlow = { [weak self] (addReq, favReq) in
+            if let favReq = favReq {
+              GuestUserCache.shared.queueAction(.favourite(req: favReq))
+            }
+            if let addReq = addReq {
+                GuestUserCache.shared.queueAction(.addToCart(req: addReq))
+            }
             let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
             loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
             self?.push(vc: loginVC)
@@ -416,7 +440,7 @@ extension ExploreMenuV2VC {
                     self?.baseView.showError(msg: msg)
                 })
             }
-            self?.triggerReload()
+            self?.triggerReload(animate: true)
         }
         cell.openItemDetail = { [weak self] (result, _) in
             guard let strongSelf = self else { return }
@@ -454,7 +478,7 @@ extension ExploreMenuV2VC {
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             viewModel.updateCountLocally(count: count, menuItem: item, template: nil, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0)
             //strongSelf.triggerReload()
-            strongSelf.baseView.refreshCartLocally()
+           // strongSelf.baseView.refreshCartLocally()
         }
         cell.confirmCustomisationRepeat = { [weak self] (countToUpdate, item, _) in
             guard let strongSelf = self else { return }
@@ -470,7 +494,8 @@ extension ExploreMenuV2VC {
         vc.configureForCustomView()
         self.tabBarController?.addOverlayBlack()
         let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
-        bottomSheet.triggerLoginFlow = { [weak self] in
+        bottomSheet.triggerLoginFlow = { [weak self] (addReq) in
+            GuestUserCache.shared.queueAction(.addToCart(req: addReq))
             vc.dismiss(animated: true, completion: { [weak self] in
                 self?.tabBarController?.removeOverlay()
                 let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
@@ -481,9 +506,10 @@ extension ExploreMenuV2VC {
         bottomSheet.configureForExploreMenu(container: vc.view, itemId: result._id ?? "", serviceType: self.viewModel.getServiceType)
         bottomSheet.cartCountUpdated = { [weak self] (count, item) in
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
+            self?.tabBarController?.addLoaderOverlay()
             viewModel.updateCountLocally(count: count, menuItem: item, template: nil, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0)
-            strongSelf.triggerReload()
-            strongSelf.baseView.refreshCartLocally()
+//            strongSelf.triggerReload()
+//            strongSelf.baseView.refreshCartLocally()
         }
         bottomSheet.handleDeallocation = {
             vc.dismiss(animated: true, completion: { [weak self] in
@@ -502,7 +528,8 @@ extension ExploreMenuV2VC {
                 bottomSheet.configure(item: result, container: vc.view, preLoadTemplate: prefillTempate, serviceType: self.viewModel.getServiceType)
                 bottomSheet.addToCart = { [weak self] (modGroupArray, hashId, itemId) in
                     
-                    if AppUserDefaults.value(forKey: .loginResponse).isNil {
+                    if DataManager.shared.isUserLoggedIn == false {
+                        GuestUserCache.shared.queueAction(.addToCart(req: AddCartItemRequest(itemId: result._id ?? "", menuId: result.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: result.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: modGroupArray)))
                         let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
                         loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
                         self?.push(vc: loginVC)
@@ -515,8 +542,8 @@ extension ExploreMenuV2VC {
                     let item = table[itemIndex]
                     let template = CustomisationTemplate(modGroups: modGroupArray, hashId: hashId)
                     strongSelf.viewModel?.updateCountLocally(count: (item.cartCount ?? 0) + 1, menuItem: item, template: template, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0)
-                    strongSelf.triggerReload()
-                    strongSelf.baseView.refreshCartLocally()
+//                    strongSelf.triggerReload()
+//                    strongSelf.baseView.refreshCartLocally()
                 }
                 bottomSheet.handleDeallocation = { [weak self] in
                     vc.dismiss(animated: true, completion: {
@@ -537,8 +564,8 @@ extension ExploreMenuV2VC {
             mainThread {
                 if action == .repeatCustomisation {
                     self?.viewModel?.updateCountLocally(count: count, menuItem: item, template: item.templates?.last, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0)
-                    self?.triggerReload()
-                    self?.baseView.refreshCartLocally()
+//                    self?.triggerReload()
+//                    self?.baseView.refreshCartLocally()
                 } else {
                     //No Customisation
                     self?.viewModel?.fetchItemDetail(itemId: item._id ?? "", preLoadTemplate: nil, tableIndex: self?.scrollMetrics.currentColumnIndex ?? 0, result: { [weak self] (responseType, _) in
@@ -582,15 +609,21 @@ extension ExploreMenuV2VC {
 
 extension ExploreMenuV2VC {
     
-    private func triggerReload() {
+    private func triggerReload(animate: Bool = false) {
         mainThread {
             if self.isFetchingItemData { return }
             weak var tableview = self.baseView.mainTableView
             weak var cell = tableview?.cellForRow(at: IndexPath(row: 0, section: 1)) as? ContentContainerTableViewCell
             cell?.columnData = self.viewModel.getColumnData
             cell?.metrics = self.scrollMetrics
-            cell?.refreshTable()
-            self.baseView.refreshCartLocally()
+            if animate {
+                mainThreadAfter(0.75, {
+                    cell?.refreshTable()
+                })
+            } else {
+                cell?.refreshTable()
+            }
+            self.baseView.syncCart()
         }
     }
 }

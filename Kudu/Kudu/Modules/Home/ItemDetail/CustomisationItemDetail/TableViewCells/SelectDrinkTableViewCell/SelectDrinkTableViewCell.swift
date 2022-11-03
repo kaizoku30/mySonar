@@ -105,11 +105,11 @@ extension SelectDrinkTableViewCell: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueCell(with: DrinkObjectCollectionViewCell.self, indexPath: indexPath)
         switch selectedDrinkSize {
         case .regular:
-            cell.configure(imgUrl: subArrayRegular[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayRegular[indexPath.row].addedToTemplate ?? false)
+            cell.configure(imgUrl: subArrayRegular[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayRegular[indexPath.row].addedToTemplate ?? false, price: subArrayRegular[indexPath.row].price ?? 0.0)
         case .medium:
-            cell.configure(imgUrl: subArrayMedium[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayMedium[indexPath.row].addedToTemplate ?? false)
+            cell.configure(imgUrl: subArrayMedium[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayMedium[indexPath.row].addedToTemplate ?? false, price: subArrayMedium[indexPath.row].price ?? 0.0)
         case .large:
-            cell.configure(imgUrl: subArrayLarge[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayLarge[indexPath.row].addedToTemplate ?? false)
+            cell.configure(imgUrl: subArrayLarge[indexPath.row].modifierImageUrl ?? "", selectedState: subArrayLarge[indexPath.row].addedToTemplate ?? false, price: subArrayLarge[indexPath.row].price ?? 0.0)
         }
         
         return cell

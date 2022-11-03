@@ -22,28 +22,51 @@ class HomeVC: BaseVC {
     // MARK: ViewLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        initialSetup()
+    }
+    
+    private func initialSetup() {
         baseView.setupView(self)
         handleActions()
         checkLocationState()
-        self.observeFor(.internetConnectionFound, selector: #selector(internetRetry))
-        self.observeFor(.pickupLocationUpdated, selector: #selector(pickupLocationUpdated))
-        self.observeFor(.curbsideLocationUpdated, selector: #selector(curbsideLocationUpdated))
-        self.observeFor(.deliveryLocationUpdated, selector: #selector(deliveryLocationUpdated))
-        self.reachabilityHandling()
-        self.removeOtherViewControllers()
+        addObservers()
+        reachabilityHandling()
+        removeOtherViewControllers()
+        handleGuestUserCache()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         weak var weakSelf = self.navigationController as? BaseNavVC
         weakSelf?.disableSwipeBackGesture = true
+        baseView.setNotificationBell()
+        viewModel?.checkNotificationStatus(statusUpdated: { [weak self] _ in
+            self?.baseView.setNotificationBell()
+        })
         handleSectionChange(section: self.viewModel?.getSelectedSection ?? .delivery)
-        if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+        if DataManager.shared.isUserLoggedIn {
             DataManager.syncHashIDs()
-            baseView.refreshCartLocally()
             baseView.syncCart()
         }
         debugPrint("View Will Appear Called For Home")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        weak var weakSelf = self.navigationController as? BaseNavVC
+        weakSelf?.disableSwipeBackGesture = false
+    }
+    
+    private func addObservers() {
+        self.observeFor(.internetConnectionFound, selector: #selector(internetRetry))
+        self.observeFor(.pickupLocationUpdated, selector: #selector(pickupLocationUpdated))
+        self.observeFor(.curbsideLocationUpdated, selector: #selector(curbsideLocationUpdated))
+        self.observeFor(.deliveryLocationUpdated, selector: #selector(deliveryLocationUpdated))
+        self.observeFor(.syncCartBanner, selector: #selector(syncCartBackground))
+    }
+    
+    @objc private func syncCartBackground() {
+        self.baseView.syncCart()
     }
     
     private func removeOtherViewControllers() {
@@ -59,28 +82,126 @@ class HomeVC: BaseVC {
             self.navigationController?.viewControllers.remove(at: $0)
         })
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        weak var weakSelf = self.navigationController as? BaseNavVC
-        weakSelf?.disableSwipeBackGesture = false
-    }
-    
-    @objc private func deliveryLocationUpdated() {
-        if let locationAdded = DataManager.shared.currentDeliveryLocation {
-            self.viewModel?.setLocation(locationAdded)
+}
+
+extension HomeVC {
+    // MARK: Handle Guest User Cache
+    private func handleGuestUserCache() {
+        if DataManager.shared.isUserLoggedIn {
+            //User Logged In, Need to check Guest User Cache
+            if let action = GuestUserCache.shared.getAction() {
+                switch action {
+                case .addToCart(let req):
+                    addCartObject(req: req)
+                case .favourite(let req):
+                    addGuestUserFavourite(req: req)
+                }
+            }
         }
-        self.baseView.deliveryTapped()
     }
     
-    @objc private func curbsideLocationUpdated() {
-        self.baseView.curbsideTapped()
+    private func addCartObject(req: AddCartItemRequest) {
+        self.tabBarController?.addLoaderOverlay()
+        CartUtility.syncCart { [weak self] in
+            guard let strongSelf = self else { return }
+            GuestUserCache.shared.clearCache()
+            if CartUtility.getCartServiceType != req.servicesAvailable {
+                strongSelf.showCartConflictAlert(req: req)
+            } else {
+                strongSelf.triggerAddRequestFlow(req: req)
+            }
+        }
     }
     
-    @objc private func pickupLocationUpdated() {
-        self.baseView.pickupTapped()
+    private func triggerAddRequestFlow(req: AddCartItemRequest) {
+        GuestUserCache.shared.addGuestCartObject(addCartReq: req, added: { [weak self] in
+            switch $0 {
+            case .success:
+                CartUtility.syncCart {
+                    mainThread({
+                        self?.baseView.syncCart()
+                        self?.tabBarController?.removeLoaderOverlay()
+                    })
+                }
+            case .failure(let errorObject):
+                self?.tabBarController?.removeLoaderOverlay()
+                let error = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
+                mainThread {
+                    guard let baseView = self?.baseView else { return }
+                    error.show(message: errorObject.localizedDescription, view: baseView)
+                }
+            }
+        })
     }
     
+    private func showCartConflictAlert(req: AddCartItemRequest) {
+        let alert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 186))
+        alert.setTextAlignment(.left)
+        alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
+        alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
+        alert.configure(title: "Change Order Type ?", message: "Please be aware your cart will be cleared as you change order type", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self.baseView)
+        alert.handleAction = { [weak self] in
+            if $0 == .right {
+                CartUtility.clearCart(clearedConfirmed: {
+                    self?.triggerAddRequestFlow(req: req)
+                })
+            }
+        }
+    }
+    
+    private func addGuestUserFavourite(req: FavouriteRequest) {
+        GuestUserCache.shared.clearCache()
+        self.tabBarController?.addLoaderOverlay()
+        GuestUserCache.shared.addGuestUserFavourite(favouriteReq: req, added: { [weak self] in
+            switch $0 {
+            case .success:
+                mainThread {
+                    self?.tabBarController?.removeLoaderOverlay()
+                    let vc = MyFavouritesVC.instantiate(fromAppStoryboard: .Home)
+                    vc.viewModel = MyFavouritesVM(delegate: vc, serviceTypeHome: self?.viewModel?.getSelectedSection ?? .delivery)
+                    self?.push(vc: vc)
+                }
+            case .failure(let error):
+                self?.tabBarController?.removeLoaderOverlay()
+                let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
+                guard let strongSelf = self else { return }
+                mainThread {
+                    errorView.show(message: error.localizedDescription, view: strongSelf.baseView)
+                }
+            }
+        })
+    }
+}
+
+extension HomeVC {
+    // MARK: Handle View Actions
+    private func handleActions() {
+        baseView.handleViewActions = { [weak self] in
+            switch $0 {
+            case .setDeliveryLocationFlow:
+                self?.goToSetDeliveryFlow()
+            case .openSettings:
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            case .openSideMenu:
+                break
+            case .openNotificationListing:
+                self?.goToNotifications()
+            case .sectionButtonPressed(let section):
+                self?.handleSectionChange(section: section)
+            case .setCurbsideLocationFlow, .setPickupLocationFlow:
+                self?.goToSetRestaurantFlow()
+            case .handleEmailConflict:
+                break
+            case .viewCart:
+                self?.openCartPage()
+            }
+        }
+    }
+}
+
+extension HomeVC {
+    
+    // MARK: Location Methods
     private func checkLocationState() {
         guard let viewModel = viewModel else {
             return
@@ -98,40 +219,48 @@ class HomeVC: BaseVC {
             case .fetchCurrentLocation:
                 self.fetchCurrentLocation()
             case .requestLocationAccess:
-                AppUserDefaults.save(value: true, forKey: .locationAccessRequested)
-                CommonLocationManager.requestLocationAccess({ [weak self] in
-                    switch $0 {
-                    case .authorizedWhenInUse, .authorizedAlways:
-                        self?.fetchCurrentLocation()
-                    default:
-                        self?.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
-                        self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
-                        self?.hitApis()
-                    }
-                })
+                self.requestLocationAccess()
             case .locationAlreadyPresent:
-                let savedLocation = DataManager.shared.currentDeliveryLocation
-                viewModel.setLocation(savedLocation!)
-                var title: String = ""
-                let isMyAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress.isNotNil ?? false
-                let addressType = APIEndPoints.AddressLabelType(rawValue: self.viewModel?.getCurrentLocationData?.associatedMyAddress?.addressLabel ?? "") ?? .HOME
-                if isMyAddress {
-                    let otherAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress?.otherAddressLabel ?? ""
-                    switch addressType {
-                    case .HOME:
-                        title = "Home"
-                    case .WORK:
-                        title = "Work"
-                    case .OTHER:
-                        title = otherAddress
-                    }
-                } else {
-                    title = (self.viewModel?.getCurrentLocationData?.trimmedAddress) ?? ""
-                }
-                self.baseView.updateLocationLabel(title)
-                self.hitApis()
+                self.handleLocationAlreadyPresent()
             }
         })
+    }
+    
+    private func requestLocationAccess() {
+        AppUserDefaults.save(value: true, forKey: .locationAccessRequested)
+        CommonLocationManager.requestLocationAccess({ [weak self] in
+            switch $0 {
+            case .authorizedWhenInUse, .authorizedAlways:
+                self?.fetchCurrentLocation()
+            default:
+                self?.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
+                self?.hitApis()
+            }
+        })
+    }
+    
+    private func handleLocationAlreadyPresent() {
+        let savedLocation = DataManager.shared.currentDeliveryLocation
+        viewModel?.setLocation(savedLocation!)
+        var title: String = ""
+        let isMyAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress.isNotNil ?? false
+        let addressType = APIEndPoints.AddressLabelType(rawValue: self.viewModel?.getCurrentLocationData?.associatedMyAddress?.addressLabel ?? "") ?? .HOME
+        if isMyAddress {
+            let otherAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress?.otherAddressLabel ?? ""
+            switch addressType {
+            case .HOME:
+                title = "Home"
+            case .WORK:
+                title = "Work"
+            case .OTHER:
+                title = otherAddress
+            }
+        } else {
+            title = (self.viewModel?.getCurrentLocationData?.trimmedAddress) ?? ""
+        }
+        self.baseView.updateLocationLabel(title)
+        self.hitApis()
     }
     
     private func fetchCurrentLocation() {
@@ -146,45 +275,24 @@ class HomeVC: BaseVC {
             }
         })
     }
+}
+
+extension HomeVC {
     
-    private func hitApis() {
-        viewModel?.hitPromoAPI()
-        viewModel?.hitMenuAPI()
-        viewModel?.hitRecommendationAPI()
-        baseView.handleAPIRequest(.getPromoList)
-    }
-    
-    private func handleActions() {
-        baseView.handleViewActions = { [weak self] in
-            switch $0 {
-            case .setDeliveryLocationFlow:
-                self?.goToSetDeliveryFlow()
-            case .openSettings:
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            case .openSideMenu:
-                if AppUserDefaults.value(forKey: .loginResponse).isNil {
-                    self?.goToGuestProfileVC()
-                } else {
-                    self?.goToProfileVC()
-                }
-            case .triggerLoyaltyFlow:
-                SKToast.show(withMessage: "Under Development")
-            case .sectionButtonPressed(let section):
-                self?.handleSectionChange(section: section)
-            case .setCurbsideLocationFlow, .setPickupLocationFlow:
-                self?.goToSetRestaurantFlow()
-            case .handleEmailConflict:
-                self?.goToEditProfileVC()
-            case .viewCart:
-                self?.openCartPage()
-            }
+    // MARK: Sectional Methods
+    @objc private func deliveryLocationUpdated() {
+        if let locationAdded = DataManager.shared.currentDeliveryLocation {
+            self.viewModel?.setLocation(locationAdded)
         }
+        self.baseView.deliveryTapped()
     }
     
-    private func openCartPage() {
-        let vc = CartListViewController.instantiate(fromAppStoryboard: .CartPayment)
-        vc.flow = .fromHome
-        self.push(vc: vc)
+    @objc private func curbsideLocationUpdated() {
+        self.baseView.curbsideTapped()
+    }
+    
+    @objc private func pickupLocationUpdated() {
+        self.baseView.pickupTapped()
     }
     
     private func handleSectionChange(section: APIEndPoints.ServicesType) {
@@ -213,20 +321,32 @@ class HomeVC: BaseVC {
         case .curbside:
             let restaurant = DataManager.shared.currentCurbsideRestaurant
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant?.restaurantNameEnglish ?? "") : (restaurant?.restaurantNameArabic ?? "")
-            title = restaurant.isNotNil ? name : LocalizedStrings.Home.setCurbsideLocation
+            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LocalizedStrings.Home.setCurbsideLocation
+            if restaurant?.storeId.isEmpty ?? true {
+                DataManager.shared.currentCurbsideRestaurant = nil
+            }
         case .pickup:
             let restaurant = DataManager.shared.currentPickupRestaurant
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant?.restaurantNameEnglish ?? "") : (restaurant?.restaurantNameArabic ?? "")
-            title = restaurant.isNotNil ? name : LocalizedStrings.Home.setPickupLocation
+            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LocalizedStrings.Home.setPickupLocation
+            if restaurant?.storeId.isEmpty ?? true {
+                DataManager.shared.currentPickupRestaurant = nil
+            }
         }
         self.baseView.updateSection(section)
         self.baseView.updateLocationLabel(title)
         self.viewModel?.updateSection(section)
-        self.viewModel?.hitPromoAPI()
-        self.viewModel?.hitMenuAPI()
-        self.viewModel?.hitRecommendationAPI()
-        self.baseView.handleAPIRequest(.getMenuList, sectionSwitched: true)
+        self.hitApis()
     }
+    
+    private func hitApis() {
+        baseView.handleAPIRequest(.sectionChangedAPIs)
+        viewModel?.hitBannerAPI()
+        viewModel?.hitMenuAPI()
+        viewModel?.hitRecommendationAPI()
+        viewModel?.hitInStorePromoAPI()
+    }
+    
 }
 
 extension HomeVC: UITableViewDataSource, UITableViewDelegate {
@@ -234,8 +354,6 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     // MARK: TableView Handling
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         5
-        //guard let viewModel = self.viewModel else { return 0 }
-        //return viewModel.getSelectedSection == .delivery ? 4 : 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -249,8 +367,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
             if viewModel.getSelectedSection == .delivery {
                 return getRecommendationCell(tableView, cellForRowAt: indexPath)
             } else {
-                let cell = tableView.dequeueCell(with: InStorePromoCell.self)
-                return cell
+                return getInStoreCell(tableView, cellForRowAt: indexPath)
             }
         case 3:
             if viewModel.getSelectedSection == .delivery {
@@ -268,11 +385,55 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        //Promo Hide/Show 
+        if indexPath.row == 0 && viewModel?.getBannerItems?.count ?? 0 == 0 && !self.baseView.isFetchingBanners {
+            return 0
+        }
+        
+        //Menu Hide/Show
+        //No handling needed / Never to be hidden
+        
+        //Recommendation Handling For Delivery
+        if viewModel?.getSelectedSection ?? .delivery == .delivery && indexPath.row == 2 && viewModel?.getRecommendationList?.count ?? 0 == 0 && !self.baseView.isFetchingRecommendations {
+            return 0
+        }
+        
+        //Recommendation Handling For Curbside/Pickup
+        if viewModel?.getSelectedSection ?? .delivery != .delivery && indexPath.row == 3 && viewModel?.getRecommendationList?.count ?? 0 == 0 && !self.baseView.isFetchingRecommendations {
+            return 0
+        }
+        
+        //Hiding In Store Promo For Delivery
+        if viewModel?.getSelectedSection ?? .delivery == .delivery && indexPath.row == 4 {
+            return 0
+        }
+        
+        //In Store Promo Management for Curbside PickUp
+        if (viewModel?.getSelectedSection ?? .delivery == .curbside || viewModel?.getSelectedSection ?? .delivery == .pickup) && self.viewModel?.getInStorePromos?.count ?? 0 == 0 && indexPath.row == 2 {
+            return 0
+        }
+        
+        return UITableView.automaticDimension
+    }
+}
+
+extension HomeVC {
+    
+    // MARK: Custom Cell Handling
+    
+    private func getInStoreCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(with: InStorePromoCell.self)
+        cell.configure(promos: self.viewModel?.getInStorePromos ?? [], delegate: self)
+        return cell
+    }
+    
     private func getFavouritesCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: HomeFavouritesCell.self)
         cell.goToMyFavourites = { [weak self] in
             guard let strongSelf = self else { return }
-            if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+            if DataManager.shared.isUserLoggedIn {
                 let vc = MyFavouritesVC.instantiate(fromAppStoryboard: .Home)
                 vc.viewModel = MyFavouritesVM(delegate: vc, serviceTypeHome: strongSelf.viewModel?.getSelectedSection ?? .delivery)
                 strongSelf.push(vc: vc)
@@ -285,30 +446,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if viewModel?.getSelectedSection ?? .delivery == .delivery && indexPath.row == 4 {
-            return 0
-        }
-        
-        if viewModel?.getSelectedSection ?? .delivery == .delivery && indexPath.row == 2 && viewModel?.getRecommendationList?.count ?? 0 == 0 && !self.baseView.isFetchingRecommendations {
-            return 0
-        }
-        
-        if viewModel?.getSelectedSection ?? .delivery != .delivery && indexPath.row == 3 && viewModel?.getRecommendationList?.count ?? 0 == 0 && !self.baseView.isFetchingRecommendations {
-            return 0
-        }
-        
-        if indexPath.row == 0 && viewModel?.getBannerItems?.count ?? 0 == 0 && !self.baseView.isFetchingBanners {
-            return 0
-        }
-        
-        return UITableView.automaticDimension
-    }
-}
-
-extension HomeVC {
-    
-    func getPromoBannerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    private func getPromoBannerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: HomeOffersDealsContainerCell.self)
         cell.redirectFromBanner = { [weak self] (bannerItem) in
             guard let redirectionType = BannerRedirectionType(rawValue: bannerItem.typeOfRedirection ?? "") else { return }
@@ -334,7 +472,7 @@ extension HomeVC {
         return cell
     }
     
-    func getMenuCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    private func getMenuCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: HomeExploreMenuCell.self)
         cell.configure(list: viewModel?.getMenuList)
         cell.menuItemTapped = { [weak self] in
@@ -346,133 +484,8 @@ extension HomeVC {
         }
         return cell
     }
-}
-
-extension HomeVC {
     
-    @objc private func goToEditProfileVC() {
-        mainThread {
-            guard let nav = self.navigationController, let editProfileExists = nav.viewControllers.first(where: { $0.isKind(of: EditProfileVC.self) }) else {
-                let vc = EditProfileVC.instantiate(fromAppStoryboard: .Home)
-                vc.viewModel = EditProfileVM(delegate: vc, handleEmailConflict: true)
-                if self.navigationController?.viewControllers.contains(where: { $0.isKind(of: EditProfileVC.self) }) ?? false {
-                    return
-                }
-                self.push(vc: vc)
-                return
-            }
-            
-            debugPrint("Edit Profile Exists \(editProfileExists) in stack already, avoid multiple push")
-        }
-    }
-    
-    func goToProfileVC() {
-        sideMenuVC = ProfileVC.instantiate(fromAppStoryboard: .Home)
-        guard let childVC = sideMenuVC as? ProfileVC else { return }
-        childVC.showEmailConflictAlert = { [weak self] in
-            self?.baseView.showAlreadyAssociatedAlert()
-        }
-        openSideNav(vc: childVC)
-    }
-    
-    func openSideNav(vc: AccountProfileVC) {
-        var childVC: AccountProfileVC = vc
-        childVC = vc.isKind(of: GuestProfileVC.self) ? vc as! GuestProfileVC : vc as! ProfileVC
-        let dimmedView = UIView(frame: baseView.frame)
-        dimmedView.backgroundColor = .black.withAlphaComponent(0.5)
-        dimmedView.tag = Constants.CustomViewTags.dimViewTag
-        dimmedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissSideMenu)))
-        baseView.addSubview(dimmedView)
-        childVC.view.width = baseView.width * 0.85
-        let selectedLanguage = AppUserDefaults.selectedLanguage()
-        childVC.view.transform = selectedLanguage == .en ? CGAffineTransform(translationX: -childVC.view.width, y: 0) : CGAffineTransform(translationX: self.baseView.width, y: 0)
-        baseView.addSubview(childVC.view)
-        self.addChild(childVC)
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
-            childVC.view.transform = selectedLanguage == .en ? CGAffineTransform(translationX: 0, y: 0) : CGAffineTransform(translationX: self.baseView.width * (0.15), y: 0)
-        }, completion: {
-            if $0 {
-                childVC.didMove(toParent: self)
-            }
-        })
-        childVC.removeContainerOverlay = { [weak self] in
-            mainThread {
-                self?.baseView.subviews.forEach({ if $0.tag == Constants.CustomViewTags.dimViewTag {
-                    $0.removeFromSuperview()
-                } })
-            }
-        }
-        childVC.pushVC = { [weak self] (viewController) in
-            mainThread {
-                if let viewController = viewController {
-                    if viewController.isKind(of: PhoneVerificationVC.self) {
-                        let phoneVC = viewController as! PhoneVerificationVC
-                        phoneVC.differentEmailPressed = { [weak self] in
-                            self?.goToEditProfileVC()
-                        }
-                    }
-                    self?.push(vc: viewController)
-                }
-            }
-        }
-    }
-    
-    @objc private func dismissSideMenu() {
-        NotificationCenter.postNotificationForObservers(.dismissSideMenu)
-    }
-    
-    func goToGuestProfileVC() {
-        sideMenuVC = GuestProfileVC.instantiate(fromAppStoryboard: .Home)
-        guard let childVC = sideMenuVC as? GuestProfileVC else { return }
-        openSideNav(vc: childVC)
-    }
-}
-
-extension HomeVC {
-    
-    func goToMenuExplore(indexSelection: Int) {
-        weak var tabBar = self.tabBarController as? HomeTabBarVC
-        tabBar?.updateMenuIndex(indexSelection)
-        self.tabBarController?.selectedIndex = HomeTabBarVC.TabOptions.menu.rawValue
-    }
-    
-    func goToSetRestaurantFlow() {
-        let vc = SetRestaurantLocationVC.instantiate(fromAppStoryboard: .Home)
-        vc.restaurantSelected = { [weak self] (restaurant) in
-            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
-            let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant.restaurantNameEnglish) : (restaurant.restaurantNameArabic)
-            let title = name
-            if viewModel.getSelectedSection == .pickup {
-                DataManager.shared.currentPickupRestaurant = restaurant
-            } else {
-                DataManager.shared.currentCurbsideRestaurant = restaurant
-            }
-            strongSelf.baseView.updateLocationLabel(title)
-            strongSelf.viewModel?.hitPromoAPI()
-            strongSelf.viewModel?.hitMenuAPI()
-            strongSelf.viewModel?.hitRecommendationAPI()
-            strongSelf.baseView.handleAPIRequest(.getMenuList)
-            viewModel.syncCartConfiguration(storeId: restaurant.storeId)
-        }
-        vc.viewModel = SetRestaurantLocationVM(delegate: vc, flow: self.viewModel?.getSelectedSection ?? .delivery)
-        self.push(vc: vc)
-    }
-    
-    func goToSetDeliveryFlow() {
-        let googleAutoCompleteVC = GoogleAutoCompleteVC.instantiate(fromAppStoryboard: .Address)
-        googleAutoCompleteVC.viewModel = GoogleAutoCompleteVM(delegate: googleAutoCompleteVC, flow: .setDeliveryLocation, prefillData: self.viewModel?.getCurrentLocationData)
-        googleAutoCompleteVC.prefillCallback = { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.viewModel?.reverseGeoCodeCurrentCoordinates(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), prefillData: $0)
-        }
-        self.push(vc: googleAutoCompleteVC)
-    }
-}
-
-extension HomeVC {
-    // MARK: RECOMMENDATIONS HANDLING
-    
-    func getRecommendationCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    private func getRecommendationCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: HomeRecommendationsContainerCell.self)
         cell.openDetailForItem = { [weak self] (menuItem) in
             mainThread {
@@ -496,7 +509,64 @@ extension HomeVC {
         cell.configure(viewModel?.getRecommendationList ?? [])
         return cell
     }
+}
+
+extension HomeVC {
     
+    // MARK: Routing
+    
+    func goToNotifications() {
+        let vc = NotificationVC.instantiate(fromAppStoryboard: .Notification)
+        vc.hidesBottomBarWhenPushed = true
+        self.push(vc: vc)
+    }
+    
+    private func openCartPage() {
+        let vc = CartListViewController.instantiate(fromAppStoryboard: .CartPayment)
+        vc.flow = .fromHome
+        self.push(vc: vc)
+    }
+    
+    private func goToMenuExplore(indexSelection: Int) {
+        weak var tabBar = self.tabBarController as? HomeTabBarVC
+        tabBar?.updateMenuIndex(indexSelection)
+        self.tabBarController?.selectedIndex = HomeTabBarVC.TabOptions.menu.rawValue
+    }
+    
+    private func goToSetRestaurantFlow() {
+        let vc = SetRestaurantLocationVC.instantiate(fromAppStoryboard: .Home)
+        vc.restaurantSelected = { [weak self] (restaurant) in
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
+            let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant.restaurantNameEnglish) : (restaurant.restaurantNameArabic)
+            let title = name
+            if viewModel.getSelectedSection == .pickup {
+                DataManager.shared.currentPickupRestaurant = restaurant
+            } else {
+                DataManager.shared.currentCurbsideRestaurant = restaurant
+            }
+            strongSelf.baseView.updateLocationLabel(title)
+            strongSelf.hitApis()
+            viewModel.syncCartConfiguration(storeId: restaurant.storeId)
+        }
+        vc.viewModel = SetRestaurantLocationVM(delegate: vc, flow: self.viewModel?.getSelectedSection ?? .delivery)
+        self.push(vc: vc)
+    }
+    
+    private func goToSetDeliveryFlow() {
+        let googleAutoCompleteVC = GoogleAutoCompleteVC.instantiate(fromAppStoryboard: .Address)
+        googleAutoCompleteVC.viewModel = GoogleAutoCompleteVM(delegate: googleAutoCompleteVC, flow: .setDeliveryLocation, prefillData: self.viewModel?.getCurrentLocationData)
+        googleAutoCompleteVC.prefillCallback = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.reverseGeoCodeCurrentCoordinates(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), prefillData: $0)
+        }
+        self.push(vc: googleAutoCompleteVC)
+    }
+}
+
+extension HomeVC {
+    
+    // MARK: Item/Custom Detail
+
     private func openItemDetail(menuItem: MenuItem) {
         let vc = BaseVC()
         vc.configureForCustomView()
@@ -524,6 +594,7 @@ extension HomeVC {
                     NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                     self?.baseView.syncCart()
                 }, failure: { _ in
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
                     self?.tabBarController?.removeLoaderOverlay()
                 })
                 return
@@ -540,7 +611,8 @@ extension HomeVC {
                 self?.tabBarController?.removeLoaderOverlay()
             })
         }
-        itemDetailSheet.triggerLoginFlow = {
+        itemDetailSheet.triggerLoginFlow = { (addReq) in
+            GuestUserCache.shared.queueAction(.addToCart(req: addReq))
             vc.dismiss(animated: true, completion: { [weak self] in
                 self?.tabBarController?.removeOverlay()
                 let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
@@ -562,7 +634,8 @@ extension HomeVC {
         let bottomSheet = CustomisableItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
         bottomSheet.configure(item: menuItem, container: vc.view, preLoadTemplate: nil, serviceType: self.viewModel?.getSelectedSection ?? .delivery)
         bottomSheet.addToCart = { [weak self] (modGroupArray, hashId, _) in
-            if AppUserDefaults.value(forKey: .loginResponse).isNil {
+            if DataManager.shared.isUserLoggedIn == false {
+                GuestUserCache.shared.queueAction(.addToCart(req: AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: modGroupArray)))
                 vc.dismiss(animated: true, completion: {
                     self?.tabBarController?.removeOverlay()
                     let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
@@ -605,19 +678,6 @@ extension HomeVC {
                     self?.tabBarController?.removeLoaderOverlay()
                 })
             }
-            //            guard let strongSelf = self else { return }
-            //            let hashIdExists = strongSelf.viewModel.getItems.firstIndex(where: { $0.hashId ?? "" == hashId })
-            //            if hashIdExists.isNotNil {
-            //                let previousCount = strongSelf.viewModel.getItems[hashIdExists!].cartCount ?? 0
-            //                strongSelf.viewModel.updateCountLocally(count: previousCount + 1, index: hashIdExists!)
-            //                strongSelf.baseView.refreshCartLocally()
-            //                strongSelf.baseView.refreshTableView()
-            //            } else {
-            //                var copy = result
-            //                copy.servicesAvailable = serviceAvailable
-            //                strongSelf.viewModel.addToCartDirectly(menuItem: copy, hashId: hashId, modGroups: modGroupArray ?? [])
-            //                strongSelf.baseView.refreshCartLocally()
-            //            }
         }
         bottomSheet.handleDeallocation = { [weak self] in
             vc.dismiss(animated: true, completion: {
@@ -631,6 +691,8 @@ extension HomeVC {
 }
 
 extension HomeVC {
+    // MARK: Reachability
+    
     @objc private func internetRetry() {
         if self.baseView.getTableView?.numberOfRows(inSection: 0) ?? 0 != 0 {
             handleSectionChange(section: viewModel?.getSelectedSection ?? .delivery)
@@ -654,6 +716,20 @@ extension HomeVC {
 }
 
 extension HomeVC: HomeVMDelegate {
+    // MARK: API Response Handling
+    func inStorePromoAPIResponse(responseType: Result<String, Error>) {
+        mainThread {
+            switch responseType {
+            case .success:
+                //  debugPrint(string)
+                self.baseView.handleAPIResponse(.getInstorePromo, isSuccess: true, errorMsg: nil)
+            case .failure(let error):
+                //  debugPrint(error.localizedDescription)
+                self.baseView.handleAPIResponse(.getInstorePromo, isSuccess: false, errorMsg: error.localizedDescription)
+            }
+        }
+    }
+    
     func recommendationsAPIResponse(responseType: Result<Bool, Error>) {
         mainThread {
             switch responseType {
@@ -727,5 +803,20 @@ extension HomeVC: HomeVMDelegate {
         alert.handleDeallocation = { [weak self] in
             self?.hitApis()
         }
+    }
+}
+
+extension HomeVC: InStorePromoCellDelegate {
+    func viewall() {
+        let vc = MyOffersVC.instantiate(fromAppStoryboard: .Coupon)
+        vc.controllerType = .promo
+        self.push(vc: vc)
+    }
+    
+    func openDetailForIndex(index: Int) {
+        let vc = MyOffersVC.instantiate(fromAppStoryboard: .Coupon)
+        vc.controllerType = .promo
+        vc.indexToLaunchForInStore = index
+        self.push(vc: vc)
     }
 }

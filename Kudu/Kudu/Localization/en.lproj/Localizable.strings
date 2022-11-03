@@ -210,3 +210,14 @@
 "DeliveryUnavailable" = "Delivery unavailable";
 // MARK: CustomisableDetail
 "select1OutOfXOptions" = "Select 1 out of XNumber options";
+
+// MARK: Rating
+"description" = "Please enter Description";
+"rating" = "Pleas give rating";
+
+// MARK: Instore Promo
+"Offers_and_Deals" = "Offers and Deals";
+"In_Store_Promos" = "In Store Promos";
+
+
+"couponAlreadyRedeemed" = "This coupon is already redeemed";

@@ -17,6 +17,9 @@ class PhoneVerificationVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         baseView.setupView(mobileNum: viewModel?.getMobileNumber ?? "", email: viewModel?.getEmailForVerification)
+        if viewModel?.getCurrentFlow == .comingFromChangeNumberFlow {
+            baseView.setupView(mobileNum: viewModel?.getChangeRequest?.mobileNo ?? "", email: nil)
+        }
         handleActions()
     }
     
@@ -60,7 +63,11 @@ extension PhoneVerificationVC: PhoneVerificationVMDelegate {
             debugPrint(result)
             self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: true, errorMsg: nil)
             DataManager.shared.loginResponse?.isEmailVerified = true
-            self.popToSpecificViewController(kindOf: HomeVC.self)
+            NotificationCenter.postNotificationForObservers(.updateProfilePage)
+            self.popToSpecificViewController(kindOf: ProfileVC.self)
+            if self.navigationController?.viewControllers.contains(where: { $0.isKind(of: ProfileVC.self)}) == false {
+                self.pop()
+            }
         case .failure(let error):
             self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: false, errorMsg: error.localizedDescription)
         }
@@ -72,8 +79,24 @@ extension PhoneVerificationVC: PhoneVerificationVMDelegate {
             debugPrint(result ?? "")
             self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: true, errorMsg: nil)
             DataManager.shared.loginResponse = result
+            DataManager.encodeAndSaveObject(result!, key: .loginResponse)
             AppUserDefaults.removeGuestUserData()
             Router.shared.configureTabBar()
+        case .failure(let error):
+            self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: false, errorMsg: error.localizedDescription)
+            debugPrint(error)
+        }
+    }
+    
+    func changeNumberAPIResponse(responseType: Result<Bool, Error>) {
+        switch responseType {
+        case .success:
+            self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: true, errorMsg: nil)
+            DataManager.shared.loginResponse = nil
+            AppUserDefaults.removeUserData()
+            mainThread {
+                Router.shared.goToLoginVC(fromVC: nil)
+            }
         case .failure(let error):
             self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: false, errorMsg: error.localizedDescription)
             debugPrint(error)

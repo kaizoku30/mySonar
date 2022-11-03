@@ -105,6 +105,7 @@ final class AppColors: UIColor {
         static var outOfStockTextColor: UIColor { #colorLiteral(red: 0.4322124422, green: 0.4281697571, blue: 0.4280841947, alpha: 1) }
         static var couponAppliedColor: UIColor { #colorLiteral(red: 0.3741951585, green: 0.4014635384, blue: 0.4641110301, alpha: 1) }
         static var couponInvalidColor: UIColor { #colorLiteral(red: 0.9215686275, green: 0.4078431373, blue: 0.3803921569, alpha: 1) }
+        static var setDateAndTimeColor: UIColor { #colorLiteral(red: 0.9607843137, green: 0.6980392157, blue: 0.1058823529, alpha: 1) }
     }
     
     struct Coupon {

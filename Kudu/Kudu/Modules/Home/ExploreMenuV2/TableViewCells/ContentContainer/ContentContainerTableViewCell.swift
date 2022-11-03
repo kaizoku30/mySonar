@@ -26,7 +26,7 @@ class ContentContainerTableViewCell: UITableViewCell {
 	var openItemDetail: ((MenuItem, Int) -> Void)?
 	var cartCountUpdated: ((Int, MenuItem, Int) -> Void)?
 	var confirmCustomisationRepeat: ((Int, MenuItem, Int) -> Void)?
-	var triggerLoginFlow: (() -> Void)?
+	var triggerLoginFlow: ((AddCartItemRequest?, FavouriteRequest?) -> Void)?
     var cartConflict: ((Int, MenuItem) -> Void)?
     var cellSwipedToIndex: ((Int) -> Void)?
     
@@ -92,7 +92,7 @@ extension ContentContainerTableViewCell: UICollectionViewDataSource, UICollectio
 			self?.confirmCustomisationRepeat?($0, $1, $2)
 		}
 		cell.triggerLoginFlow = { [weak self] in
-			self?.triggerLoginFlow?()
+            self?.triggerLoginFlow?($0, $1)
 		}
         cell.cartConflict = { [weak self] in
             self?.cartConflict?($0, $1)

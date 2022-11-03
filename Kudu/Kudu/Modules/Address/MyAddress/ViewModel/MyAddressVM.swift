@@ -24,9 +24,16 @@ class MyAddressVM {
     var isCartFlow: Bool { pickingAddressForCart }
     private var storeForCart: StoreDetail?
     var getStoreForCart: StoreDetail? { storeForCart }
+    private var prefillDataForForm: (MyAddressListItem?, StoreDetail?)
+    var getPrefillData: (MyAddressListItem?, StoreDetail?) { prefillDataForForm }
     
     init(_delegate: MyAddressVMDelegate) {
         self.delegate = _delegate
+    }
+    
+    func addPrefillDataForForm(_ item: MyAddressListItem, store: StoreDetail) {
+        self.prefillDataForForm = (item, store)
+        
     }
     
     func configureForCartFlow() {

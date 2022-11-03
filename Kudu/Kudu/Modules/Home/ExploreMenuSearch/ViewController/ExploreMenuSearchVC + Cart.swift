@@ -31,11 +31,13 @@ extension ExploreMenuSearchVC {
 			let templateCount = (array.filter({ $0.hashId ?? "" == template.hashId ?? ""})).count
 			array.append(template)
             arrayToSearch[index].templates = array
-            self.updateExploreMenu?(arrayToSearch[index])
+           // self.updateExploreMenu?(arrayToSearch[index])
 			if templateCount == 0 {
-				addToCart(menuItem: menuItem, template: template)
+                addToCart(menuItem: menuItem, template: template, menuUpdate: arrayToSearch[index])
 			} else {
-                CartUtility.updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", isIncrement: true, quantity: newCount)
+                CartUtility.updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", isIncrement: true, quantity: newCount, completion: { [weak self] in
+                    self?.handleUpdateCallback(result: $0, menuUpdate: arrayToSearch[index])
+                })
 			}
 			debugPrint("Count updated to \(newCount) for item : \(menuItem.nameEnglish ?? ""), added template with hashId : \(template.hashId ?? "")")
 			
@@ -52,40 +54,90 @@ extension ExploreMenuSearchVC {
 				let templateCount = (newArray.filter({ $0.hashId ?? "" == lastHashId})).count
 				if templateCount == 0 {
 					// Remove api
-                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: lastHashId)
+                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: lastHashId, completion: { [weak self] in
+                        self?.handleDeleteCallback(result: $0, menuUpdate: arrayToSearch[index])
+                    })
 				} else {
-                    CartUtility.updateCartCount(menuItem: menuItem, hashId: lastHashId, isIncrement: false, quantity: newCount)
+                    CartUtility.updateCartCount(menuItem: menuItem, hashId: lastHashId, isIncrement: false, quantity: newCount, completion: { [weak self] in
+                        self?.handleUpdateCallback(result: $0, menuUpdate: arrayToSearch[index])
+                    })
 				}
-                self.updateExploreMenu?(results[index])
+                //self.updateExploreMenu?(results[index])
 			} else {
 				// Base Items Count Update
 				let hashIdForBaseItem = MD5Hash.generateHashForTemplate(itemId: menuItem._id ?? "", modGroups: nil)
 				if newCount == 0 {
 					//Remove api
-                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem)
+                    CartUtility.removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem, completion: { [weak self] in
+                        self?.handleDeleteCallback(result: $0, menuUpdate: arrayToSearch[index])
+                    })
 				} else if newCount == 1 && oldCount == 0 {
-					addToCart(menuItem: menuItem, template: template)
+                    addToCart(menuItem: menuItem, template: template, menuUpdate: arrayToSearch[index])
 				} else {
-                    CartUtility.updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, isIncrement: newCount > oldCount, quantity: newCount)
+                    CartUtility.updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, isIncrement: newCount > oldCount, quantity: newCount, completion: { [weak self] in
+                        self?.handleUpdateCallback(result: $0, menuUpdate: arrayToSearch[index])
+                    })
 				}
-                self.updateExploreMenu?(arrayToSearch[index])
+                //self.updateExploreMenu?(arrayToSearch[index])
 			}
 		}
-        
-        switch self.currentViewType {
-        case .recentSearchTopCategories:
-            break
-            //self.recentSearches = arrayToSearch
-        case .results:
-            self.results = arrayToSearch
-        case .suggestionAndTopCategories:
-            self.suggestions = arrayToSearch
-        }
 	}
 }
 
 extension ExploreMenuSearchVC {
-	private func addToCart(menuItem: MenuItem, template: CustomisationTemplate?) {
+    private func handleDeleteCallback(result: Result<Bool, Error>, menuUpdate: MenuSearchResultItem) {
+        let strongSelf = self
+        switch result {
+        case .success:
+            strongSelf.updateExploreMenu?(menuUpdate)
+            switch strongSelf.currentViewType {
+            case .recentSearchTopCategories:
+                break
+            case .results:
+                if let firstIndex = strongSelf.results.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                    strongSelf.results[firstIndex] = menuUpdate
+                }
+                strongSelf.tableView.reloadData()
+            case .suggestionAndTopCategories:
+                if let firstIndex = strongSelf.suggestions.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                    strongSelf.results[firstIndex] = menuUpdate
+                }
+                strongSelf.tableView.reloadData()
+            }
+        case .failure(let error):
+            strongSelf.tableView.reloadData()
+        }
+    }
+}
+
+extension ExploreMenuSearchVC {
+    private func handleUpdateCallback(result: Result<Bool, Error>, menuUpdate: MenuSearchResultItem) {
+        let strongSelf = self
+        switch result {
+        case .success:
+            strongSelf.updateExploreMenu?(menuUpdate)
+            switch strongSelf.currentViewType {
+            case .recentSearchTopCategories:
+                break
+            case .results:
+                if let firstIndex = strongSelf.results.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                    strongSelf.results[firstIndex] = menuUpdate
+                }
+                strongSelf.tableView.reloadData()
+            case .suggestionAndTopCategories:
+                if let firstIndex = strongSelf.suggestions.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                    strongSelf.results[firstIndex] = menuUpdate
+                }
+                strongSelf.tableView.reloadData()
+            }
+        case .failure(let error):
+            strongSelf.tableView.reloadData()
+        }
+    }
+}
+
+extension ExploreMenuSearchVC {
+    private func addToCart(menuItem: MenuItem, template: CustomisationTemplate?, menuUpdate: MenuSearchResultItem) {
 		var hashId: String!
 		if let template = template {
 			hashId = template.hashId ?? ""
@@ -94,7 +146,29 @@ extension ExploreMenuSearchVC {
 		}
 		guard let menuId = menuItem.menuId, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
         let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: self.storeId, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem, completion: { [weak self] in
+            guard let strongSelf = self else { return }
+            switch $0 {
+            case .success:
+                strongSelf.updateExploreMenu?(menuUpdate)
+                switch strongSelf.currentViewType {
+                case .recentSearchTopCategories:
+                    break
+                case .results:
+                    if let firstIndex = strongSelf.results.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                        strongSelf.results[firstIndex] = menuUpdate
+                    }
+                    strongSelf.tableView.reloadData()
+                case .suggestionAndTopCategories:
+                    if let firstIndex = strongSelf.suggestions.firstIndex(where: { $0._id ?? "" == menuUpdate._id ?? "" }) {
+                        strongSelf.results[firstIndex] = menuUpdate
+                    }
+                    strongSelf.tableView.reloadData()
+                }
+            case .failure(let error):
+                strongSelf.tableView.reloadData()
+            }
+        })
 	}
 }
 

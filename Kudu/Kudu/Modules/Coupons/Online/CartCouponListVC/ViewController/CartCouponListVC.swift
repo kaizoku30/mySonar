@@ -12,11 +12,14 @@ class CartCouponListVC: BaseVC {
     let viewModel = CartCouponListVM()
     private var expanded: [String: Bool] = [:]
     var syncCart: (() -> Void)?
+    private var fetchingCoupons = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         handleActions()
+        self.baseView.refreshTable()
         viewModel.fetchCoupons { [weak self] in
+            self?.fetchingCoupons = false
             self?.baseView.refreshTable()
         }
     }
@@ -35,10 +38,24 @@ class CartCouponListVC: BaseVC {
 
 extension CartCouponListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.getCoupons.count
+        if fetchingCoupons {
+            return 5
+        } else {
+            if viewModel.getCoupons.isEmpty {
+                self.baseView.showNoResultView()
+            }
+            return viewModel.getCoupons.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if fetchingCoupons {
+            let cell = tableView.dequeueCell(with: CartCouponShimmerCell.self)
+           // cell.configure()
+            return cell
+        }
+        
         let cell = tableView.dequeueCell(with: CartCouponListCell.self)
         cell.applyCoupon = { [weak self] in
             guard let couponCode = self?.viewModel.getCoupons[safe: $0]?.couponCode?.first?.couponCode, couponCode.isEmpty == false else {

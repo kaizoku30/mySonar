@@ -9,11 +9,23 @@ import UIKit
 
 class NotificationView: UIView {
     
+    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet private weak var noResultView: UIView!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var notificationTitle: UILabel!
+    @IBOutlet private weak var notificationTitle: UILabel!
     @IBAction private func backButtonPressed(_ sender: Any) {
        // Implementation Pending
+        self.dismiss?()
     }
+    
+    @IBAction private func clearAllPressed(_ sender: Any) {
+        if tableView.numberOfRows(inSection: 0) != 0 {
+            showConfirmation()
+        }
+    }
+    
+    var dismiss: (() -> Void)?
+    var clearAll: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,5 +35,42 @@ class NotificationView: UIView {
     private func tableViewSetUp() {
         tableView.separatorStyle = .none
         tableView.registerCell(with: NotificationListingTableViewCell.self)
+        clearButton.isHidden = false
+    }
+    
+    func refreshTable() {
+        mainThread {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func showNoResult() {
+        mainThread {
+            self.clearButton.isHidden = true
+            self.noResultView.isHidden = false
+            self.bringSubviewToFront(self.noResultView)
+        }
+    }
+    
+    private func showConfirmation() {
+        let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
+        popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
+        popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
+        popUpAlert.configure(message: "Are you sure you want to delete all the notifications?", leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
+        popUpAlert.handleAction = { [weak self] in
+            if $0 == .right { return }
+            self?.clearAll?()
+        }
+    }
+    
+    func showDeleteSingleConfirmation(success: @escaping (() -> Void)) {
+        let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
+        popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
+        popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
+        popUpAlert.configure(message: "Are you sure you want to delete notification?", leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
+        popUpAlert.handleAction = { [weak self] in
+            if $0 == .right { return }
+            success()
+        }
     }
 }

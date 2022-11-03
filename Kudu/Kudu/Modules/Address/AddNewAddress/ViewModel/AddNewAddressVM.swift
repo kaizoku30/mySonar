@@ -11,6 +11,7 @@ protocol AddNewAddressVMDelegate: AnyObject {
     func saveAddressAPIResponse(responseType: Result<String, Error>)
     func updateAddressInCart(address: MyAddressListItem)
     func doesNotDeliverToThisLocation()
+    func noUpdateNeeded()
 }
 
 class AddNewAddressVM {
@@ -30,6 +31,8 @@ class AddNewAddressVM {
     var getDefaultAddressIdToReplace: String? { defaultIdToReplace }
     var getStoreForCart: StoreDetail? { storeForCart }
     
+    private var initialEditRequest: AddAddressRequest?
+    
     init(_delegate: AddNewAddressVMDelegate, editObject: MyAddressListItem? = nil, forcedDefault: Bool, defaultIdToReplace: String? = nil) {
         self.delegate = _delegate
         self.forcedDefault = forcedDefault
@@ -39,6 +42,7 @@ class AddNewAddressVM {
         self.editObject = editObject
         if editObject.isNotNil {
             self.form.updateWithAddressItem(self.editObject!)
+            initialEditRequest = form.convertToRequest()
         }
         self.defaultIdToReplace = defaultIdToReplace
     }
@@ -86,6 +90,13 @@ class AddNewAddressVM {
     
     func editAddress() {
         guard let request = form.convertToRequest(), let addressId = self.editObject?.id else { return }
+        
+        if request == initialEditRequest! {
+            debugPrint("SAME REQUEST")
+            self.delegate?.noUpdateNeeded()
+            return
+        }
+        
         webService.editAddress(addressId: addressId, request: request, success: {
             debugPrint($0)
             self.delegate?.saveAddressAPIResponse(responseType: .success($0.message ?? ""))

@@ -15,9 +15,12 @@ class AutoCompleteResultCell: UITableViewCell {
     @IBOutlet private weak var loader: NVActivityIndicatorView!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var markerImgView: UIImageView!
-    
+    private let subtitleColor = UIColor(r: 149, g: 157, b: 177, alpha: 1)
+    private let subtitleFont = AppFonts.mulishMedium.withSize(12)
     var cellTapped: ((Int) -> Void)?
     private var index = 0
+    private var restrictLoader = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         loaderView.isHidden = true
@@ -40,6 +43,7 @@ class AutoCompleteResultCell: UITableViewCell {
     }
     
     func configure(title: String, subtitle: String, index: Int, addressType: APIEndPoints.AddressLabelType? = nil) {
+        restrictLoader = false
         titleLabel.text = title
         subtitleLabel.text = subtitle
         self.index = index
@@ -51,7 +55,16 @@ class AutoCompleteResultCell: UITableViewCell {
         }
     }
     
+    func setClosedMarker() {
+        restrictLoader = true
+        let subtitleExisting = NSMutableAttributedString(string: subtitleLabel.text ?? "")
+        let closedString = NSMutableAttributedString(string: " (Closed)", attributes: [.foregroundColor: UIColor.red])
+        subtitleExisting.append(closedString)
+        subtitleLabel.attributedText = subtitleExisting
+    }
+    
     private func startLoader() {
+        if restrictLoader { return }
         loaderView.isHidden = false
         loader.startAnimating()
     }

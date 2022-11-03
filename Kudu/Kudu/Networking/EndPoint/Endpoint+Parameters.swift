@@ -23,7 +23,7 @@ extension Endpoint {
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: deviceToken]
+                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken]
             if let email = email {
                 params[Constants.APIKeys.email.rawValue] = email
             }
@@ -32,7 +32,7 @@ extension Endpoint {
             var params: [String: Any] = [Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
+                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
                                          Constants.APIKeys.mobileOtp.rawValue: mobileOtp]
             if let email = email {
                 params[Constants.APIKeys.email.rawValue] = email
@@ -52,14 +52,14 @@ extension Endpoint {
             let params: [String: Any] = [Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: deviceToken]
+                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken]
             return params
         case .socialSignup(let socialLoginType, let socialId, let fullName, let mobileNo, let email, let countryCode, let deviceId, let deviceToken) :
             var params: [String: Any] = [Constants.APIKeys.fullName.rawValue: fullName,
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
+                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
                                          Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId]
             if email.isNotNil {
@@ -71,7 +71,7 @@ extension Endpoint {
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
+                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
                                          Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId,
                                          Constants.APIKeys.mobileOtp.rawValue: mobileOtp]
@@ -100,8 +100,12 @@ extension Endpoint {
             return params
         case .menuItemList(let menuId):
             var params: [String: Any] = [Constants.APIKeys.menuId.rawValue: menuId]
-            if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+            if DataManager.shared.isUserLoggedIn {
                 params[Constants.APIKeys.userId.rawValue] = DataManager.shared.loginResponse?.userId ?? ""
+            }
+            let storeId = DataManager.shared.currentStoreId
+            if !storeId.isEmpty {
+                params[Constants.APIKeys.storeId.rawValue] = storeId
             }
             return params
         case .getRestaurantSuggestions(let request), .getRestaurantListing(let request):
@@ -125,7 +129,7 @@ extension Endpoint {
                                          Constants.APIKeys.limit.rawValue: limit,
                                          Constants.APIKeys.servicesType.rawValue: type,
                                          Constants.APIKeys.searchKey.rawValue: searchKey]
-            if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+            if DataManager.shared.isUserLoggedIn {
                 params[Constants.APIKeys.userId.rawValue] = DataManager.shared.loginResponse?.userId ?? ""
             }
             if let storeId = storeId, storeId.isEmpty == false {
@@ -134,7 +138,7 @@ extension Endpoint {
             return params
         case .itemDetail(let itemId):
             var params: [String: Any] = [Constants.APIKeys.itemId.rawValue: itemId]
-            if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+            if DataManager.shared.isUserLoggedIn {
                 params[Constants.APIKeys.userId.rawValue] = DataManager.shared.loginResponse?.userId ?? ""
             }
             return params
@@ -213,6 +217,50 @@ extension Endpoint {
             return [Constants.APIKeys.servicesAvailable.rawValue: serviceType.rawValue]
         case .placeOrder(let req):
             return req.getRequest()
+        case .orderList(let pageNo, let limit):
+            return [Constants.APIKeys.pageNo.rawValue: pageNo, Constants.APIKeys.limit.rawValue: limit]
+        case .orderDetails(let orderId):
+            return [Constants.APIKeys.orderId.rawValue: orderId]
+        case .arrivedAtStore(let orderId):
+            return [Constants.APIKeys.orderId.rawValue: orderId]
+        case .cancelOrder(let ordedId):
+            return [Constants.APIKeys.orderId.rawValue: ordedId]
+        case .rating(let req):
+            return req.getRequest()
+        case .reorderItems(let orderId):
+            return [Constants.APIKeys.orderId.rawValue: orderId]
+        case .validateOrder(let req):
+            return req.getRequest()
+        case .redeemInStoreCoupon(let couponId, let promoId, let couponCode):
+            return [Constants.APIKeys.couponId.rawValue: couponId, Constants.APIKeys.promoId.rawValue: promoId, Constants.APIKeys.couponCode.rawValue: couponCode]
+        case .tokenCardPayment(let req, let isApplePay):
+            var params = req.getRequest()
+            if isApplePay {
+                params[Constants.APIKeys.type.rawValue] = "applepay"
+            }
+            return params
+        case .savedCardPayment(let orderId, let cardId, let cvv, let amount):
+            return [Constants.APIKeys.type.rawValue: CheckoutPaymentType.card.rawValue,
+                    Constants.APIKeys.cardId.rawValue: cardId,
+                    Constants.APIKeys.amount.rawValue: amount,
+                    Constants.APIKeys.cvv.rawValue: cvv,
+                    Constants.APIKeys.orderId.rawValue: orderId]
+        case .codPayment(let orderId, let amount):
+            return [Constants.APIKeys.type.rawValue: CheckoutPaymentType.cod.rawValue,
+                    Constants.APIKeys.orderId.rawValue: orderId,
+                    Constants.APIKeys.amount.rawValue: amount]
+        case .deleteCard(let cardId):
+            return [Constants.APIKeys.cardId.rawValue: cardId]
+        case .changeDeviceLang(let language):
+            return [Constants.APIKeys.language.rawValue: language]
+        case .changePhoneNumber(let req):
+            return req.getRequest()
+        case .inStoreCouponList(let storeId):
+            if let id = storeId, !id.isEmpty {
+                return [Constants.APIKeys.storeId.rawValue: id]
+            } else {
+                return [:]
+            }
         default:
             return [:]
         }

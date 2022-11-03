@@ -25,7 +25,7 @@ class NotificationPrefView: UIView {
     enum NotificationPrefType: Int, CaseIterable {
         case pushNotifications = 0
         case muteNotification
-        case loyaltyProgram
+//        case loyaltyProgram
         case orderPurchase
         case promosOffers
         
@@ -35,8 +35,8 @@ class NotificationPrefView: UIView {
                 return LocalizedStrings.NotificationPref.pushNotifications
             case .muteNotification:
                 return LocalizedStrings.NotificationPref.muteNotification
-            case .loyaltyProgram:
-                return LocalizedStrings.NotificationPref.loyaltyProgram
+//            case .loyaltyProgram:
+//                return LocalizedStrings.NotificationPref.loyaltyProgram
             case .orderPurchase:
                 return LocalizedStrings.NotificationPref.orderPurchase
             case .promosOffers:
@@ -50,8 +50,8 @@ class NotificationPrefView: UIView {
                 return LocalizedStrings.NotificationPref.pushNotificationsSubtitle
             case .muteNotification:
                 return LocalizedStrings.NotificationPref.muteNotificationSubtitle
-            case .loyaltyProgram:
-                return LocalizedStrings.NotificationPref.loyaltyProgramSubtitle
+//            case .loyaltyProgram:
+//                return LocalizedStrings.NotificationPref.loyaltyProgramSubtitle
             case .orderPurchase:
                 return LocalizedStrings.NotificationPref.orderPurchaseSubtitle
             case .promosOffers:

@@ -84,7 +84,12 @@ extension AppButton {
 }
 
 extension AppButton {
-    func startBtnLoader(color: UIColor = .white) {
+    func startBtnLoader(color: UIColor = .white, small: Bool = false) {
+        if small {
+            activityIndicator?.height = 12.5
+            activityIndicator?.width = 12.5
+            self.layoutIfNeeded()
+        }
         self.activityIndicator?.color = color
         self.activityIndicator?.startAnimating()
         self.setTitleColorForAllMode(color: .clear)

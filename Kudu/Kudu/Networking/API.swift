@@ -99,6 +99,7 @@ struct Api {
     }
     
     static func handleUserDeletedOrBlocked(msg: String) {
+        AppUserDefaults.removeUserData()
         Router.shared.goToLoginVC(fromVC: nil, sessionExpiryText: msg)
        // debugPrint("Handle Delete Response Here :\(msg)")
     }

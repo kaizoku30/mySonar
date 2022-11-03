@@ -58,7 +58,10 @@ class ExploreMenuV2VM {
           itemColumnData[tableIndex][itemIndex] = item
     }
     
-    func syncWithCart(menuId: String, itemId: String, hashId: String, increment: Bool, modGroups: [ModGroup]?) -> [[MenuItem]]? {
+    func syncWithCart(menuId: String, itemId: String, hashId: String, increment: Bool, modGroups: [ModGroup]?, apiFailed: Bool = false) -> [[MenuItem]]? {
+        if apiFailed {
+            return itemColumnData
+        }
         guard let column = categories.firstIndex(where: { $0._id ?? "" == menuId}), let itemIndex = itemColumnData[column].firstIndex(where: { $0._id ?? "" == itemId }) else { return nil }
         let hashIdExists = itemColumnData[column][itemIndex].templates?.firstIndex(where: { $0.hashId ?? "" == hashId })
         if let hashIndex = hashIdExists {
@@ -215,47 +218,47 @@ extension ExploreMenuV2VM {
 		let newCount = count
 		if newCount > oldCount, let template = template {
 			// Addition, Means Base Item
-			itemColumnData[tableIndex][index].cartCount = newCount
+			//itemColumnData[tableIndex][index].cartCount = newCount
 			var array = menuItems[index].templates ?? []
 			let templateCount = (array.filter({ $0.hashId ?? "" == template.hashId ?? ""})).count
 			array.append(template)
-			itemColumnData[tableIndex][index].templates = array
+			//itemColumnData[tableIndex][index].templates = array
 			if templateCount == 0 {
 				addToCart(menuItem: menuItem, template: template, tableIndex: tableIndex)
 			} else {
-				updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", tableIndex: tableIndex, isIncrement: true, quantity: newCount)
+                updateCartCount(menuItem: menuItem, hashId: template.hashId ?? "", tableIndex: tableIndex, isIncrement: true, quantity: newCount, templateModGroups: template.modGroups)
 			}
 			debugPrint("Count updated to \(newCount) for item : \(menuItem.nameEnglish ?? ""), added template with hashId : \(template.hashId ?? "")")
 			
 		} else {
 			guard let item = menuItems[safe: index] else { return }
-			itemColumnData[tableIndex][index].cartCount = newCount
+			//itemColumnData[tableIndex][index].cartCount = newCount
 			debugPrint("Count updated to \(newCount) for item : \(menuItem.nameEnglish ?? "")")
 			if item.templates?.count ?? 0 > 0 {
 				//Some template to be removed
 				debugPrint("Removed template with hashId : \(menuItems[index].templates?.last?.hashId ?? "")")
 				let lastHashId = itemColumnData[tableIndex][index].templates?.last?.hashId ?? ""
-				itemColumnData[tableIndex][index].templates?.removeLast()
+				//itemColumnData[tableIndex][index].templates?.removeLast()
 				let newArray = itemColumnData[tableIndex][index].templates ?? []
 				let templateCount = (newArray.filter({ $0.hashId ?? "" == lastHashId})).count
 				if templateCount == 0 {
 					// Remove api
-					removeItemFromCart(menuItem: menuItem, hashId: lastHashId, tableIndex: tableIndex)
+                    removeItemFromCart(menuItem: menuItem, hashId: lastHashId, tableIndex: tableIndex, templateModGroups: template?.modGroups)
 				} else {
-					updateCartCount(menuItem: menuItem, hashId: lastHashId, tableIndex: tableIndex, isIncrement: false, quantity: newCount)
+                    updateCartCount(menuItem: menuItem, hashId: lastHashId, tableIndex: tableIndex, isIncrement: false, quantity: newCount, templateModGroups: template?.modGroups)
 				}
 				
 			} else {
 				//Base Items Count Update
-                itemColumnData[tableIndex][index].cartCount = newCount
+               // itemColumnData[tableIndex][index].cartCount = newCount
 				let hashIdForBaseItem = MD5Hash.generateHashForTemplate(itemId: menuItem._id ?? "", modGroups: nil)
 				if newCount == 0 {
 					//Remove api
-					removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem, tableIndex: tableIndex)
+                    removeItemFromCart(menuItem: menuItem, hashId: hashIdForBaseItem, tableIndex: tableIndex, templateModGroups: nil)
 				} else if newCount == 1 && oldCount == 0 {
 					addToCart(menuItem: menuItem, template: template, tableIndex: tableIndex)
 				} else {
-					updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, tableIndex: tableIndex, isIncrement: newCount > oldCount, quantity: newCount)
+                    updateCartCount(menuItem: menuItem, hashId: hashIdForBaseItem, tableIndex: tableIndex, isIncrement: newCount > oldCount, quantity: newCount, templateModGroups: nil)
 				}
 			}
 		}
@@ -270,29 +273,43 @@ extension ExploreMenuV2VM {
 		}
 		guard let menuId = categories[safe: tableIndex]?._id, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
 		let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: self.storeId, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem)
+        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem, completion: {
+            switch $0 {
+            case .success:
+                let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: self.serviceType, modGroups: addToCartReq.modGroups)
+                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+            case .failure(let error):
+                let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: self.serviceType, modGroups: addToCartReq.modGroups, apiFailed: true)
+                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+            }
+        })
 	}
 	
-	private func updateCartCount(menuItem: MenuItem, hashId: String, tableIndex: Int, isIncrement: Bool, quantity: Int) {
+    private func updateCartCount(menuItem: MenuItem, hashId: String, tableIndex: Int, isIncrement: Bool, quantity: Int, templateModGroups: [ModGroup]?) {
 		guard let itemId = menuItem._id else { return }
 		let updateCartReq = UpdateCartCountRequest(isIncrement: isIncrement, itemId: itemId, quantity: 1, hashId: hashId)
-		CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
+		//CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
 		APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateCartReq, success: { (response) in
 			debugPrint(response)
+            CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
+            let cartNotification = CartCountNotifier(isIncrement: isIncrement, itemId: updateCartReq.itemId, menuId: menuItem.menuId ?? "", hashId: updateCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		}, failure: { (error) in
-			CartUtility.updateCartCount(hashId, isIncrement: !isIncrement)
-			debugPrint(error.msg)
+            let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: updateCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups ?? [], apiFailed: true)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		})
 	}
 	
-	private func removeItemFromCart(menuItem: MenuItem, hashId: String, tableIndex: Int) {
+    private func removeItemFromCart(menuItem: MenuItem, hashId: String, tableIndex: Int, templateModGroups: [ModGroup]?) {
 		guard let itemId = menuItem._id else { return }
 		let removeCartReq = RemoveItemFromCartRequest(itemId: itemId, hashId: hashId)
-        CartUtility.removeItemFromCart(hashId)
 		APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { (response) in
-			debugPrint(response)
+            CartUtility.removeItemFromCart(hashId)
+            let cartNotification = CartCountNotifier(isIncrement: false, itemId: removeCartReq.itemId, menuId: menuItem.menuId ?? "", hashId: removeCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		}, failure: { (error) in
-			debugPrint(error.msg)
+            let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: removeCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups ?? [], apiFailed: true)
+            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		})
 	}
 	

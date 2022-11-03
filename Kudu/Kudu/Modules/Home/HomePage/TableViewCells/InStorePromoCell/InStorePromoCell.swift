@@ -6,8 +6,16 @@
 //
 
 import UIKit
+protocol InStorePromoCellDelegate: AnyObject {
+    func viewall()
+    func openDetailForIndex(index: Int)
+}
 
 class InStorePromoCell: UITableViewCell {
+    
+    private var promos: [CouponObject] = []
+    private weak var delegate: InStorePromoCellDelegate?
+    
     @IBOutlet private weak var viewAllButton: AppButton!
     @IBOutlet private weak var inStorePromoLbl: UILabel!
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -28,6 +36,15 @@ class InStorePromoCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func viewAllTapped(_ sender: AppButton) {
+        self.delegate?.viewall()
+    }
+    
+    func configure(promos: [CouponObject], delegate: InStorePromoCellDelegate) {
+        self.promos = promos
+        self.delegate = delegate
+        self.collectionView.reloadData()
+    }
 }
 
 extension InStorePromoCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -37,12 +54,22 @@ extension InStorePromoCell: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return promos.isEmpty ? 4 : promos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(with: HomeOfferDealCollectionViewCell.self, indexPath: indexPath)
-        cell.configureForInStorePromos()
+        if indexPath.row < promos.count {
+            cell.configure(item: promos[indexPath.row])
+        } else {
+            cell.configureForNoObject()
+        }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row < promos.count {
+            self.delegate?.openDetailForIndex(index: indexPath.item)
+        }
     }
 }

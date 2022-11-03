@@ -40,20 +40,10 @@ class Router: NSObject {
     }
     
     func configureTabBar() {
+        mainNavigation?.viewControllers.removeAll(where: {
+            $0.isKind(of: HomeTabBarVC.self) == false
+        })
         mainNavigation?.pushViewController(HomeTabBarVC(), animated: true)
-        var tabIndex: [Int] = []
-        for (index, viewController) in (mainNavigation?.viewControllers ?? []).enumerated() {
-            if viewController.isKind(of: HomeTabBarVC.self) {
-                tabIndex.append(index)
-            }
-        }
-        if tabIndex.count > 1 {
-            mainNavigation?.viewControllers.removeFirst()
-        } else {
-            mainNavigation?.viewControllers.removeAll(where: {
-                $0.isKind(of: HomeTabBarVC.self) == false
-            })
-        }
     }
     
     func goToTutorialVC(fromVC: BaseVC?, selectedLanguage: LanguageSelectionView.LanguageButtons) {

@@ -35,6 +35,9 @@ class MyAddressVC: BaseVC {
             case .addNewAddress:
                 let addAddressVC = AddNewAddressVC.instantiate(fromAppStoryboard: .Address)
                 addAddressVC.viewModel = AddNewAddressVM(_delegate: addAddressVC, forcedDefault: (viewModel.getList.count == 0 && viewModel.getDefaultAddress.isNil))
+                if strongSelf.viewModel?.getPrefillData.0?.buildingName ?? "" != "", let addresss = strongSelf.viewModel?.getPrefillData.0, let store = strongSelf.viewModel?.getPrefillData.1 {
+                    addAddressVC.viewModel?.configurePrefill(addresss, store: store)
+                }
                 strongSelf.push(vc: addAddressVC)
             case .backButtonPressed:
                 self?.pop()

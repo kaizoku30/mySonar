@@ -28,5 +28,17 @@ extension APIEndPoints {
         static func getAllStoresFilteredBy(excludedStores: [String], pageNo: Int, searchKey: String?, success: @escaping SuccessCompletionBlock<SelectedStoresResponseModel>, failure: @escaping ErrorFailureCompletionBlock) {
             Api.requestNew(endpoint: .selectedRestaurantList(exclude: excludedStores, pageNo: pageNo, searchKey: searchKey), successHandler: success, failureHandler: failure)
         }
+        
+        static func getInStoreCouponDetails(id: String, success: @escaping SuccessCompletionBlock<CouponDetailResponse>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .inStoreCouponDetails(id: id), successHandler: success, failureHandler: failure)
+        }
+        
+        static func getInStoreCouponList(storeId: String?, success: @escaping SuccessCompletionBlock<CouponListingResponseModel>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .inStoreCouponList(storeId: storeId), successHandler: success, failureHandler: failure)
+        }
+        
+        static func redeemInStoreCoupon(couponId: String, promoId: String, couponCode: String, success: @escaping SuccessCompletionBlock<CouponListingResponseModel>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .redeemInStoreCoupon(couponId: couponId, promoId: promoId, couponCode: couponCode), successHandler: success, failureHandler: failure)
+        }
     }
 }

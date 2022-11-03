@@ -16,7 +16,7 @@ class FeedbackEmailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        emailTFView.textFieldType = .name
+        emailTFView.textFieldType = .email
         emailTFView.backgroundColor = .clear
         emailTFView.placeholderText = LocalizedStrings.Setting.emailIdOptional
         tfContainerView.backgroundColor = AppColors.SendFeedbackScreen.textfieldBg

@@ -56,6 +56,7 @@ struct CouponCodeBasedData: Codable {
 }
 
 struct CouponObject: Codable {
+   
     let _id: String?
     let imageArabic: String?
     let imageEnglish: String?
@@ -91,6 +92,7 @@ struct PromoData: Codable {
     let specialDeliveryPrice: Int?
     let navigationTo: [NavigationInfo]?
     let eachDayTime: [PromoWeeklyTimeInfo]?
+    let posId: Int?
 }
 
 struct PromoWeeklyTimeInfo: Codable {

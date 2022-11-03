@@ -109,7 +109,19 @@ final class CartUtility {
             CartUtility.shared.concurrentQueue.async(flags: .barrier) {
                 CartUtility.shared.cart = []
                 CartUtility.shared.attachedCoupon = nil
-                let incomingArray = response.data?.data ?? []
+                var incomingArray = response.data?.data ?? []
+                var indexesToRemove: [Int] = []
+                incomingArray.indices.forEach({
+                    let object = incomingArray[$0]
+                    if object.quantity ?? 0 == 0 && object.offerdItem ?? false == false {
+                        indexesToRemove.append($0)
+                    }
+                })
+                indexesToRemove.forEach({
+                    let item = incomingArray[$0]
+                    CartUtility.removeItemFromCart(item.hashId ?? "")
+                })
+                incomingArray = incomingArray.filter({ $0.quantity ?? 0 != 0 && $0.offerdItem ?? false == false })
                 let incomingCoupon = response.data?.couponData
                 CartUtility.shared.cart = incomingArray
                 if (incomingArray.isEmpty || CartUtility.shared.appLaunched == true), let incomingCouponID = incomingCoupon?._id {
@@ -185,7 +197,7 @@ final class CartUtility {
     }
 	
 	static func syncCancellationPolicy() {
-		if AppUserDefaults.value(forKey: .loginResponse).isNil { return }
+		if DataManager.shared.isUserLoggedIn == false { return }
 		APIEndPoints.CartEndPoints.syncCancellationPolicy(success: {
 			let htmlString = $0.data?.description ?? ""
 			CartUtility.shared.cancellationPolicy = htmlString.html2String
@@ -205,7 +217,9 @@ final class CartUtility {
 			var modBasedPrice: Double = 0
 			$0.modGroups?.forEach({ (modGroup) in
 				modGroup.modifiers?.forEach({ (modifier) in
-					modBasedPrice += modifier.price ?? 0.0
+                    var modifierCount = modifier.count ?? 1
+                    if modifierCount == 0 { modifierCount = 1 }
+                    modBasedPrice += ((modifier.price ?? 0.0)*Double((modifierCount)))
 				})
 			})
 			let computedPrice = basePrice + modBasedPrice
@@ -283,6 +297,16 @@ final class CartUtility {
         APIEndPoints.CartEndPoints.getCartConfig(storeId: storeId, success: {
             fetched($0.data)
             CartUtility.shared.currentCartConfig = $0.data
+            if let storeDetails = $0.data?.storeDetails {
+                switch CartUtility.getCartServiceType {
+                case .curbside:
+                    DataManager.shared.currentCurbsideRestaurant = storeDetails.convertToRestaurantInfo()
+                case .pickup:
+                    DataManager.shared.currentPickupRestaurant = storeDetails.convertToRestaurantInfo()
+                default:
+                    DataManager.shared.currentDeliveryLocation?.associatedStore = storeDetails
+                }
+            }
         }, failure: { _ in
             fetched(nil)
         })

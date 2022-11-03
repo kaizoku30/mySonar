@@ -36,8 +36,6 @@ class TutorialContainerController: LiquidSwipeContainerController, LiquidSwipeCo
         } else {
             LanguageManager.shared.setLanguage(language: .en, for: nil, viewControllerFactory: nil, animation: nil)
         }
-//        let homeVC = HomeVC.instantiate(fromAppStoryboard: .Home)
-//        homeVC.viewModel = HomeVM(delegate: homeVC)
         Router.shared.configureTabBar()
     }
     

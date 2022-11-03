@@ -32,16 +32,23 @@ class AccountProfileVC: BaseVC {
     
     func changeLanguage(toArabic isArabic: Bool) {
         self.view.isUserInteractionEnabled = false
+        self.tabBarController?.addLoaderOverlay()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
             let language: AppUserDefaults.Language = isArabic ? .ar : .en
-            AppUserDefaults.save(value: language.rawValue, forKey: .selectedLanguage)
-            LanguageManager.shared.setLanguage(language: isArabic ? .ar : .en) { _ -> UIViewController in
-                let tabBar = HomeTabBarVC()
-                let navVC = BaseNavVC(rootViewController: tabBar)
-                return navVC
-            } animation: { view in
-                view.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
-            }
+            APIEndPoints.LanguageEndPoints.changeLanguage(language: language.rawValue, success: {_ in
+                self.tabBarController?.removeLoaderOverlay()
+                AppUserDefaults.save(value: language.rawValue, forKey: .selectedLanguage)
+                LanguageManager.shared.setLanguage(language: isArabic ? .ar : .en) { _ -> UIViewController in
+                    let tabBar = HomeTabBarVC()
+                    let navVC = BaseNavVC(rootViewController: tabBar)
+                    return navVC
+                } animation: { view in
+                    view.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+                }
+            }, failure: {status in
+                self.tabBarController?.removeLoaderOverlay()
+            })
+           
         })
     }
     

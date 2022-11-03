@@ -43,7 +43,7 @@ class GoogleAutoCompleteVM {
     func hitGoogleAutocomplete(_ textQuery: String) {
         let service = Autocomplete.Google(partialMatches: textQuery)
         service.APIKey = Constants.GooglePaidAPIKey.apiKey
-        service.countries = ["in", "sa"]
+        service.countries = ["sa"]
         SwiftLocation.autocompleteWith(service).then({ [weak self] (result) in
             guard let strongSelf = self else {
                 return
@@ -99,7 +99,7 @@ class GoogleAutoCompleteVM {
 extension GoogleAutoCompleteVM {
     func getAddressList() {
         
-        if AppUserDefaults.value(forKey: .loginResponse).isNil {
+        if DataManager.shared.isUserLoggedIn == false {
             self.fetchingAddressList = false
             self.myAddressList = []
             self.delegate?.myAddressListResponse(responseType: .success(""))

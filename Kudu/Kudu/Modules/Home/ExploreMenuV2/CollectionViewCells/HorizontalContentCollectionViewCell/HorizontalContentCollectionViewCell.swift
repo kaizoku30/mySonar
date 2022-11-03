@@ -23,7 +23,7 @@ class HorizontalContentCollectionViewCell: UICollectionViewCell {
 	var openItemDetail: ((MenuItem, Int) -> Void)?
 	var cartCountUpdated: ((Int, MenuItem, Int) -> Void)?
 	var confirmCustomisationRepeat: ((Int, MenuItem, Int) -> Void)?
-	var triggerLoginFlow: (() -> Void)?
+	var triggerLoginFlow: ((AddCartItemRequest?, FavouriteRequest?) -> Void)?
     var cartConflict: ((Int, MenuItem) -> Void)?
     
     func configure(maxRowCount: Int, isCurrentColumn: Bool, columnArray: [MenuItem], serviceType: APIEndPoints.ServicesType) {
@@ -72,7 +72,7 @@ extension HorizontalContentCollectionViewCell: UITableViewDataSource, UITableVie
 					self?.confirmCustomisationRepeat?($0, $1, indexPath.item)
 				}
 				cell.triggerLoginFlow = { [weak self] in
-					self?.triggerLoginFlow?()
+                    self?.triggerLoginFlow?($0, $1)
 				}
                 cell.cartConflict = { [weak self] in
                     self?.cartConflict?($0, $1)

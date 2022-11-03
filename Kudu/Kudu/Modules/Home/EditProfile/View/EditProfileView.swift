@@ -24,6 +24,9 @@ class EditProfileView: UIView {
     @IBAction private func updateButtonPressed(_ sender: Any) {
         self.handleViewActions?(.updateProfile)
     }
+    @IBAction func editPhoneNumberPressed(_ sender: Any) {
+        self.handleViewActions?(.editPhoneNumberFlow)
+    }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         self.handleViewActions?(.backButtonPressed)
@@ -43,6 +46,7 @@ class EditProfileView: UIView {
     
     enum ViewActions {
         case updateProfile
+        case editPhoneNumberFlow
         case backButtonPressed
         case nameUpdated(updatedText: String)
         case emailUpdated(updatedText: String)

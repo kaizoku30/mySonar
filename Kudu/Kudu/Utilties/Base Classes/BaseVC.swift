@@ -82,6 +82,7 @@ class BaseVC: UIViewController {
     }
     
     deinit {
+        debugPrint("View Controller Dismissed")
         NotificationCenter.default.removeObserver(self)
     }
     

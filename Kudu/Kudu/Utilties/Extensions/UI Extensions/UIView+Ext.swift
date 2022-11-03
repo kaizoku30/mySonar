@@ -1118,6 +1118,16 @@ extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+    
+     func dashBorder() {
+         let yourViewBorder = CAShapeLayer()
+         yourViewBorder.strokeColor = UIColor.orange.cgColor
+        yourViewBorder.lineDashPattern = [2, 2]
+        yourViewBorder.frame = self.bounds
+        yourViewBorder.fillColor = nil
+        yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
+        self.layer.addSublayer(yourViewBorder)
+    }
 }
 
 extension UIView {

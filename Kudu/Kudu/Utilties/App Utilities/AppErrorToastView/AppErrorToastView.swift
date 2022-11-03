@@ -21,7 +21,12 @@ class AppErrorToastView: UIView {
      required init?(coder adecoder: NSCoder) {
          super.init(coder: adecoder)
          commonInit()
+         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToDismiss)))
      }
+    
+    @objc private func tapToDismiss() {
+        self.hideErrorToast()
+    }
     
     private func commonInit() {
         Bundle.main.loadNibNamed("AppErrorToastView", owner: self, options: nil)
@@ -46,7 +51,7 @@ class AppErrorToastView: UIView {
         self.layoutIfNeeded()
         UIView.animate(withDuration: 1, animations: {
             if !self.toastVisible {
-                self.transform = CGAffineTransform(translationX: 0, y: 40)
+                self.transform = CGAffineTransform(translationX: 0, y: 50)
                 self.toastVisible = true
             }
         }, completion: {

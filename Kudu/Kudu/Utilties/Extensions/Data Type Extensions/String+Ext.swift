@@ -646,3 +646,27 @@ extension String {
         return String(self[start ..< end])
     }
 }
+
+extension String {
+    func getHourMinComponents() -> (hour: Int, min: Int) {
+        let ampmString = self
+        var hourString = self[0 ..< 1]
+        if self.count > 7 {
+            hourString = self[0 ..< 2]
+        }
+        var hours = Int(hourString)!
+        var minutesString = self[2 ..< 4]
+        if self.count > 7 {
+            minutesString = self[3 ..< 5]
+        }
+        let mins = Int(minutesString)!
+        let amPm = ampmString.getLastNSubString(number: 2)
+        if amPm == "PM" {
+            hours += 12
+        }
+        if hours == 24 {
+            hours = 0
+        }
+        return (hours, mins)
+    }
+}

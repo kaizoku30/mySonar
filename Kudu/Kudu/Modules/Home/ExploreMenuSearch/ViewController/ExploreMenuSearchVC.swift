@@ -112,7 +112,8 @@ extension ExploreMenuSearchVC {
             let vc = BaseVC()
             vc.configureForCustomView()
             let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-            bottomSheet.triggerLoginFlow = { [weak self] in
+            bottomSheet.triggerLoginFlow = { [weak self] (addReq) in
+                GuestUserCache.shared.queueAction(.addToCart(req: addReq))
                 vc.dismiss(animated: true, completion: { [weak self] in
                     self?.tabBarController?.removeOverlay()
                     let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
@@ -148,8 +149,9 @@ extension ExploreMenuSearchVC {
             let vc = BaseVC()
             vc.configureForCustomView()
             let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-            bottomSheet.triggerLoginFlow = { [weak self] in
-                vc.dismiss(animated: true, completion: { [weak self] in
+            bottomSheet.triggerLoginFlow = { [weak self] (addReq) in
+                GuestUserCache.shared.queueAction(.addToCart(req: addReq))
+                vc.dismiss(animated: true, completion: { [weak self]  in
                     self?.tabBarController?.removeOverlay()
                     let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
                     loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
@@ -222,7 +224,8 @@ extension ExploreMenuSearchVC {
                 bottomSheet.addToCart = { [weak self] (modGroupArray, hashId, itemId) in
                     guard let strongSelf = self else { return }
                     
-                    if AppUserDefaults.value(forKey: .loginResponse).isNil {
+                    if DataManager.shared.isUserLoggedIn == false {
+                        GuestUserCache.shared.queueAction(.addToCart(req: AddCartItemRequest(itemId: itemId, menuId: result.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: result.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: modGroupArray)))
                         let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
                         loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
                         self?.push(vc: loginVC)

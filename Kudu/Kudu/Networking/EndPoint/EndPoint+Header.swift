@@ -21,7 +21,7 @@ extension Endpoint {
         case .payment:
             headers = [:]
             headers["authorization"] = "sk_test_146d56ed-4dcd-493a-9db2-866c924c0bba"
-        case .logout, .addAddress, .getAddressList, .deleteAddress, .editAddress, .deleteAccount, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail, .addFavourites, .favouriteItemList, .favouriteHashSync, .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail, .placeOrder:
+        case .logout, .addAddress, .getAddressList, .deleteAddress, .editAddress, .deleteAccount, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail, .addFavourites, .favouriteItemList, .favouriteHashSync, .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail, .placeOrder, .orderList, .orderDetails, .arrivedAtStore, .cancelOrder, .rating, .inStoreCouponList, .inStoreCouponDetails, .redeemInStoreCoupon, .notificationList, .deleteAllNotification, .deleteNotification, .reorderItems, .validateOrder, .deleteCard, .tokenCardPayment, .savedCardPayment, .codPayment, .getCards, .changeDeviceLang, .changePhoneNumber:
             headers["api_key"] = "123456"
             headers["authorization"] = "Bearer \(DataManager.shared.loginResponse?.accessToken ?? "")"
         default:

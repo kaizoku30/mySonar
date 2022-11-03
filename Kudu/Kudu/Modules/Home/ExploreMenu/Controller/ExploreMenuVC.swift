@@ -242,7 +242,7 @@ extension ExploreMenuVC {
                // bottomSheet.configure(item: result, container: self.baseView, preLoadTemplate: prefillTempate)
                 bottomSheet.addToCart = { [weak self] (modGroupArray, hashId, itemId) in
                     
-                    if AppUserDefaults.value(forKey: .loginResponse).isNil {
+                    if DataManager.shared.isUserLoggedIn == false {
                         let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
                         loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
                         self?.push(vc: loginVC)

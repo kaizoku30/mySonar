@@ -217,7 +217,10 @@ extension ExploreMenuSearchVC {
 					}
 				}
 			}
-			cell.triggerLoginFlow = { [weak self] in
+			cell.triggerLoginFlow = { [weak self] (addReq, favReq) in
+                if let favReq = favReq {
+                    GuestUserCache.shared.queueAction(.favourite(req: favReq))
+                }
 				let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
 				loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
 				self?.push(vc: loginVC)

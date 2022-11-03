@@ -90,13 +90,15 @@ class OurStoreView: UIView {
     var currenState: ViewState { viewState }
     
     func showLocationPermissionPopUp(errorType: LocationServicesDeniedView.LocationAlertType) {
-        let locationAlert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-        locationAlert.configureLocationView(type: errorType, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
-        locationAlert.handleActionOnLocationView = { [weak self] in
-            if $0 == .right {
-                self?.handleViewActions?(.openSettings)
-            } else {
-                self?.handleViewActions?(.backButtonPressed)
+        mainThread {
+            let locationAlert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
+            locationAlert.configureLocationView(type: errorType, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
+            locationAlert.handleActionOnLocationView = { [weak self] in
+                if $0 == .right {
+                    self?.handleViewActions?(.openSettings)
+                } else {
+                    self?.handleViewActions?(.backButtonPressed)
+                }
             }
         }
     }

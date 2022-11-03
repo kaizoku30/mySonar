@@ -23,6 +23,8 @@ class CartListViewController: BaseVC {
     var flow: CartPageFlow = .fromHome
     private var retrySync = false
     private var tempLoaderIndex: Int?
+    private var scheduleDate: Int?
+    private var initialSetupDone = false
     
     private func doesNotDeliverToThisLocation() {
         mainThread {
@@ -35,12 +37,20 @@ class CartListViewController: BaseVC {
         super.viewDidLoad()
         self.baseView.addRefreshControl()
         handleActions()
+        self.baseView.setCartView(enabled: false)
         if viewModel.getServiceType == .delivery {
             viewModel.checkIfNoStoreExists(lat: viewModel.getDeliveryLocation?.latitude ?? 0.0, long: viewModel.getDeliveryLocation?.longitude ?? 0.0, checked: { [weak self] in
-                switch $0 {
-                case true:
+                self?.initialSetupDone = true
+                if $0.isNotNil {
+                    DataManager.shared.currentDeliveryLocation?.associatedStore = $0
+                    var deliveryLocation = self?.viewModel.getDeliveryLocation
+                    deliveryLocation?.associatedStore = $0
+                    if let loc = deliveryLocation {
+                        self?.viewModel.updateDeliveryLocation(loc)
+                    }
+                    self?.viewModel.updateStore($0!)
                     self?.syncCart()
-                case false:
+                } else {
                     self?.viewModel.clearDeliveryLocation()
                     self?.doesNotDeliverToThisLocation()
                     self?.syncCart()
@@ -69,7 +79,7 @@ class CartListViewController: BaseVC {
                         return
                     }
                 }
-                self.baseView.updateServiceType(self.viewModel.getServiceType)
+                self.baseView.updateServiceType(self.viewModel.getServiceType, scheduleTime: self.scheduleDate)
                 self.viewModel.updateFetchingCartConfig()
                 self.getStoreConfig(syncing: true) {
                     if self.viewModel.checkIfFreeItemAdd() {
@@ -110,7 +120,9 @@ class CartListViewController: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.refreshCartView()
+        if initialSetupDone {
+            self.refreshCartView()
+        }
     }
     
     // MARK: Handle Actions
@@ -135,26 +147,37 @@ class CartListViewController: BaseVC {
                     strongSelf.pop()
                 }
             case .addAddressFlow:
-                strongSelf.openAddressForm()
+                strongSelf.changeDeliveryAddressFlow(addAddressFlow: true)
             case .changeAddressFlow:
-                strongSelf.changeDeliveryAddressFlow()
+                strongSelf.changeDeliveryAddressFlow(addAddressFlow: false)
             case .addRestaurantFlow, .changeRestaurantFlow:
                 strongSelf.setRestaurantFlow()
             case .deleteItem(_, let index):
                 strongSelf.handleDeleteIndex(index)
-                //            case .addRemoveFreeItem(let add):
-                //                if add {
-                //                    let needToAdd = strongSelf.viewModel.checkIfFreeItemAdd()
-                //                    if needToAdd {
-                //                        strongSelf.baseView.bringLoaderToFront()
-                //                        strongSelf.syncCart()
-                //                    }
-                //                } else {
-                //                    guard let index = strongSelf.viewModel.getCartObjects.firstIndex(where: { $0.offerdItem ?? false == true }) else { return }
-                //                    strongSelf.handleDeleteIndex(index)
-                //                }
+            case .scheduleOrder:
+                strongSelf.openScheduleOrder()
             }
         }
+    }
+    
+    private func openScheduleOrder() {
+        self.tabBarController?.addOverlayBlack()
+        let vc = DateTimeVC.instantiate(fromAppStoryboard: .CartPayment)
+        vc.prefill = self.scheduleDate
+        vc.dateTimeSelected = { [weak self] in
+            self?.scheduleDate = $0
+            self?.baseView.updateServiceType(self?.viewModel.getServiceType ?? .delivery, scheduleTime: self?.scheduleDate)
+            vc.dismiss(animated: true, completion: {
+                self?.tabBarController?.removeOverlay()
+            })
+        }
+        vc.handleDeallocation = { [weak self] in
+            vc.dismiss(animated: true, completion: {
+                self?.tabBarController?.removeOverlay()
+            })
+        }
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
     }
     
     private func handleDeleteIndex(_ index: Int) {
@@ -221,9 +244,8 @@ class CartListViewController: BaseVC {
 extension CartListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        var sections = CartListView.Sections.allCases
-        if viewModel.getServiceType == .delivery || viewModel.getServiceType == .pickup { sections.remove(object: .vehicleDetails) }
-        return sections.count
+        let sections = CartListView.Sections.allCases.count
+        return viewModel.getServiceType == .delivery ? sections - 1 : sections
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -290,17 +312,20 @@ extension CartListViewController {
             guard let strongSelf = self else { return }
             let needToHandleCompletionBlock = strongSelf.checkStateOfFreeItems()
             if !needToHandleCompletionBlock.handleCompletion {
-                strongSelf.viewModel.updateCountLocally(count: count, index: index)
-                if strongSelf.viewModel.getCartObjects.isEmpty {
-                    strongSelf.baseView.showNoCartView()
-                    return
-                }
-                if count == 0 {
-                    strongSelf.baseView.reloadCartItemSection(itemDeletion: index)
-                } else {
-                    strongSelf.baseView.reloadCartItemSection()
-                }
-                strongSelf.refreshCartView()
+                strongSelf.baseView.safelyDisableOutlets(disable: true)
+                strongSelf.viewModel.updateCountLocally(count: count, index: index, completionHandler: {
+                    strongSelf.baseView.safelyDisableOutlets(disable: false)
+                    if strongSelf.viewModel.getCartObjects.isEmpty {
+                        strongSelf.baseView.showNoCartView()
+                        return
+                    }
+                    if count == 0 {
+                        strongSelf.baseView.reloadCartItemSection(itemDeletion: index)
+                    } else {
+                        strongSelf.baseView.reloadCartItemSection()
+                    }
+                    strongSelf.refreshCartView()
+                })
             } else {
                 strongSelf.tempLoaderIndex = index
                 strongSelf.baseView.reloadCartItemSection()
@@ -354,6 +379,9 @@ extension CartListViewController {
     
     func getVehicleDetailsCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: VehicleDetailsCell.self)
+        if viewModel.getServiceType == .pickup || viewModel.getServiceType == .delivery {
+            cell.heightConstraint.constant = 0
+        }
         cell.configure(viewModel.getCartConfig?.vehicleDetails)
         cell.updateVehicleDetails = { [weak self] in
             self?.openVehicleDetailsEditor()
@@ -439,15 +467,17 @@ extension CartListViewController {
                     if !needToHandleCompletionBlock.handleCompletion {
                         if let cartObjectLatest = strongSelf.viewModel.getCartObjects[safe: itemIndex], cartObjectLatest.hashId ?? "" == cartObject.hashId ?? "" {
                             //hashId in system safely
-                            strongSelf.viewModel.updateCountLocally(count: count, index: itemIndex)
-                            if strongSelf.viewModel.getCartObjects.isEmpty {
-                                strongSelf.baseView.showNoCartView()
-                            } else {
-                                strongSelf.baseView.reloadCartItemSection()
-                                strongSelf.refreshCartView()
-                                return
-                            }
-                            
+                            strongSelf.baseView.safelyDisableOutlets(disable: true)
+                            strongSelf.viewModel.updateCountLocally(count: count, index: itemIndex, completionHandler: {
+                                strongSelf.baseView.safelyDisableOutlets(disable: false)
+                                if strongSelf.viewModel.getCartObjects.isEmpty {
+                                    strongSelf.baseView.showNoCartView()
+                                } else {
+                                    strongSelf.baseView.reloadCartItemSection()
+                                    strongSelf.refreshCartView()
+                                    return
+                                }
+                            })
                         } else {
                             //item being added
                             //should never happen
@@ -604,10 +634,14 @@ extension CartListViewController {
         })
     }
     
-    private func changeDeliveryAddressFlow() {
+    private func changeDeliveryAddressFlow(addAddressFlow: Bool) {
         let myAddressVC = MyAddressVC.instantiate(fromAppStoryboard: .Address)
         myAddressVC.viewModel = MyAddressVM(_delegate: myAddressVC)
         myAddressVC.viewModel?.configureForCartFlow()
+        let currentDeliveryLocation = DataManager.shared.currentDeliveryLocation
+        if DataManager.shared.currentDeliveryLocation.isNotNil && currentDeliveryLocation?.associatedStore.isNotNil ?? false && addAddressFlow {
+            myAddressVC.viewModel?.addPrefillDataForForm(MyAddressListItem(phoneNumber: nil, landmark: nil, id: nil, cityName: currentDeliveryLocation?.city ?? "", countryCode: nil, isDefault: false, stateName: currentDeliveryLocation?.state ?? "", buildingName: currentDeliveryLocation?.trimmedAddress ?? "", location: LocationData(latitude: currentDeliveryLocation?.latitude ?? 0.0, type: "Point", longitude: currentDeliveryLocation?.longitude ?? 0.0), userId: DataManager.shared.loginResponse?.userId ?? "", otherAddressLabel: nil, addressLabel: "HOME", zipCode: currentDeliveryLocation?.postalCode ?? "", status: "unblocked", name: nil), store: currentDeliveryLocation!.associatedStore!)
+        }
         myAddressVC.cartFormFlow = { [weak self] in
             guard let strongSelf = self else { return }
             var newDeliveryLocation = LocationInfoModel(trimmedAddress: $0.buildingName ?? "", city: $0.cityName ?? "", state: $0.stateName ?? "", postalCode: $0.zipCode ?? "", latitude: $0.location?.latitude ?? 0.0, longitude: $0.location?.longitude ?? 0.0)
@@ -893,24 +927,41 @@ extension CartListViewController {
 
 extension CartListViewController {
     private func makePayment() {
+        
+        guard let store = viewModel.getStoreDetails else { return }
+        let errorMsg = makeNecessaryStoreChecks(store: store)
+        if let error = errorMsg, !error.isEmpty {
+            let appErrorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - 32, height: 48))
+            appErrorToast.show(message: error, view: self.baseView)
+            return
+        }
+        
         guard let storeId = viewModel.getStoreDetails?._id, let storeSdmID = viewModel.getStoreDetails?.sdmId, let restaurantLocation = viewModel.getStoreDetails else { return }
         let serviceType = viewModel.getServiceType
-        let orderType = OrderTimeType.normal
+        var orderType = OrderTimeType.normal
         let paymentType = PaymentType.COD
         let vat = (viewModel.getCartConfig?.vat ?? 0.0)
         let itemAount = CartUtility.getPrice()
-        let totalAmount = viewModel.calculateBill().totalPayable
+        var totalAmount = viewModel.calculateBill().totalPayable
         var addressId: String?
         var deliveryCharge: Double?
         var userAddress: MyAddressListItem?
         if serviceType == .delivery {
             addressId = viewModel.getDeliveryLocation?.associatedMyAddress?.id ?? ""
             deliveryCharge = viewModel.getCartConfig?.deliveryCharges ?? 0.0
-            userAddress = viewModel.getDeliveryLocation!.associatedMyAddress!
+            if let addressFound = viewModel.getDeliveryLocation?.associatedMyAddress {
+                userAddress = addressFound
+            } else {
+                return
+            }
         }
         var vehicleDetails: VehicleDetails?
         if serviceType == .curbside {
-            vehicleDetails = viewModel.getCartConfig!.vehicleDetails!
+            if let vehicleDetailsFound = viewModel.getCartConfig?.vehicleDetails {
+                vehicleDetails = vehicleDetailsFound
+            } else {
+                return
+            }
         }
         let isCouponApplied = viewModel.getCoupon.isNotNil
         var couponCode: String?
@@ -918,6 +969,7 @@ extension CartListViewController {
         var offerType: PromoOfferType?
         var discount: Double?
         var promoId: String?
+        var posId: Int?
         
         if isCouponApplied {
             couponCode = viewModel.getCoupon?.couponCode?.first?.couponCode ?? ""
@@ -925,11 +977,91 @@ extension CartListViewController {
             offerType = PromoOfferType(rawValue: viewModel.getCoupon?.promoData?.offerType ?? "")
             discount = CartUtility.calculateSavingsAfterCoupon(obj: viewModel.getCoupon!)
             promoId = viewModel.getCoupon?.promoData?._id ?? ""
+            posId = viewModel.getCoupon?.promoData?.posId ?? 0
+            totalAmount -= (discount ?? 0.0)
         }
-        let request = OrderPlaceRequest(storeId: storeId, storeSdmId: storeSdmID, restaurantLocation: restaurantLocation, servicesType: serviceType, orderType: orderType, paymentType: paymentType, vat: vat, totalItemAmount: itemAount, totalAmount: totalAmount, deliveryCharge: deliveryCharge, userAddress: userAddress, addressId: addressId, vehicleDetails: vehicleDetails, isCouponApplied: isCouponApplied, couponCode: couponCode, couponId: couponId, discount: discount, offerType: offerType, promoId: promoId)
-        let vc = PaymentMethodVC.instantiate(fromAppStoryboard: .CartPayment)
-        vc.flow = flow
-        vc.req = request
-        self.push(vc: vc)
+        
+        var scheduleTime: Int?
+        
+        if let date = self.scheduleDate {
+            scheduleTime = date
+            orderType = .scheduled
+        }
+        
+        let request = OrderPlaceRequest(storeId: storeId, storeSdmId: storeSdmID, restaurantLocation: restaurantLocation, servicesType: serviceType, orderType: orderType, paymentType: paymentType, vat: vat, totalItemAmount: itemAount, totalAmount: totalAmount, deliveryCharge: deliveryCharge, userAddress: userAddress, addressId: addressId, vehicleDetails: vehicleDetails, isCouponApplied: isCouponApplied, couponCode: couponCode, couponId: couponId, discount: discount, offerType: offerType, promoId: promoId, posId: posId, scheduleTime: scheduleTime)
+        
+        self.baseView.toggleMakePaymentLoader(true)
+        // Convert to a string and print
+        prettyJSON(request.getRequest())
+        hitValidateOrder(request: request)
+    }
+    
+    private func makeNecessaryStoreChecks(store: StoreDetail) -> String? {
+        var errorMsg: String?
+        
+        if (store.paymentMethod ?? []).isEmpty {
+            errorMsg = "This store is not accepting payments right now"
+        }
+        
+        if !StoreUtility.checkStoreOpen(store, serviceType: viewModel.getServiceType) {
+            errorMsg = "This store is closed for now."
+        }
+        if viewModel.getServiceType == .delivery && store.isRushHour ?? false == true {
+            errorMsg = "This store is not delivering for now due to rush hours."
+        }
+        switch viewModel.getServiceType {
+        case .delivery:
+            if store.serviceDelivery ?? false == false {
+                errorMsg = "This store is not serviceable for now."
+            }
+        case .pickup:
+            if store.servicePickup ?? false == false {
+                errorMsg = "This store is not serviceable for now."
+            }
+        case .curbside:
+            if store.serviceCurbSide ?? false == false {
+                errorMsg = "This store is not serviceable for now."
+            }
+        }
+        
+        if CartUtility.getPrice() < Double(store.minimumOrderValue ?? 0) {
+            errorMsg = "Minimum Cart amount should be SR \(store.minimumOrderValue ?? 0)"
+        }
+        
+        if let someTimeAdded = self.scheduleDate {
+            let allow = StoreUtility.checkIfScheduleDateApplicable(date: TimeInterval(someTimeAdded), store: store, service: self.viewModel.getServiceType)
+            if !allow {
+                errorMsg = "The store is closed on \(Date(timeIntervalSince1970: TimeInterval(someTimeAdded)).toString(dateFormat: Date.DateFormat.dMMMyyyyHHmma.rawValue)). Please change the date to schedule your order."
+            }
+        }
+        return errorMsg
+    }
+    
+    private func hitValidateOrder(request: OrderPlaceRequest) {
+        self.viewModel.validateOrder(req: request, validated: { [weak self] (response) in
+            switch response {
+            case .success(let responseString):
+                self?.baseView.toggleMakePaymentLoader(false)
+                let vc = PaymentMethodVC.instantiate(fromAppStoryboard: .CartPayment)
+                vc.flow = self?.flow
+                vc.req = request
+                vc.allowedPaymentMethods = (self?.viewModel.getStoreDetails?.paymentMethod ?? []).map({ PaymentType(rawValue: $0) ?? .Card})
+                vc.orderId = responseString
+                self?.push(vc: vc)
+            case .failure(let error):
+                guard let strongSelf = self else { return }
+                self?.baseView.toggleMakePaymentLoader(false)
+                mainThread({
+                    let appErrorToast = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: strongSelf.baseView.width - 32, height: 48))
+                    appErrorToast.show(message: error.localizedDescription, view: strongSelf.baseView)
+                })
+            }
+        })
+    }
+}
+
+func prettyJSON(_ data: [String: Any]) {
+    if let jsonData = try? JSONSerialization.data(withJSONObject: data), let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
+       print(JSONString)
     }
 }

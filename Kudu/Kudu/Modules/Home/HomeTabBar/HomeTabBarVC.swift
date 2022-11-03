@@ -56,7 +56,17 @@ class HomeTabBarVC: BaseTabBarVC, UITabBarControllerDelegate {
         tabBar.unselectedItemTintColor = AppColors.tabBarUnselectedColor
         setupVCs()
         removeOtherViewControllers()
+        self.observeFor(.goToNotifications, selector: #selector(goToNotifications))
         // Do any additional setup after loading the view.
+    }
+    
+    @objc private func goToNotifications() {
+        mainThread {
+            if DataManager.shared.isUserLoggedIn {
+                self.selectedIndex = 0
+                self.homeVC.goToNotifications()
+            }
+        }
     }
     
     private func removeOtherViewControllers() {
@@ -94,7 +104,7 @@ class HomeTabBarVC: BaseTabBarVC, UITabBarControllerDelegate {
         ourStoreVC.tabBarItem = ourStoreTab
         ourStoreVC.viewModel = OurStoreVM(delegate: ourStoreVC)
         var vcAccount: AccountProfileVC!
-        if AppUserDefaults.value(forKey: .loginResponse).isNotNil {
+        if DataManager.shared.isUserLoggedIn {
             vcAccount = ProfileVC.instantiate(fromAppStoryboard: .Home)
         } else {
             vcAccount = GuestProfileVC.instantiate(fromAppStoryboard: .Home)
@@ -108,6 +118,10 @@ class HomeTabBarVC: BaseTabBarVC, UITabBarControllerDelegate {
             createNav(ourStoreVC),
             createNav(accountVC)
         ]
+        if DataManager.shared.launchedFromNotification {
+            DataManager.shared.launchedFromNotification = false
+            goToNotifications()
+        }
     }
 }
 

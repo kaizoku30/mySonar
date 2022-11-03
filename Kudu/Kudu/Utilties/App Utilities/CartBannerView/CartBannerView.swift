@@ -43,6 +43,11 @@ class CartBannerView: UIView {
 	}
 	
 	func syncCart(showCart: @escaping (Bool) -> Void) {
+        if DataManager.shared.isUserLoggedIn == false {
+            CartUtility.clearCart()
+            showCart(false)
+            return
+        }
 		CartUtility.syncCart {
 			//guard let strongSelf = self else { return }
 			let updatedCart = CartUtility.fetchCart()

@@ -21,12 +21,13 @@ class ProfileVC: AccountProfileVC {
     @IBOutlet weak var verificationActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var versionLabel: UILabel!
     
+    @IBOutlet weak var notificationBell: UIButton!
     @IBAction func backButtonPressed(_ sender: Any) {
         dismissSideMenu(pushViewController: nil)
     }
     
     @IBAction func notificationBellPressed(_ sender: Any) {
-        SKToast.show(withMessage: "Under Development")
+        self.push(vc: NotificationVC.instantiate(fromAppStoryboard: .Notification))
     }
     
     @IBAction func settingsButtonPressed(_ sender: Any) {
@@ -35,14 +36,21 @@ class ProfileVC: AccountProfileVC {
     
     @IBAction func verifyPressed(_ sender: Any) {
         verifyNow.isHidden = true
+        verificationActivityIndicator.color = .black
         verificationActivityIndicator.isHidden = false
         verificationActivityIndicator.startAnimating()
         APIEndPoints.HomeEndPoints.sendOtpOnMail(email: DataManager.shared.loginResponse?.email ?? "", success: { [weak self] _ in
             let vc = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
             vc.viewModel = PhoneVerificationVM(_delegate: vc, flowType: .comingFromProfilePage, emailForVerification: DataManager.shared.loginResponse?.email ?? "")
+            self?.verifyNow.isHidden = false
+            self?.verificationActivityIndicator.isHidden = true
+            self?.verificationActivityIndicator.stopAnimating()
             self?.dismissSideMenu(pushViewController: vc)
         }, failure: { [weak self] (error) in
             guard let strongSelf = self else { return }
+            self?.verifyNow.isHidden = false
+            self?.verificationActivityIndicator.isHidden = true
+            self?.verificationActivityIndicator.stopAnimating()
             if error.code == 400 {
                 mainThread {
                     strongSelf.dismissSideMenu(pushViewController: nil)
@@ -107,6 +115,7 @@ class ProfileVC: AccountProfileVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.observeFor(.updateProfilePage, selector: #selector(setupDetails))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -125,6 +134,10 @@ class ProfileVC: AccountProfileVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        notificationBell.setImage(DataManager.shared.fetchNotificationStatus ? AppImages.MainImages.notificationBell : AppImages.MainImages.noNotificationBell, for: .normal)
+        self.checkNotificationStatus(statusUpdated: { [weak self] _ in
+            self?.notificationBell.setImage(DataManager.shared.fetchNotificationStatus ? AppImages.MainImages.notificationBell : AppImages.MainImages.noNotificationBell, for: .normal)
+        })
         if detailSetup { return }
         detailSetup = true
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -133,7 +146,16 @@ class ProfileVC: AccountProfileVC {
         setupDetails()
     }
     
-    private func setupDetails() {
+    func checkNotificationStatus(statusUpdated: @escaping (Result<Bool, Error>) -> Void) {
+        APIEndPoints.CartEndPoints.getCartConfig(storeId: nil, success: { (response) in
+            DataManager.shared.setNotificationBellStatus(response.data?.newNotification ?? false)
+            statusUpdated(.success(true))
+        }, failure: { _ in
+            statusUpdated(.success(true))
+        })
+    }
+    
+    @objc private func setupDetails() {
         verifyNow.setTitle(LocalizedStrings.Profile.verifyNow, for: .normal)
         editButton.setTitle(LocalizedStrings.Profile.edit, for: .normal)
         let userData = DataManager.shared.loginResponse
@@ -147,6 +169,8 @@ class ProfileVC: AccountProfileVC {
         let emailVerified = userData?.isEmailVerified ?? false
         verifyNow.isHidden = emailVerified
         emailVerifiedMarker.isHidden = !emailVerified
+        verificationActivityIndicator.stopAnimating()
+        verificationActivityIndicator.isHidden = true
     }
 }
 
@@ -224,8 +248,14 @@ extension ProfileVC: UITableViewDataSource, UITableViewDelegate {
             return
         }
         
-        if type == .Payments || type == .Orders {
-            SKToast.show(withMessage: "Under Development")
+        if type == .Orders {
+            let vc = MyOrderListVC.instantiate(fromAppStoryboard: .CartPayment)
+            vc.hidesBottomBarWhenPushed = true
+            dismissSideMenu(pushViewController: vc)
+        }
+        
+        if type == .Payments {
+            dismissSideMenu(pushViewController: MyPaymentVC.instantiate(fromAppStoryboard: .Payment))
         }
     }
 

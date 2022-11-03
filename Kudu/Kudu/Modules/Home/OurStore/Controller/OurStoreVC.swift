@@ -92,16 +92,16 @@ extension OurStoreVC {
             return
         } else {
             if DataManager.shared.currentDeliveryLocation.isNotNil {
+                self.baseView.setupView()
                 self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: DataManager.shared.currentDeliveryLocation?.latitude ?? 0.0, longitude: DataManager.shared.currentDeliveryLocation?.longitude ?? 0.0))
                 self.baseView.isUserInteractionEnabled = true
-                self.baseView.setupView()
                 return
             }
             CommonLocationManager.getLocationOfDevice(foundCoordinates: {
                 if let coordinates = $0 {
+                    self.baseView.setupView()
                     self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude))
                     self.baseView.isUserInteractionEnabled = true
-                    self.baseView.setupView()
                 } else {
                     self.baseView.isUserInteractionEnabled = true
                     self.showLocationPermissionAlert()
@@ -148,8 +148,8 @@ extension OurStoreVC: UITableViewDelegate, UITableViewDataSource {
         cell.curbsideTapped = { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.baseView.toggleViewInteraction(enabled: false)
-            let currentRestaurant = $0
-            let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+            let item = $0
+            let restaurant = item.convertToRestaurantInfo()
 			DataManager.shared.currentCurbsideRestaurant = restaurant
 			NotificationCenter.postNotificationForObservers(.curbsideLocationUpdated)
             strongSelf.triggerMenuFlow(type: .curbside, storeId: $0._id ?? "", lat: $0.restaurantLocation?.coordinates?.last ?? 0, long: $0.restaurantLocation?.coordinates?.first ?? 0)
@@ -158,8 +158,8 @@ extension OurStoreVC: UITableViewDelegate, UITableViewDataSource {
         cell.pickUpTapped = { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.baseView.toggleViewInteraction(enabled: false)
-            let currentRestaurant = $0
-            let restaurant = RestaurantInfoModel(restaurantNameEnglish: currentRestaurant.nameEnglish ?? "", restaurantNameArabic: currentRestaurant.nameArabic ?? "", areaNameEnglish: currentRestaurant.restaurantLocation?.areaNameEnglish ?? "", areaNameArabic: currentRestaurant.restaurantLocation?.areaNameArabic ?? "", latitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, longitude: currentRestaurant.restaurantLocation?.coordinates?.last ?? 0.0, cityName: currentRestaurant.restaurantLocation?.cityName ?? "", stateName: currentRestaurant.restaurantLocation?.stateName ?? "", countryName: currentRestaurant.restaurantLocation?.countryName ?? "", storeId: currentRestaurant._id ?? "", sdmId: currentRestaurant.sdmId ?? 0)
+            let item = $0
+            let restaurant = item.convertToRestaurantInfo()
 			DataManager.shared.currentPickupRestaurant = restaurant
 			NotificationCenter.postNotificationForObservers(.pickupLocationUpdated)
             strongSelf.triggerMenuFlow(type: .pickup, storeId: $0._id ?? "", lat: $0.restaurantLocation?.coordinates?.last ?? 0, long: $0.restaurantLocation?.coordinates?.first ?? 0)

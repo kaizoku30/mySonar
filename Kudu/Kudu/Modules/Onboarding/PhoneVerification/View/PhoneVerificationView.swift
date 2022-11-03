@@ -46,7 +46,7 @@ class PhoneVerificationView: UIView {
     }
     
     private var timer: Timer?
-    private var otpCounter: Int = 60
+    private var otpCounter: Int = 120
     private var timeRefForBackground: Date = Date()
     private var numberOfTriesRemaining = 5
     var handleViewActions: ((ViewActions) -> Void)?
@@ -130,20 +130,40 @@ class PhoneVerificationView: UIView {
         circularProgressView.progress = 0
     }
     
-    func startTimer(time: Int = 60) {
+    func getTime() -> String {
+        var stringOtp = ""
+        if self.otpCounter < 10 {
+            stringOtp = "0:0\(self.otpCounter)"
+        } else if self.otpCounter < 60 {
+            stringOtp = "0:\(self.otpCounter)"
+        } else if self.otpCounter == 60 {
+            stringOtp = "1:00"
+        } else if self.otpCounter < 70 {
+            stringOtp = "1:0\(self.otpCounter-60)"
+        } else if self.otpCounter < 120 {
+            stringOtp = "1:\(self.otpCounter-60)"
+        } else {
+            stringOtp = "2:00"
+        }
+        
+        return stringOtp
+    }
+    
+    func startTimer(time: Int = 120) {
         self.timer?.invalidate()
         self.otpCounter = time
         self.noOtpReceivedView.isHidden = true
-        self.circularProgressView.progress = Double(self.otpCounter)/60
+        self.circularProgressView.progress = Double(self.otpCounter)/120
         self.circularProgressView.isHidden = false
-        self.otpTimerLabel.text = "\(self.otpCounter)"
+        
+        self.otpTimerLabel.text = "\(getTime())"
         self.otpTimerLabel.isHidden = false
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
             guard let strongSelf = self else { return }
             if strongSelf.otpCounter != 0 {
                 strongSelf.otpCounter -= 1
-                strongSelf.circularProgressView.progress = Double(strongSelf.otpCounter)/60
-                strongSelf.otpTimerLabel.text = "\(strongSelf.otpCounter)"
+                strongSelf.circularProgressView.progress = Double(strongSelf.otpCounter)/120
+                strongSelf.otpTimerLabel.text = "\(strongSelf.getTime())"
             } else {
                 strongSelf.stopTimer()
             }

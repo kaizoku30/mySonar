@@ -19,6 +19,8 @@ struct CartConfig: Codable {
 	let notificationWaitTime: Int?
 	let redeemTimer: Int?
     let vehicleDetails: VehicleDetails?
+    let storeDetails: StoreDetail?
+    let newNotification: Bool?
 }
 
 struct VehicleDetails: Codable {

@@ -12,13 +12,13 @@ extension Endpoint {
     /// GET, POST or PUT method for each request
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .payment, .login, .sendOtp, .verifyMobileOtp, .socialSignup, .socialVerification, .logout, .signUp, .socialLogIn, .addAddress, .sendFeedback, .verifyEmailOtp, .sendOtpOnMail, .addFavourites, .addItemToCart, .placeOrder:
+        case .payment, .login, .sendOtp, .verifyMobileOtp, .socialSignup, .socialVerification, .logout, .signUp, .socialLogIn, .addAddress, .sendFeedback, .verifyEmailOtp, .sendOtpOnMail, .addFavourites, .addItemToCart, .placeOrder, .reorderItems, .validateOrder, .tokenCardPayment, .savedCardPayment, .codPayment, .changeDeviceLang, .changePhoneNumber:
             return .post
-        case .getAddressList, .supportDetails, .menuList, .banners, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .ourStoreListing, .favouriteItemList, .favouriteHashSync, .getStoreIdForDelivery, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .getOnlineCouponListing, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail, .getRecommendations:
+        case .getAddressList, .supportDetails, .menuList, .banners, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .ourStoreListing, .favouriteItemList, .favouriteHashSync, .getStoreIdForDelivery, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .getOnlineCouponListing, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail, .getRecommendations, .orderDetails, .orderList, .inStoreCouponList, .inStoreCouponDetails, .getCards, .notificationList:
             return .get
-        case .editAddress, .notificationPref, .editProfile, .updateCartQuantity, .removeItemFromCart, .updateVehicle, .updateCouponOnCart:
+        case .editAddress, .notificationPref, .editProfile, .updateCartQuantity, .removeItemFromCart, .updateVehicle, .updateCouponOnCart, .arrivedAtStore, .rating, .cancelOrder, .redeemInStoreCoupon:
             return .put
-        case .deleteAddress, .deleteAccount, .clearCart:
+        case .deleteAddress, .deleteAccount, .clearCart, .deleteCard, .deleteNotification, .deleteAllNotification:
             return .delete
         }
     }
@@ -38,14 +38,20 @@ extension Endpoint {
         let baseUrl = Environment().configuration(.kBaseUrl)
         let registerIntermediate = "/\(microService)/api/v1/"
         switch self {
-        case .login, .verifyMobileOtp, .signUp, .logout, .sendOtp, .socialLogIn, .socialSignup, .socialVerification, .addAddress, .getAddressList, .editAddress, .sendFeedback, .supportDetails, .menuList, .banners, .menuItemList, .deleteAccount, .getRestaurantSuggestions, . getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail, .ourStoreListing, .addFavourites, .favouriteItemList, .favouriteHashSync, .getStoreIdForDelivery, .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .selectedRestaurantList, .getCouponCodeDetail, .getRecommendations, .placeOrder:
+        case .login, .verifyMobileOtp, .signUp, .logout, .sendOtp, .socialLogIn, .socialSignup, .socialVerification, .addAddress, .getAddressList, .editAddress, .sendFeedback, .supportDetails, .menuList, .banners, .menuItemList, .deleteAccount, .getRestaurantSuggestions, . getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .notificationPref, .editProfile, .verifyEmailOtp, .sendOtpOnMail, .ourStoreListing, .addFavourites, .favouriteItemList, .favouriteHashSync, .getStoreIdForDelivery, .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .selectedRestaurantList, .getCouponCodeDetail, .getRecommendations, .placeOrder, .orderList, .orderDetails, .arrivedAtStore, .rating, .cancelOrder, .reorderItems, .validateOrder, .redeemInStoreCoupon, .inStoreCouponList, .tokenCardPayment, .getCards, .savedCardPayment, .codPayment, .deleteCard, .deleteAllNotification, .changeDeviceLang, .changePhoneNumber:
             return baseUrl + registerIntermediate + apiPath
         case .getCouponDetail(let id):
+            return baseUrl + registerIntermediate + apiPath + "/\(id)"
+        case .inStoreCouponDetails(let id):
             return baseUrl + registerIntermediate + apiPath + "/\(id)"
         case .deleteAddress(let id):
             return baseUrl + registerIntermediate + apiPath + "/\(id)"
         case .payment:
             return Constants.CheckOutCredentials.postApiURL
+        case .deleteNotification(let id):
+            return baseUrl + registerIntermediate + apiPath + "/\(id)"
+        case .notificationList(let pageNo, let limit):
+            return baseUrl + registerIntermediate + apiPath + "?pageNo=\(pageNo)" + "&limit=\(limit)"
         }
     }
     
@@ -53,9 +59,9 @@ extension Endpoint {
         switch self {
         case .banners, .menuList, .menuItemList, .getRestaurantSuggestions, .getRestaurantListing, .topSearchMenu, .getSearchSuggestionsMenu, .getSearchResults, .itemDetail, .ourStoreListing, .addFavourites, .favouriteItemList, .favouriteHashSync, .getStoreIdForDelivery, .getRecommendations:
             return "userStore"
-        case .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail:
+        case .addItemToCart, .updateCartQuantity, .removeItemFromCart, .syncCart, .getCartConfig, .cancellationPolicy, .youMayAlsoLike, .clearCart, .updateVehicle, .getOnlineCouponListing, .updateCouponOnCart, .getCouponDetail, .selectedRestaurantList, .getCouponCodeDetail, .inStoreCouponList, .inStoreCouponDetails, .reorderItems:
             return "userCart"
-        case .placeOrder:
+        case .placeOrder, .orderList, .arrivedAtStore, .orderDetails, .rating, .cancelOrder, .validateOrder, .redeemInStoreCoupon, .tokenCardPayment, .getCards, .savedCardPayment, .codPayment, .deleteCard:
             return "userPayment"
         default:
             return "userOnboard"
@@ -161,6 +167,40 @@ extension Endpoint {
             return "getRecommendations"
         case .placeOrder:
             return "placeOrder"
+        case .orderList:
+            return "orderList"
+        case .orderDetails:
+            return "orderDetails"
+        case .arrivedAtStore:
+            return "arrivedStore"
+        case .cancelOrder:
+            return "cancelOrder"
+        case .rating:
+            return "rateYourOrder"
+        case .reorderItems:
+            return "reorderItems"
+        case .validateOrder:
+            return "validateOrder"
+        case .inStoreCouponList:
+            return "inStoreCouponList"
+        case .inStoreCouponDetails:
+            return "inStoreCouponDetails"
+        case .redeemInStoreCoupon:
+            return "redeemInStoreCoupon"
+        case .tokenCardPayment, .savedCardPayment, .codPayment:
+            return "payments"
+        case .getCards:
+            return "payments/cards"
+        case .deleteCard:
+            return "payments/remove-card"
+        case .notificationList, .deleteNotification:
+            return "notification"
+        case .deleteAllNotification:
+            return "deleteAllNotification"
+        case .changeDeviceLang:
+            return "changeDeviceLang"
+        case .changePhoneNumber:
+            return "changePhoneNumber"
         default:
             return ""
         }

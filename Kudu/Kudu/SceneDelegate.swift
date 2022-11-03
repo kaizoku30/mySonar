@@ -29,6 +29,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         LanguageManager.shared.setLanguage(language: language, for: nil, viewControllerFactory: nil, animation: nil)
         Router.shared.initialiseLaunchVC()
+        if connectionOptions.notificationResponse.isNotNil {
+            if connectionOptions.notificationResponse?.notification.request.identifier ?? "" != "CART REMINDER" {
+                DataManager.shared.launchedFromNotification = true
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

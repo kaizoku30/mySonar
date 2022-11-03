@@ -220,6 +220,7 @@ extension AddNewAddressVC: AddNewAddressVMDelegate {
     func updateAddressInCart(address: MyAddressListItem) {
         mainThread {
             self.baseView.handleAPIResponse(.saveAddress, isSuccess: true, errorMsg: nil)
+            NotificationCenter.postNotificationForObservers(.updateMyAddressList)
             let type: SuccessAlertView.AlertType = .addressAdded
             self.baseView.showSuccessPopUp(type, cartFlowObject: address)
         }
@@ -254,6 +255,12 @@ extension AddNewAddressVC: AddNewAddressVMDelegate {
         mainThread {
             let alert = OutOfReachView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - OutOfReachView.HorizontalPadding, height: 0))
             alert.configure(container: self.baseView)
+        }
+    }
+    
+    func noUpdateNeeded() {
+        mainThread {
+            self.pop()
         }
     }
 }

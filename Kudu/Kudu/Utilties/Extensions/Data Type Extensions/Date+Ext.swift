@@ -37,6 +37,9 @@ extension Date {
         case dMMMEEHHmmss = "d MMM, EEE h:mm a"
         case dMMMYYYYEEHHmmss = "d MMM YYYY, EEE h:mm a"
         case MMMdyyyyHHmma = "MMM d, yyyy h:mm a"
+        case dMMMyyyyHHmma = "d MMM yyyy, h:mm a"
+        //case dMMMatHHmma = "d MMM 'at' h:mm a"
+        case dMMMYYYYatHHmma = "d MMM, yyyy 'at' h:mm a"
         case ddd = "ddd"
         case dd = "dd"
         case mm = "MM"
@@ -517,5 +520,27 @@ extension String {
         guard let date = formatter.date(from: self) else { return ""}
         formatter.dateFormat =  outputFormat
         return formatter.string(from: date)
+    }
+}
+extension Date {
+    static func date(day: Int, month: Int, year: Int) -> Date {
+        var dateComponents = DateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        return Calendar.current.date(from: dateComponents)!
+    }
+    var monthString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "LLLL"
+        let monthString = dateFormatter.string(from: self)
+        return monthString
+    }
+    private var dateComponents: DateComponents {
+        return dateComponents(components: [.second, .hour, .day, .weekday, .month, .year])
+    }
+    private func dateComponents(components: Set<Calendar.Component>) -> DateComponents {
+        let components = Calendar.current.dateComponents(components, from: self)
+        return components
     }
 }

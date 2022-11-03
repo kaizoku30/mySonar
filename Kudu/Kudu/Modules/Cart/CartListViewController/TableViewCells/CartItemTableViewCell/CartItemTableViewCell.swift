@@ -87,6 +87,7 @@ class CartItemTableViewCell: UITableViewCell {
 	}
 	
     func configure(_ item: CartListObject, index: Int, isTempLoading: Bool) {
+        self.counterLabelButton.stopBtnLoader(titleColor: .white)
         tempLoaderView.isHidden = !isTempLoading
         if isTempLoading {
             self.tempLoader.startAnimating()
@@ -173,7 +174,12 @@ class CartItemTableViewCell: UITableViewCell {
 	}
     
     private func checkAndSetOutOfStock() {
-        let isAvailable = self.item.itemDetails?.isAvailable ?? false
+        var isAvailable = self.item.itemDetails?.isAvailable ?? false
+        if let excludeLocations = (self.item.itemDetails?.excludeLocations), !excludeLocations.isEmpty {
+            if excludeLocations.contains(where: { $0 == CartUtility.getCartStoreID ?? ""}) {
+                isAvailable = false
+            }
+        }
         outOfStockView.isHidden = isAvailable
         outOfStockLabel.isHidden = isAvailable
         itemImgView.image = isAvailable ? self.itemImgView.image : self.itemImgView.image?.grayscale()
@@ -211,30 +217,32 @@ class CartItemTableViewCell: UITableViewCell {
                 self.confirmDelete?(itemCartCount, self.index)
                 return
             }
-			itemCartCount -= 1
+			//itemCartCount -= 1
             if item.itemDetails?.isAvailable ?? false == false {
                 itemCartCount = 0
             }
 			//updateButtonView()
-			self.cartCountUpdated?(itemCartCount, self.index)
+            self.counterLabelButton.startBtnLoader(color: .white, small: true)
+			self.cartCountUpdated?(itemCartCount - 1, self.index)
 		}
 	}
 	
 	@IBAction private func plusButtonPressed(_ sender: Any) {
-		itemCartCount += 1
+		//itemCartCount += 1
 		//updateButtonView()
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
         if self.item.itemDetails?.isCustomised ?? false {
 			self.confirmCustomisationRepeat?(self.index)
 		} else {
-			self.cartCountUpdated?(itemCartCount, self.index)
+            self.counterLabelButton.startBtnLoader(color: .white, small: true)
+			self.cartCountUpdated?(itemCartCount + 1, self.index)
 		}
 	}
 	
 	@IBAction private func addButtonPressed(_ sender: Any) {
-		itemCartCount += 1
+		//itemCartCount += 1
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-		cartCountUpdated?(itemCartCount, self.index)
+		cartCountUpdated?(itemCartCount + 1, self.index)
 		//updateButtonView()
 	}
 }
