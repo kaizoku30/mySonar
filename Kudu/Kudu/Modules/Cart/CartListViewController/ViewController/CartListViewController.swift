@@ -667,27 +667,12 @@ extension CartListViewController {
         let request = AddCartItemRequest(itemId: object.itemDetails?._id ?? "", menuId: object.itemDetails?.menuId ?? "", hashId: hashId, storeId: viewModel.getStoreDetails?._id ?? "", itemSdmId: object.itemDetails?.itemId ?? 0, quantity: 1, servicesAvailable: viewModel.getServiceType, modGroups: nil)
         self.viewModel.addToCart(req: request, itemDetails: itemDetails, added: {
             self.tabBarController?.removeLoaderOverlay()
-            let check = self.viewModel.checkIfFreeItemAdd()
-            if check {
-                self.baseView.bringLoaderToFront()
-                self.syncCart()
-            } else {
-                self.baseView.bringLoaderToFront()
-                self.syncCart()
-                //self.addedToCartSuccessfully()
-            }
+            self.baseView.bringLoaderToFront()
+            self.syncCart()
         }, updated: {
             self.tabBarController?.removeLoaderOverlay()
-            let check = self.viewModel.checkIfFreeItemAdd()
-            if check {
-                self.baseView.bringLoaderToFront()
-                self.syncCart()
-            } else {
-                self.baseView.bringLoaderToFront()
-                self.syncCart()
-//                self.baseView.reloadCartItemSection()
-//                self.refreshCartView()
-            }
+            self.baseView.bringLoaderToFront()
+            self.syncCart()
         })
     }
     
@@ -706,27 +691,12 @@ extension CartListViewController {
             strongSelf.viewModel.addToCart(req: request, itemDetails: result, added: { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.tabBarController?.removeLoaderOverlay()
-                let check = strongSelf.viewModel.checkIfFreeItemAdd()
-                if check {
-                    strongSelf.baseView.bringLoaderToFront()
-                    strongSelf.syncCart()
-                } else {
-                    strongSelf.baseView.bringLoaderToFront()
-                    strongSelf.syncCart()
-                    // strongSelf.addedToCartSuccessfully()
-                }
+                strongSelf.baseView.bringLoaderToFront()
+                strongSelf.syncCart()
             }, updated: {
                 self?.tabBarController?.removeLoaderOverlay()
-                let check = strongSelf.viewModel.checkIfFreeItemAdd()
-                if check {
-                    strongSelf.baseView.bringLoaderToFront()
-                    strongSelf.syncCart()
-                } else {
-                    strongSelf.baseView.bringLoaderToFront()
-                    strongSelf.syncCart()
-//                    strongSelf.baseView.reloadCartItemSection()
-//                    strongSelf.refreshCartView()
-                }
+                strongSelf.baseView.bringLoaderToFront()
+                strongSelf.syncCart()
             })
         }
         bottomSheet.handleDeallocation = { [weak self] in
