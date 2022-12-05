@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -21,7 +19,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ItemDetailView" customModule="Kudu" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseItemDetailView" customModule="Kudu" customModuleProvider="target">
             <connections>
                 <outlet property="actionSheet" destination="o56-Y0-rkn" id="pJw-wD-suD"/>
                 <outlet property="addButton" destination="shf-7s-qOG" id="Xot-46-num"/>
@@ -48,11 +46,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xR0-VG-Rj4">
-                    <rect key="frame" x="0.0" y="403" width="414" height="493"/>
+                    <rect key="frame" x="0.0" y="437" width="414" height="459"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BfX-h3-UnH">
-                    <rect key="frame" x="0.0" y="298" width="414" height="564"/>
+                    <rect key="frame" x="0.0" y="332" width="414" height="564"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fl8-V0-itE" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
                             <rect key="frame" x="191" y="6" width="32" height="32"/>
@@ -79,13 +77,13 @@
                                     <rect key="frame" x="0.0" y="246" width="414" height="245"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEb-g2-dW7">
-                                            <rect key="frame" x="16" y="28" width="290" height="16.5"/>
+                                            <rect key="frame" x="16" y="28" width="290" height="16.333333333333329"/>
                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                             <color key="textColor" red="0.16862745100000001" green="0.16862745100000001" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mfp-c2-QtQ">
-                                            <rect key="frame" x="16" y="52.5" width="290" height="18"/>
+                                            <rect key="frame" x="16" y="52.333333333333371" width="290" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="J0I-Cj-gca"/>
                                             </constraints>
@@ -94,7 +92,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efl-as-aew">
-                                            <rect key="frame" x="16" y="82.5" width="290" height="14"/>
+                                            <rect key="frame" x="16" y="82.333333333333371" width="290" height="14"/>
                                             <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -187,7 +185,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allergence" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGO-n4-mJ3">
-                                            <rect key="frame" x="16" y="150" width="56.5" height="14"/>
+                                            <rect key="frame" x="16.000000000000004" y="150" width="56.333333333333343" height="14"/>
                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
                                             <color key="textColor" red="0.35686274509803922" green="0.3529411764705882" blue="0.3529411764705882" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -258,7 +256,7 @@
                             <rect key="frame" x="0.0" y="73" width="414" height="491"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztu-wE-ny7" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
-                                    <rect key="frame" x="194.5" y="233" width="25" height="25"/>
+                                    <rect key="frame" x="194.66666666666666" y="233" width="25" height="25"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="25" id="8a4-4f-cY4"/>
@@ -294,7 +292,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="US1-BV-17L">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="371"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="405"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
@@ -316,23 +314,6 @@
             <point key="canvasLocation" x="139" y="114"/>
         </view>
     </objects>
-    <designables>
-        <designable name="7id-ax-ae8">
-            <size key="intrinsicContentSize" width="30" height="31"/>
-        </designable>
-        <designable name="Byb-Ml-X1e">
-            <size key="intrinsicContentSize" width="12.5" height="22"/>
-        </designable>
-        <designable name="UtD-my-nHR">
-            <size key="intrinsicContentSize" width="13.5" height="22"/>
-        </designable>
-        <designable name="fl8-V0-itE">
-            <size key="intrinsicContentSize" width="20" height="22"/>
-        </designable>
-        <designable name="shf-7s-qOG">
-            <size key="intrinsicContentSize" width="30" height="29"/>
-        </designable>
-    </designables>
     <resources>
         <image name="blackCross" width="20" height="20.5"/>
         <image name="k_exploreMenu_delete" width="12.5" height="14"/>

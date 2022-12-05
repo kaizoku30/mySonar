@@ -63,8 +63,8 @@ class HomeExploreMenuCell: UITableViewCell {
     }
     
     private func initialSetup() {
-        exploreMenuTitle.text = LocalizedStrings.Home.exploreMenu
-        fullMenuButton.setTitle(LocalizedStrings.Home.fullMenu, for: .normal)
+        exploreMenuTitle.text = LSCollection.Home.exploreMenu
+        fullMenuButton.setTitle(LSCollection.Home.fullMenu, for: .normal)
         shimmerViews = [shimmer1View, shimmer2View, shimmer3View, shimmer4View]
         buttonContainers = [button1Container, button2Container, button3Container, button4Container]
         buttonImageViews = [button1ImgView, button2ImgView, button3ImgView, button4ImgView]

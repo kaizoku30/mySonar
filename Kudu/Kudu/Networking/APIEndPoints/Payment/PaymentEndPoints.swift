@@ -15,6 +15,11 @@ enum CheckoutPaymentType: String {
 
 extension APIEndPoints {
     final class PaymentEndPoints {
+        
+        static func uploadCertificate(success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .uploadCertificate, successHandler: success, failureHandler: failure)
+        }
+        
         static func makeTokenPayment(request: AddCardPaymentRequest, isApplePay: Bool, success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
             Api.requestNew(endpoint: .tokenCardPayment(req: request, isApplePay: isApplePay), successHandler: success, failureHandler: failure)
         }

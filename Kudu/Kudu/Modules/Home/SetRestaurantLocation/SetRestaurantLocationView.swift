@@ -77,18 +77,19 @@ class SetRestaurantLocationView: UIView {
         clearBtn.isHidden = true
         noResultView.contentType = .noResultFound
         searchTFView.textFieldType = .address
-        searchTFView.placeholderText = LocalizedStrings.SetRestaurant.selectBranch
+        searchTFView.placeholderText = LSCollection.SetRestaurant.selectBranch
         searchTFView.font = AppFonts.mulishBold.withSize(14)
         searchTFView.textColor = .black
         searchBarContainerView.roundTopCorners(cornerRadius: 4)
         tableView.registerCell(with: AutoCompleteLoaderCell.self)
         tableView.registerCell(with: AutoCompleteResultCell.self)
 		tableView.registerCell(with: SuggestionShimmerCell.self)
-		mapButton.setAttributedTitle(NSAttributedString(string: LocalizedStrings.SetRestaurant.map, attributes: nil), for: .normal)
+		mapButton.setAttributedTitle(NSAttributedString(string: LSCollection.SetRestaurant.map, attributes: nil), for: .normal)
 		mapButton.layer.applySketchShadow(color: .black, alpha: 0.14, x: 0, y: 2, blur: 10, spread: 0)
         tableView.bounces = true
         tableView.showsVerticalScrollIndicator = false
-        titleLabel.text = LocalizedStrings.SetRestaurant.setPickupLocation
+        titleLabel.text = LSCollection.SetRestaurant.setPickupLocation
+        showHideMapButton(show: false)
     }
 	
 	func getSearchText() -> String {
@@ -111,9 +112,15 @@ class SetRestaurantLocationView: UIView {
         
     }
     
+    func showHideMapButton(show: Bool) {
+        mainThread {
+            self.mapButton.isHidden = !show
+        }
+    }
+    
     func setTitle(flow: APIEndPoints.ServicesType = .pickup) {
         if flow == .curbside {
-            titleLabel.text = LocalizedStrings.SetRestaurant.setCurbsideLocation
+            titleLabel.text = LSCollection.SetRestaurant.setCurbsideLocation
         }
     }
     
@@ -206,7 +213,7 @@ class SetRestaurantLocationView: UIView {
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
         mainThread {
             let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
+            alert.configureLocationView(type: type, leftButtonTitle: LSCollection.SetRestaurant.cancel, rightButtonTitle: LSCollection.SetRestaurant.settings, container: self)
             alert.handleActionOnLocationView = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.openSettings)

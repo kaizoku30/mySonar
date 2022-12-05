@@ -49,10 +49,9 @@ class BaseVC: UIViewController {
     }
     
     @objc private func show404View() {
-        if DataManager.shared.noInternetViewAdded == false && !self.isKind(of: LaunchVC.self) {
-            DataManager.shared.noInternetViewAdded = true
+        if DataManager.shared.isNoInternetViewAdded == false && !self.isKind(of: LaunchVC.self) {
+            DataManager.shared.setnoInternetViewAdded(true)
             let vc = NoInternetConnectionVC()
-          //  vc.view = NoInternetConnectionView(frame: vc.view.frame)
             self.push(vc: vc)
         }
     }

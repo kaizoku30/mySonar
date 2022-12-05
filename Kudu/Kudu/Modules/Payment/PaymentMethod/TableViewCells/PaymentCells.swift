@@ -12,12 +12,15 @@ class CardHeaderCell: UITableViewCell {
     
     @IBOutlet private weak var addCardLabel: UILabel!
     @IBOutlet private weak var addCardImg: UIImageView!
+    @IBOutlet private weak var creditCardDebitCardLabel: UILabel!
     
     var triggerAddCardFlow: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        addCardLabel.text = LSCollection.Payments.addNewCard
+        creditCardDebitCardLabel.text = LSCollection.Payments.creditCardDebitCard
         addCardLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addCardFlow)))
         addCardImg.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addCardFlow)))
     }
@@ -28,8 +31,10 @@ class CardHeaderCell: UITableViewCell {
 }
 
 class SavedCardHeaderCell: UITableViewCell {
+    @IBOutlet private weak var savedCardsHeaderLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        savedCardsHeaderLabel.text = LSCollection.Payments.savedCards
         selectionStyle = .none
     }
 }
@@ -126,7 +131,7 @@ class SavedCardCell: UITableViewCell {
         cvvTextfield.isSecureTextEntry = true
         if showPayment {
             selectionImg.image = AppImages.LanguagePrefScreen.selected
-            paymenButton.setTitle("Pay SR \(price.round(to: 2).removeZerosFromEnd())", for: .normal)
+            paymenButton.setTitle("\(LSCollection.Payments.paySR) \(price.round(to: 2).removeZerosFromEnd())", for: .normal)
             cvvTextfield.text = cvvPrefill.isEmpty ? nil : cvvPrefill
             enableDisableButton(enable: cvvTextfield.text?.count ?? 0 == 3 || cvvTextfield.text?.count ?? 0 == 4 )
             cardPaymentView.isHidden = false

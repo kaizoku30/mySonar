@@ -24,6 +24,7 @@ class OrderDetailVC: BaseVC {
         super.viewDidLoad()
         handleActions()
         baseView.addRefreshControl()
+        self.observeFor(.orderNotificationReceived, selector: #selector(initialSetup))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +32,7 @@ class OrderDetailVC: BaseVC {
         initialSetup()
     }
     
-    private func initialSetup() {
+    @objc private func initialSetup() {
         self.baseView.showLoader(show: true)
         self.viewModel.fetchOrderDetail(completion: {
             switch $0 {
@@ -84,13 +85,16 @@ class OrderDetailVC: BaseVC {
             case .rateOrderPressed:
                 self?.goToRateOrderVC()
             case .reorderTrigger:
+                self?.baseView.isUserInteractionEnabled = false
                 self?.viewModel.reorderItems(completion: { [weak self] in
                     switch $0 {
                     case .success:
+                        self?.baseView.isUserInteractionEnabled = true
                         self?.baseView.removePopup()
                         let vc = CartListViewController.instantiate(fromAppStoryboard: .CartPayment)
                         self?.push(vc: vc)
                     case .failure(let error):
+                        self?.baseView.isUserInteractionEnabled = true
                         self?.baseView.removePopup()
                         self?.baseView.refreshTableView()
                         self?.baseView.showError(msg: error.localizedDescription)

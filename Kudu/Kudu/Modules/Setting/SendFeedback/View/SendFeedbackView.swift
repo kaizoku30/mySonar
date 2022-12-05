@@ -38,8 +38,8 @@ class SendFeedbackView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        sendFeedbackLabel.text = LocalizedStrings.Setting.sendFeedback
-        submitButton.setTitle(LocalizedStrings.Setting.submit, for: .normal)
+        sendFeedbackLabel.text = LSCollection.Setting.sendFeedback
+        submitButton.setTitle(LSCollection.Setting.submit, for: .normal)
         tableView.showsVerticalScrollIndicator = false
         submitButton.handleBtnTap = { [weak self] in
             self?.handleViewActions?(.submitButtonPressed)

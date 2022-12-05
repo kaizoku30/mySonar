@@ -14,7 +14,7 @@ class DefaultAddressCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         initialSetup()
-        label.text = LocalizedStrings.AddNewAddress.setAsDefaultAddress
+        label.text = LSCollection.AddNewAddress.setAsDefaultAddress
     }
     
     private var isDefault: Bool = false

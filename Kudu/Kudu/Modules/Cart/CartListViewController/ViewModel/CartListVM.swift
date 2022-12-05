@@ -27,7 +27,11 @@ class CartListVM {
     var getCoupon: CouponObject? { attachedCoupon }
     
     init() {
-        objects = CartUtility.fetchCart()
+        initialSetup()
+    }
+    
+    func initialSetup() {
+        objects = CartUtility.fetchCartLocally()
         serviceType = APIEndPoints.ServicesType(rawValue: objects.first?.servicesAvailable ?? "") ?? .delivery
         switch serviceType {
         case .curbside:
@@ -98,8 +102,8 @@ class CartListVM {
     }
     
     func cartSynced() {
-        objects = CartUtility.fetchCart()
         attachedCoupon = CartUtility.getAttachedCoupon
+        initialSetup()
     }
     
     func checkIfFreeItemAdd() -> Bool {
@@ -212,6 +216,7 @@ class CartListVM {
         let request = FavouriteRequest(itemId: itemId, hashId: hashId, menuId: object.menuId ?? "", itemSdmId: object.itemSdmId ?? 0, isFavourite: status, servicesAvailable: self.serviceType, modGroups: object.modGroups)
         APIEndPoints.HomeEndPoints.hitFavouriteAPI(request: request, success: { (response) in
             debugPrint(response.message ?? "")
+            NotificationCenter.postNotificationForObservers(.refreshFavsPage)
         }, failure: { _ in
             //Need to revisit implementation, provide a like delegate method
         })
@@ -227,8 +232,9 @@ class CartListVM {
                 debugPrint("INVALID STATE")
             } else {
                 //                updateExploreMenuCellCount?(object.menuId ?? "", object.itemId ?? "", object.hashId ?? "", true, object.modGroups ?? [])
-                objects[index].quantity = newCount
+                
                 updateCartCount(object: object, isIncrement: true, completionHandler: {
+                    self.objects[index].quantity = newCount
                     let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
                     NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                     completionHandler?()
@@ -238,15 +244,18 @@ class CartListVM {
             if newCount == 0 {
                 // updateExploreMenuCellCount?(object.menuId ?? "", object.itemId ?? "", object.hashId ?? "", false, object.modGroups ?? [])
                 let cartNotification = CartCountNotifier(isIncrement: false, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
-                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-                objects.remove(at: index)
-                removeItemFromCart(object: object, completionHandler: completionHandler)
+                removeItemFromCart(object: object, completionHandler: { [weak self] in
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    self?.objects.remove(at: index)
+                    completionHandler?()
+                })
             } else {
                 //    updateExploreMenuCellCount?(object.menuId ?? "", object.itemId ?? "", object.hashId ?? "", false, object.modGroups ?? [])
-                objects[index].quantity = newCount
+                
                 updateCartCount(object: object, isIncrement: false, completionHandler: {
                     let cartNotification = CartCountNotifier(isIncrement: false, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
                     NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    self.objects[index].quantity = newCount
                     completionHandler?()
                 })
             }
@@ -256,25 +265,19 @@ class CartListVM {
     func addToCart(req: AddCartItemRequest, itemDetails: MenuItem, added: @escaping (() -> Void), updated: @escaping (() -> Void)) {
         if let firstIndex = objects.firstIndex(where: { $0.hashId ?? "" == req.hashId }), req.offerdItem == false {
             let previousCount = objects[firstIndex].quantity ?? 0
-            objects[firstIndex].quantity = previousCount + 1
+            
             // updateExploreMenuCellCount?(objects[firstIndex].menuId ?? "", objects[firstIndex].itemId ?? "", objects[firstIndex].hashId ?? "", true, objects[firstIndex].modGroups ?? [])
             let object = objects[firstIndex]
             let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
             updateCartCount(object: objects[firstIndex], isIncrement: true, completionHandler: {
+                self.objects[firstIndex].quantity = previousCount + 1
                 updated()
             })
             return
         }
         let placeholder = req.createPlaceholderCartObject(itemDetails: itemDetails)
-        CartUtility.addItemToCart(placeholder)
-        // updateExploreMenuCellCount?(placeholder.menuId ?? "", placeholder.itemId ?? "", placeholder.hashId ?? "", true, placeholder.modGroups ?? [])
         let object = placeholder
-        if req.offerdItem == false {
-            let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: self.serviceType, modGroups: object.modGroups)
-            NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-        }
-        self.objects.append(placeholder)
         APIEndPoints.CartEndPoints.addItemToCart(req: req, success: { [weak self] in
             guard let strongSelf = self, let cartObject = $0.data else { return }
             var copy = cartObject
@@ -282,7 +285,12 @@ class CartListVM {
             if let index = strongSelf.objects.firstIndex(where: { $0.hashId ?? "" == cartObject.hashId ?? ""}) {
                 strongSelf.objects[index] = copy
             }
-            CartUtility.mapObjectWithPlaceholder(copy)
+            if req.offerdItem == false {
+                let cartNotification = CartCountNotifier(isIncrement: true, itemId: object.itemId ?? "", menuId: object.menuId ?? "", hashId: object.hashId ?? "", serviceType: strongSelf.serviceType, modGroups: object.modGroups)
+                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+            }
+            strongSelf.objects.append(placeholder)
+            CartUtility.addItemToCartLocally(copy)
             added()
         }, failure: { (error) in
             debugPrint(error.msg)
@@ -295,22 +303,21 @@ extension CartListVM {
     
     private func updateCartCount(object: CartListObject, isIncrement: Bool, completionHandler: (() -> Void)? = nil) {
         let updateCartReq = UpdateCartCountRequest(isIncrement: isIncrement, itemId: object.itemDetails?._id ?? "", quantity: 1, hashId: object.hashId ?? "")
-        CartUtility.updateCartCount(object.hashId ?? "", isIncrement: isIncrement)
         APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateCartReq, success: { (response) in
             debugPrint(response)
+            CartUtility.updateCartCountLocally(object.hashId ?? "", isIncrement: isIncrement)
             completionHandler?()
         }, failure: { (error) in
-            CartUtility.updateCartCount(object.hashId ?? "", isIncrement: !isIncrement)
             debugPrint(error.msg)
             completionHandler?()
         })
     }
     
     private func removeItemFromCart(object: CartListObject, completionHandler: (() -> Void)? = nil) {
-        CartUtility.removeItemFromCart(object.hashId ?? "")
         let removeCartReq = RemoveItemFromCartRequest(itemId: object.itemDetails?._id ?? "", hashId: object.hashId ?? "")
         APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { (response) in
             debugPrint(response)
+            CartUtility.removeItemFromCartLocally(removeCartReq.hashId)
             completionHandler?()
         }, failure: { (error) in
             debugPrint(error.msg)

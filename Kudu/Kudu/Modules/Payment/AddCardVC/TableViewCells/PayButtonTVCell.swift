@@ -19,6 +19,6 @@ class PayButtonTVCell: UITableViewCell {
     
     func setPrice(_ price: Double) {
         self.priceButton.stopBtnLoader(titleColor: .white)
-        self.priceButton.setTitle("Pay SR \(price.round(to: 2).removeZerosFromEnd())", for: .normal)
+        self.priceButton.setTitle("\(LSCollection.Payments.paySR) \(price.round(to: 2).removeZerosFromEnd())", for: .normal)
     }
 }

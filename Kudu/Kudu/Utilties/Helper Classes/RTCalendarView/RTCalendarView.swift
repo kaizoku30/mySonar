@@ -40,6 +40,10 @@ class RTCalendarView: AppPopUpViewType {
     private func commonInit() {
         Bundle.main.loadNibNamed("RTCalendarView", owner: self, options: nil)
         addSubview(mainContentView)
+        self.semanticContentAttribute = .forceLeftToRight
+        mainContentView.semanticContentAttribute = .forceLeftToRight
+        collectionView.semanticContentAttribute = .forceLeftToRight
+        weekdayCollection.semanticContentAttribute = .forceLeftToRight
         mainContentView.frame = self.bounds
         mainContentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.registerCell(with: RTCalendarCell.self)
@@ -52,6 +56,7 @@ class RTCalendarView: AppPopUpViewType {
         monthYearLabel.text = monthWeek
         self.layer.applySketchShadow(color: .black.withAlphaComponent(0.25), alpha: 1, x: 0, y: 0, blur: 4, spread: 0)
         self.layer.cornerRadius = 7.72
+        
     }
     
     private var weekdays: [String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]

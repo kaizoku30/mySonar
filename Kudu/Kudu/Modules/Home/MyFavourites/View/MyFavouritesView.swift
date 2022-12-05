@@ -17,7 +17,8 @@ class MyFavouritesView: UIView {
     @IBAction private func backButtonPressed(_ sender: Any) {
         handleViewActions?(.backButtonPressed)
     }
-    
+    @IBOutlet private weak var noFavoriteAddedLabel: UILabel!
+    @IBOutlet private weak var everyoneHasFavouritesLbl: UILabel!
     private var fetchingItems: Bool = false
     private var offSetToRetain: CGFloat = 0
     var isFetchingItems: Bool { fetchingItems }
@@ -44,6 +45,9 @@ class MyFavouritesView: UIView {
     }
     
     private func initialSetup() {
+        favouriteTitleLabel.text = LSCollection.Favourites.myFavs
+        noFavoriteAddedLabel.text = LSCollection.Favourites.noFavoriteAddedLabel
+        everyoneHasFavouritesLbl.text = LSCollection.Favourites.everyoneHasFavouritesLbl
         tableView.registerCell(with: ItemTableViewCell.self)
         tableView.registerCell(with: AutoCompleteLoaderCell.self)
 		tableView.showsVerticalScrollIndicator = false
@@ -71,10 +75,10 @@ class MyFavouritesView: UIView {
         alert.setTextAlignment(.left)
         alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
         alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-        alert.configure(title: "Change Order Type ?", message: "Please be aware your cart will be cleared as you change order type", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self)
+        alert.configure(title: LSCollection.CartScren.orderTypeHasBeenChanged, message: LSCollection.CartScren.cartWillBeCleared, leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self)
         alert.handleAction = { [weak self] in
             if $0 == .right {
-                CartUtility.clearCart(clearedConfirmed: {
+                CartUtility.clearCartRemotely(clearedConfirmed: {
                     self?.handleViewActions?(.handleCartConflict(count: count, index: index))
                     weak var weakRef = alert
                     weakRef?.removeFromContainer()

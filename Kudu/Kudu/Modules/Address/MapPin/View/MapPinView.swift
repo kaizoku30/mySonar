@@ -39,11 +39,11 @@ class MapPinView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        movePinLabel.text = LocalizedStrings.MapPin.movePinLabel
+        movePinLabel.text = LSCollection.MapPin.movePinLabel
         movePinLabel.adjustsFontSizeToFitWidth = true
-        confirmLocationButton.setTitle(LocalizedStrings.MapPin.confirmLocation, for: .normal)
+        confirmLocationButton.setTitle(LSCollection.MapPin.confirmLocation, for: .normal)
         addressContainerView.roundTopCorners(cornerRadius: 32)
-        titleLabel.text = LocalizedStrings.MapPin.setLocationTitle
+        titleLabel.text = LSCollection.MapPin.setLocationTitle
     }
     
     func setupView(delegate: MapPinVC) {

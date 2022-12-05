@@ -44,38 +44,38 @@ class SendFeedbackVC: BaseVC {
     func validateForm() {
         
         if isUploading {
-            baseView.showError(message: LocalizedStrings.Setting.pleasewaitWhileUploading)
+            baseView.showError(message: LSCollection.Setting.pleasewaitWhileUploading)
             return
         }
         
         if self.name.isEmpty {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterYourName)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterYourName)
             return
         }
         if !CommonValidation.isValidName(self.name) {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterValidName)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterValidName)
             return
         }
         if self.number.isEmpty {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterYourMobileNumber)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterYourMobileNumber)
             return
         }
         if !CommonValidation.isValidPhoneNumber(self.number) {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterValidNumber)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterValidNumber)
             return
         }
         if self.feedback.isEmpty {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterYourFeedback)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterYourFeedback)
             return
         }
         if self.feedback.count < 5 {
-            baseView.showError(message: LocalizedStrings.Setting.pleaseEnterValidFeedback)
+            baseView.showError(message: LSCollection.Setting.pleaseEnterValidFeedback)
 			return
         }
         let email: String? = self.email.isEmpty ? nil : self.email
         if email.isNotNil {
             if !CommonValidation.isValidEmail(email!) {
-                baseView.showError(message: LocalizedStrings.Setting.pleaseEnterValidEmailId)
+                baseView.showError(message: LSCollection.Setting.pleaseEnterValidEmailId)
 				return
             }
         }
@@ -143,7 +143,7 @@ class SendFeedbackVC: BaseVC {
     func showCameraPermissionDenied() {
         mainThread {
             let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.popUpWidth, height: CameraPermissionDeniedView.popUpHeight))
-            cameraPermissionAlert.configure(type: .noCamera, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self.baseView)
+            cameraPermissionAlert.configure(type: .noCamera, leftButtonTitle: LSCollection.Home.cancel, rightButtonTitle: LSCollection.Home.setting, container: self.baseView)
             cameraPermissionAlert.handleAction = {
                 if $0 == .right {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
@@ -244,7 +244,7 @@ class SendFeedbackVC: BaseVC {
     func showGalleryPermissionDenied() {
         mainThread {
             let cameraPermissionAlert = CameraPermissionDeniedView(frame: CGRect(x: 0, y: 0, width: CameraPermissionDeniedView.popUpWidth, height: CameraPermissionDeniedView.popUpHeight))
-            cameraPermissionAlert.configure(type: .noGallery, leftButtonTitle: LocalizedStrings.Setting.cancel, rightButtonTitle: LocalizedStrings.Setting.settings, container: self.baseView)
+            cameraPermissionAlert.configure(type: .noGallery, leftButtonTitle: LSCollection.Setting.cancel, rightButtonTitle: LSCollection.Setting.settings, container: self.baseView)
             cameraPermissionAlert.handleAction = {
                 if $0 == .right {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)

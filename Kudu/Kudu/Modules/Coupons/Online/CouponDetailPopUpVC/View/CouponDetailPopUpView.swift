@@ -63,7 +63,7 @@ class CouponDetailPopUpView: UIView {
             let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
             popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
             popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
-            popUpAlert.configure(title: "Alert", message: "Your coupon will be marked as redeemed if you close this window. Make sure to get it scanned at the store before you close or before the time gets lapsed.", leftButtonTitle: "Confirm", rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: false)
+            popUpAlert.configure(title: "Alert", message: "Your coupon will be marked as redeemed if you close this window. Make sure to get it scanned at the store before you close or before the time gets lapsed.", leftButtonTitle: "Confirm", rightButtonTitle: LSCollection.MyAddress.cancel, container: self, setMessageAsTitle: false)
             popUpAlert.handleAction = {
                 if $0 == .right { return }
                 dismiss()
@@ -111,7 +111,7 @@ class CouponDetailPopUpView: UIView {
     
     private func setAvailableStoreText(allAvailable: Bool) {
         let selectStore = "Applicable on selected stores"
-        let allStore = "Applicable on all stores"
+        let allStore = LSCollection.CouponDetail.applicableOnAllStores
         if allAvailable {
             applicableOnStoresText.text = allStore
             //applicableOnStoresText.attributedText = NSAttributedString(string: allStore, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])

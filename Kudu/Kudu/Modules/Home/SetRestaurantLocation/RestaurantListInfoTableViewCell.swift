@@ -28,9 +28,9 @@ class RestaurantListInfoTableViewCell: UITableViewCell {
     func configure(numberOfStores: Int?) {
         storeNearYouLabel.isHidden = numberOfStores.isNil
         if numberOfStores == 1 {
-            storeNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfStores ?? 0)")
+            storeNearYouLabel.text = LSCollection.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfStores ?? 0)")
         } else {
-            storeNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfStores ?? 0)")
+            storeNearYouLabel.text = LSCollection.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfStores ?? 0)")
         }
         
     }

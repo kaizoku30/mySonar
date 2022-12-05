@@ -18,7 +18,7 @@ class TopSearchCategoriesCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        titleLabel.text = LocalizedStrings.SearchMenu.topSearchedCategories
+        titleLabel.text = LSCollection.SearchMenu.topSearchedCategories
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

@@ -128,7 +128,7 @@ extension AppDelegate {
     }
     
     private func scheduleCartNotification() {
-        if CartUtility.fetchCart().count > 0 {
+        if CartUtility.fetchCartLocally().count > 0 {
             let timeForNotif = DataManager.shared.currentCartConfig?.notificationWaitTime ?? 0
             NotificationScheduler.scheduleNotification(type: .idleCartReminder, timeInterval: Double(timeForNotif*60))
         }
@@ -144,15 +144,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async
       -> UIBackgroundFetchResult {
-      // If you are receiving a notification message while your app is in the background,
-      // this callback will not be fired till the user taps on the notification launching the application.
-
-      // With swizzling disabled you must let Messaging know about the message, for Analytics
-      // Messaging.messaging().appDidReceiveMessage(userInfo)
-
-      // Print message ID.
-
-      // Print full message.
       print(userInfo)
       return UIBackgroundFetchResult.newData
     }
@@ -175,43 +166,30 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
         
         debugPrint("NOTIFICATION RECEIVED")
         
-        if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCart().isEmpty == false {
+        if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCartLocally().isEmpty == false {
             let timeForNotif = DataManager.shared.currentCartConfig?.notificationWaitTime ?? 0
             NotificationScheduler.scheduleNotification(type: .idleCartReminder, timeInterval: Double(timeForNotif*60))
         }
         
-        if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCart().isEmpty == true {
+        if notification.request.identifier == "CART_REMINDER" && CartUtility.fetchCartLocally().isEmpty == true {
             return [[]]
         }
         
         let userInfo = notification.request.content.userInfo
-        
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // ...
-        // Print full message.
+        let orderId = userInfo["orderId"] as? String
+        if orderId.isNotNil {
+            NotificationCenter.postNotificationForObservers(.orderNotificationReceived)
+        }
         print(userInfo)
-        
-        // Change this to your preferred presentation option
         return [[.banner, .list, .sound]]
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse) async {
-        
-        debugPrint("NOTIFICATION RECEIVED")
-        
         let userInfo = response.notification.request.content.userInfo
         if response.notification.request.identifier != "CART_REMINDER" {
             NotificationCenter.postNotificationForObservers(.goToNotifications)
         }
-        // ...
-        
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // Print full message.
         print(userInfo)
     }
     

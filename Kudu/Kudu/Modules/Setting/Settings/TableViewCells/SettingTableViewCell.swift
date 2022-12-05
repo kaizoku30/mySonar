@@ -25,10 +25,14 @@ class SettingTableViewCell: UITableViewCell {
                 self.activityIndicator.startAnimating()
                 self.activityIndicator.isHidden = false
             } else {
-                self.activityIndicator.isHidden = false
-                self.activityIndicator.stopAnimating()
-                self.settingName.isHidden = false
+                stopLoading()
             }
+    }
+    
+    private func stopLoading() {
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.stopAnimating()
+        self.settingName.isHidden = false
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

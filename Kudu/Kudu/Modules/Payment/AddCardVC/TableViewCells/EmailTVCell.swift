@@ -11,8 +11,14 @@ class EmailTVCell: UITableViewCell {
     
     @IBAction func verifyButtonPressed(_ sender: Any) {
         if self.verified == false {
-            verifyButton.startBtnLoader(color: AppColors.kuduThemeBlue)
-            verificationFlow?()
+            if emailTF.text?.isEmpty ?? false == true {
+                self.showError?(LSCollection.EditProfile.pleaseEnterEmail)
+            } else if CommonValidation.isValidEmail(emailTF.text ?? "") == false {
+                self.showError?(LSCollection.SignUp.pleaseEnterValidEmail)
+            } else {
+                verifyButton.startBtnLoader(color: AppColors.kuduThemeBlue)
+                verificationFlow?()
+            }
         }
     }
     
@@ -33,6 +39,7 @@ class EmailTVCell: UITableViewCell {
     
     var verificationFlow: (() -> Void)?
     var updateEmail: ((String) -> Void)?
+    var showError: ((String) -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()

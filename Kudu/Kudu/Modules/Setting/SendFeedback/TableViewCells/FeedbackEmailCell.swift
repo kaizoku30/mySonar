@@ -18,7 +18,7 @@ class FeedbackEmailCell: UITableViewCell {
         selectionStyle = .none
         emailTFView.textFieldType = .email
         emailTFView.backgroundColor = .clear
-        emailTFView.placeholderText = LocalizedStrings.Setting.emailIdOptional
+        emailTFView.placeholderText = LSCollection.Setting.emailIdOptional
         tfContainerView.backgroundColor = AppColors.SendFeedbackScreen.textfieldBg
         tfContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(containerTapped)))
         emailTFView.textFieldFinishedEditing = { [weak self] in

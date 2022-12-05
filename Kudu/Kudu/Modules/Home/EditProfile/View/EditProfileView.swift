@@ -9,9 +9,9 @@ import UIKit
 
 class EditProfileView: UIView {
 
+    @IBOutlet private weak var editPhoneNumberButton: AppButton!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var nameTFView: AppTextFieldView!
-    @IBOutlet private weak var phoneContainerView: UIView!
     @IBOutlet private weak var phoneNumberTF: UITextField!
     @IBOutlet private weak var emailTFView: AppTextFieldView!
     @IBOutlet private weak var updateButton: AppButton!
@@ -19,8 +19,9 @@ class EditProfileView: UIView {
     @IBOutlet private weak var phoneContainer: UIView!
     @IBOutlet private weak var emailContainer: UIView!
     @IBOutlet private weak var editNameButton: AppButton!
+    @IBOutlet private weak var countryCodeMarker: UILabel!
     @IBOutlet private weak var editEmailButton: AppButton!
-    
+    @IBOutlet private weak var phoneTFContainer: AppTextFieldView!
     @IBAction private func updateButtonPressed(_ sender: Any) {
         self.handleViewActions?(.updateProfile)
     }
@@ -58,7 +59,7 @@ class EditProfileView: UIView {
     }
     
     private func initialSetup() {
-        titleLabel.text = LocalizedStrings.EditProfile.editProfile
+        titleLabel.text = LSCollection.EditProfile.editProfile
         setupTextfields()
     }
     
@@ -85,7 +86,12 @@ class EditProfileView: UIView {
 
 extension EditProfileView {
     private func setupTextfields() {
-        phoneContainer.isUserInteractionEnabled = false
+        updateButton.setTitle(LSCollection.EditProfile.updateButton, for: .normal)
+        editPhoneNumberButton.semanticContentAttribute = .forceLeftToRight
+        phoneTFContainer.semanticContentAttribute = .forceLeftToRight
+        countryCodeMarker.semanticContentAttribute = .forceLeftToRight
+        //phoneContainer.isUserInteractionEnabled = false
+        countryCodeMarker.isUserInteractionEnabled = false
         phoneNumberTF.isUserInteractionEnabled = false
         phoneNumberTF.textColor = .black
         phoneContainer.semanticContentAttribute = .forceLeftToRight
@@ -97,8 +103,8 @@ extension EditProfileView {
         })
         nameTFView.textFieldType = .name
         emailTFView.textFieldType = .email
-        nameTFView.placeholderText = LocalizedStrings.AddNewAddress.enterYourName
-        emailTFView.placeholderText = LocalizedStrings.SignUp.enterYourEmailOptional
+        nameTFView.placeholderText = LSCollection.AddNewAddress.enterYourName
+        emailTFView.placeholderText = LSCollection.SignUp.enterYourEmailOptional
         nameTFView.textFieldDidChangeCharacters = { [weak self] in
             self?.handleViewActions?(.nameUpdated(updatedText: $0 ?? ""))
         }
@@ -146,7 +152,7 @@ extension EditProfileView {
     
     func showAlreadyAssociatedAlert() {
         let appAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.width -  AppPopUpView.HorizontalPadding, height: 0))
-        appAlert.configure(title: LocalizedStrings.EditProfile.emailAlreadyVerified, message: LocalizedStrings.EditProfile.emailAlreadyAssociated, leftButtonTitle: LocalizedStrings.EditProfile.cancel, rightButtonTitle: LocalizedStrings.EditProfile.updateButton, container: self)
+        appAlert.configure(title: LSCollection.EditProfile.emailAlreadyVerified, message: LSCollection.EditProfile.emailAlreadyAssociated, leftButtonTitle: LSCollection.EditProfile.cancel, rightButtonTitle: LSCollection.EditProfile.updateButton, container: self)
         appAlert.handleAction = { [weak self] (action) in
             if action == .right {
                 self?.editEmailButton.isHidden = true

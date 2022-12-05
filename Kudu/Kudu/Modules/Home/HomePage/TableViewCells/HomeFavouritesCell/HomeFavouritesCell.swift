@@ -17,9 +17,9 @@ class HomeFavouritesCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        favouritesLabel.text = LocalizedStrings.Home.favourites
-        orderFromListLabel.text = LocalizedStrings.Home.orderFromListOfFavourites
-        orderNowLabel.text = LocalizedStrings.Home.orderNow
+        favouritesLabel.text = LSCollection.Home.favourites
+        orderFromListLabel.text = LSCollection.Home.orderFromListOfFavourites
+        orderNowLabel.text = LSCollection.Home.orderNow
         self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(containerTapped)))
     }
     

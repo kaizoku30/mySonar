@@ -63,9 +63,9 @@ class AddressEntryFieldCell: UITableViewCell {
         var placeholder = ""
         switch self.entryType {
         case .name:
-            placeholder = LocalizedStrings.AddNewAddress.enterYourName
+            placeholder = LSCollection.AddNewAddress.enterYourName
         case .phoneNum:
-            placeholder = LocalizedStrings.AddNewAddress.enterMobileNumberOptional
+            placeholder = LSCollection.AddNewAddress.enterMobileNumberOptional
 //        case .buildingName:
 //            placeholder = LocalizedStrings.AddNewAddress.buildingName
 //        case .city:
@@ -73,9 +73,9 @@ class AddressEntryFieldCell: UITableViewCell {
 //        case .state:
 //            placeholder = LocalizedStrings.AddNewAddress.state
         case .landmark:
-            placeholder = LocalizedStrings.AddNewAddress.landmark
+            placeholder = LSCollection.AddNewAddress.landmark
         case .zipCode:
-            placeholder = LocalizedStrings.AddNewAddress.zipCode
+            placeholder = LSCollection.AddNewAddress.zipCode
         default:
             break
         }

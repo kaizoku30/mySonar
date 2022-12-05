@@ -16,8 +16,12 @@ class BillDetailShimmerCell: UITableViewCell {
     @IBOutlet private weak var totalPayableLabel: UILabel!
     @IBOutlet private weak var shimmerView2: UIView!
     @IBOutlet private weak var shimmerView3: UIView!
-    
+    @IBOutlet private weak var billdetailLabel: UILabel!
+    @IBOutlet private weak var totalPayableTItleLabel: UILabel!
     override func awakeFromNib() {
+        super.awakeFromNib()
+        totalPayableTItleLabel.text = LSCollection.CartScren.totalPayable
+        billdetailLabel.text = LSCollection.CartScren.billDetails
         [shimmerView, shimmerView2, shimmerView3].forEach({
             $0?.startShimmering()
         })
@@ -40,13 +44,18 @@ class BillDetailsTableViewCell: UITableViewCell {
     @IBOutlet private weak var promoSeparatorView: UIView!
     @IBOutlet private weak var promoSavingsLabel: UILabel!
     @IBOutlet private weak var promoView: UIView!
+    @IBOutlet private weak var billdetailLabel: UILabel!
+    @IBOutlet weak var totalPayableTitleLbl: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        totalPayableTitleLbl.text = LSCollection.CartScren.totalPayable
+        billdetailLabel.text = LSCollection.CartScren.billDetails
 		deliveryChargeView.isHidden = false
         // Initialization code
     }
 
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

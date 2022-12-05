@@ -9,6 +9,7 @@ import UIKit
 
 class ApplyCouponTableViewCell: UITableViewCell {
 
+    @IBOutlet private weak var applyCouponsTitle: UILabel!
     @IBOutlet private weak var appliedCouponView: UIView!
     @IBOutlet private weak var applyCouponView: UIView!
     
@@ -32,6 +33,7 @@ class ApplyCouponTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        applyCouponsTitle.text = LSCollection.CartScren.applyCoupons
         applyCouponView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(goToCouponsVC)))
         removeChangeButton.addTarget(self, action: #selector(removeCouponFromCart), for: .touchUpInside)
         // Initialization code

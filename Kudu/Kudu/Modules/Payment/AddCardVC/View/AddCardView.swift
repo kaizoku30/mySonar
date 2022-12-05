@@ -30,6 +30,11 @@ class AddCardView: UIView {
     
     var handleViewActions: ((ViewActions) -> Void)?
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        titleLabel.text = LSCollection.Payments.addNewCard
+    }
+    
     func refreshRow(row: Rows) {
         mainThread({
             self.tableView.reloadData()

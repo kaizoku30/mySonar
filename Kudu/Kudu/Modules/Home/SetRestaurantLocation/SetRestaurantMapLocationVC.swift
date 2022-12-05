@@ -118,7 +118,7 @@ class SetRestaurantMapLocationVC: BaseVC {
 		self.confirmButtonHeightConstraint.constant = ourStoreFlow ? 0 : 48
 		if self.restaurantArray.count == 0 { self.confirmButtonHeightConstraint.constant = 0 }
 		self.kuduNearYouView.roundTopCorners(cornerRadius: 8)
-        self.topListButton.setTitle(LocalizedStrings.SetRestaurant.list, for: .normal)
+        self.topListButton.setTitle(LSCollection.SetRestaurant.list, for: .normal)
 		self.topListButton.layer.applySketchShadow(color: .black, alpha: 0.14, x: 0, y: 2, blur: 10, spread: 0)
         self.clearButton.isHidden = true
         self.topListButton.isHidden = false
@@ -145,14 +145,14 @@ class SetRestaurantMapLocationVC: BaseVC {
         if ourStoreFlow {
             searchTFView.placeholderText = "Search store"
         } else {
-            searchTFView.placeholderText = LocalizedStrings.SetRestaurant.selectBranch
+            searchTFView.placeholderText = LSCollection.SetRestaurant.selectBranch
         }
         searchTFView.font = AppFonts.mulishBold.withSize(14)
         searchTFView.textColor = .black
         searchBarContainerView.roundTopCorners(cornerRadius: 4)
-        titleLabel.text = ourStoreFlow ? "Select a Kudu" : LocalizedStrings.SetRestaurant.setPickupLocation
+        titleLabel.text = ourStoreFlow ? LSCollection.SetRestaurant.selectAKudu : LSCollection.SetRestaurant.setPickupLocation
         if type == .curbside && !ourStoreFlow {
-            titleLabel.text = LocalizedStrings.SetRestaurant.setCurbsideLocation
+            titleLabel.text = LSCollection.SetRestaurant.setCurbsideLocation
         }
         handleTextField()
     }
@@ -235,9 +235,9 @@ class SetRestaurantMapLocationVC: BaseVC {
     
     private func setKuduNearYouLabel() {
             if restaurantArray.count == 1 {
-                kuduNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(restaurantArray.count)")
+                kuduNearYouLabel.text = LSCollection.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(restaurantArray.count)")
             } else {
-                kuduNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(restaurantArray.count)")
+                kuduNearYouLabel.text = LSCollection.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(restaurantArray.count)")
             }
     }
 	

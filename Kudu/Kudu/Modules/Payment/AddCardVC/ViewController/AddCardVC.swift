@@ -108,6 +108,9 @@ extension AddCardVC {
         cell.verificationFlow = { [weak self] in
             self?.triggerEmailVerification()
         }
+        cell.showError = { [weak self] in
+            self?.baseView.showError(msg: $0)
+        }
         cell.updateEmail = { [weak self] in
             self?.viewModel.updateEmail(email: $0)
         }
@@ -198,6 +201,7 @@ extension AddCardVC {
             case .success:
                 let vc = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
                 vc.viewModel = PhoneVerificationVM(_delegate: vc, flowType: .comingFromEditProfile, emailForVerification: strongSelf.viewModel.getEmail)
+                vc.viewModel?.isAddCardFlow = true
                 strongSelf.push(vc: vc)
             case .failure(let error):
                 strongSelf.baseView.showError(msg: error.localizedDescription)

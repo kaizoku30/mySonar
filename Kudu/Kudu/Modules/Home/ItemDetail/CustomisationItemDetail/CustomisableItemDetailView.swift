@@ -72,7 +72,7 @@ class CustomisableItemDetailView: UIView {
 		}
 		let hash = MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: modGroups)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
-        if self.serviceType != CartUtility.getCartServiceType && CartUtility.fetchCart().isEmpty == false {
+        if self.serviceType != CartUtility.getCartServiceType && CartUtility.fetchCartLocally().isEmpty == false {
             self.showCartConflictAlert(modGroups, hash, self.item._id ?? "")
             return
         }
@@ -140,6 +140,7 @@ class CustomisableItemDetailView: UIView {
 		tableView.showsVerticalScrollIndicator = false
 		tapGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(removedWithTap)))
 		[ItemDetailTableViewCell.self, ModGroupHeaderCell.self, SelectDrinkTableViewCell.self, CheckMarkSelectionTableViewCell.self, AddModTypeTableViewCell.self].forEach({ self.tableView.registerCell(with: $0)})
+        resetButton.setTitle(LSCollection.ExploreMenu.resetButtonTitle, for: .normal)
 	}
 	
 	@objc private func removedWithTap() {
@@ -527,6 +528,7 @@ extension CustomisableItemDetailView {
         safeAreaMinGradientImage.isHidden = enabled ? false : true
         cartBannerGradientImage.isHidden = enabled ? false : true
         safeAreaGradientImage.isHidden = enabled ? false : true
+        addButton.setTitle(LSCollection.ExploreMenu.addToCartButtonTitle, for: .normal)
         addButton.backgroundColor = enabled ? .white : UIColor(r: 239, g: 239, b: 239, alpha: 1)
         addButton.borderWidth = enabled ? 0 : 1
 		addButton.borderColor = enabled ? .clear : UIColor(r: 91, g: 90, b: 90, alpha: 1)
@@ -548,10 +550,10 @@ extension CustomisableItemDetailView {
         alert.setTextAlignment(.left)
         alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
         alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-        alert.configure(title: "Change Order Type ?", message: "Please be aware your cart will be cleared as you change order type", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self)
+        alert.configure(title: LSCollection.CartScren.orderTypeHasBeenChanged, message: LSCollection.CartScren.cartWillBeCleared, leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self)
         alert.handleAction = { [weak self] in
             if $0 == .right {
-                CartUtility.clearCart(clearedConfirmed: {
+                CartUtility.clearCartRemotely(clearedConfirmed: {
                     guard let strongSelf = self else { return }
                     strongSelf.addToCart?(modGroups, hashId, itemId)
                     weak var weakRef = alert

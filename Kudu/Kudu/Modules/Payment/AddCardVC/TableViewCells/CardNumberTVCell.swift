@@ -48,6 +48,7 @@ class CardNumberTVCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        textField.placeholder = LSCollection.Payments.enterCardNumber
         self.selectionStyle = .none
         textField.delegate = self
     }

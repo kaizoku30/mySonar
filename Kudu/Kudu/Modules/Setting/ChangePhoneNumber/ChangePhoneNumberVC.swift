@@ -8,6 +8,7 @@
 import UIKit
 
 class ChangePhoneNumberVC: BaseVC {
+    @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var changePhoneNumberTF: UITextField!
     @IBOutlet private weak var changePhoneNumContainer: UIView!
     @IBOutlet private weak var verifyNowButton: AppButton!
@@ -18,12 +19,12 @@ class ChangePhoneNumberVC: BaseVC {
     
     @IBAction private func verifyButtonPressed(_ sender: Any) {
         if changePhoneNumberTF.text ?? "" == "" {
-            self.showError(msg: LocalizedStrings.SignUp.pleaseEnterPhoneNumber)
+            self.showError(msg: LSCollection.SignUp.pleaseEnterPhoneNumber)
             return
         }
         
         if (changePhoneNumberTF.text ?? "").count < 9 {
-            self.showError(msg: LocalizedStrings.SignUp.pleaseEnterValidPhoneNumber)
+            self.showError(msg: LSCollection.SignUp.pleaseEnterValidPhoneNumber)
             return
         }
         
@@ -39,9 +40,12 @@ class ChangePhoneNumberVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
+        
     }
     
     private func initialSetup() {
+        verifyNowButton.setTitle(LSCollection.Profile.verifyNow, for: .normal)
+        changePhoneNumberTF.placeholder = LSCollection.Setting.enterMobileNumber
         changePhoneNumContainer.semanticContentAttribute = .forceLeftToRight
         changePhoneNumberTF.semanticContentAttribute = .forceLeftToRight
     }

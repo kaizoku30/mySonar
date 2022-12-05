@@ -61,6 +61,7 @@ class AddModTypeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
+        addButton.setTitle(LSCollection.MyAddress.add, for: .normal)
         // Initialization code
     }
 

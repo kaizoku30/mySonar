@@ -21,6 +21,7 @@ class BillingDetailsHeaderCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        billingDetailsLabel.text = LSCollection.CartScren.billDetails
         containerView.roundTopCorners(cornerRadius: 4)
     }
     

@@ -134,11 +134,11 @@ enum DrinkSize: String {
     var title: String {
         switch self {
         case .regular:
-            return "Regular"
+            return AppUserDefaults.selectedLanguage() == .en ? "Regular" : "عادي"
         case .medium:
-            return "Medium"
+            return AppUserDefaults.selectedLanguage() == .en ? "Medium" : "وسط"
         case .large:
-            return "Large"
+            return AppUserDefaults.selectedLanguage() == .en ? "Large" : "كبير"
         }
     }
 }

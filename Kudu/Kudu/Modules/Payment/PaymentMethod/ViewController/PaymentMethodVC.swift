@@ -59,7 +59,7 @@ class PaymentMethodVC: BaseVC {
         super.viewDidLoad()
         self.baseView.tableView.reloadData()
         let amount = req.totalAmount
-        self.payButton.setTitle("SR \(amount.round(to: 2).removeZerosFromEnd())", for: .normal)
+        self.payButton.setTitle("\(LSCollection.Payments.paySR) \(amount.round(to: 2).removeZerosFromEnd())", for: .normal)
         self.viewModel.getCards(fetched: { [weak self] (result) in
             mainThread {
                 switch result {
@@ -133,6 +133,7 @@ extension PaymentMethodVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if isFetchingCards {
             let cell = tableView.dequeueCell(with: PaymentMethodShimmerCell.self)
+            cell.selectionStyle = .none
             return cell
         }
         if indexPath.row == 0 {
@@ -193,6 +194,7 @@ extension PaymentMethodVC: UITableViewDataSource, UITableViewDelegate {
 extension PaymentMethodVC {
     func getCardHeaderCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: CardHeaderCell.self)
+        cell.selectionStyle = .none
         cell.triggerAddCardFlow = { [weak self] in
             let vc = AddCardVC.instantiate(fromAppStoryboard: .Payment)
             vc.flow = self?.flow ?? .fromExplore
@@ -207,6 +209,7 @@ extension PaymentMethodVC {
     
     func getSavedCard(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: SavedCardCell.self)
+        cell.selectionStyle = .none
         if indexPath.row - 2 < viewModel.getCards.count {
             let card = viewModel.getCards[indexPath.row - 2]
             cell.initiatePayment = { [weak self] (cvv, cardIndex) in
@@ -219,17 +222,20 @@ extension PaymentMethodVC {
     
     func getSavedCardsHeader(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: SavedCardHeaderCell.self)
+        cell.selectionStyle = .none
         return cell
     }
     
     func getCODCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: CODCell.self)
+        cell.selectionStyle = .none
         cell.configure(config.isCOD, serviceType: req.servicesType)
         return cell
     }
     
     func getApplePayCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: ApplePayPaymentCell.self)
+        cell.selectionStyle = .none
         cell.applePayTriggered = { [weak self] in
             mainThread {
                 self?.openApplePay()
@@ -294,8 +300,10 @@ extension PaymentMethodVC: PKPaymentAuthorizationViewControllerDelegate {
                     self?.baseView.showError(msg: error.msg)
                 })
             case .failure(let error):
-                self?.tabBarController?.removeLoaderOverlay()
-                self?.baseView.showError(msg: error.localizedDescription)
+                mainThread {
+                    self?.tabBarController?.removeLoaderOverlay()
+                    self?.baseView.showError(msg: error.localizedDescription)
+                }
             }
         })
     }
@@ -304,7 +312,7 @@ extension PaymentMethodVC: PKPaymentAuthorizationViewControllerDelegate {
         //Apple Pay Testing
         
         let request = PKPaymentRequest()
-        request.merchantIdentifier = "merchant.com.kudu.kudu-sandbox"
+        request.merchantIdentifier = "merchant.com.kudu.checkout22.sandbox"
         request.supportedNetworks = [.visa, .amex, .masterCard]
         request.merchantCapabilities = [.capability3DS]
         request.countryCode = "SA"

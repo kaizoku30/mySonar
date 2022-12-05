@@ -183,7 +183,7 @@ extension AppTextFieldView {
             
         case.phoneNo:
             txtField.textAlignment = .left
-            txtField.placeholder = LocalizedStrings.Login.phoneNo
+            txtField.placeholder = LSCollection.Login.phoneNo
             txtField.keyboardType = .phonePad
         case .password:
          //   txtField.placeholder = LS.Placeholder.password

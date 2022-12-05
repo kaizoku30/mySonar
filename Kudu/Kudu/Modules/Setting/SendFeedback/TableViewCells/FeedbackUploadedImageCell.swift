@@ -18,7 +18,7 @@ class FeedbackUploadedImageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        attachedPhotosLbl.text = LocalizedStrings.Setting.attachedPhotos
+        attachedPhotosLbl.text = LSCollection.Setting.attachedPhotos
         self.cornerRadius = 4
         deleteButton.handleBtnTap = { [weak self] in
             self?.deletePressed?()

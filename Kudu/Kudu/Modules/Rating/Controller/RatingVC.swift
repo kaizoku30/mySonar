@@ -27,11 +27,6 @@ class RatingVC: BaseVC {
             btnSubmit.startBtnLoader(color: .white)
         }
     }
-    
-    private func setButton(enabled: Bool) {
-        btnSubmit.setTitleColor(enabled ? .white : AppColors.unselectedButtonTextColor, for: .normal)
-        btnSubmit.backgroundColor = enabled ? AppColors.kuduThemeYellow : AppColors.unselectedButtonBg
-    }
 
     var data: RatingRequestModel = RatingRequestModel()
     let viewModel: RatingViewModel = RatingViewModel()
@@ -42,10 +37,6 @@ class RatingVC: BaseVC {
     @IBOutlet weak var btnSubmit: AppButton!
     @IBOutlet weak var viewRating: CosmosView!
     @IBOutlet weak var textViewHeight: NSLayoutConstraint!
-    
-    func setOrderId(_ id: String) {
-        data.orderId = id
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +60,39 @@ class RatingVC: BaseVC {
         }
     }
     
+    func setOrderId(_ id: String) {
+        data.orderId = id
+    }
+    
+    private func setButton(enabled: Bool) {
+        btnSubmit.setTitleColor(enabled ? .white : AppColors.unselectedButtonTextColor, for: .normal)
+        btnSubmit.backgroundColor = enabled ? AppColors.kuduThemeYellow : AppColors.unselectedButtonBg
+    }
+}
+extension RatingVC: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        let sizeToFitIn = CGSize(width: self.txtViewComment.bounds.size.width, height: CGFloat(MAXFLOAT))
+            let newSize = self.txtViewComment.sizeThatFits(sizeToFitIn)
+            self.textViewHeight.constant = newSize.height
+        self.setButton(enabled: textView.text.count > 0 && data.rate != 0)
+    }
+}
+
+extension RatingVC: RatingViewModelDelegate {
+    func ratingReponseHandling(responseType: Result<Bool, Error>) {
+        switch responseType {
+        case .success:
+            self.pop()
+        case .failure(let error):
+            let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.view.width - 32, height: 48))
+            mainThread {
+                errorView.show(message: error.localizedDescription, view: self.view)
+            }
+        }
+    }
+}
+
+extension RatingVC {
     //Keybaord Observer for scroll handling.
     fileprivate func addKeyboardObserver() {
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
@@ -100,29 +124,5 @@ class RatingVC: BaseVC {
         mainThread({
             self.scrollView.setContentOffset(.zero, animated: true)
         })
-    }
-    
-}
-extension RatingVC: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        let sizeToFitIn = CGSize(width: self.txtViewComment.bounds.size.width, height: CGFloat(MAXFLOAT))
-            let newSize = self.txtViewComment.sizeThatFits(sizeToFitIn)
-            self.textViewHeight.constant = newSize.height
-        self.setButton(enabled: textView.text.count > 0 && data.rate != 0)
-        }
-    
-}
-
-extension RatingVC: RatingViewModelDelegate {
-    func ratingReponseHandling(responseType: Result<Bool, Error>) {
-        switch responseType {
-        case .success:
-            self.pop()
-        case .failure(let error):
-            let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self.view.width - 32, height: 48))
-            mainThread {
-                errorView.show(message: error.localizedDescription, view: self.view)
-            }
-        }
     }
 }

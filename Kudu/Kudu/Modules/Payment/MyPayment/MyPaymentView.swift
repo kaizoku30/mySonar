@@ -43,7 +43,7 @@ class MyPaymentView: UIView {
             //popUpAlert.rightButtonBgColor = AppColors.MyAddressScreen.deleteBtnColor
             popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
             popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
-            popUpAlert.configure(message: "Are you sure you want to delete this Card?", leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
+            popUpAlert.configure(message: "Are you sure you want to delete this Card?", leftButtonTitle: LSCollection.MyAddress.delete, rightButtonTitle: LSCollection.MyAddress.cancel, container: self, setMessageAsTitle: true)
             popUpAlert.handleAction = {
                 if $0 == .right { return }
                 deleteCard()

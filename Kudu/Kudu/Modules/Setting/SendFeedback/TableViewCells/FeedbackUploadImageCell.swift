@@ -19,7 +19,7 @@ class FeedbackUploadImageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        label.text = LocalizedStrings.Setting.uploadPhoto
+        label.text = LSCollection.Setting.uploadPhoto
         cellImgView.cornerRadius = 4
 		uploadingButtonView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openAlert)))
         // Initialization code

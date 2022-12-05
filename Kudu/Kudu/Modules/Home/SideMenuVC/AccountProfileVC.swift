@@ -45,8 +45,16 @@ class AccountProfileVC: BaseVC {
                 } animation: { view in
                     view.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
                 }
-            }, failure: {status in
+            }, failure: { _ in
                 self.tabBarController?.removeLoaderOverlay()
+                AppUserDefaults.save(value: language.rawValue, forKey: .selectedLanguage)
+                LanguageManager.shared.setLanguage(language: isArabic ? .ar : .en) { _ -> UIViewController in
+                    let tabBar = HomeTabBarVC()
+                    let navVC = BaseNavVC(rootViewController: tabBar)
+                    return navVC
+                } animation: { view in
+                    view.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+                }
             })
            
         })

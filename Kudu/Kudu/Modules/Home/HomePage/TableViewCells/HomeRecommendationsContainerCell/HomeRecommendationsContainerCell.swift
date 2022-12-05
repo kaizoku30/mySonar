@@ -17,8 +17,8 @@ class HomeRecommendationsContainerCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        recommendationLabel.text = LocalizedStrings.Home.recommendations
-        viewAllButton.setTitle(LocalizedStrings.Home.viewAll, for: .normal)
+        recommendationLabel.text = LSCollection.Home.recommendations
+        viewAllButton.setTitle(LSCollection.Home.viewAll, for: .normal)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)

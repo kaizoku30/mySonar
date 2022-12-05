@@ -47,6 +47,8 @@ class OurStoreItemTableViewCell: UITableViewCell {
         mapImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openMapWithSelectedRestaurant)))
         deliveryAvailability.isUserInteractionEnabled = true
         deliveryAvailability.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(deliveryLabelTapped)))
+        pickUpButton.setTitle(LSCollection.OurStoreVC.pickUpButtonTitle, for: .normal)
+        curbsideButton.setTitle(LSCollection.OurStoreVC.curbsideButtonTitle, for: .normal)
         rushHourLabel.roundTopCorners(cornerRadius: 4)
     }
     
@@ -74,11 +76,20 @@ class OurStoreItemTableViewCell: UITableViewCell {
         var timeString = NSAttributedString(string: "Open : \(openingTime) to \(closingTime)", attributes: [.foregroundColor: AppColors.OurStore.timeLblColor])
         var openingTimeString = timeString
         let distance = (restaurant.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
-        let distanceAttributedString = NSMutableAttributedString(string: "\(distance) \(LocalizedStrings.SetRestaurant.km) away \(isOpen ? "" : "| ")", attributes: [.foregroundColor: AppColors.OurStore.distanceLblColor])
+        var distanceAttributedString = NSMutableAttributedString(string: "\(distance) \(LSCollection.SetRestaurant.km) away \(isOpen ? "" : "| ")", attributes: [.foregroundColor: AppColors.OurStore.distanceLblColor])
         if !isOpen {
             timeString = NSAttributedString(string: "Closed Now", attributes: [.foregroundColor: AppColors.RestaurantListCell.closedRed])
             distanceAttributedString.append(timeString)
+            if AppUserDefaults.selectedLanguage() == .ar {
+                distanceAttributedString = NSMutableAttributedString(string: "مغلق الآن", attributes: [.foregroundColor: AppColors.RestaurantListCell.closedRed])
+                timeString = NSMutableAttributedString(string: " | كم \(distance)")
+                distanceAttributedString.append(timeString)
+            }
             openingTimeString = NSAttributedString(string: "Open : \(openingTime) to \(closingTime)", attributes: [.foregroundColor: AppColors.OurStore.distanceLblColor])
+        } else {
+            if AppUserDefaults.selectedLanguage() == .ar {
+                distanceAttributedString = NSMutableAttributedString(string: "كم \(distance)", attributes: [.foregroundColor: AppColors.OurStore.distanceLblColor])
+            }
         }
         openingTimeLabel.attributedText = openingTimeString
         distanceLbl.attributedText = distanceAttributedString
@@ -87,7 +98,7 @@ class OurStoreItemTableViewCell: UITableViewCell {
         if restaurant.isRushHour ?? false || isOpen == false {
             isDelivery = false
         }
-        deliveryAvailability.text = isDelivery ? LocalizedStrings.OurStore.DeliveryAvailable : LocalizedStrings.OurStore.DeliveryUnavailable
+        deliveryAvailability.text = isDelivery ? LSCollection.OurStore.DeliveryAvailable : LSCollection.OurStore.DeliveryUnavailable
         deliveryAvailability.textColor = isDelivery ? AppColors.OurStore.deliveryAvailable : AppColors.OurStore.deliveryUnavailable
         var curbSideEnabled = (restaurant.serviceCurbSide ?? false)
         var servicePickupEnabled = (restaurant.servicePickup ?? false)

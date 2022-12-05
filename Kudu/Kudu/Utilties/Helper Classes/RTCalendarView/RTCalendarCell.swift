@@ -14,6 +14,7 @@ class RTCalendarCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.semanticContentAttribute = .forceLeftToRight
         // Initialization code
     }
     

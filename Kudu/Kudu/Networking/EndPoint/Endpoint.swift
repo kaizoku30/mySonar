@@ -12,11 +12,12 @@ enum Endpoint {
     // MARK: PRELOGIN END POINTS
     case login(mobileNo: String, countryCode: String)
     case sendOtp(mobileNo: String, countryCode: String = "966", email: String?)
-    case signUp(fullName: String, email: String?, mobileNo: String, countryCode: String = "966", deviceId: String = "123", deviceToken: String = "321")
-    case verifyMobileOtp(fullName: String?, email: String?, mobileNo: String, countryCode: String = "966", mobileOtp: String, deviceId: String = "123", deviceToken: String = "321")
-    case socialLogIn(socialLoginType: SocialLoginType, socialId: String, deviceId: String = "123", deviceToken: String = "321")
-    case socialSignup(socialLoginType: SocialLoginType, socialId: String, fullName: String, mobileNo: String, email: String?, countryCode: String = "966", deviceId: String = "123", deviceToken: String = "321")
-    case socialVerification(socialLoginType: SocialLoginType, socialId: String, fullName: String, mobileNo: String, email: String?, mobileOtp: String, countryCode: String = "966", deviceId: String = "123", deviceToken: String = "321")
+    case signUp(fullName: String, email: String?, mobileNo: String, countryCode: String = "966", deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case verifyMobileOtp(fullName: String?, email: String?, mobileNo: String, countryCode: String = "966", mobileOtp: String, deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case socialLogIn(socialLoginType: SocialLoginType, socialId: String, deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case socialSignup(socialLoginType: SocialLoginType, socialId: String, fullName: String, mobileNo: String, email: String?, countryCode: String = "966", deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case socialVerification(socialLoginType: SocialLoginType, socialId: String, fullName: String, mobileNo: String, email: String?, mobileOtp: String, countryCode: String = "966", deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case checkUpdateConfiguration
     
     // MARK: ADDRESS END POINTS
     case addAddress(request: AddAddressRequest)
@@ -53,6 +54,10 @@ enum Endpoint {
     
     // MARK: NOTIFICATION END POINTS
     case notificationPref(req: NotificationPrefRequest)
+    case changeDeviceToken(deviceId: String = DeviceDetail.deviceId, deviceToken: String = DataManager.shared.fetchToken)
+    case notificationList(pageNo: Int, limit: Int)
+    case deleteNotification(id: String)
+    case deleteAllNotification
     
     // MARK: CART END POINTS
     case addItemToCart(req: AddCartItemRequest)
@@ -85,11 +90,6 @@ enum Endpoint {
     case reorderItems(orderId: String)
     case validateOrder(req: OrderPlaceRequest)
 
-    // MARK: Notification
-    case notificationList(pageNo: Int, limit: Int)
-    case deleteNotification(id: String)
-    case deleteAllNotification
-    
     // MARK: PAYMENT END POINTS
     case payment(cardToken: String)
     case tokenCardPayment(req: AddCardPaymentRequest, isApplePay: Bool)
@@ -98,4 +98,5 @@ enum Endpoint {
     case getCards
     case deleteCard(cardId: String)
     case changeDeviceLang(language: String)
+    case uploadCertificate
 }

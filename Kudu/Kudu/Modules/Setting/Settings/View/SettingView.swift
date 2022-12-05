@@ -43,11 +43,11 @@ class SettingView: UIView {
         var title: String {
             switch self {
             case .help:
-                return LocalizedStrings.Setting.help
+                return LSCollection.Setting.help
             case .content:
-                return LocalizedStrings.Setting.content
+                return LSCollection.Setting.content
             case .accountControl:
-                return LocalizedStrings.Setting.accountControl
+                return LSCollection.Setting.accountControl
             }
         }
     }
@@ -60,11 +60,11 @@ class SettingView: UIView {
         var title: String {
             switch self {
             case .faq:
-                return LocalizedStrings.Setting.faq
+                return LSCollection.Setting.faq
             case .support:
-                return LocalizedStrings.Setting.support
+                return LSCollection.Setting.support
             case .sendFeedback:
-                return LocalizedStrings.Setting.sendFeedback
+                return LSCollection.Setting.sendFeedback
             }
         }
     }
@@ -78,13 +78,13 @@ class SettingView: UIView {
         var title: String {
             switch self {
             case .privacyAndPolicy:
-                return LocalizedStrings.Setting.privacyAndPolicy
+                return LSCollection.Setting.privacyAndPolicy
             case .termsAndConditions:
-                return LocalizedStrings.Setting.termsAndConditions
+                return LSCollection.Setting.termsAndConditions
             case .ourVision:
-                return LocalizedStrings.Setting.ourVision
+                return LSCollection.Setting.ourVision
             case .aboutUs:
-                return LocalizedStrings.Setting.aboutUs
+                return LSCollection.Setting.aboutUs
             }
         }
     }
@@ -96,9 +96,9 @@ class SettingView: UIView {
         var title: String {
             switch self {
             case .deleteAccount:
-                return LocalizedStrings.Setting.deleteAccount
+                return LSCollection.Setting.deleteAccount
             case .logOut:
-                return LocalizedStrings.Setting.logOut
+                return LSCollection.Setting.logOut
             }
         }
     }
@@ -107,7 +107,7 @@ class SettingView: UIView {
         super.awakeFromNib()
         setupTableView()
         settingTableView.separatorStyle = .none
-        settingsLabel.text = LocalizedStrings.Setting.settings
+        settingsLabel.text = LSCollection.Setting.settings
     }
     
     private func setupTableView() {

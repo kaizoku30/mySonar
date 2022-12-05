@@ -83,31 +83,28 @@ extension OurStoreVC {
 
 extension OurStoreVC {
     private func checkLocationState() {
-        
-        self.baseView.toggleOutOfReachView(DataManager.shared.currentDeliveryLocation.isNil)
-        //!CommonLocationManager.checkIfLocationServicesEnabled() ||
-        if !CommonLocationManager.isAuthorized() {
-            self.baseView.isUserInteractionEnabled = true
-            self.showLocationPermissionAlert()
-            return
-        } else {
-            if DataManager.shared.currentDeliveryLocation.isNotNil {
-                self.baseView.setupView()
-                self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: DataManager.shared.currentDeliveryLocation?.latitude ?? 0.0, longitude: DataManager.shared.currentDeliveryLocation?.longitude ?? 0.0))
-                self.baseView.isUserInteractionEnabled = true
-                return
-            }
-            CommonLocationManager.getLocationOfDevice(foundCoordinates: {
-                if let coordinates = $0 {
-                    self.baseView.setupView()
-                    self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude))
-                    self.baseView.isUserInteractionEnabled = true
-                } else {
+        CommonLocationManager.getLocationOfDevice(foundCoordinates: { (coordinates) in
+            mainThread {
+                self.baseView.toggleOutOfReachView(coordinates.isNil)
+                if !CommonLocationManager.isAuthorized() {
                     self.baseView.isUserInteractionEnabled = true
                     self.showLocationPermissionAlert()
+                    return
+                } else {
+                    if coordinates.isNotNil {
+                        self.baseView.setupView()
+                        self.viewModel.updateCurrentLocation(CLLocationCoordinate2D(latitude: coordinates?.latitude ?? 0.0, longitude: coordinates?.longitude ?? 0.0))
+                        self.viewModel.fetchRestaurants(searchKey: "")
+                        self.baseView.isUserInteractionEnabled = true
+                        return
+                    } else {
+                        self.baseView.isUserInteractionEnabled = true
+                        self.showLocationPermissionAlert()
+                    }
                 }
-            })
-        }
+            }
+        })
+        
     }
     
     private func showLocationPermissionAlert() {

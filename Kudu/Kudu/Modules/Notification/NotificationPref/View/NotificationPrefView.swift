@@ -32,30 +32,30 @@ class NotificationPrefView: UIView {
         var title: String {
             switch self {
             case .pushNotifications:
-                return LocalizedStrings.NotificationPref.pushNotifications
+                return LSCollection.NotificationPref.pushNotifications
             case .muteNotification:
-                return LocalizedStrings.NotificationPref.muteNotification
+                return LSCollection.NotificationPref.muteNotification
 //            case .loyaltyProgram:
 //                return LocalizedStrings.NotificationPref.loyaltyProgram
             case .orderPurchase:
-                return LocalizedStrings.NotificationPref.orderPurchase
+                return LSCollection.NotificationPref.orderPurchase
             case .promosOffers:
-                return LocalizedStrings.NotificationPref.promosOffers
+                return LSCollection.NotificationPref.promosOffers
             }
         }
         
         var subtitle: String {
             switch self {
             case .pushNotifications:
-                return LocalizedStrings.NotificationPref.pushNotificationsSubtitle
+                return LSCollection.NotificationPref.pushNotificationsSubtitle
             case .muteNotification:
-                return LocalizedStrings.NotificationPref.muteNotificationSubtitle
+                return LSCollection.NotificationPref.muteNotificationSubtitle
 //            case .loyaltyProgram:
 //                return LocalizedStrings.NotificationPref.loyaltyProgramSubtitle
             case .orderPurchase:
-                return LocalizedStrings.NotificationPref.orderPurchaseSubtitle
+                return LSCollection.NotificationPref.orderPurchaseSubtitle
             case .promosOffers:
-                return LocalizedStrings.NotificationPref.promosOffersSubtitle
+                return LSCollection.NotificationPref.promosOffersSubtitle
             }
         }
     }
@@ -71,7 +71,7 @@ class NotificationPrefView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        notificationTitleLabel.text = LocalizedStrings.Profile.notificationPref
+        notificationTitleLabel.text = LSCollection.Profile.notificationPref
     }
 }
 

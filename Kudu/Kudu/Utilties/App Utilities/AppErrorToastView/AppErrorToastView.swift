@@ -38,9 +38,9 @@ class AppErrorToastView: UIView {
     }
     
 	func show(message: String, view: UIView, extraDelay: TimeInterval? = nil, completionBlock: (() -> Void)? = nil) {
-        if DataManager.shared.showingToast { return }
+        if DataManager.shared.isShowingToast { return }
         view.addSubview(self)
-        DataManager.shared.showingToast = true
+        DataManager.shared.setShowingToast(true)
         self.center.x = view.center.x
         let textHeight = message.heightOfText(UIScreen.main.bounds.width - 32, font: AppFonts.mulishMedium.withSize(14))
         errorLabel.text = message
@@ -78,7 +78,7 @@ class AppErrorToastView: UIView {
             self.transform = CGAffineTransform(translationX: 0, y: -200)
         }, completion: { _ in
             self.isHidden = true
-            DataManager.shared.showingToast = false
+            DataManager.shared.setShowingToast(false)
             self.toastVisible = false
 			completionBlock?()
         })

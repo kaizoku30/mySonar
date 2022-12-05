@@ -93,6 +93,7 @@ extension ItemTableViewCell {
         if itemCartCount > 0 {
             //itemCartCount -= 1
             //updateButtonView()
+            self.incrementorStackView.isUserInteractionEnabled = false
             self.counterLabelButton.startBtnLoader(color: .white, small: true)
 			HapticFeedbackGenerator.triggerVibration(type: .lightTap)
             self.cartCountUpdatedForFavourites?(self.item, itemCartCount - 1, self.index)
@@ -114,6 +115,7 @@ extension ItemTableViewCell {
         
 //        itemCartCount += 1
 //        updateButtonView()
+        self.incrementorStackView.isUserInteractionEnabled = false
         self.counterLabelButton.startBtnLoader(color: .white, small: true)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
         self.cartCountUpdatedForFavourites?(self.item, itemCartCount + 1, self.index)
@@ -141,7 +143,7 @@ extension ItemTableViewCell {
             return
         }
         
-        if self.serviceType != CartUtility.getCartServiceType && CartUtility.fetchCart().isEmpty == false {
+        if self.serviceType != CartUtility.getCartServiceType && CartUtility.fetchCartLocally().isEmpty == false {
             self.cartConflict?(1, self.item)
             self.cartConflictForFavourites?(1, self.index)
             return
@@ -149,6 +151,7 @@ extension ItemTableViewCell {
         
 //        itemCartCount += 1
 //        updateButtonView()
+        self.incrementorStackView.isUserInteractionEnabled = false
         addButton.startBtnLoader(color: .white, small: true)
 		HapticFeedbackGenerator.triggerVibration(type: .lightTap)
         self.cartCountUpdatedForFavourites?(self.item, itemCartCount + 1, self.index)
@@ -195,8 +198,8 @@ extension ItemTableViewCell {
         self.selectionStyle = .none
 		self.gradientImageView.isUserInteractionEnabled = true
         self.gradientImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(performRouting)))
-        addButton.setTitle(LocalizedStrings.ExploreMenu.addButton, for: .normal)
-        customisableLabel.attributedText = NSAttributedString(string: LocalizedStrings.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        addButton.setTitle(LSCollection.ExploreMenu.addButton, for: .normal)
+        customisableLabel.attributedText = NSAttributedString(string: LSCollection.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
        // activityIndicator.isHidden = true
 		favouriteImageView.image = nil
 		shimmerView.isHidden = false
@@ -226,6 +229,7 @@ extension ItemTableViewCell {
 	}
     
     func configure(_ item: MenuItem, serviceType: APIEndPoints.ServicesType) {
+        self.incrementorStackView.isUserInteractionEnabled = true
         self.counterLabelButton.stopBtnLoader(titleColor: .white)
         self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = serviceType
@@ -238,6 +242,7 @@ extension ItemTableViewCell {
     }
     
     func configure(_ item: FavouriteItem, index: Int) {
+        self.incrementorStackView.isUserInteractionEnabled = true
         self.counterLabelButton.stopBtnLoader(titleColor: .white)
         self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = APIEndPoints.ServicesType(rawValue: item.itemDetails?.servicesAvailable ?? "") ?? .delivery
@@ -252,6 +257,7 @@ extension ItemTableViewCell {
     }
 	
 	func configure(_ item: MenuSearchResultItem, serviceType: APIEndPoints.ServicesType) {
+        self.incrementorStackView.isUserInteractionEnabled = true
         self.counterLabelButton.stopBtnLoader(titleColor: .white)
         self.addButton.stopBtnLoader(titleColor: .white)
         self.serviceType = serviceType
@@ -274,12 +280,12 @@ extension ItemTableViewCell {
         self.priceLabel.text = "SR " + "\((item.price ?? 0.0).round(to: 2).removeZerosFromEnd())"
         descriptionLabel.text = AppUserDefaults.selectedLanguage() == .en ? (item.descriptionEnglish ?? "") : (item.descriptionArabic ?? "")
         if AppUserDefaults.selectedLanguage() == .en {
-            let trunc = NSMutableAttributedString(string: "..\(LocalizedStrings.ExploreMenu.moreLabel)")
+            let trunc = NSMutableAttributedString(string: "..\(LSCollection.ExploreMenu.moreLabel)")
             trunc.addAttribute(NSAttributedString.Key.font, value: AppFonts.mulishBold.withSize(13), range: NSMakeRange(0, 6))
             trunc.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.kuduThemeBlue, range: NSMakeRange(0, 6))
             descriptionLabel.attributedTruncationToken = trunc
         } else {
-            let trunc = NSMutableAttributedString(string: "\(LocalizedStrings.ExploreMenu.moreLabel)..")
+            let trunc = NSMutableAttributedString(string: "\(LSCollection.ExploreMenu.moreLabel)..")
             trunc.addAttribute(NSAttributedString.Key.font, value: AppFonts.mulishBold.withSize(13), range: NSMakeRange(0, 6))
             trunc.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.kuduThemeBlue, range: NSMakeRange(0, 6))
             descriptionLabel.attributedTruncationToken = trunc
@@ -299,7 +305,7 @@ extension ItemTableViewCell {
         addButton.titleLabel?.lineBreakMode = .byWordWrapping
         addButton.setFont(available ? AppFonts.mulishMedium.withSize(14) : AppFonts.mulishMedium.withSize(10))
         addButton.titleLabel?.textAlignment = .center
-        addButton.setTitle(available ? LocalizedStrings.ExploreMenu.addButton : "Not\nAvailable", for: .normal)
+        addButton.setTitle(available ? LSCollection.ExploreMenu.addButton : "Not\nAvailable", for: .normal)
         self.itemImgView.image = available ? self.itemImgView.image : self.itemImgView.image?.grayscale()
         self.gradientImageView.image = available ? AppImages.ExploreMenu.cellGradient : self.gradientImageView.image?.grayscale()
     }

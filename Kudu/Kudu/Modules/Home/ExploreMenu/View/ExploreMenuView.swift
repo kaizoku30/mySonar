@@ -53,7 +53,7 @@ class ExploreMenuView: UIView {
 		self.tableContainerCollectionView.semanticContentAttribute = .forceLeftToRight
 		self.filterCollectionView.semanticContentAttribute = .forceLeftToRight
         initialSetup()
-        exploreMenuTitleLabel.text = LocalizedStrings.ExploreMenu.exploreMenuTitle
+        exploreMenuTitleLabel.text = "Explore Menu"
         if AppUserDefaults.selectedLanguage() == .en {
             browseMenuButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
         } else {

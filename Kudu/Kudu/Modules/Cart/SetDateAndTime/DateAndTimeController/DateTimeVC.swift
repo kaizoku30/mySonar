@@ -26,12 +26,16 @@ class DateTimeVC: BaseVC {
         handleActions()
         calenderSetup()
         handleClockViewActions()
+        if prefill.isNil {
+            let date = Date().timeIntervalSince1970 + (60*60)
+            prefill = Int(date)
+        }
         if prefill.isNotNil {
             let date = Date(timeIntervalSince1970: Double(prefill!))
             let dateString = date.toString(dateFormat: "dd/MM/yy")
             self.date = date
             self.baseView.setDateLabel(text: dateString)
-            let components = date.totalMinutes.convertMinutesToAMPM().getHourMinComponents()
+            let components = date.totalMinutes.convertMinutesToAMPM(smallcase: false, safelyRemovingArabic: true).getHourMinComponents()
             let timeInterval = Double(components.hour * 60 * 60) + Double(components.min * 60)
             self.time = timeInterval
             self.date = self.date?.addingTimeInterval(-timeInterval)
@@ -42,7 +46,14 @@ class DateTimeVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        baseView.semanticContentAttribute = .forceLeftToRight
         baseView.enableSetDateTimeButton(enable: date.isNotNil && time.isNotNil)
+        UIView.appearance().semanticContentAttribute = .forceLeftToRight
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIView.appearance().semanticContentAttribute = AppUserDefaults.selectedLanguage() == .en ? .forceLeftToRight : .forceRightToLeft
     }
     
     private func handleActions() {

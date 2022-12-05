@@ -24,14 +24,22 @@ class MyOrderListVC: BaseVC {
     }
     
     private func initialSetup() {
+        self.initialFetchDone = false
+        self.baseView.refreshTable()
         viewModel.getOrderList(pageNo: 1, fetched: { [weak self] in
             self?.initialFetchDone = true
             self?.fetchedOrders($0)
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        initialSetup()
+    }
+    
     private func addObservers() {
         self.observeFor(.updateOrderObject, selector: #selector(handleOrderUpdate(notification:)))
+        self.observeFor(.orderNotificationReceived, selector: #selector(handleOrderUpdate(notification:)))
     }
     
     @objc private func handleOrderUpdate(notification: NSNotification) {
@@ -54,10 +62,12 @@ class MyOrderListVC: BaseVC {
                 strongSelf.viewModel.reorderItems(completion: { [weak self] in
                     switch $0 {
                     case .success:
+                        self?.baseView.stopInteraction(stop: false)
                         let vc = CartListViewController.instantiate(fromAppStoryboard: .CartPayment)
                         self?.baseView.removePopup()
                         self?.push(vc: vc)
                     case .failure(let error):
+                        self?.baseView.stopInteraction(stop: false)
                         self?.baseView.removePopup()
                         self?.baseView.showError(msg: error.localizedDescription)
                     }
@@ -96,7 +106,7 @@ extension MyOrderListVC: UITableViewDataSource, UITableViewDelegate {
         case .previousOrders:
             if viewModel.getPreviousOrders.isEmpty { return UIView.init(frame: CGRect.zero) }
             let uiView = OrderListHeaderView(frame: CGRect(x: 0, y: 0, width: tableView.width, height: 48))
-            uiView.titleLabel.text = "Previous Orders"
+            uiView.titleLabel.text = LSCollection.Orders.previousOrders
             return uiView
         default:
             return UIView.init(frame: CGRect.zero)
@@ -162,9 +172,11 @@ extension MyOrderListVC: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueCell(with: PreviousOrderCell.self)
             cell.reOrder = { [weak self] (orderId) in
                 self?.viewModel.setupReorder(orderId)
-                if CartUtility.fetchCart().isEmpty {
+                self?.baseView.stopInteraction(stop: true)
+                if CartUtility.fetchCartLocally().isEmpty {
                     self?.baseView.handleViewActions?(.reorderTrigger)
                 } else {
+                    self?.baseView.stopInteraction(stop: false)
                     self?.baseView.showCartClearanceAlert()
                 }
             }
@@ -259,13 +271,15 @@ extension MyOrderListVC: UITableViewDataSource, UITableViewDelegate {
 
 extension MyOrderListVC {
     private func fetchedOrders(_ result: Result<Bool, Error>) {
-        self.fetchingData = false
-        switch result {
-        case .success:
-            self.baseView.refreshTable()
-        case .failure(let error):
-            self.baseView.refreshTable()
-            self.baseView.showError(msg: error.localizedDescription)
+        mainThread {
+            self.fetchingData = false
+            switch result {
+            case .success:
+                self.baseView.refreshTable()
+            case .failure(let error):
+                self.baseView.refreshTable()
+                self.baseView.showError(msg: error.localizedDescription)
+            }
         }
     }
 }

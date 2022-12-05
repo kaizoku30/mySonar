@@ -67,7 +67,7 @@ class SignUpVM {
     }
     
     func validateData(name: String, phoneNum: String, email: String?) -> ValidationResult {
-        let errors = LocalizedStrings.SignUp.self
+        let errors = LSCollection.SignUp.self
         if name.isEmpty {
             return (false, errors.pleaseEnterFullName)
         }

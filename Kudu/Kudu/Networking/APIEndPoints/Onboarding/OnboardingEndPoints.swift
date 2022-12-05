@@ -9,6 +9,9 @@ import Foundation
 
 extension APIEndPoints {
 	final class OnboardingEndPoints {
+        static func checkVersion(success: @escaping SuccessCompletionBlock<VersionCheckResponse>, failure: @escaping ErrorFailureCompletionBlock) {
+            Api.requestNew(endpoint: .checkUpdateConfiguration, successHandler: success, failureHandler: failure)
+        }
 		static func login(mobileNo: String, countryCode: String = "966", success: @escaping SuccessCompletionBlock<EmptyDataResponse>, failure: @escaping ErrorFailureCompletionBlock) {
 			Api.requestNew(endpoint: .login(mobileNo: mobileNo, countryCode: countryCode), successHandler: success, failureHandler: failure)
 		}

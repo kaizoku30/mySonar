@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -15,9 +16,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CartBannerView" customModule="Kudu" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="WOJ-FF-Zum" id="vfr-dc-TXM"/>
                 <outlet property="itemCountLabel" destination="VKc-ch-FvT" id="8Ar-mG-R8Y"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="lrR-31-I5b"/>
                 <outlet property="priceLabel" destination="cvM-GZ-N65" id="gBD-bH-8rA"/>
+                <outlet property="separatorView" destination="lBc-hY-5UW" id="IvX-Ws-SfM"/>
+                <outlet property="shimmer1" destination="B4L-dZ-PDt" id="qYM-Eh-meV"/>
+                <outlet property="srLabel" destination="GSB-sI-4m2" id="nid-Co-HAX"/>
                 <outlet property="viewCartButton" destination="WJT-yx-axF" id="4za-0b-0Uj"/>
             </connections>
         </placeholder>
@@ -85,18 +90,51 @@
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view hidden="YES" alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B4L-dZ-PDt">
+                    <rect key="frame" x="16" y="11.5" width="98.5" height="32"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOJ-FF-Zum" customClass="NVActivityIndicatorView" customModule="NVActivityIndicatorView">
+                            <rect key="frame" x="24.5" y="3.5" width="50" height="25"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="l1Z-bO-OQJ"/>
+                                <constraint firstAttribute="width" constant="50" id="ng1-aJ-R56"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="color">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="typeName" value="ballPulse"/>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="WOJ-FF-Zum" firstAttribute="centerX" secondItem="B4L-dZ-PDt" secondAttribute="centerX" id="EFE-rC-f4q"/>
+                        <constraint firstItem="WOJ-FF-Zum" firstAttribute="centerY" secondItem="B4L-dZ-PDt" secondAttribute="centerY" id="ouh-vl-2cc"/>
+                        <constraint firstAttribute="width" constant="98.5" id="wyf-WZ-aN5"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="WJT-yx-axF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="12B-bJ-s3q"/>
                 <constraint firstItem="VKc-ch-FvT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="9jC-hH-9m5"/>
                 <constraint firstItem="GSB-sI-4m2" firstAttribute="centerY" secondItem="VKc-ch-FvT" secondAttribute="centerY" id="KaA-Nk-fEo"/>
+                <constraint firstItem="B4L-dZ-PDt" firstAttribute="height" secondItem="WJT-yx-axF" secondAttribute="height" id="LaB-JM-RtL"/>
                 <constraint firstItem="VKc-ch-FvT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="MyW-y1-Kq8"/>
                 <constraint firstItem="GSB-sI-4m2" firstAttribute="leading" secondItem="lBc-hY-5UW" secondAttribute="trailing" constant="8" id="P36-GR-lcC"/>
                 <constraint firstItem="hb2-Yr-S1Y" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="T6g-w3-BHT"/>
                 <constraint firstAttribute="trailing" secondItem="WJT-yx-axF" secondAttribute="trailing" constant="19" id="TtY-Ob-hHa"/>
                 <constraint firstAttribute="trailing" secondItem="hb2-Yr-S1Y" secondAttribute="trailing" id="W5G-qm-Kg5"/>
                 <constraint firstItem="cvM-GZ-N65" firstAttribute="centerY" secondItem="GSB-sI-4m2" secondAttribute="centerY" id="aWD-F8-hKF"/>
+                <constraint firstItem="B4L-dZ-PDt" firstAttribute="centerY" secondItem="VKc-ch-FvT" secondAttribute="centerY" id="cpF-7a-lcU"/>
+                <constraint firstItem="B4L-dZ-PDt" firstAttribute="leading" secondItem="VKc-ch-FvT" secondAttribute="leading" id="h00-AY-NwD"/>
                 <constraint firstAttribute="bottom" secondItem="hb2-Yr-S1Y" secondAttribute="bottom" id="jqZ-jr-kVf"/>
                 <constraint firstItem="lBc-hY-5UW" firstAttribute="centerY" secondItem="VKc-ch-FvT" secondAttribute="centerY" id="mGK-Hf-aCG"/>
                 <constraint firstItem="cvM-GZ-N65" firstAttribute="leading" secondItem="GSB-sI-4m2" secondAttribute="trailing" constant="5" id="nhO-bq-hfK"/>
@@ -118,5 +156,8 @@
         <namedColor name="kuduThemeBlue">
             <color red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

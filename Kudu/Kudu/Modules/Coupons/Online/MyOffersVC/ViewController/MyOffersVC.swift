@@ -44,14 +44,14 @@ class MyOffersVC: BaseVC {
         
         switch controllerType {
         case .myoffer:
-            self.baseView.titleLabel.text = LocalizedStrings.MyOfferScreenTtile.offers_and_Deals
+            self.baseView.titleLabel.text = LSCollection.MyOfferScreenTtile.offers_and_Deals
             viewModel.fetchCoupons { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.isFetchingCoupons = false
                 strongSelf.baseView.refreshTable()
             }
         case .promo:
-            self.baseView.titleLabel.text = LocalizedStrings.MyOfferScreenTtile.in_Store_Promos
+            self.baseView.titleLabel.text = LSCollection.MyOfferScreenTtile.in_Store_Promos
             viewModel.fetchPromo { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.isFetchingCoupons = false

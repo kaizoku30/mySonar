@@ -10,6 +10,12 @@ import UIKit
 class PaymentMethodView: UIView {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var codPaymentHeight: NSLayoutConstraint!
+    @IBOutlet weak var paymentOptionsTitle: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        paymentOptionsTitle.text = LSCollection.Payments.paymentOptions
+    }
     
     func showCODPayment(_ show: Bool) {
         mainThread({

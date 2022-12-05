@@ -28,7 +28,7 @@ class SelectDrinkTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        sizeSubtitle.text = "Select Size"
+        sizeSubtitle.text = LSCollection.ExploreMenu.selectDrinkSizeTitle
         optionSubtitle.text = ""
         drinkObjectsCollectionView.registerCell(with: DrinkObjectCollectionViewCell.self)
         drinkSizeCollectionView.registerCell(with: DrinkSizeCollectionViewCell.self)
@@ -65,11 +65,26 @@ class SelectDrinkTableViewCell: UITableViewCell {
         }
         switch selectedDrinkSize {
         case .regular:
-            optionSubtitle.text = LocalizedStrings.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayRegular.count )")
+            optionSubtitle.text = LSCollection.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayRegular.count )")
+            if AppUserDefaults.selectedLanguage() == .ar {
+                var conversionString = "اختر 1 او 2"
+                conversionString = conversionString.replace(string: "2", withString: "\(subArrayRegular.count)")
+                optionSubtitle.text = conversionString
+            }
         case .medium:
-            optionSubtitle.text = LocalizedStrings.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayMedium.count )")
+            optionSubtitle.text = LSCollection.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayMedium.count )")
+            if AppUserDefaults.selectedLanguage() == .ar {
+                var conversionString = "اختر 1 او 2"
+                conversionString = conversionString.replace(string: "2", withString: "\(subArrayMedium.count)")
+                optionSubtitle.text = conversionString
+            }
         case .large:
-            optionSubtitle.text = LocalizedStrings.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayLarge.count )")
+            optionSubtitle.text = LSCollection.CustomisableDetail.select1OutOfXOptions.replace(string: CommonStrings.numberPlaceholder, withString: "\(subArrayLarge.count )")
+            if AppUserDefaults.selectedLanguage() == .ar {
+                var conversionString = "اختر 1 او 2"
+                conversionString = conversionString.replace(string: "2", withString: "\(subArrayLarge.count)")
+                optionSubtitle.text = conversionString
+            }
         }
 		if AppUserDefaults.selectedLanguage() == .ar {
 			drinksSizeTypes = drinksSizeTypes.reversed()

@@ -9,6 +9,7 @@ import UIKit
 
 class NotificationView: UIView {
     
+    @IBOutlet weak var noNotificaitonLbl: UILabel!
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet private weak var noResultView: UIView!
     @IBOutlet weak var tableView: UITableView!
@@ -29,6 +30,8 @@ class NotificationView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        noNotificaitonLbl.text = LSCollection.CartScren.noNotificationYet
+        notificationTitle.text = LSCollection.CartScren.notificationsTitle
         tableViewSetUp()
     }
     
@@ -56,7 +59,7 @@ class NotificationView: UIView {
         let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
         popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
         popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
-        popUpAlert.configure(message: "Are you sure you want to delete all the notifications?", leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
+        popUpAlert.configure(message: "Are you sure you want to clear all the notifications?", leftButtonTitle: LSCollection.MyAddress.delete, rightButtonTitle: LSCollection.MyAddress.cancel, container: self, setMessageAsTitle: true)
         popUpAlert.handleAction = { [weak self] in
             if $0 == .right { return }
             self?.clearAll?()
@@ -67,8 +70,8 @@ class NotificationView: UIView {
         let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 0))
         popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
         popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
-        popUpAlert.configure(message: "Are you sure you want to delete notification?", leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
-        popUpAlert.handleAction = { [weak self] in
+        popUpAlert.configure(message: "Are you sure you want to delete notification?", leftButtonTitle: LSCollection.MyAddress.delete, rightButtonTitle: LSCollection.MyAddress.cancel, container: self, setMessageAsTitle: true)
+        popUpAlert.handleAction = {
             if $0 == .right { return }
             success()
         }

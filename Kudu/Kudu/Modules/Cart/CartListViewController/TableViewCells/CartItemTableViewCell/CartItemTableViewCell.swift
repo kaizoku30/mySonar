@@ -29,6 +29,7 @@ class CartItemTableViewCell: UITableViewCell {
 	
     @IBOutlet weak var outOfStockLabel: UILabel!
     @IBOutlet weak var outOfStockView: UIView!
+    @IBOutlet weak var productDetailsTitleLbl: UILabel!
     
     @IBOutlet weak var tempLoader: UIActivityIndicatorView!
     @IBOutlet weak var tempLoaderView: UIView!
@@ -53,6 +54,7 @@ class CartItemTableViewCell: UITableViewCell {
 	override func awakeFromNib() {
         super.awakeFromNib()
 		self.selectionStyle = .none
+        productDetailsTitleLbl.text = LSCollection.CartScren.productDetails
 		initialSetup()
         backDropColor = imageContainerView.backgroundColor
         // Initialization code
@@ -71,7 +73,7 @@ class CartItemTableViewCell: UITableViewCell {
 		productDetailView.isHidden = true
 		customisationDetailsView.isHidden = true
 		customisationDetails.numberOfLines = 0
-        customisedLabel.attributedText = NSAttributedString(string: "Customize", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: AppColors.kuduThemeBlue])
+        customisedLabel.attributedText = NSAttributedString(string: LSCollection.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: AppColors.kuduThemeBlue])
 	}
 	
 	@objc private func toggleProductDetailsView() {
@@ -126,7 +128,7 @@ class CartItemTableViewCell: UITableViewCell {
             customisedLabel.textColor = AppColors.kuduThemeBlue
             customisedLabel.isHidden = !(item.itemDetails?.isCustomised ?? false)
             showProductDetailView(item.itemDetails?.isCustomised ?? false, expand: item.expandProductDetails ?? false)
-            customisedLabel.attributedText = NSAttributedString(string: "Customize", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: AppColors.kuduThemeBlue])
+            customisedLabel.attributedText = NSAttributedString(string: LSCollection.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: AppColors.kuduThemeBlue])
         }
 	}
 	

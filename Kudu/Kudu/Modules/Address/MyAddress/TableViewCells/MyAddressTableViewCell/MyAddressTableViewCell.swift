@@ -34,8 +34,8 @@ class MyAddressTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        editButton.setTitle(LocalizedStrings.MyAddress.edit, for: .normal)
-        deleteButton.setTitle(LocalizedStrings.MyAddress.delete, for: .normal)
+        editButton.setTitle(LSCollection.MyAddress.edit, for: .normal)
+        deleteButton.setTitle(LSCollection.MyAddress.delete, for: .normal)
         // Initialization code
     }
 
@@ -52,9 +52,9 @@ class MyAddressTableViewCell: UITableViewCell {
         let labelType = APIEndPoints.AddressLabelType.init(rawValue: item.addressLabel ?? "")
         switch labelType {
         case .HOME:
-            titleLabel.text = LocalizedStrings.AddNewAddress.home
+            titleLabel.text = LSCollection.AddNewAddress.home
         case .WORK:
-            titleLabel.text = LocalizedStrings.AddNewAddress.work
+            titleLabel.text = LSCollection.AddNewAddress.work
         default:
             titleLabel.text = item.otherAddressLabel ?? ""
         }

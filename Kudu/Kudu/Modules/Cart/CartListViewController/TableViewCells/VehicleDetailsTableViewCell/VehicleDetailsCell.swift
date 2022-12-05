@@ -47,12 +47,12 @@ class VehicleDetailsCell: UITableViewCell {
             addPlaceholder.isHidden = true
             addedVehicleStack.isHidden = false
             carImageView.isHidden = false
-            addUpdateBtn.setTitle("Update", for: .normal)
+            addUpdateBtn.setTitle(LSCollection.EditProfile.updateButton, for: .normal)
         } else {
             carImageView.isHidden = true
             addedVehicleStack.isHidden = true
             addPlaceholder.isHidden = false
-            addUpdateBtn.setTitle("Add", for: .normal)
+            addUpdateBtn.setTitle(LSCollection.ExploreMenu.addButton, for: .normal)
         }
     }
 

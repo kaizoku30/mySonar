@@ -62,6 +62,7 @@ class LoginVC: BaseVC {
             GuestUserCache.shared.clearCache()
             let msg = notification.userInfo?["msg"] as? String ?? ""
             self.baseView.resetLoginField(msg: msg)
+            self.baseView.isUserInteractionEnabled = true
         }
     }
     

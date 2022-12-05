@@ -48,12 +48,12 @@ class OurStoreView: UIView {
         tableView.registerCell(with: OurStoreItemTableViewCell.self)
         tableView.registerCell(with: AutoCompleteLoaderCell.self)
         tableView.showsVerticalScrollIndicator = false
-        ourStoreTitleLabel.text = LocalizedStrings.Profile.ourStore
+        ourStoreTitleLabel.text = LSCollection.Profile.ourStore
         searchBarContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(focusTF)))
         noResultView.contentType = .noResultFound
         tableView.isHidden = true
         storeNearYouLabel.isHidden = true
-		mapButton.setTitle(LocalizedStrings.SetRestaurant.map, for: .normal)
+		mapButton.setTitle(LSCollection.SetRestaurant.map, for: .normal)
         mapButton.layer.applySketchShadow(color: .black, alpha: 0.14, x: 0, y: 2, blur: 10, spread: 0)
     }
     
@@ -92,7 +92,7 @@ class OurStoreView: UIView {
     func showLocationPermissionPopUp(errorType: LocationServicesDeniedView.LocationAlertType) {
         mainThread {
             let locationAlert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-            locationAlert.configureLocationView(type: errorType, leftButtonTitle: LocalizedStrings.SetRestaurant.cancel, rightButtonTitle: LocalizedStrings.SetRestaurant.settings, container: self)
+            locationAlert.configureLocationView(type: errorType, leftButtonTitle: LSCollection.SetRestaurant.cancel, rightButtonTitle: LSCollection.SetRestaurant.settings, container: self)
             locationAlert.handleActionOnLocationView = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.openSettings)
@@ -201,9 +201,9 @@ extension OurStoreView {
                 return
             }
             if resultCount == 1 {
-                self.storeNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(resultCount)")
+                self.storeNearYouLabel.text = LSCollection.SetRestaurant.xStoreNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(resultCount)")
             } else {
-                self.storeNearYouLabel.text = LocalizedStrings.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(resultCount)")
+                self.storeNearYouLabel.text = LSCollection.SetRestaurant.xStoresNearYou.replace(string: CommonStrings.numberPlaceholder, withString: "\(resultCount)")
             }
             
             self.storeNearYouLabel.isHidden = false

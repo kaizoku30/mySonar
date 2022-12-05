@@ -68,26 +68,26 @@ struct AddAddressForm {
     func validate() -> (validForm: Bool, errorMsg: String?) {
         
         guard let name = name, !name.isEmpty else {
-            return (false, LocalizedStrings.AddNewAddress.pleaseEnterName)
+            return (false, LSCollection.AddNewAddress.pleaseEnterName)
         }
         if latitude.isNil || longitude.isNil {
-            return (false, LocalizedStrings.AddNewAddress.pleaseAddLocation)
+            return (false, LSCollection.AddNewAddress.pleaseAddLocation)
         }
         guard let stateName = stateName, !stateName.isEmpty else {
-            return (false, LocalizedStrings.AddNewAddress.pleaseEnterState)
+            return (false, LSCollection.AddNewAddress.pleaseEnterState)
         }
         guard let cityName = cityName, !cityName.isEmpty else {
-            return (false, LocalizedStrings.AddNewAddress.pleaseEnterCity)
+            return (false, LSCollection.AddNewAddress.pleaseEnterCity)
         }
         guard let zipCode = zipCode, !zipCode.isEmpty else {
-            return (false, LocalizedStrings.AddNewAddress.pleaseEnterZipcode)
+            return (false, LSCollection.AddNewAddress.pleaseEnterZipcode)
         }
         guard let buildingName = buildingName, !buildingName.isEmpty else {
-            return (false, LocalizedStrings.AddNewAddress.pleaseEnterBuildingName)
+            return (false, LSCollection.AddNewAddress.pleaseEnterBuildingName)
         }
         if addressLabel == .OTHER {
             guard let otherAddressLabel = otherAddressLabel, !otherAddressLabel.isEmpty else {
-                return (false, LocalizedStrings.AddNewAddress.pleaseEnterAddressLabel)
+                return (false, LSCollection.AddNewAddress.pleaseEnterAddressLabel)
             }
         }
         return (true, nil)

@@ -58,12 +58,7 @@ class AppUserDefaults {
     }
     
     static func removeGuestUserData() {
-//        let guestUserData: [AppUserDefaults.Key] = [.currentCurbsideRestaurant, .currentDeliveryAddress, .currentPickupRestaurant]
-//        guestUserData.forEach({ AppUserDefaults.removeValue(forKey: $0) })
         DataManager.shared.currentCartConfig = nil
-//        DataManager.shared.currentCurbsideRestaurant = nil
-//        DataManager.shared.currentPickupRestaurant = nil
-//        DataManager.shared.currentDeliveryLocation = nil
     }
     
     static func removeUserData() {
@@ -111,6 +106,7 @@ extension AppUserDefaults {
         case hashIdsForFavourites
 		case cart
         case cartConfig
+        case recentlySkippedVersion
     }
     
     enum Language: String {

@@ -231,7 +231,7 @@ extension ExploreMenuVC {
     }
     
     private func openItemDetail(result: MenuItem) {
-        let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
+        let bottomSheet = BaseItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
         //bottomSheet.configure(container: self.baseView, item: result, serviceType: self.s)
     }
     

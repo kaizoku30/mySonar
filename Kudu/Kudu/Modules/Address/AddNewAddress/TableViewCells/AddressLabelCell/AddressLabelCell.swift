@@ -53,9 +53,9 @@ class AddressLabelCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = .none
         setupTextField()
-        homeButton.setTitle(LocalizedStrings.AddNewAddress.home, for: .normal)
-        workButton.setTitle(LocalizedStrings.AddNewAddress.work, for: .normal)
-        otherButton.setTitle(LocalizedStrings.AddNewAddress.other, for: .normal)
+        homeButton.setTitle(LSCollection.AddNewAddress.home, for: .normal)
+        workButton.setTitle(LSCollection.AddNewAddress.work, for: .normal)
+        otherButton.setTitle(LSCollection.AddNewAddress.other, for: .normal)
         // Initialization code
     }
 

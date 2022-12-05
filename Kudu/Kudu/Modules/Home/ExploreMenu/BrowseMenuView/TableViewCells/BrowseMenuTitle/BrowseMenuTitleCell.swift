@@ -13,7 +13,7 @@ class BrowseMenuTitleCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        titleLabel.text = LocalizedStrings.BrowseMenu.browseMenu
+        titleLabel.text = LSCollection.BrowseMenu.browseMenu
         // Initialization code
     }
 

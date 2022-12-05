@@ -22,7 +22,7 @@ class YouMayAlsoLikeCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        customisableLabel.attributedText = NSAttributedString(string: LocalizedStrings.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        customisableLabel.attributedText = NSAttributedString(string: LSCollection.ExploreMenu.customizable, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
     }
 	
 	func configure(_ object: YouMayAlsoLikeObject) {

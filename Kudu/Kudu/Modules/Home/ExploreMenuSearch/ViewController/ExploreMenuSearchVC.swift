@@ -9,13 +9,13 @@ import UIKit
 
 class ExploreMenuSearchVC: BaseVC {
     
-    @IBOutlet  weak var searchContainer: UIView!
-    @IBOutlet  weak var tableView: UITableView!
-    @IBOutlet  weak var clearButton: AppButton!
-    @IBOutlet  weak var searchIcon: UIImageView!
-    @IBOutlet  weak var searchTFView: AppTextFieldView!
-    @IBOutlet  weak var noResultView: NoResultFoundView!
-    @IBOutlet  weak var searchLine: UIView!
+    @IBOutlet weak var searchContainer: UIView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var clearButton: AppButton!
+    @IBOutlet weak var searchIcon: UIImageView!
+    @IBOutlet weak var searchTFView: AppTextFieldView!
+    @IBOutlet weak var noResultView: NoResultFoundView!
+    @IBOutlet weak var searchLine: UIView!
     
     @IBAction  func backButtonPressed(_ sender: Any) {
         if self.isShowingMenuData {
@@ -72,6 +72,8 @@ class ExploreMenuSearchVC: BaseVC {
     var itemDetailResponse: MenuItem?
     var itemDetailTableIndex: Int?
     var updateExploreMenu: ((MenuSearchResultItem) -> Void)?
+    var bottomDetailVC: BaseVC?
+    
     enum CurrentViewType {
         case suggestionAndTopCategories
         case results
@@ -101,81 +103,6 @@ class ExploreMenuSearchVC: BaseVC {
         tableView.registerCell(with: SuggestionShimmerCell.self)
         tableView.registerCell(with: AutoCompleteLoaderCell.self)
         tableView.registerCell(with: ItemTableViewCell.self)
-    }
-}
-
-extension ExploreMenuSearchVC {
-    func openItemDetail(result: MenuSearchResultItem) {
-        mainThread {
-            self.isShowingItemData = true
-            self.searchTFView.unfocus()
-            let vc = BaseVC()
-            vc.configureForCustomView()
-            let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-            bottomSheet.triggerLoginFlow = { [weak self] (addReq) in
-                GuestUserCache.shared.queueAction(.addToCart(req: addReq))
-                vc.dismiss(animated: true, completion: { [weak self] in
-                    self?.tabBarController?.removeOverlay()
-                    let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
-                    loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
-                    self?.push(vc: loginVC)
-                })
-            }
-            
-            bottomSheet.configureForExploreMenu(container: vc.view, itemId: result._id ?? "", serviceType: self.serviceType)
-            bottomSheet.handleDeallocation = { [weak self] in
-                self?.isShowingItemData = false
-                if self?.currentViewType == .suggestionAndTopCategories {
-                    self?.searchTFView.focus()
-                }
-                self?.tableView.reloadData()
-                vc.dismiss(animated: true, completion: { [weak self] in
-                    self?.tabBarController?.removeOverlay()
-                })
-            }
-            bottomSheet.cartCountUpdated = { [weak self] (count, item) in
-                self?.updateCountLocally(count: count, menuItem: item, template: nil)
-                self?.tableView.reloadData()
-            }
-            self.tabBarController?.addOverlayBlack()
-            self.present(vc, animated: true)
-        }
-    }
-    
-    func openItemDetail(resultMenuItem: MenuItem) {
-        mainThread {
-            self.isShowingItemData = true
-            self.searchTFView.unfocus()
-            let vc = BaseVC()
-            vc.configureForCustomView()
-            let bottomSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
-            bottomSheet.triggerLoginFlow = { [weak self] (addReq) in
-                GuestUserCache.shared.queueAction(.addToCart(req: addReq))
-                vc.dismiss(animated: true, completion: { [weak self]  in
-                    self?.tabBarController?.removeOverlay()
-                    let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
-                    loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
-                    self?.push(vc: loginVC)
-                })
-            }
-            bottomSheet.configure(container: vc.view, item: resultMenuItem, serviceType: self.serviceType)
-            bottomSheet.handleDeallocation = { [weak self] in
-                self?.isShowingItemData = false
-                if self?.currentViewType == .suggestionAndTopCategories {
-                    self?.searchTFView.focus()
-                }
-                self?.tableView.reloadData()
-                vc.dismiss(animated: true, completion: {
-                    self?.tabBarController?.removeOverlay()
-                })
-            }
-            bottomSheet.cartCountUpdated = { [weak self] (count, item) in
-                self?.updateCountLocally(count: count, menuItem: item, template: nil)
-                self?.tableView.reloadData()
-            }
-            self.tabBarController?.addOverlayBlack()
-            self.present(vc, animated: true)
-        }
     }
 }
 
@@ -254,6 +181,73 @@ extension ExploreMenuSearchVC {
                 self.tabBarController?.addOverlayBlack()
                 self.present(vc, animated: true)
             }
+        }
+    }
+}
+
+extension ExploreMenuSearchVC {
+    // MARK: Item Detail Handling
+    func openItemDetail(result: MenuSearchResultItem) {
+        mainThread {
+            self.isShowingItemData = true
+            self.searchTFView.unfocus()
+            self.bottomDetailVC = BaseVC()
+            self.bottomDetailVC?.configureForCustomView()
+            let bottomSheet = BaseItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
+            bottomSheet.delegate = self
+            bottomSheet.configureForExploreMenu(container: self.bottomDetailVC!.view, itemId: result._id ?? "", serviceType: self.serviceType)
+            self.tabBarController?.addOverlayBlack()
+            self.present(self.bottomDetailVC!, animated: true)
+        }
+    }
+    
+    func openItemDetail(resultMenuItem: MenuItem) {
+        mainThread {
+            self.isShowingItemData = true
+            self.searchTFView.unfocus()
+            self.bottomDetailVC = BaseVC()
+            self.bottomDetailVC?.configureForCustomView()
+            let bottomSheet = BaseItemDetailView(frame: CGRect(x: 0, y: 0, width: self.view.width, height: self.view.height))
+            bottomSheet.delegate = self
+            bottomSheet.configure(container: self.bottomDetailVC!.view, item: resultMenuItem, serviceType: self.serviceType)
+            self.tabBarController?.addOverlayBlack()
+            self.present(self.bottomDetailVC!, animated: true)
+        }
+    }
+}
+
+extension ExploreMenuSearchVC: BaseItemDetailDelegate {
+    // MARK: Item Detail Delegate Handling
+    
+    func triggerLoginFlowBaseItem(addReq: AddCartItemRequest) {
+        mainThread { [weak self] in
+            GuestUserCache.shared.queueAction(.addToCart(req: addReq))
+            self?.bottomDetailVC?.dismiss(animated: true, completion: { [weak self]  in
+                self?.tabBarController?.removeOverlay()
+                let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
+                loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
+                self?.push(vc: loginVC)
+            })
+        }
+    }
+    
+    func handleBaseItemViewDeallocation() {
+        mainThread { [weak self] in
+            self?.isShowingItemData = false
+            if self?.currentViewType == .suggestionAndTopCategories {
+                self?.searchTFView.focus()
+            }
+            self?.tableView.reloadData()
+            self?.bottomDetailVC?.dismiss(animated: true, completion: { [weak self] in
+                self?.tabBarController?.removeOverlay()
+            })
+        }
+    }
+    
+    func cartCountUpdatedBaseItem(count: Int, item: MenuItem) {
+        mainThread { [weak self] in
+            self?.updateCountLocally(count: count, menuItem: item, template: nil)
+            self?.tableView.reloadData()
         }
     }
 }

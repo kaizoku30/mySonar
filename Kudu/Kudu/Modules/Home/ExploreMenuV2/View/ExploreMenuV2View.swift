@@ -17,17 +17,14 @@ struct ExploreMenuViewScrollMetrics {
 
 class ExploreMenuV2View: UIView {
     @IBOutlet weak var mainTableView: UITableView!
-    
+    @IBOutlet private weak var exploreMenuTitle: UILabel!
+    @IBOutlet private weak var browseMenuTapView: UIView!
+    @IBOutlet private weak var browseMenuHeight: NSLayoutConstraint!
     @IBOutlet private weak var cartBanner: CartBannerView!
     @IBOutlet private weak var cartBannerContainer: UIView!
-    
     @IBOutlet weak var browseMenuButton: AppButton!
     @IBOutlet private weak var browseMenuWidth: NSLayoutConstraint!
     @IBOutlet private weak var browseMenuBottomPadding: NSLayoutConstraint!
-    
-    @IBAction private func backButtonPressed(_ sender: Any) {
-        handleViewActions?(.backButtonPressed)
-    }
     @IBAction private func browseMenuTapped(_ sender: Any) {
         handleViewActions?(.browseMenuTapped)
     }
@@ -47,12 +44,23 @@ class ExploreMenuV2View: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        initialSetup()
+    }
+    
+    private func initialSetup() {
+        browseMenuButton.setTitle(LSCollection.BrowseMenu.browseMenu, for: .normal)
+        exploreMenuTitle.text = LSCollection.Home.exploreMenuVCTitle
         mainTableView.semanticContentAttribute = .forceLeftToRight
         setBrowseMenuInsets()
         cartBannerContainer.roundTopCorners(cornerRadius: 4)
         cartBanner.viewCart = { [weak self] in
             self?.handleViewActions?(.viewCart)
         }
+        browseMenuTapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(browseMenuAlternateTap)))
+    }
+    
+    @objc private func browseMenuAlternateTap() {
+        self.handleViewActions?(.browseMenuTapped)
     }
     
     func showCartConflictAlert(_ count: Int, _ item: MenuItem, _ template: CustomisationTemplate? = nil) {
@@ -60,10 +68,10 @@ class ExploreMenuV2View: UIView {
         alert.setTextAlignment(.left)
         alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
         alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-        alert.configure(title: "Change Order Type ?", message: "Please be aware your cart will be cleared as you change order type", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self)
+        alert.configure(title: LSCollection.CartScren.orderTypeHasBeenChanged, message: LSCollection.CartScren.cartWillBeCleared, leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self)
         alert.handleAction = { [weak self] in
             if $0 == .right {
-                CartUtility.clearCart(clearedConfirmed: {
+                CartUtility.clearCartRemotely(clearedConfirmed: {
                     self?.handleViewActions?(.handleCartConflict(count: count, item: item, template: template))
                     weak var weakRef = alert
                     weakRef?.removeFromContainer()
@@ -87,7 +95,6 @@ class ExploreMenuV2View: UIView {
                 self?.cartBanner.isHidden = !show
                 self?.refreshCartLocally()
             })
-            
         })
     }
     
@@ -115,21 +122,10 @@ class ExploreMenuV2View: UIView {
     func showTableView(_ show: Bool) {
         mainThread {
             self.mainTableView.reloadData()
-//            self.mainTableView.performBatchUpdates({}, completion: { _ in
-//                self.mainTableView.layoutIfNeeded()
-//            })
         }
-        
-//        mainThreadAfter(0.3, {
-//            self.mainTableView.isHidden = !show
-//        })
     }
     
     func refreshItemColumns(currentIndex: Int, updatedColumnData: [[MenuItem]]) {
-//        self.mainTableView.reloadData()
-//        let cell = mainTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? ContentContainerTableViewCell
-//        cell?.columnData = updatedColumnData
-//        cell?.refreshTable()
         mainThread {
             CATransaction.begin()
             CATransaction.setCompletionBlock({ [weak self] in
@@ -159,30 +155,11 @@ class ExploreMenuV2View: UIView {
             self.mainTableView.reloadData()
             self.mainTableView.layoutIfNeeded()
         }
-       // mainTableView.reloadRowsWithoutAnimation(indexPaths: [IndexPath(row: 0, section: 0)])
-    }
-    
-    func queueScroll() {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-//            self.mainTableView.reloadSections(IndexSet(integer: 0), with: .none)
-//            //self.mainTableView.reloadRowsWithoutAnimation(indexPaths: [IndexPath(row: 1, section: 0)])
-//        })
     }
     
     func scrollOnBrowseMenu() {
         self.mainTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
     }
-    
-//    func addLoadingOverlay() {
-//        addSubview(LoadingDetailOverlay.create(withFrame: CGRect(x: 0, y: 0, width: self.width, height: self.height), atCenter: self.center))
-//    }
-    
-//    func removeLoadingOverlay() {
-//        guard let overlay = subviews.first(where: { $0.tag == Constants.CustomViewTags.detailOverlay }) else { return }
-//        mainThread {
-//            overlay.removeFromSuperview()
-//        }
-//    }
     
     func showError(msg: String) {
         mainThread {
@@ -200,17 +177,12 @@ class ExploreMenuV2View: UIView {
             self.rotatedToCircle = false
             self.browseMenuWidth.constant = 141
             self.setBrowseMenuInsets()
-            self.browseMenuButton.setTitle("Browse Menu", for: .normal)
+            self.browseMenuButton.setTitle(LSCollection.BrowseMenu.browseMenu, for: .normal)
             self.browseMenuButton.layoutIfNeeded()
-            self.layoutIfNeeded()
         })
     }
     
     func triggerAnimationBrowseMenu(show: Bool) {
-        //		if show {
-        //			self.browseMenuButton.setTitle("", for: .normal)
-        //			self.browseMenuButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        //		}
         if show && rotatedToCircle { return }
         if !show && !rotatedToCircle { return }
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0, animations: {
@@ -219,21 +191,21 @@ class ExploreMenuV2View: UIView {
                 self.browseMenuButton.setTitle("", for: .normal)
                 self.browseMenuButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
                 self.browseMenuWidth.constant = 40
+                self.browseMenuTapView.isHidden = false
                 self.browseMenuButton.layoutIfNeeded()
             } else {
-                self.rotatedToCircle = false
-                self.browseMenuWidth.constant = 141
-                self.setBrowseMenuInsets()
-                self.browseMenuButton.setTitle("Browse Menu", for: .normal)
-                self.browseMenuButton.layoutIfNeeded()
+                self.browseMenuTapView.isHidden = true
+                self.setDefaultBrowseMenuStyle()
             }
             
-        }, completion: { _ in
-            //			if !show {
-            //				self.setBrowseMenuInsets()
-            //				self.browseMenuButton.setTitle("Browse Menu", for: .normal)
-            //			}
-        })
-        
+        }, completion: { _ in })
+    }
+    
+    private func setDefaultBrowseMenuStyle() {
+        self.rotatedToCircle = false
+        self.browseMenuWidth.constant = 141
+        self.setBrowseMenuInsets()
+        self.browseMenuButton.setTitle(LSCollection.BrowseMenu.browseMenu, for: .normal)
+        self.browseMenuButton.layoutIfNeeded()
     }
 }

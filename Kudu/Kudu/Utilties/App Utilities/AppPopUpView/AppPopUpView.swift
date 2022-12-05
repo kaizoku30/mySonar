@@ -58,6 +58,7 @@ class AppPopUpView: AppPopUpViewType {
         }
     }
     
+    @IBOutlet private weak var centerButton: AppButton!
     @IBOutlet private var mainContentView: UIView!
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet private weak var alertMessage: UILabel!
@@ -93,7 +94,7 @@ class AppPopUpView: AppPopUpViewType {
         leftBtn.handleBtnTap = {
             [weak self] in
             if let loaderButton = self?.loaderButton, loaderButton == .left {
-                self?.leftBtn.startBtnLoader(color: self?.rightBtn.currentTitleColor ?? .white)
+                self?.leftBtn.startBtnLoader(color: self?.leftBtn.currentTitleColor ?? .white)
                 self?.handleAction?(.left)
                 return
             }
@@ -114,6 +115,15 @@ class AppPopUpView: AppPopUpViewType {
     
     func removeFromContainer() {
         removeSelf()
+    }
+    
+    func showCenterButton() {
+        self.centerButton.isHidden = false
+        self.leftBtn.isHidden = true
+        self.rightBtn.isHidden = true
+        self.centerButton.handleBtnTap = { [weak self] in
+            self?.handleAction?(.right)
+        }
     }
     
     func setButtonConfiguration(for button: AlertButton, config: ButtonConfiguration, buttonLoader: AlertButton?) {

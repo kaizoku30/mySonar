@@ -88,27 +88,27 @@ class ProfileVC: AccountProfileVC {
         var title: String {
             switch self {
             case .MyAccount:
-                return LocalizedStrings.Profile.myAccount
+                return LSCollection.Profile.myAccount
             case .Orders:
-                return LocalizedStrings.Profile.orders
+                return LSCollection.Profile.orders
             case .Payments:
-                return LocalizedStrings.Profile.payments
+                return LSCollection.Profile.payments
             case .Favourites:
-                return LocalizedStrings.Profile.favouritesProfile
+                return LSCollection.Profile.favouritesProfile
             case .Address:
-                return LocalizedStrings.Profile.address
+                return LSCollection.Profile.address
             case .MyOffers:
                 return "My offers"
             case .OurStore:
-                return LocalizedStrings.Profile.ourStore
+                return LSCollection.Profile.ourStore
             case .ControlCenter:
-                return LocalizedStrings.Profile.controlCentre
+                return LSCollection.Profile.controlCentre
             case .Menu:
-                return LocalizedStrings.Profile.menu
+                return LSCollection.Profile.menu
             case .NotificationsPref:
-                return LocalizedStrings.Profile.notificationPref
+                return LSCollection.Profile.notificationPref
             case .Language:
-                return LocalizedStrings.Profile.language
+                return LSCollection.Profile.language
             }
         }
     }
@@ -156,8 +156,8 @@ class ProfileVC: AccountProfileVC {
     }
     
     @objc private func setupDetails() {
-        verifyNow.setTitle(LocalizedStrings.Profile.verifyNow, for: .normal)
-        editButton.setTitle(LocalizedStrings.Profile.edit, for: .normal)
+        verifyNow.setTitle(LSCollection.Profile.verifyNow, for: .normal)
+        editButton.setTitle(LSCollection.Profile.edit, for: .normal)
         let userData = DataManager.shared.loginResponse
         let mobileNum = "+" + (userData?.countryCode ?? "") + "-" + (userData?.mobileNo ?? "")
         numberLabel.text = mobileNum

@@ -18,9 +18,9 @@ class SuccessAlertView: AppPopUpViewType {
         var message: String {
             switch self {
             case .addressAdded:
-                return LocalizedStrings.MyAddress.addressAddedMessage
+                return LSCollection.MyAddress.addressAddedMessage
             case .addressUpdated:
-                return LocalizedStrings.MyAddress.addressUpdatedMessage
+                return LSCollection.MyAddress.addressUpdatedMessage
             case .couponAdded:
                 return "Coupon has been applied successfully"
             case .feedbackSubmitted:
@@ -31,9 +31,9 @@ class SuccessAlertView: AppPopUpViewType {
         var title: String {
             switch self {
             case .addressAdded:
-                return LocalizedStrings.MyAddress.addressAddedTitle
+                return LSCollection.MyAddress.addressAddedTitle
             case .addressUpdated:
-                return LocalizedStrings.MyAddress.addressUpdatedTitle
+                return LSCollection.MyAddress.addressUpdatedTitle
             case .couponAdded(let couponCode):
                 return "\(couponCode) Applied Successfully!"
             case .feedbackSubmitted:

@@ -11,7 +11,7 @@ class MyOrderListView: UIView {
     
     @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var noResultView: UIView!
-    
+    @IBOutlet weak private var orderTitleLbl: UILabel!
     @IBAction private func backButtonPressed(_ sender: Any) {
         self.handleViewActions?(.backButtonPressed)
     }
@@ -33,6 +33,7 @@ class MyOrderListView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        orderTitleLbl.text = LSCollection.Orders.myOrders
         addRefreshControl()
         refreshControl.tintColor = AppColors.kuduThemeBlue
         if #available(iOS 15.0, *) {
@@ -66,6 +67,10 @@ class MyOrderListView: UIView {
         }
     }
     
+    func stopInteraction(stop: Bool) {
+        self.tableView.isUserInteractionEnabled = !stop
+    }
+    
     func refreshIndex(_ index: Int, section: Sections) {
         mainThread({
             self.tableView.reloadRows(at: [IndexPath(row: index, section: section.rawValue)], with: .fade)
@@ -93,7 +98,7 @@ class MyOrderListView: UIView {
             self.alert?.setTextAlignment(.left)
             self.alert?.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
             self.alert?.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-            self.alert?.configure(title: "Replace cart \(itemString)?", message: "Your cart contains \(itemString). Do you want to replace?", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self)
+            self.alert?.configure(title: "Replace cart \(itemString)?", message: "Your cart contains \(itemString). Do you want to replace?", leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self)
             self.alert?.handleAction = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.reorderTrigger)

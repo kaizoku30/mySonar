@@ -44,7 +44,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Preferences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="owd-Ba-jlF">
-                                        <rect key="frame" x="48" y="17.5" width="361" height="21"/>
+                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -76,23 +76,23 @@
                                 <color key="backgroundColor" name="offWhiteTableView"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationPrefTableViewCell" id="QtV-vI-GGK" customClass="NotificationPrefTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="88.5"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="91.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QtV-vI-GGK" id="nSe-lb-ZxE">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="88.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="91.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="68h-cS-3fI">
-                                                    <rect key="frame" x="16" y="12" width="382" height="64.5"/>
+                                                    <rect key="frame" x="16" y="12" width="382" height="67.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7r-87-mxO">
-                                                            <rect key="frame" x="12" y="14" width="34.5" height="16.5"/>
+                                                            <rect key="frame" x="12" y="14" width="36" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bT3-Yk-EN0">
-                                                            <rect key="frame" x="12" y="38.5" width="303" height="14"/>
+                                                            <rect key="frame" x="12" y="40" width="303" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" red="0.44705882352941173" green="0.44705882352941173" blue="0.44705882352941173" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -358,6 +358,7 @@
                         </constraints>
                         <connections>
                             <outlet property="clearButton" destination="Xd6-f3-xEp" id="f6l-hw-9F5"/>
+                            <outlet property="noNotificaitonLbl" destination="Eog-u8-Jpi" id="MgT-B1-Yoj"/>
                             <outlet property="noResultView" destination="phB-2O-ytN" id="fWD-aM-8Re"/>
                             <outlet property="notificationTitle" destination="xUX-Lg-FDa" id="ywB-6q-XFB"/>
                             <outlet property="tableView" destination="3UB-8Q-D9s" id="xlH-Jo-nhW"/>
@@ -377,7 +378,7 @@
             <size key="intrinsicContentSize" width="33" height="22"/>
         </designable>
         <designable name="F3A-xI-S9Q">
-            <size key="intrinsicContentSize" width="104" height="31"/>
+            <size key="intrinsicContentSize" width="109" height="33"/>
         </designable>
         <designable name="YdZ-sa-NH5">
             <size key="intrinsicContentSize" width="24" height="24"/>

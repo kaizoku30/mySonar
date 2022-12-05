@@ -41,8 +41,8 @@ class NoInternetConnectionView: UIView {
         localizationCall()
     }
     private func localizationCall() {
-        errorTitleLabel.text = LocalizedStrings.NoInternetConnection.somethingWentWrong
-        errorSubTitleLabel.text = LocalizedStrings.NoInternetConnection.pleaseCheckYourInternetconnection
-        tryAgainButton.setTitle(LocalizedStrings.NoInternetConnection.tryAgain, for: .normal)
+        errorTitleLabel.text = LSCollection.NoInternetConnection.somethingWentWrong
+        errorSubTitleLabel.text = LSCollection.NoInternetConnection.pleaseCheckYourInternetconnection
+        tryAgainButton.setTitle(LSCollection.NoInternetConnection.tryAgain, for: .normal)
     }
 }

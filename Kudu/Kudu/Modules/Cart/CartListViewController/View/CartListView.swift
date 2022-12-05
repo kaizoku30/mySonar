@@ -96,9 +96,12 @@ class CartListView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        makePaymentButton.setTitle(LSCollection.CartScren.makePayment, for: .normal)
+        setDeliveryLocationLabel.text = LSCollection.CartScren.setDeliveryLocationCart
         bringLoaderToFront()
         initialSetup()
         refreshControl.tintColor = AppColors.kuduThemeBlue
+        totalPayableLabel.text = LSCollection.CartScren.totalPayableMultiline
         
     }
     
@@ -203,7 +206,7 @@ class CartListView: UIView {
                 setCartView(enabled: true)
             }
         } else {
-            if let restaurant = restaurantSelected {
+            if let restaurant = restaurantSelected, restaurant._id ?? "" != "" {
                 setDeliveryLocationLabel.isHidden = true
                 let language = AppUserDefaults.selectedLanguage()
                 addressLabel.text = language == .en ? restaurant.nameEnglish : restaurant.nameArabic
@@ -223,9 +226,16 @@ class CartListView: UIView {
     }
     
     func showNoCartView() {
-        NotificationCenter.postNotificationForObservers(.syncCartBanner)
-        self.viewTitleLabel.text = ""
-        self.bringSubviewToFront(noItemInCartView)
+        self.bringLoaderToFront()
+        CartUtility.removeCouponAndFreeItemsRemotely(couponId: CartUtility.getAttachedCoupon?._id ?? "", cartArray: CartUtility.fetchCartLocally(), completion: { [weak self] in
+            mainThread {
+                guard let strongSelf = self else { return }
+                strongSelf.removeLoaderOverlay()
+                NotificationCenter.postNotificationForObservers(.syncCartBanner)
+                strongSelf.viewTitleLabel.text = ""
+                strongSelf.bringSubviewToFront(strongSelf.noItemInCartView)
+            }
+        })
     }
     
     func stopAddressButtonLoader() {
@@ -257,33 +267,30 @@ class CartListView: UIView {
     }
     
     func reloadCartItemSection(itemAddition: Int? = nil, itemDeletion: Int? = nil) {
-        
-        if itemAddition.isNil && itemDeletion.isNil {
-            self.tableView.reloadSections(IndexSet(integer: Sections.cartItems.rawValue), with: .none)
-            self.tableView.reloadSections(IndexSet(integer: Sections.billDetails.rawValue), with: .none)
-            self.tableView.reloadSections(IndexSet(integer: Sections.applyCoupon.rawValue), with: .none)
-            guard let coupon = CartUtility.getAttachedCoupon else { return }
-            // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
-            //  self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
-            return
+        mainThread {
+            if itemAddition.isNil && itemDeletion.isNil {
+                self.tableView.reloadSections(IndexSet(integer: Sections.cartItems.rawValue), with: .none)
+                self.tableView.reloadSections(IndexSet(integer: Sections.billDetails.rawValue), with: .none)
+                self.tableView.reloadSections(IndexSet(integer: Sections.applyCoupon.rawValue), with: .none)
+                return
+            }
+            
+            self.tableView.performBatchUpdates({
+                if let itemAddition = itemAddition {
+                    self.tableView.insertRows(at: [IndexPath(row: itemAddition, section: 0)], with: .bottom)
+                }
+                
+                if let itemDeletion = itemDeletion {
+                    self.tableView.deleteRows(at: [IndexPath(row: itemDeletion, section: 0)], with: AppUserDefaults.selectedLanguage() == .en ? .left : .right)
+                }
+                
+            }, completion: {
+                if !$0 { return }
+                mainThread {
+                    self.tableView.reloadData()
+                }
+            })
         }
-        
-        self.tableView.performBatchUpdates({
-            if let itemAddition = itemAddition {
-                self.tableView.insertRows(at: [IndexPath(row: itemAddition, section: 0)], with: .bottom)
-            }
-            
-            if let itemDeletion = itemDeletion {
-                self.tableView.deleteRows(at: [IndexPath(row: itemDeletion, section: 0)], with: AppUserDefaults.selectedLanguage() == .en ? .left : .right)
-            }
-            
-        }, completion: {
-            if !$0 { return }
-            self.tableView.reloadData()
-            //guard let coupon = CartUtility.getAttachedCoupon else { return }
-            // let inValidCoupon = CartUtility.checkCouponValidationError(coupon)
-            //self.handleViewActions?(.addRemoveFreeItem(add: inValidCoupon.isNil))
-        })
     }
     
     func updateCartDetails(itemCount: Int, totalPrice: Double, deliveryCharge: Double?, addedCoupon: CouponObject?) {
@@ -292,7 +299,7 @@ class CartListView: UIView {
         if let deliveryCharge = deliveryCharge, self.serviceType == .delivery {
             finalPrice += deliveryCharge
         }
-        if let couponObject = addedCoupon, let promoType = PromoOfferType(rawValue: couponObject.promoData?.offerType ?? ""), promoType != .item {
+        if let couponObject = addedCoupon, let promoType = PromoOfferType(rawValue: couponObject.promoData?.offerType ?? ""), promoType != .item, CartUtility.checkCouponValidationError(couponObject).isNil {
             let savings = CartUtility.calculateSavingsAfterCoupon(obj: couponObject)
             if savings > 0 {
                 finalPrice -= savings
@@ -334,7 +341,7 @@ extension CartListView {
                 self.makePaymentButton.startBtnLoader(color: .white)
             } else {
                 self.makePaymentButton.stopBtnLoader(titleColor: .white)
-                self.makePaymentButton.setTitle("Make Payment", for: .normal)
+                self.makePaymentButton.setTitle(LSCollection.CartScren.makePayment, for: .normal)
             }
         })
     }

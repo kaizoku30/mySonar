@@ -31,7 +31,7 @@ class LanguageSelectionVC: BaseVC {
             guard let vc = self else { return }
             switch $0 {
             case .continueButtonPressed:
-                Router.shared.goToTutorialVC(fromVC: vc, selectedLanguage: vc.baseView.currentLanguage)
+                Router.shared.goToTutorialVC(selectedLanguage: vc.baseView.currentLanguage)
             default:
                 break
             }

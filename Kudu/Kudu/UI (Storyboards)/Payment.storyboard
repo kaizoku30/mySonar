@@ -528,6 +528,7 @@
                                             <outlet property="defaultCheckbox" destination="NHO-2K-1h6" id="1So-Re-U56"/>
                                             <outlet property="saveCardCheckbox" destination="4EE-ex-eSD" id="TbD-d9-RgH"/>
                                             <outlet property="saveCardInfoView" destination="Dv9-z5-ACA" id="c5l-Ly-4pp"/>
+                                            <outlet property="setAsDefaultPaymentLbl" destination="8uh-uJ-oqc" id="3JX-bs-z5k"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PayButtonTVCell" id="Yh6-gt-vDQ" customClass="PayButtonTVCell" customModule="Kudu" customModuleProvider="target">

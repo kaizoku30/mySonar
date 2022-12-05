@@ -27,6 +27,8 @@ class CartCouponListView: UIView {
     }
     @IBOutlet private weak var textFieldContainer: UIView!
     
+    @IBOutlet private weak var couponTitleLbl: UILabel!
+    
     var handleViewActions: ((ViewAction) -> Void)?
     
     override func awakeFromNib() {

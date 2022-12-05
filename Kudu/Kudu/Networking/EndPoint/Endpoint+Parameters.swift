@@ -19,20 +19,22 @@ extension Endpoint {
             return [Constants.APIKeys.mobileNo.rawValue: mobileNo,
                     Constants.APIKeys.countryCode.rawValue: countryCode]
         case .signUp(let fullName, let email, let mobileNo, let countryCode, let deviceId, let deviceToken):
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
             var params: [String: Any] = [Constants.APIKeys.fullName.rawValue: fullName,
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken]
+                                         Constants.APIKeys.deviceToken.rawValue: deviceToken]
             if let email = email {
                 params[Constants.APIKeys.email.rawValue] = email
             }
             return params
         case .verifyMobileOtp(let fullName, let email, let mobileNo, let countryCode, let mobileOtp, let deviceId, let deviceToken):
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
             var params: [String: Any] = [Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
+                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
                                          Constants.APIKeys.mobileOtp.rawValue: mobileOtp]
             if let email = email {
                 params[Constants.APIKeys.email.rawValue] = email
@@ -49,17 +51,19 @@ extension Endpoint {
             }
             return params
         case .socialLogIn(let socialLoginType, let socialId, let deviceId, let deviceToken):
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
             let params: [String: Any] = [Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken]
+                                         Constants.APIKeys.deviceToken.rawValue: deviceToken]
             return params
         case .socialSignup(let socialLoginType, let socialId, let fullName, let mobileNo, let email, let countryCode, let deviceId, let deviceToken) :
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
             var params: [String: Any] = [Constants.APIKeys.fullName.rawValue: fullName,
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
+                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
                                          Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId]
             if email.isNotNil {
@@ -67,11 +71,12 @@ extension Endpoint {
             }
             return params
         case .socialVerification(let socialLoginType, let socialId, let fullName, let mobileNo, let email, let mobileOtp, let countryCode, let deviceId, let deviceToken):
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
             var params: [String: Any] = [Constants.APIKeys.fullName.rawValue: fullName,
                                          Constants.APIKeys.mobileNo.rawValue: mobileNo,
                                          Constants.APIKeys.countryCode.rawValue: countryCode,
                                          Constants.APIKeys.deviceId.rawValue: deviceId,
-                                         Constants.APIKeys.deviceToken.rawValue: DataManager.shared.fetchToken,
+                                         Constants.APIKeys.deviceToken.rawValue: deviceToken,
                                          Constants.APIKeys.socialLoginType.rawValue: socialLoginType.rawValue,
                                          Constants.APIKeys.socialId.rawValue: socialId,
                                          Constants.APIKeys.mobileOtp.rawValue: mobileOtp]
@@ -261,6 +266,11 @@ extension Endpoint {
             } else {
                 return [:]
             }
+        case .changeDeviceToken(let deviceId, let deviceToken):
+            debugPrint("Device Token : \(deviceToken) Device ID : \(deviceId)")
+            return [Constants.APIKeys.deviceId.rawValue: deviceId, Constants.APIKeys.deviceToken.rawValue: deviceToken]
+        case .uploadCertificate:
+            return ["content": "MIIEnjCCBESgAwIBAgIIfLw3RMMCAmAwCgYIKoZIzj0EAwIwgYAxNDAyBgNVBAMMK0FwcGxlIFdvcmxkd2lkZSBEZXZlbG9wZXIgUmVsYXRpb25zIENBIC0gRzIxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMjExMTUwNDQyNDVaFw0yNDEyMTQwNDQyNDRaMIHPMTQwMgYKCZImiZPyLGQBAQwkbWVyY2hhbnQuY29tLmt1ZHUuY2hlY2tvdXQyMi5zYW5kYm94MUowSAYDVQQDDEFBcHBsZSBQYXkgUGF5bWVudCBQcm9jZXNzaW5nOm1lcmNoYW50LmNvbS5rdWR1LmNoZWNrb3V0MjIuc2FuZGJveDETMBEGA1UECwwKMlFGNVgzMjdXUjEpMCcGA1UECgwgS3VkdSBDb21wYW55IGZvciBGb29kICYgQ2F0ZXJpbmcxCzAJBgNVBAYTAlNBMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7JHs60n1uiKel4lnUo7+r2FwTNx9GwI2+O6C83Qdw5aTPrOHxTcOWt7kR4AslYY19l8wjGR+b7zhkrJFd3pNIqOCAlUwggJRMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUhLaEzDqGYnIWWZToGqO9SN863wswRwYIKwYBBQUHAQEEOzA5MDcGCCsGAQUFBzABhitodHRwOi8vb2NzcC5hcHBsZS5jb20vb2NzcDA0LWFwcGxld3dkcmNhMjAxMIIBHQYDVR0gBIIBFDCCARAwggEMBgkqhkiG92NkBQEwgf4wgcMGCCsGAQUFBwICMIG2DIGzUmVsaWFuY2Ugb24gdGhpcyBjZXJ0aWZpY2F0ZSBieSBhbnkgcGFydHkgYXNzdW1lcyBhY2NlcHRhbmNlIG9mIHRoZSB0aGVuIGFwcGxpY2FibGUgc3RhbmRhcmQgdGVybXMgYW5kIGNvbmRpdGlvbnMgb2YgdXNlLCBjZXJ0aWZpY2F0ZSBwb2xpY3kgYW5kIGNlcnRpZmljYXRpb24gcHJhY3RpY2Ugc3RhdGVtZW50cy4wNgYIKwYBBQUHAgEWKmh0dHA6Ly93d3cuYXBwbGUuY29tL2NlcnRpZmljYXRlYXV0aG9yaXR5LzA2BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmFwcGxlLmNvbS9hcHBsZXd3ZHJjYTIuY3JsMB0GA1UdDgQWBBQvU2OeBIpIVJW4CompOd2zWXVcVTAOBgNVHQ8BAf8EBAMCAygwTwYJKoZIhvdjZAYgBEIMQDMwODFDNDZDRUEzOERCOTc2NjI1MUQ0OTBBNDA0QkY3MjgwMkI4ODRGMUU2MDU0RTc4OUQyMTRDOUYyRDhFMzcwCgYIKoZIzj0EAwIDSAAwRQIhAJnk+1occd9nSDqgNcOFVzIwNtkziYjGHjTk5Zj0q229AiAVH4kqqh1wVOUql65Odx3PouwC5DXcgcU/obNqqnibtA=="]
         default:
             return [:]
         }

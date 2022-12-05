@@ -38,6 +38,8 @@ class PreviousOrderCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        reorderButton.setTitle(LSCollection.Orders.reorderBtn, for: .normal)
+        rateOrderButton.setTitle(LSCollection.Orders.rateOrderBtn, for: .normal)
         tableView.dataSource = self
         tableView.delegate = self
         rateOrderButton.addTarget(self, action: #selector(rateOrderButtonPressed), for: .touchUpInside)
@@ -70,7 +72,7 @@ class PreviousOrderCell: UITableViewCell {
             rateOrderButton.setTitleColor(AppColors.white, for: .normal)
         }
         let serviceType = APIEndPoints.ServicesType(rawValue: order.servicesAvailable ?? "") ?? .delivery
-        deliveredPickedUpLabel.text = serviceType == .delivery ? "Delivered" : "Picked Up"
+        deliveredPickedUpLabel.text = serviceType == .delivery ? LSCollection.Orders.deliveredStatus : "Picked Up"
         let orderDate = Date(timeIntervalSince1970: TimeInterval(Double(order.created ?? 0)/1000))
         let timeString = orderDate.toString(dateFormat: Date.DateFormat.dMMMYYYYatHHmma.rawValue)
         dateTimeLabel.text = timeString

@@ -20,6 +20,7 @@ class CardNameTVCell: UITableViewCell {
         super.awakeFromNib()
         selectionStyle = .none
         nameTF.delegate = self
+        nameTF.placeholder = LSCollection.Payments.nameOnCard
     }
     
     func configure(_ name: String) {

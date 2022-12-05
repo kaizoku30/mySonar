@@ -9,11 +9,13 @@ import UIKit
 
 class CancellationPolicyCell: UITableViewCell {
 	@IBOutlet private weak var policyText: UILabel!
-	
-	override func awakeFromNib() {
+    @IBOutlet private weak var titleLabel: UILabel!
+    
+    override func awakeFromNib() {
         super.awakeFromNib()
 		selectionStyle = .none
 		setPolicyText()
+        titleLabel.text = LSCollection.CartScren.cPolicy
         // Initialization code
     }
 

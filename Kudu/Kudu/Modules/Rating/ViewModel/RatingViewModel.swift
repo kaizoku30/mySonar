@@ -17,11 +17,11 @@ class RatingViewModel {
    
     func validateData(req: RatingRequestModel) -> (validData: Bool, errorMsg: String?) {
         if req.rate == 0 {
-            return (false, LocalizedStrings.Rating.rating)
+            return (false, LSCollection.Rating.rating)
         }
         
         if req.description == "" {
-            return (false, LocalizedStrings.Rating.description)
+            return (false, LSCollection.Rating.description)
         }
         self.hitRatingAPI(req: req)
         return (true, nil)

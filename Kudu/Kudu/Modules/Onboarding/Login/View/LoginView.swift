@@ -26,7 +26,8 @@ class LoginView: UIView {
     @IBOutlet private weak var loginLbl: UILabel!
     @IBOutlet private weak var loginToUnlockAwesomeFeatureLbl: UILabel!
     @IBOutlet private weak var backButton: UIButton!
-    
+    @IBOutlet private weak var appleLoginView: UIView!
+    @IBOutlet private weak var googleLoginView: UIView!
     // MARK: Actions
     @IBAction private func continueWithGoogle(_ sender: Any) {
         self.handleViewActions?(.googleLogin)
@@ -51,6 +52,14 @@ class LoginView: UIView {
     
     @IBAction private func getOtpButtonPressed(_ sender: Any) {
         self.handleViewActions?(.loginButtonPressed)
+    }
+    
+    @objc private func googleLogin() {
+        self.handleViewActions?(.googleLogin)
+    }
+    
+    @objc private func appleLogin() {
+        self.handleViewActions?(.appleLogin)
     }
     
     // MARK: Variables
@@ -92,15 +101,17 @@ class LoginView: UIView {
         bottomContainer.roundTopCorners(cornerRadius: 32)
         errorImgView.isUserInteractionEnabled = true
         errorImgView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(errorImgViewTapped)))
-        loginToUnlockAwesomeFeatureLbl.text = LocalizedStrings.Login.loginToUnlockAwesomeFeatures
+        loginToUnlockAwesomeFeatureLbl.text = LSCollection.Login.loginToUnlockAwesomeFeatures
         backButton.isHidden = false
+        googleLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(googleLogin)))
+        appleLoginView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(appleLogin)))
     }
     
     func setupView(delegate: LoginVC) {
-        getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
-        pleaseEnterPhoneNumberLbl.text = LocalizedStrings.Login.pleaseEnterYourPhoneNumber
-        orContinueWithLbl.text = LocalizedStrings.Login.orContinueWith
-        loginLbl.text = LocalizedStrings.Login.login
+        getOtpButton.setTitle(LSCollection.Login.getOtp, for: .normal)
+        pleaseEnterPhoneNumberLbl.text = LSCollection.Login.pleaseEnterYourPhoneNumber
+        orContinueWithLbl.text = LSCollection.Login.orContinueWith
+        loginLbl.text = LSCollection.Login.login
         signUpTextView.delegate = delegate
         setUpSignUpLabel()
         setupTextField()
@@ -108,12 +119,12 @@ class LoginView: UIView {
     
     private func setupButton(state: ButtonState) {
         if state == .enabled {
-            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
+            getOtpButton.setTitle(LSCollection.Login.getOtp, for: .normal)
             getOtpButton.isUserInteractionEnabled = true
             getOtpButton.backgroundColor = AppColors.LoginScreen.selectedBgButtonColor
             getOtpButton.setTitleColor(.white, for: .normal)
         } else {
-            getOtpButton.setTitle(LocalizedStrings.Login.getOtp, for: .normal)
+            getOtpButton.setTitle(LSCollection.Login.getOtp, for: .normal)
             getOtpButton.isUserInteractionEnabled = false
             getOtpButton.backgroundColor = AppColors.LoginScreen.unselectedButtonBg
             getOtpButton.setTitleColor(AppColors.LoginScreen.unselectedButtonTextColor, for: .normal)
@@ -121,9 +132,9 @@ class LoginView: UIView {
     }
     
     private func setUpSignUpLabel() {
-        let regularText = NSMutableAttributedString(string: LocalizedStrings.Login.dontHaveAnAccount, attributes: [NSAttributedString.Key.font: AppFonts.mulishRegular.withSize(12), NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.6)])
-        let tappableText = NSMutableAttributedString(string: LocalizedStrings.Login.signUp)
-        tappableText.addAttributes([.font: AppFonts.mulishRegular.withSize(12), .link: "SignUp", .foregroundColor: AppColors.kuduThemeBlue], range: NSRange(location: 0, length: LocalizedStrings.Login.signUp.count))
+        let regularText = NSMutableAttributedString(string: LSCollection.Login.dontHaveAnAccount, attributes: [NSAttributedString.Key.font: AppFonts.mulishRegular.withSize(12), NSAttributedString.Key.foregroundColor: UIColor.black.withAlphaComponent(0.6)])
+        let tappableText = NSMutableAttributedString(string: LSCollection.Login.signUp)
+        tappableText.addAttributes([.font: AppFonts.mulishRegular.withSize(12), .link: "SignUp", .foregroundColor: AppColors.kuduThemeBlue], range: NSRange(location: 0, length: LSCollection.Login.signUp.count))
         signUpTextView.tintColor = AppColors.kuduThemeBlue
         signUpTextView.isSelectable = true
         signUpTextView.isUserInteractionEnabled = true

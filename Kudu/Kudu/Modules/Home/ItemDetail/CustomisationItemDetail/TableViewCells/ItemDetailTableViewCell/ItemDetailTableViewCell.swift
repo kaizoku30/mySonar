@@ -27,6 +27,7 @@ class ItemDetailTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        allergenceTitleLabel.text = LSCollection.ExploreMenu.allergenceTitle
         // Initialization code
     }
 

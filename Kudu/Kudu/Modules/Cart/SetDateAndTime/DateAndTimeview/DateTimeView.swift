@@ -22,7 +22,8 @@ class DateTimeView: UIView {
     var handleViewActions: ((ViewAction) -> Void)?
     override func awakeFromNib() {
         super.awakeFromNib()
-        viewOutlet.roundCorners(corners: [.topLeft, .topRight], radius: 32)
+        self.semanticContentAttribute = .forceLeftToRight
+        viewOutlet.roundTopCorners(cornerRadius: 32)
     }
     
     func setDateLabel(text: String) {

@@ -52,7 +52,7 @@ final class GuestUserCache {
     
     func addGuestCartObject(addCartReq: AddCartItemRequest, added: @escaping (Result<Bool, Error>) -> Void) {
         CartUtility.syncCart {
-            let currentItems = CartUtility.fetchCart()
+            let currentItems = CartUtility.fetchCartLocally()
             if currentItems.contains(where: { $0.hashId ?? "" == addCartReq.hashId}) {
                 //Update Count
                 let updateCartReq = UpdateCartCountRequest(isIncrement: true, itemId: addCartReq.itemId, quantity: 1, hashId: addCartReq.hashId)
@@ -72,7 +72,7 @@ final class GuestUserCache {
                         added(.failure(NSError(localizedDescription: "Could not add to cart")))
                         return
                     }
-                    CartUtility.addItemToCart(addToCartReq: addCartReq, menuItem: menuItem, completion: {
+                    CartUtility.addItemToCartRemotely(addToCartReq: addCartReq, menuItem: menuItem, completion: {
                         switch $0 {
                         case .success:
                             added(.success(true))

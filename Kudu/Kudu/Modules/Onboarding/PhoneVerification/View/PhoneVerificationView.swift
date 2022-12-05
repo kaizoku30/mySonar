@@ -29,11 +29,13 @@ class PhoneVerificationView: UIView {
         numberOfTriesRemaining -= 1
         var errorString = ""
         if numberOfTriesRemaining == 1 {
-            errorString = LocalizedStrings.PhoneVerification.youHaveXNumberAttemptRemaining.replace(string: CommonStrings.numberPlaceholder, withString: "1")
+            errorString = LSCollection.PhoneVerification.youHaveXNumberAttemptRemaining.replace(string: CommonStrings.numberPlaceholder, withString: "1")
         } else {
-            errorString = LocalizedStrings.PhoneVerification.youHaveXNumberAttemptsRemaining.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfTriesRemaining)")
+            errorString = LSCollection.PhoneVerification.youHaveXNumberAttemptsRemaining.replace(string: CommonStrings.numberPlaceholder, withString: "\(numberOfTriesRemaining)")
         }
+        self.otpView.isUserInteractionEnabled = true
         toggleErrorLabel(errorMsg: errorString, show: true, shake: false, toggleBorder: false)
+        otpView.toggleErrorState(show: false)
         self.handleViewActions?(.resendOtpPressed)
     }
     
@@ -71,20 +73,19 @@ class PhoneVerificationView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         initialSetup()
-        addKeyboardObservers()
-        dontReceiveTheOtpLbl.text = LocalizedStrings.PhoneVerification.didntReceiveTheOTPCode
-        pleaseEnterTheOtpCodeLbl.text = LocalizedStrings.PhoneVerification.pleaseEnterTheOtpCodeSentTo
+        dontReceiveTheOtpLbl.text = LSCollection.PhoneVerification.didntReceiveTheOTPCode
+        pleaseEnterTheOtpCodeLbl.text = LSCollection.PhoneVerification.pleaseEnterTheOtpCodeSentTo
     }
     
     private func initialSetup() {
         otpView.semanticContentAttribute = .forceLeftToRight
-        verifyButton.setTitle(LocalizedStrings.PhoneVerification.verify, for: .normal)
-        verifyPhoneTitleLabel.text = LocalizedStrings.PhoneVerification.verifyPhoneNumber
+        verifyButton.setTitle(LSCollection.PhoneVerification.verify, for: .normal)
+        verifyPhoneTitleLabel.text = LSCollection.PhoneVerification.verifyPhoneNumber
         NotificationCenter.default.addObserver(self, selector: #selector(enteredForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(movedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         self.mobileLabel.text = ""
         self.otpTimerLabel.text = ""
-        let attributedText = NSAttributedString(string: LocalizedStrings.PhoneVerification.resendCode, attributes: [.font: AppFonts.mulishMedium.withSize(12), .foregroundColor: AppColors.PhoneVerificationScreen.resendButtonColor, .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: AppColors.PhoneVerificationScreen.resendButtonColor])
+        let attributedText = NSAttributedString(string: LSCollection.PhoneVerification.resendCode, attributes: [.font: AppFonts.mulishMedium.withSize(12), .foregroundColor: AppColors.PhoneVerificationScreen.resendButtonColor, .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: AppColors.PhoneVerificationScreen.resendButtonColor])
         self.resendOtpButton.setAttributedTitle(attributedText, for: .normal)
     }
     
@@ -93,7 +94,7 @@ class PhoneVerificationView: UIView {
         setupOTPField()
         if let email = email {
             self.mobileLabel.text = email
-            self.verifyPhoneTitleLabel.text = LocalizedStrings.PhoneVerification.verifyEmailAddress
+            self.verifyPhoneTitleLabel.text = LSCollection.PhoneVerification.verifyEmailAddress
             setDifferentNumberLabel(emailFlow: true)
         } else {
             self.mobileLabel.text = "+966 \(mobileNum)"
@@ -107,7 +108,7 @@ class PhoneVerificationView: UIView {
     }
     
     private func setDifferentNumberLabel(emailFlow: Bool = false) {
-        let differentString = emailFlow ? LocalizedStrings.PhoneVerification.differentEmail : LocalizedStrings.PhoneVerification.differentNumber
+        let differentString = emailFlow ? LSCollection.PhoneVerification.differentEmail : LSCollection.PhoneVerification.differentNumber
         let underLinedText = NSAttributedString(string: differentString, attributes: [.font: AppFonts.mulishBold.withSize(12), .foregroundColor: AppColors.PhoneVerificationScreen.differentNumLabel, .underlineStyle: NSUnderlineStyle.single.rawValue, .underlineColor: AppColors.PhoneVerificationScreen.differentNumLabel])
         differentNumberLabel.attributedText = underLinedText
         differentNumberLabel.isUserInteractionEnabled = true
@@ -176,6 +177,8 @@ class PhoneVerificationView: UIView {
             self.handleViewActions?(.dismissVC)
             return
         }
+        self.otpView.isUserInteractionEnabled = false
+        self.toggleErrorLabel(errorMsg: "Please Re-send the OTP code", show: true, shake: true, toggleBorder: true)
         self.otpTimerLabel.isHidden = true
         self.circularProgressView.isHidden = true
         self.noOtpReceivedView.isHidden = false
@@ -223,42 +226,6 @@ class PhoneVerificationView: UIView {
                 self.setupButton(state: .disabled)
             }
         }
-    }
-    
-    private func addKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc private func keyboardWillShow(notification: NSNotification) {
-//        animateWithKeyboard(notification: notification, animations: { [weak self] (keyboardRect) in
-//            mainThread {
-//                guard let strongSelf = self else { return }
-//
-//                strongSelf.verifyButton.isHidden = true
-//                strongSelf.verifyButtonBottomConstraint.constant = keyboardRect.height + 16 - strongSelf.safeAreaInsets.bottom
-//                strongSelf.layoutIfNeeded()
-//                let noOtpFrame = strongSelf.noOtpReceivedView.frame
-//                let buttonFrame = strongSelf.verifyButton.frame
-//                let bottomPoint = noOtpFrame.origin.y + noOtpFrame.height + 20
-//                if bottomPoint >= buttonFrame.origin.y {
-//                    strongSelf.verifyButton.isHidden = true
-//                } else {
-//                    strongSelf.verifyButton.isHidden = false
-//                }
-//            }
-//        })
-    }
-    
-    @objc private func keyboardWillHide(notification: NSNotification) {
-//        animateWithKeyboard(notification: notification) { [weak self] (_) in
-//            mainThread {
-//                guard let strongSelf = self else { return }
-//                strongSelf.verifyButton.isHidden = false
-//                strongSelf.verifyButtonBottomConstraint.constant = 32
-//                //self.textViewBottomC.constant = 95
-//                strongSelf.layoutIfNeeded()
-//            }}
     }
 }
 

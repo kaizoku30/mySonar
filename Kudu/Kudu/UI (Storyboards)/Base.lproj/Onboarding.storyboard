@@ -531,7 +531,7 @@ Contact Delivery</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Sqq-Ww-fSC">
+                                    <stackView hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" distribution="equalSpacing" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Sqq-Ww-fSC">
                                         <rect key="frame" x="34" y="286.5" width="307" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0u-X8-Bww">
@@ -587,6 +587,94 @@ Contact Delivery</string>
                                             <constraint firstAttribute="height" constant="48" id="zaK-Fg-WWT"/>
                                         </constraints>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="p86-t3-u9v">
+                                        <rect key="frame" x="34" y="279.5" width="307" height="48"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7yy-I1-8O6">
+                                                <rect key="frame" x="0.0" y="0.0" width="144.5" height="48"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="6bP-xt-upN">
+                                                        <rect key="frame" x="26" y="5" width="93" height="38"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_googleLogin" translatesAutoresizingMaskIntoConstraints="NO" id="BCj-Y7-cQG">
+                                                                <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="BCj-Y7-cQG" secondAttribute="height" multiplier="1:1" id="GaI-m6-3kI"/>
+                                                                    <constraint firstAttribute="width" constant="38" id="eeP-K9-MQp"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNi-bK-d53">
+                                                                <rect key="frame" x="48" y="0.0" width="45" height="38"/>
+                                                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                                                <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="6bP-xt-upN" secondAttribute="bottom" constant="5" id="HSK-Xt-LE9"/>
+                                                    <constraint firstItem="6bP-xt-upN" firstAttribute="top" secondItem="7yy-I1-8O6" secondAttribute="top" constant="5" id="Jxm-l6-adB"/>
+                                                    <constraint firstItem="6bP-xt-upN" firstAttribute="centerX" secondItem="7yy-I1-8O6" secondAttribute="centerX" id="bD7-Tp-Mbo"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfp-3w-go4">
+                                                <rect key="frame" x="162.5" y="0.0" width="144.5" height="48"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lC1-Tu-SEl">
+                                                        <rect key="frame" x="26" y="5" width="93" height="38"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_appleLogin" translatesAutoresizingMaskIntoConstraints="NO" id="eCJ-8a-zh3">
+                                                                <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="38" id="PHr-h7-e5b"/>
+                                                                    <constraint firstAttribute="width" secondItem="eCJ-8a-zh3" secondAttribute="height" multiplier="1:1" id="hRc-uh-hHm"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWR-tx-H4k">
+                                                                <rect key="frame" x="48" y="0.0" width="45" height="38"/>
+                                                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="lC1-Tu-SEl" firstAttribute="centerX" secondItem="bfp-3w-go4" secondAttribute="centerX" id="5xx-VA-36V"/>
+                                                    <constraint firstItem="lC1-Tu-SEl" firstAttribute="top" secondItem="bfp-3w-go4" secondAttribute="top" constant="5" id="a2P-as-zyg"/>
+                                                    <constraint firstAttribute="bottom" secondItem="lC1-Tu-SEl" secondAttribute="bottom" constant="5" id="qHf-dX-Vi6"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <real key="value" value="4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="syw-4r-Hi1"/>
+                                        </constraints>
+                                    </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please check your number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83e-do-pEa">
                                         <rect key="frame" x="34" y="144" width="307" height="0.0"/>
                                         <constraints>
@@ -600,6 +688,7 @@ Contact Delivery</string>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="Oew-yK-OC9" firstAttribute="leading" secondItem="M7Q-CM-lnk" secondAttribute="trailing" constant="13" id="0iB-q2-QPS"/>
+                                    <constraint firstItem="p86-t3-u9v" firstAttribute="top" secondItem="Oew-yK-OC9" secondAttribute="bottom" constant="32" id="0xg-1o-Uuy"/>
                                     <constraint firstItem="7jd-f6-OEB" firstAttribute="trailing" secondItem="huE-YZ-jLp" secondAttribute="trailing" id="1Um-bv-c0a"/>
                                     <constraint firstItem="7jd-f6-OEB" firstAttribute="leading" secondItem="huE-YZ-jLp" secondAttribute="leading" id="3Y7-yG-lXh"/>
                                     <constraint firstItem="h3Z-QL-2Fi" firstAttribute="leading" secondItem="OiG-Af-OJy" secondAttribute="leading" constant="34" id="5Ib-3F-Qfw"/>
@@ -617,6 +706,7 @@ Contact Delivery</string>
                                     <constraint firstItem="7jd-f6-OEB" firstAttribute="top" secondItem="83e-do-pEa" secondAttribute="bottom" constant="16" id="OwC-ga-0lr"/>
                                     <constraint firstItem="iXL-S4-ecl" firstAttribute="centerX" secondItem="OiG-Af-OJy" secondAttribute="centerX" id="PEu-2m-1O9"/>
                                     <constraint firstAttribute="trailing" secondItem="huE-YZ-jLp" secondAttribute="trailing" constant="34" id="RT8-9R-foh"/>
+                                    <constraint firstItem="p86-t3-u9v" firstAttribute="trailing" secondItem="7jd-f6-OEB" secondAttribute="trailing" id="SEo-Lz-apF"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h3Z-QL-2Fi" secondAttribute="trailing" id="U7I-a6-pqZ"/>
                                     <constraint firstItem="DQL-Zw-3zu" firstAttribute="top" secondItem="h3Z-QL-2Fi" secondAttribute="bottom" constant="9" id="YLV-9F-eX7"/>
                                     <constraint firstItem="M7Q-CM-lnk" firstAttribute="leading" secondItem="OiG-Af-OJy" secondAttribute="leading" constant="34" id="a6P-TK-yY7"/>
@@ -628,6 +718,7 @@ Contact Delivery</string>
                                     <constraint firstItem="83e-do-pEa" firstAttribute="leading" secondItem="huE-YZ-jLp" secondAttribute="leading" id="qfk-iK-arT"/>
                                     <constraint firstItem="huE-YZ-jLp" firstAttribute="leading" secondItem="OiG-Af-OJy" secondAttribute="leading" constant="34" id="tKc-Go-cau"/>
                                     <constraint firstItem="83e-do-pEa" firstAttribute="top" secondItem="huE-YZ-jLp" secondAttribute="bottom" constant="8" id="yIH-6y-z6F"/>
+                                    <constraint firstItem="p86-t3-u9v" firstAttribute="leading" secondItem="7jd-f6-OEB" secondAttribute="leading" id="zLA-Ll-gPN"/>
                                 </constraints>
                             </view>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_login_graphicText" translatesAutoresizingMaskIntoConstraints="NO" id="vSA-qd-hua">
@@ -694,6 +785,7 @@ Contact Delivery</string>
                             <constraint firstItem="vSA-qd-hua" firstAttribute="leading" secondItem="FaI-E8-f8l" secondAttribute="leading" id="zrE-WG-u1S"/>
                         </constraints>
                         <connections>
+                            <outlet property="appleLoginView" destination="bfp-3w-go4" id="riL-ov-Quz"/>
                             <outlet property="backButton" destination="K4E-ih-P9y" id="gOr-ra-78c"/>
                             <outlet property="bottomContainer" destination="OiG-Af-OJy" id="PYt-ij-ZZe"/>
                             <outlet property="countryCodeView" destination="vaD-tq-eci" id="da9-Mo-pbj"/>
@@ -701,6 +793,7 @@ Contact Delivery</string>
                             <outlet property="errorLabel" destination="83e-do-pEa" id="0Dw-8w-4uB"/>
                             <outlet property="errorLabelHeightConstraint" destination="3Gv-S4-s1b" id="j7Z-jO-7MP"/>
                             <outlet property="getOtpButton" destination="7jd-f6-OEB" id="Qxa-L8-nJD"/>
+                            <outlet property="googleLoginView" destination="7yy-I1-8O6" id="WMr-dt-78D"/>
                             <outlet property="loginLbl" destination="h3Z-QL-2Fi" id="HRY-1W-rnx"/>
                             <outlet property="loginToUnlockAwesomeFeatureLbl" destination="zQ9-kT-gZ2" id="Dqs-kb-0c1"/>
                             <outlet property="orContinueWithLbl" destination="Oew-yK-OC9" id="9Wg-TS-TB1"/>
@@ -1627,8 +1720,10 @@ Contact Delivery</string>
         <image name="circularCrossGrey" width="32" height="32"/>
         <image name="fbBtn" width="72" height="72"/>
         <image name="googleBtn" width="72" height="72"/>
+        <image name="k_appleLogin" width="39" height="38"/>
         <image name="k_discountGraphic_blue" width="71" height="54"/>
         <image name="k_discountGraphic_white" width="78" height="61"/>
+        <image name="k_googleLogin" width="39" height="38"/>
         <image name="k_kudu_verticalLogo" width="119" height="207"/>
         <image name="k_login_burritoImage" width="272" height="153"/>
         <image name="k_login_graphicText" width="360" height="264.5"/>

@@ -31,6 +31,7 @@ class PhoneVerificationVM {
     private var loginMobileNumber: String?
     private var emailForVerification: String?
     private var changePhoneNumberReq: ChangePhoneNumberRequest?
+    var isAddCardFlow = false
     var getChangeRequest: ChangePhoneNumberRequest? { changePhoneNumberReq }
     var getEmailForVerification: String? { emailForVerification }
     var getCurrentFlow: PhoneVerificationFlow { self.flow }

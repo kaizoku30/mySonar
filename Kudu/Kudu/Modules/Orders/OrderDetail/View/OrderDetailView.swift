@@ -24,7 +24,7 @@ class OrderDetailView: UIView {
     @IBOutlet weak private var cancelOrderButton: AppButton!
     
     @IBAction func reorderButtonPressed(_ sender: Any) {
-        if CartUtility.fetchCart().isEmpty {
+        if CartUtility.fetchCartLocally().isEmpty {
             self.handleViewActions?(.reorderTrigger)
         } else {
             self.showCartClearanceAlert()
@@ -38,6 +38,7 @@ class OrderDetailView: UIView {
     
     @IBOutlet weak var reorderView: UIView!
     @IBOutlet weak var cancelOrderView: UIView!
+    @IBOutlet weak var orderDetailLbl: UILabel!
     
     enum Sections: Int, CaseIterable {
         case OrderInfo = 0
@@ -60,6 +61,8 @@ class OrderDetailView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        reorderButton.setTitle(LSCollection.Orders.reorderBtn, for: .normal)
+        orderDetailLbl.text = LSCollection.Orders.orderDetails
         tableView.sectionFooterHeight = 0
         tableView.sectionHeaderHeight = 0
         if #available(iOS 15.0, *) {
@@ -138,7 +141,7 @@ class OrderDetailView: UIView {
             self.alert?.setTextAlignment(.left)
             self.alert?.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
             self.alert?.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-            self.alert?.configure(title: "Replace cart \(itemString)?", message: "Your cart contains \(itemString). Do you want to replace?", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self)
+            self.alert?.configure(title: "Replace cart \(itemString)?", message: "Your cart contains \(itemString). Do you want to replace?", leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self)
             self.alert?.handleAction = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.reorderTrigger)

@@ -43,10 +43,4 @@ extension UIDevice {
         }
         return 0.0
     }
-    
-    static func vibrate() {
-        let feedback = UIImpactFeedbackGenerator.init(style: UIImpactFeedbackGenerator.FeedbackStyle.heavy)
-        feedback.prepare()
-        feedback.impactOccurred()
-    }
 }

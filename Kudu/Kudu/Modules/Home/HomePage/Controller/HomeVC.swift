@@ -18,21 +18,14 @@ class HomeVC: BaseVC {
     var viewModel: HomeVM?
     private let reachability = try? Reachability()
     private var sideMenuVC: BaseVC?
+    private var guestCacheExists = false
+    private var bottomDetailVC: BaseVC?
+    private var bottomDetailMenuItem: MenuItem?
     
     // MARK: ViewLifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
-    }
-    
-    private func initialSetup() {
-        baseView.setupView(self)
-        handleActions()
-        checkLocationState()
-        addObservers()
-        reachabilityHandling()
-        removeOtherViewControllers()
-        handleGuestUserCache()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,11 +43,22 @@ class HomeVC: BaseVC {
         }
         debugPrint("View Will Appear Called For Home")
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        weak var weakSelf = self.navigationController as? BaseNavVC
-        weakSelf?.disableSwipeBackGesture = false
+}
+
+extension HomeVC {
+    // MARK: Initial Setup
+    private func initialSetup() {
+        if GuestUserCache.shared.getAction().isNotNil {
+            guestCacheExists = true
+        }
+        baseView.setupView(self)
+        handleActions()
+        checkLocationState()
+        addObservers()
+        reachabilityHandling()
+        removeOtherViewControllers()
+        handleGuestUserCache()
+        self.tabBarController?.navigationController?.viewControllers.removeAll(where: { $0.isKind(of: HomeTabBarVC.self) == false })
     }
     
     private func addObservers() {
@@ -63,10 +67,6 @@ class HomeVC: BaseVC {
         self.observeFor(.curbsideLocationUpdated, selector: #selector(curbsideLocationUpdated))
         self.observeFor(.deliveryLocationUpdated, selector: #selector(deliveryLocationUpdated))
         self.observeFor(.syncCartBanner, selector: #selector(syncCartBackground))
-    }
-    
-    @objc private func syncCartBackground() {
-        self.baseView.syncCart()
     }
     
     private func removeOtherViewControllers() {
@@ -80,95 +80,6 @@ class HomeVC: BaseVC {
         viewControllerToRemove.forEach({
             debugPrint("Removed a VC from Stack")
             self.navigationController?.viewControllers.remove(at: $0)
-        })
-    }
-}
-
-extension HomeVC {
-    // MARK: Handle Guest User Cache
-    private func handleGuestUserCache() {
-        if DataManager.shared.isUserLoggedIn {
-            //User Logged In, Need to check Guest User Cache
-            if let action = GuestUserCache.shared.getAction() {
-                switch action {
-                case .addToCart(let req):
-                    addCartObject(req: req)
-                case .favourite(let req):
-                    addGuestUserFavourite(req: req)
-                }
-            }
-        }
-    }
-    
-    private func addCartObject(req: AddCartItemRequest) {
-        self.tabBarController?.addLoaderOverlay()
-        CartUtility.syncCart { [weak self] in
-            guard let strongSelf = self else { return }
-            GuestUserCache.shared.clearCache()
-            if CartUtility.getCartServiceType != req.servicesAvailable {
-                strongSelf.showCartConflictAlert(req: req)
-            } else {
-                strongSelf.triggerAddRequestFlow(req: req)
-            }
-        }
-    }
-    
-    private func triggerAddRequestFlow(req: AddCartItemRequest) {
-        GuestUserCache.shared.addGuestCartObject(addCartReq: req, added: { [weak self] in
-            switch $0 {
-            case .success:
-                CartUtility.syncCart {
-                    mainThread({
-                        self?.baseView.syncCart()
-                        self?.tabBarController?.removeLoaderOverlay()
-                    })
-                }
-            case .failure(let errorObject):
-                self?.tabBarController?.removeLoaderOverlay()
-                let error = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
-                mainThread {
-                    guard let baseView = self?.baseView else { return }
-                    error.show(message: errorObject.localizedDescription, view: baseView)
-                }
-            }
-        })
-    }
-    
-    private func showCartConflictAlert(req: AddCartItemRequest) {
-        let alert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 186))
-        alert.setTextAlignment(.left)
-        alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
-        alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
-        alert.configure(title: "Change Order Type ?", message: "Please be aware your cart will be cleared as you change order type", leftButtonTitle: "Cancel", rightButtonTitle: "Continue", container: self.baseView)
-        alert.handleAction = { [weak self] in
-            if $0 == .right {
-                CartUtility.clearCart(clearedConfirmed: {
-                    self?.triggerAddRequestFlow(req: req)
-                })
-            }
-        }
-    }
-    
-    private func addGuestUserFavourite(req: FavouriteRequest) {
-        GuestUserCache.shared.clearCache()
-        self.tabBarController?.addLoaderOverlay()
-        GuestUserCache.shared.addGuestUserFavourite(favouriteReq: req, added: { [weak self] in
-            switch $0 {
-            case .success:
-                mainThread {
-                    self?.tabBarController?.removeLoaderOverlay()
-                    let vc = MyFavouritesVC.instantiate(fromAppStoryboard: .Home)
-                    vc.viewModel = MyFavouritesVM(delegate: vc, serviceTypeHome: self?.viewModel?.getSelectedSection ?? .delivery)
-                    self?.push(vc: vc)
-                }
-            case .failure(let error):
-                self?.tabBarController?.removeLoaderOverlay()
-                let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
-                guard let strongSelf = self else { return }
-                mainThread {
-                    errorView.show(message: error.localizedDescription, view: strongSelf.baseView)
-                }
-            }
         })
     }
 }
@@ -200,6 +111,87 @@ extension HomeVC {
 }
 
 extension HomeVC {
+    // MARK: Handle Guest User Cache
+    private func handleGuestUserCache() {
+        if DataManager.shared.isUserLoggedIn {
+            //User Logged In, Need to check Guest User Cache
+            if let action = GuestUserCache.shared.getAction() {
+                switch action {
+                case .addToCart(let req):
+                    addCartObject(req: req)
+                case .favourite(let req):
+                    addGuestUserFavourite(req: req)
+                }
+            }
+        }
+    }
+    
+    private func triggerAddRequestFlow(req: AddCartItemRequest) {
+        GuestUserCache.shared.addGuestCartObject(addCartReq: req, added: { [weak self] in
+            switch $0 {
+            case .success:
+                CartUtility.syncCart {
+                    mainThread({
+                        self?.baseView.syncCart()
+                        self?.tabBarController?.removeLoaderOverlay()
+                    })
+                }
+            case .failure(let errorObject):
+                self?.tabBarController?.removeLoaderOverlay()
+                let error = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
+                mainThread {
+                    guard let baseView = self?.baseView else { return }
+                    error.show(message: errorObject.localizedDescription, view: baseView)
+                }
+            }
+        })
+    }
+    
+    private func addGuestUserFavourite(req: FavouriteRequest) {
+        GuestUserCache.shared.clearCache()
+        mainThread {
+            let section = req.servicesAvailable
+            switch section {
+            case .curbside:
+                self.baseView.curbsideTapped()
+            case .delivery:
+                self.baseView.deliveryTapped()
+            case .pickup:
+                self.baseView.pickupTapped()
+            }
+        }
+        if req.itemId.isEmpty {
+            let vc = MyFavouritesVC.instantiate(fromAppStoryboard: .Home)
+            vc.viewModel = MyFavouritesVM(delegate: vc, serviceTypeHome: self.viewModel?.getSelectedSection ?? .delivery)
+            self.push(vc: vc)
+            return
+        }
+        
+        self.tabBarController?.addLoaderOverlay()
+        GuestUserCache.shared.addGuestUserFavourite(favouriteReq: req, added: { [weak self] in
+            switch $0 {
+            case .success:
+                    DataManager.syncHashIDs(completion: {
+                        mainThread {
+                            self?.tabBarController?.removeLoaderOverlay()
+                            let tabBar = self?.tabBarController
+                            let homeTab = tabBar as! HomeTabBarVC
+                            homeTab.navigateForGuest(itemId: req.itemId, menuId: req.menuId)
+                        }
+                    })
+            case .failure(let error):
+                self?.tabBarController?.removeLoaderOverlay()
+                let errorView = AppErrorToastView(frame: CGRect(x: 0, y: 0, width: self?.baseView.width ?? 0 - 32, height: 48))
+                guard let strongSelf = self else { return }
+                mainThread {
+                    errorView.show(message: error.localizedDescription, view: strongSelf.baseView)
+                }
+            }
+        })
+    }
+}
+
+extension HomeVC {
     
     // MARK: Location Methods
     private func checkLocationState() {
@@ -209,11 +201,11 @@ extension HomeVC {
         viewModel.handleLocationState(foundState: {
             switch $0 {
             case .servicesDisabled:
-                self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
                 self.baseView.showLocationServicesAlert(type: .locationServicesNotWorking)
                 self.hitApis()
             case .permissionDenied:
-                self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
                 self.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
                 self.hitApis()
             case .fetchCurrentLocation:
@@ -233,7 +225,7 @@ extension HomeVC {
             case .authorizedWhenInUse, .authorizedAlways:
                 self?.fetchCurrentLocation()
             default:
-                self?.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self?.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
                 self?.baseView.showLocationServicesAlert(type: .locationPermissionDenied)
                 self?.hitApis()
             }
@@ -269,7 +261,7 @@ extension HomeVC {
                 self.baseView.handleAPIRequest(.reverseGeoCodeAddress)
                 self.viewModel?.reverseGeoCodeCurrentCoordinates(coordinates, prefillData: nil)
             } else {
-                self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+                self.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
                 self.baseView.showLocationServicesAlert(type: .couldNotFetchLocation)
                 self.hitApis()
             }
@@ -277,6 +269,47 @@ extension HomeVC {
     }
 }
 
+extension HomeVC {
+    // MARK: Cart Operations
+    @objc private func syncCartBackground() {
+        self.baseView.syncCart()
+    }
+    
+    private func addCartObject(req: AddCartItemRequest) {
+        self.tabBarController?.addLoaderOverlay()
+        CartUtility.syncCart { [weak self] in
+            guard let strongSelf = self else { return }
+            mainThread {
+                GuestUserCache.shared.clearCache()
+                if CartUtility.getCartServiceType != req.servicesAvailable {
+                    self?.tabBarController?.removeLoaderOverlay()
+                    strongSelf.showCartConflictAlert(req: req)
+                } else {
+                    strongSelf.triggerAddRequestFlow(req: req)
+                }
+            }
+        }
+    }
+    
+    private func showCartConflictAlert(req: AddCartItemRequest) {
+        mainThread {
+            let alert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: 288, height: 186))
+            alert.setTextAlignment(.left)
+            alert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: nil)
+            alert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: .right)
+            alert.configure(title: LSCollection.CartScren.orderTypeHasBeenChanged, message: LSCollection.CartScren.cartWillBeCleared, leftButtonTitle: LSCollection.SignUp.cancel, rightButtonTitle: LSCollection.SignUp.continueText, container: self.baseView)
+            alert.handleAction = { [weak self] in
+                if $0 == .right {
+                    alert.removeSelf()
+                    self?.tabBarController?.addLoaderOverlay()
+                    CartUtility.clearCartRemotely(clearedConfirmed: {
+                        self?.triggerAddRequestFlow(req: req)
+                    })
+                }
+            }
+        }
+    }
+}
 extension HomeVC {
     
     // MARK: Sectional Methods
@@ -300,7 +333,7 @@ extension HomeVC {
         switch section {
         case .delivery:
             if (self.viewModel?.getCurrentLocationData).isNil {
-                title = LocalizedStrings.Home.setDeliveryLocation
+                title = LSCollection.Home.setDeliveryLocation
             } else {
                 let isMyAddress = self.viewModel?.getCurrentLocationData?.associatedMyAddress.isNotNil ?? false
                 let addressType = APIEndPoints.AddressLabelType(rawValue: self.viewModel?.getCurrentLocationData?.associatedMyAddress?.addressLabel ?? "") ?? .HOME
@@ -321,14 +354,14 @@ extension HomeVC {
         case .curbside:
             let restaurant = DataManager.shared.currentCurbsideRestaurant
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant?.restaurantNameEnglish ?? "") : (restaurant?.restaurantNameArabic ?? "")
-            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LocalizedStrings.Home.setCurbsideLocation
+            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LSCollection.Home.setCurbsideLocation
             if restaurant?.storeId.isEmpty ?? true {
                 DataManager.shared.currentCurbsideRestaurant = nil
             }
         case .pickup:
             let restaurant = DataManager.shared.currentPickupRestaurant
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant?.restaurantNameEnglish ?? "") : (restaurant?.restaurantNameArabic ?? "")
-            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LocalizedStrings.Home.setPickupLocation
+            title = !(restaurant?.storeId.isEmpty ?? true) ? name : LSCollection.Home.setPickupLocation
             if restaurant?.storeId.isEmpty ?? true {
                 DataManager.shared.currentPickupRestaurant = nil
             }
@@ -438,6 +471,7 @@ extension HomeVC {
                 vc.viewModel = MyFavouritesVM(delegate: vc, serviceTypeHome: strongSelf.viewModel?.getSelectedSection ?? .delivery)
                 strongSelf.push(vc: vc)
             } else {
+                GuestUserCache.shared.queueAction(.favourite(req: FavouriteRequest(itemId: "", hashId: "", menuId: "", itemSdmId: -1, isFavourite: false, servicesAvailable: .delivery, modGroups: nil)))
                 let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
                 loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
                 self?.push(vc: loginVC)
@@ -535,6 +569,7 @@ extension HomeVC {
     
     private func goToSetRestaurantFlow() {
         let vc = SetRestaurantLocationVC.instantiate(fromAppStoryboard: .Home)
+        vc.hidesBottomBarWhenPushed = true
         vc.restaurantSelected = { [weak self] (restaurant) in
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             let name = AppUserDefaults.selectedLanguage() == .en ? (restaurant.restaurantNameEnglish) : (restaurant.restaurantNameArabic)
@@ -554,6 +589,7 @@ extension HomeVC {
     
     private func goToSetDeliveryFlow() {
         let googleAutoCompleteVC = GoogleAutoCompleteVC.instantiate(fromAppStoryboard: .Address)
+        googleAutoCompleteVC.hidesBottomBarWhenPushed = true
         googleAutoCompleteVC.viewModel = GoogleAutoCompleteVM(delegate: googleAutoCompleteVC, flow: .setDeliveryLocation, prefillData: self.viewModel?.getCurrentLocationData)
         googleAutoCompleteVC.prefillCallback = { [weak self] in
             guard let strongSelf = self else { return }
@@ -568,64 +604,15 @@ extension HomeVC {
     // MARK: Item/Custom Detail
 
     private func openItemDetail(menuItem: MenuItem) {
-        let vc = BaseVC()
-        vc.configureForCustomView()
+        self.bottomDetailVC = BaseVC()
+        self.bottomDetailMenuItem = menuItem
+        self.bottomDetailVC?.configureForCustomView()
         self.tabBarController?.addOverlayBlack()
-        let itemDetailSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
+        let itemDetailSheet = BaseItemDetailView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
         itemDetailSheet.setRecommendationFlow()
-        itemDetailSheet.configureForExploreMenu(container: vc.view, itemId: menuItem._id ?? "", serviceType: self.viewModel?.getSelectedSection ?? .delivery)
-        itemDetailSheet.cartCountUpdated = { [weak self] (_, item) in
-            self?.tabBarController?.addLoaderOverlay()
-            let cartItems = CartUtility.fetchCart()
-            let hashId = MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: nil)
-            guard cartItems.firstIndex(where: { $0.hashId ?? "" == hashId }) != nil else {
-                //Addition Case
-                let addCartReq = AddCartItemRequest(itemId: item._id ?? "", menuId: item.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: item.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: nil)
-                APIEndPoints.CartEndPoints.addItemToCart(req: addCartReq, success: { [weak self] in
-                    guard let cartObject = $0.data else {
-                        self?.tabBarController?.removeLoaderOverlay()
-                        return
-                    }
-                    var copy = cartObject
-                    copy.itemDetails = menuItem
-                    CartUtility.addItemToCart(copy)
-                    self?.tabBarController?.removeLoaderOverlay()
-                    let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: nil)
-                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-                    self?.baseView.syncCart()
-                }, failure: { _ in
-                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
-                    self?.tabBarController?.removeLoaderOverlay()
-                })
-                return
-            }
-            
-            let updateReq = UpdateCartCountRequest(isIncrement: true, itemId: menuItem._id ?? "", quantity: 1, hashId: hashId)
-            APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateReq, success: { [weak self] _ in
-                CartUtility.updateCartCount(hashId, isIncrement: true)
-                let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: nil)
-                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-                self?.tabBarController?.removeLoaderOverlay()
-                self?.baseView.syncCart()
-            }, failure: { _ in
-                self?.tabBarController?.removeLoaderOverlay()
-            })
-        }
-        itemDetailSheet.triggerLoginFlow = { (addReq) in
-            GuestUserCache.shared.queueAction(.addToCart(req: addReq))
-            vc.dismiss(animated: true, completion: { [weak self] in
-                self?.tabBarController?.removeOverlay()
-                let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
-                loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
-                self?.push(vc: loginVC)
-            })
-        }
-        itemDetailSheet.handleDeallocation = {
-            vc.dismiss(animated: true, completion: { [weak self] in
-                self?.tabBarController?.removeOverlay()
-            })
-        }
-        self.present(vc, animated: true)
+        itemDetailSheet.delegate = self
+        itemDetailSheet.configureForExploreMenu(container: self.bottomDetailVC!.view, itemId: menuItem._id ?? "", serviceType: self.viewModel?.getSelectedSection ?? .delivery)
+        self.present(self.bottomDetailVC!, animated: true)
     }
     
     private func openCustomisedItemDetail(menuItem: MenuItem) {
@@ -645,7 +632,7 @@ extension HomeVC {
             } else {
                 debugPrint("CALLED")
                 self?.tabBarController?.addLoaderOverlay()
-                let cartItems = CartUtility.fetchCart()
+                let cartItems = CartUtility.fetchCartLocally()
                 guard let _ = cartItems.firstIndex(where: { $0.hashId ?? "" == hashId }) else {
                     //Addition Case
                     let addCartReq = AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: modGroupArray)
@@ -656,7 +643,7 @@ extension HomeVC {
                         }
                         var copy = cartObject
                         copy.itemDetails = menuItem
-                        CartUtility.addItemToCart(copy)
+                        CartUtility.addItemToCartLocally(copy)
                         self?.tabBarController?.removeLoaderOverlay()
                         let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: modGroupArray)
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
@@ -669,7 +656,7 @@ extension HomeVC {
                 
                 let updateReq = UpdateCartCountRequest(isIncrement: true, itemId: menuItem._id ?? "", quantity: 1, hashId: hashId)
                 APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateReq, success: { [weak self] _ in
-                    CartUtility.updateCartCount(hashId, isIncrement: true)
+                    CartUtility.updateCartCountLocally(hashId, isIncrement: true)
                     let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: modGroupArray)
                     NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                     self?.tabBarController?.removeLoaderOverlay()
@@ -791,21 +778,27 @@ extension HomeVC: HomeVMDelegate {
     
     func reverseGeocodingFailed(reason: String) {
         mainThread {
-            self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
+            self.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
             self.hitApis()
         }
     }
     
     func doesNotDeliverToThisLocation() {
-        self.baseView.updateLocationLabel(LocalizedStrings.Home.setDeliveryLocation)
-        let alert = OutOfReachView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - OutOfReachView.HorizontalPadding, height: 0))
-        alert.configure(container: self.baseView)
-        alert.handleDeallocation = { [weak self] in
-            self?.hitApis()
+        if self.viewModel?.getSelectedSection ?? .delivery == .delivery && guestCacheExists == false {
+            self.baseView.updateLocationLabel(LSCollection.Home.setDeliveryLocation)
+            let alert = OutOfReachView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - OutOfReachView.HorizontalPadding, height: 0))
+            alert.configure(container: self.baseView)
+            alert.handleDeallocation = { [weak self] in
+                self?.hitApis()
+            }
+        }
+        if guestCacheExists {
+            guestCacheExists = false
         }
     }
 }
 
+// MARK: InStorePromoCellDelegate
 extension HomeVC: InStorePromoCellDelegate {
     func viewall() {
         let vc = MyOffersVC.instantiate(fromAppStoryboard: .Coupon)
@@ -818,5 +811,68 @@ extension HomeVC: InStorePromoCellDelegate {
         vc.controllerType = .promo
         vc.indexToLaunchForInStore = index
         self.push(vc: vc)
+    }
+}
+
+extension HomeVC: BaseItemDetailDelegate {
+    // MARK: Base Item Detail Handling
+    func cartCountUpdatedBaseItem(count: Int, item: MenuItem) {
+        mainThread { [weak self] in
+            self?.tabBarController?.addLoaderOverlay()
+            let cartItems = CartUtility.fetchCartLocally()
+            let hashId = MD5Hash.generateHashForTemplate(itemId: item._id ?? "", modGroups: nil)
+            guard cartItems.firstIndex(where: { $0.hashId ?? "" == hashId }) != nil else {
+                //Addition Case
+                let addCartReq = AddCartItemRequest(itemId: item._id ?? "", menuId: item.menuId ?? "", hashId: hashId, storeId: DataManager.shared.currentStoreId, itemSdmId: item.itemId ?? 0, quantity: 1, servicesAvailable: DataManager.shared.currentServiceType, modGroups: nil)
+                APIEndPoints.CartEndPoints.addItemToCart(req: addCartReq, success: { [weak self] in
+                    guard let cartObject = $0.data else {
+                        self?.tabBarController?.removeLoaderOverlay()
+                        return
+                    }
+                    var copy = cartObject
+                    copy.itemDetails = self?.bottomDetailMenuItem
+                    CartUtility.addItemToCartLocally(copy)
+                    self?.tabBarController?.removeLoaderOverlay()
+                    let cartNotification = CartCountNotifier(isIncrement: true, itemId: self?.bottomDetailMenuItem?._id ?? "", menuId: self?.bottomDetailMenuItem?.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: nil)
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                    self?.baseView.syncCart()
+                }, failure: { _ in
+                    NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
+                    self?.tabBarController?.removeLoaderOverlay()
+                })
+                return
+            }
+            
+            let updateReq = UpdateCartCountRequest(isIncrement: true, itemId: self?.bottomDetailMenuItem?._id ?? "", quantity: 1, hashId: hashId)
+            APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateReq, success: { [weak self] _ in
+                CartUtility.updateCartCountLocally(hashId, isIncrement: true)
+                let cartNotification = CartCountNotifier(isIncrement: true, itemId: self?.bottomDetailMenuItem?._id ?? "", menuId: self?.bottomDetailMenuItem?.menuId ?? "", hashId: hashId, serviceType: DataManager.shared.currentServiceType, modGroups: nil)
+                NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
+                self?.tabBarController?.removeLoaderOverlay()
+                self?.baseView.syncCart()
+            }, failure: { _ in
+                self?.tabBarController?.removeLoaderOverlay()
+            })
+        }
+    }
+    
+    func triggerLoginFlowBaseItem(addReq: AddCartItemRequest) {
+        mainThread { [weak self] in
+            GuestUserCache.shared.queueAction(.addToCart(req: addReq))
+            self?.bottomDetailVC?.dismiss(animated: true, completion: { [weak self] in
+                self?.tabBarController?.removeOverlay()
+                let loginVC = LoginVC.instantiate(fromAppStoryboard: .Onboarding)
+                loginVC.viewModel = LoginVM(delegate: loginVC, flow: .comingFromGuestUser)
+                self?.push(vc: loginVC)
+            })
+        }
+    }
+    
+    func handleBaseItemViewDeallocation() {
+        mainThread { [weak self] in
+            self?.bottomDetailVC?.dismiss(animated: true, completion: { [weak self] in
+                self?.tabBarController?.removeOverlay()
+            })
+        }
     }
 }

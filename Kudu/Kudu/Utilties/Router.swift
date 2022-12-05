@@ -10,7 +10,13 @@ import UIKit
 class Router: NSObject {
     
     static let shared = Router()
-    var mainNavigation: BaseNavVC?
+    private var mainNavigation: BaseNavVC?
+    private var mainTabBar: HomeTabBarVC?
+    var homeNav: BaseNavVC?
+    var menuNav: BaseNavVC?
+    var ourStoreNav: BaseNavVC?
+    var accountNav: BaseNavVC?
+    
     weak var appWindow: UIWindow? {
         var window: UIWindow?
         window = SceneDelegate.shared?.window
@@ -26,17 +32,25 @@ class Router: NSObject {
         //Private Init for Singleton Pattern
     }
     
+    // MARK: Onboarding Routing
+    
+    // MARK: Splash Screen
     func initialiseLaunchVC() {
         mainNavigation = BaseNavVC(rootViewController: LaunchVC.instantiate(fromAppStoryboard: .Onboarding))
         SceneDelegate.shared?.window?.rootViewController = mainNavigation
         appWindow?.makeKeyAndVisible()
     }
     
-    func goToLanguagePrefSelectionVC(fromVC: BaseVC?) {
-        guard let strongVC = fromVC else { return }
-        if strongVC.navigationController.isNotNil {
-            strongVC.navigationController!.pushViewController(LanguageSelectionVC.instantiate(fromAppStoryboard: .Onboarding), animated: true)
-        }
+    // MARK: Language Pref
+    func goToLanguagePrefSelectionVC() {
+        mainNavigation?.push(vc: LanguageSelectionVC.instantiate(fromAppStoryboard: .Onboarding), animated: true)
+    }
+    
+    // MARK: Tutorial VC
+    func goToTutorialVC(selectedLanguage: LanguageSelectionView.LanguageButtons) {
+        let tutorialVC = TutorialContainerController.instantiate(fromAppStoryboard: .Onboarding)
+        tutorialVC.selectedLanguage = selectedLanguage
+        mainNavigation?.pushViewController(tutorialVC, animated: true)
     }
     
     func configureTabBar() {
@@ -44,15 +58,6 @@ class Router: NSObject {
             $0.isKind(of: HomeTabBarVC.self) == false
         })
         mainNavigation?.pushViewController(HomeTabBarVC(), animated: true)
-    }
-    
-    func goToTutorialVC(fromVC: BaseVC?, selectedLanguage: LanguageSelectionView.LanguageButtons) {
-        guard let strongVC = fromVC else { return }
-        if strongVC.navigationController.isNotNil {
-            let tutorialVC = TutorialContainerController.instantiate(fromAppStoryboard: .Onboarding)
-            tutorialVC.selectedLanguage = selectedLanguage
-            strongVC.navigationController!.pushViewController(tutorialVC, animated: true)
-        }
     }
     
     func goToLoginVC(fromVC: BaseVC?, sessionExpiryText: String? = nil) {

@@ -11,25 +11,23 @@ import UIKit
 final class DataManager {
     
     static let shared = DataManager()
-    var launchedFromNotification = false
-    var noInternetViewAdded: Bool = false
-    var showingToast: Bool = false
+    
+    private init() {
+        loginResponse = decodeAndFetch(LoginUserData.self, key: .loginResponse)
+        currentDeliveryLocation = decodeAndFetch(LocationInfoModel.self, key: .currentDeliveryAddress)
+        currentCurbsideRestaurant = decodeAndFetch(RestaurantInfoModel.self, key: .currentCurbsideRestaurant)
+        currentPickupRestaurant = decodeAndFetch(RestaurantInfoModel.self, key: .currentPickupRestaurant)
+        currentCartConfig = decodeAndFetch(CartConfig.self, key: .cartConfig)
+        valuesInitialized = true
+    }
+
+    // MARK: Properties/Configs
+    private var showingToast: Bool = false
+    private var noInternetViewAdded: Bool = false
+    private var launchedFromNotification = false
     private var valuesInitialized = false
     private var fcmToken: String = "123"
     private var showNotificationBell = false
-    
-    var fetchToken: String {
-        fcmToken
-    }
-    
-    var isUserLoggedIn: Bool {
-        let loginData = self.decodeAndFetch(LoginUserData.self, key: .loginResponse)
-        return loginData.isNotNil
-    }
-    
-    var fetchNotificationStatus: Bool {
-        showNotificationBell
-    }
     
     var loginResponse: LoginUserData? {
         didSet {
@@ -67,6 +65,7 @@ final class DataManager {
     }
     
     var currentServiceType: APIEndPoints.ServicesType = .delivery
+    
     var currentStoreId: String {
         switch self.currentServiceType {
         case .delivery:
@@ -77,6 +76,7 @@ final class DataManager {
             return self.currentPickupRestaurant?.storeId ?? ""
         }
     }
+    
     var currentRelevantLatLong: (lat: Double?, long: Double?) {
         switch self.currentServiceType {
         case .delivery:
@@ -93,20 +93,38 @@ final class DataManager {
             return (lat, long)
         }
     }
-    
-    private init() {
-        loginResponse = decodeAndFetch(LoginUserData.self, key: .loginResponse)
-        currentDeliveryLocation = decodeAndFetch(LocationInfoModel.self, key: .currentDeliveryAddress)
-        currentCurbsideRestaurant = decodeAndFetch(RestaurantInfoModel.self, key: .currentCurbsideRestaurant)
-        currentPickupRestaurant = decodeAndFetch(RestaurantInfoModel.self, key: .currentPickupRestaurant)
-        currentCartConfig = decodeAndFetch(CartConfig.self, key: .cartConfig)
-        valuesInitialized = true
-        
-    }
-    
 }
 
 extension DataManager {
+    // MARK: Getters
+    var fetchToken: String {
+        fcmToken
+    }
+    
+    var isUserLoggedIn: Bool {
+        let loginData = self.decodeAndFetch(LoginUserData.self, key: .loginResponse)
+        return loginData.isNotNil
+    }
+    
+    var isShowingToast: Bool {
+        showingToast
+    }
+    
+    var isLaunchedFromNotification: Bool {
+        launchedFromNotification
+    }
+    
+    var isNoInternetViewAdded: Bool {
+        noInternetViewAdded
+    }
+    
+    var fetchNotificationStatus: Bool {
+        showNotificationBell
+    }
+}
+
+extension DataManager {
+    // MARK: Setters
     func setfcmToken(token: String) {
         self.fcmToken = token
     }
@@ -114,10 +132,22 @@ extension DataManager {
     func setNotificationBellStatus(_ status: Bool) {
         showNotificationBell = status
     }
+    
+    func setLaunchedFromNotification(_ status: Bool) {
+        launchedFromNotification = status
+    }
+    
+    func setnoInternetViewAdded(_ status: Bool) {
+        noInternetViewAdded = status
+    }
+    
+    func setShowingToast(_ status: Bool) {
+        showingToast = status
+    }
 }
 
 extension DataManager {
-    
+    // MARK: Recently Searched Delivery Locations
     func saveToRecentlySearchDeliveryLocation(_ data: LocationInfoModel) {
         var newArray = [data]
         if AppUserDefaults.value(forKey: .recentSearchDeliveryLocation).isNotNil {
@@ -135,7 +165,7 @@ extension DataManager {
 }
 
 extension DataManager {
-    
+    // MARK: HashID Favourite Management
     static func saveHashIDtoFavourites(_ hashId: String) {
         var newArray = [hashId]
         if AppUserDefaults.value(forKey: .hashIdsForFavourites).isNotNil {
@@ -158,16 +188,18 @@ extension DataManager {
         return AppUserDefaults.value(forKey: .hashIdsForFavourites) as? [String] ?? []
     }
     
-    static func syncHashIDs() {
+    static func syncHashIDs(completion: (() -> Void)? = nil) {
         APIEndPoints.HomeEndPoints.syncHashIDsForFavourites(success: { (response) in
             AppUserDefaults.save(value: response.data ?? [], forKey: .hashIdsForFavourites)
+            completion?()
         }, failure: { _ in
-            //No implementation needed
+            completion?()
         })
     }
 }
 
 extension DataManager {
+    // MARK: Recently Searched Explore Menu
     func saveToRecentlySearchExploreMenu(_ item: MenuSearchResultItem) {
         var newArray = [item]
         if AppUserDefaults.value(forKey: .recentSearchExploreMenu).isNotNil {
@@ -186,7 +218,7 @@ extension DataManager {
 }
 
 extension DataManager {
-    
+    // MARK: Encoding/Decoding Functions
     func encodeAndSaveObject<T: Codable>(_ object: T, key: AppUserDefaults.Key) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(object) {

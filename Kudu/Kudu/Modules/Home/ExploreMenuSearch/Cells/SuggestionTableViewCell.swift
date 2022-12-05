@@ -38,7 +38,7 @@ class SuggestionTableViewCell: UITableViewCell {
         } else {
             let title = AppUserDefaults.selectedLanguage() == .en ? result.titleEnglish : result.titleArabic
             nameLabel.text = title ?? ""
-            resultTypeLabel.text = LocalizedStrings.SearchMenu.inCategory
+            resultTypeLabel.text = LSCollection.SearchMenu.inCategory
             cellImgView.setImageKF(imageString: result.menuImageUrl ?? "", placeHolderImage: AppImages.MainImages.fixedPlaceholder, loader: false, loaderTintColor: .clear, completionHandler: nil)
         }
     }

@@ -93,7 +93,7 @@ extension SettingVC: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == SettingView.Help.allCases.count {
             cell.viewLine.isHidden   = true
         }
-        if indexPath.row == 2  { //&& (viewModel?.isGuestUser ?? false)
+        if indexPath.row == 2 { //&& (viewModel?.isGuestUser ?? false)
             cell.viewLine.isHidden = true
         }
     }
@@ -111,13 +111,15 @@ extension SettingVC: UITableViewDataSource, UITableViewDelegate {
             cell.viewLine.isHidden = true
             cell.imageArrow.isHidden   = true
             cell.settingName.textColor = .red
+        } else {
+            cell.settingName.textColor = .black
         }
         if indexPath.row == 1 {
-            cell.toggleLoading(loading: self.baseView.isDeleteApiHitting)
+            //cell.toggleLoading(loading: self.baseView.isDeleteApiHitting)
         }
         
         if indexPath.row == 2 {
-            cell.toggleLoading(loading: self.baseView.isLogoutApiHitting)
+           // cell.toggleLoading(loading: self.baseView.isLogoutApiHitting)
         }
     }
     
@@ -187,9 +189,9 @@ extension SettingVC {
     private func handleDeletePopUp() {
         let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
         popUp.rightButtonBgColor = AppColors.SendFeedbackScreen.deleteBtnColor
-        popUp.configure(title: LocalizedStrings.Setting.deleteAccount, message: LocalizedStrings.Setting.yourInformationWillBeErasedAsAResult, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
-        popUp.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
+        popUp.configure(title: LSCollection.Setting.deleteAccount, message: LSCollection.Setting.yourInformationWillBeErasedAsAResult, leftButtonTitle: LSCollection.Setting.confirm, rightButtonTitle: LSCollection.Setting.cancel, container: self.baseView)
         popUp.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
+        popUp.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
         popUp.handleAction = { [weak self] in
             if $0 == .left {
                 self?.baseView.handleAPIRequest(.delete)
@@ -200,9 +202,9 @@ extension SettingVC {
     
     private func handleLogoutPopUp() {
         let popUp = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.baseView.width - AppPopUpView.HorizontalPadding, height: 0))
-        popUp.configure(title: LocalizedStrings.Setting.logoutButton, message: LocalizedStrings.Setting.areYouSureYouWantToLogout, leftButtonTitle: LocalizedStrings.Setting.confirm, rightButtonTitle: LocalizedStrings.Setting.cancel, container: self.baseView)
-        popUp.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
+        popUp.configure(title: LSCollection.Setting.logoutButton, message: LSCollection.Setting.areYouSureYouWantToLogout, leftButtonTitle: LSCollection.Setting.confirm, rightButtonTitle: LSCollection.Setting.cancel, container: self.baseView)
         popUp.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
+        popUp.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
         popUp.handleAction = { [weak self] in
             if $0 == .left {
                 self?.baseView.handleAPIRequest(.logout)

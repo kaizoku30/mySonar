@@ -40,7 +40,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="56"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSg-a3-uPa" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="12" width="57" height="16"/>
+                                        <rect key="frame" x="16" y="12" width="59" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="6zY-5g-gni"/>
                                         </constraints>
@@ -63,7 +63,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ws3-I5-JnU" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="73" y="8" width="24" height="24"/>
+                                        <rect key="frame" x="75" y="8" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="26t-BD-nhB"/>
                                             <constraint firstAttribute="height" constant="24" id="Fri-1l-95D"/>
@@ -318,7 +318,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="56"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YGc-kI-Wf8">
-                                        <rect key="frame" x="16" y="17.5" width="111.5" height="21"/>
+                                        <rect key="frame" x="16" y="16.5" width="116" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -600,10 +600,17 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="browseMenuButtonPressed:" destination="Sxg-Wp-0hZ" eventType="touchUpInside" id="yIZ-KG-wNp"/>
-                                    <action selector="browseMenuTapped:" destination="OaL-6K-yuo" eventType="touchUpInside" id="wfZ-1P-bpl"/>
+                                    <action selector="browseMenuTapped:" destination="OaL-6K-yuo" eventType="touchUpInside" id="ez9-hh-9Oj"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztT-GR-KyF">
+                                <rect key="frame" x="187" y="902" width="40" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="4JA-dg-Guf"/>
+                                    <constraint firstAttribute="width" constant="40" id="zFy-NK-P2C"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="diw-o7-dKf" userLabel="CartBannerContainer">
                                 <rect key="frame" x="0.0" y="862" width="414" height="34"/>
                                 <subviews>
@@ -633,10 +640,12 @@
                         <constraints>
                             <constraint firstItem="PLu-3f-s6h" firstAttribute="trailing" secondItem="x9q-xS-Vyd" secondAttribute="trailing" id="3vx-l1-ycy"/>
                             <constraint firstItem="x9q-xS-Vyd" firstAttribute="top" secondItem="6lB-xp-nZB" secondAttribute="bottom" id="5kh-qz-A8x"/>
+                            <constraint firstItem="ztT-GR-KyF" firstAttribute="centerX" secondItem="Fgt-R6-wad" secondAttribute="centerX" id="6Q2-ms-Yzk"/>
                             <constraint firstItem="6km-dY-0Lb" firstAttribute="leading" secondItem="OaL-6K-yuo" secondAttribute="leading" id="8O7-mw-BAa"/>
                             <constraint firstItem="x9q-xS-Vyd" firstAttribute="top" secondItem="PLu-3f-s6h" secondAttribute="top" id="A2D-Eo-oER"/>
                             <constraint firstAttribute="trailing" secondItem="6lB-xp-nZB" secondAttribute="trailing" id="Ba8-2O-IHq"/>
                             <constraint firstItem="6lB-xp-nZB" firstAttribute="top" secondItem="OaL-6K-yuo" secondAttribute="top" id="FaF-Vd-0ka"/>
+                            <constraint firstItem="ztT-GR-KyF" firstAttribute="centerY" secondItem="Fgt-R6-wad" secondAttribute="centerY" id="Hng-Cp-EQz"/>
                             <constraint firstItem="diw-o7-dKf" firstAttribute="leading" secondItem="PLu-3f-s6h" secondAttribute="leading" id="IZc-Kf-HUs"/>
                             <constraint firstItem="diw-o7-dKf" firstAttribute="top" secondItem="6km-dY-0Lb" secondAttribute="bottom" id="OKZ-Xz-Q8C"/>
                             <constraint firstItem="x9q-xS-Vyd" firstAttribute="leading" secondItem="OaL-6K-yuo" secondAttribute="leading" id="UKg-l7-57O"/>
@@ -652,9 +661,12 @@
                         <connections>
                             <outlet property="browseMenuBottomPadding" destination="eZB-D4-A71" id="IZp-hN-1u8"/>
                             <outlet property="browseMenuButton" destination="Fgt-R6-wad" id="55h-ZE-dDe"/>
+                            <outlet property="browseMenuHeight" destination="sgb-jf-TCi" id="aLS-Qz-nrx"/>
+                            <outlet property="browseMenuTapView" destination="ztT-GR-KyF" id="pdX-C9-5Uc"/>
                             <outlet property="browseMenuWidth" destination="7g4-0v-0wW" id="Wnh-hK-AYQ"/>
                             <outlet property="cartBanner" destination="Mmo-4i-7g2" id="qST-OH-ukM"/>
                             <outlet property="cartBannerContainer" destination="diw-o7-dKf" id="avr-7B-3Fb"/>
+                            <outlet property="exploreMenuTitle" destination="YGc-kI-Wf8" id="w4n-rc-8iK"/>
                             <outlet property="mainTableView" destination="6km-dY-0Lb" id="0zM-Q5-NHZ"/>
                         </connections>
                     </view>
@@ -699,7 +711,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQ5-MY-e6q">
-                                        <rect key="frame" x="48" y="17.5" width="111.5" height="21"/>
+                                        <rect key="frame" x="48" y="16.5" width="116" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -886,7 +898,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Pickup location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eGI-zm-cbb">
-                                        <rect key="frame" x="48" y="17.5" width="361" height="21"/>
+                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -956,7 +968,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Store Near you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wjc-Hn-cgP">
-                                                            <rect key="frame" x="15" y="21" width="362" height="14"/>
+                                                            <rect key="frame" x="15" y="20.5" width="362" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -975,14 +987,14 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RestaurantItemTableViewCell" id="kis-Kv-tXn" customClass="RestaurantItemTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="106" width="382" height="123.5"/>
+                                                <rect key="frame" x="0.0" y="106" width="382" height="126.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kis-Kv-tXn" id="g5j-5G-HvQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="123.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="126.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="15Z-2b-I03">
-                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="107.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="110.5"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -991,25 +1003,25 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UMq-5y-eYg" userLabel="restaurantName">
-                                                            <rect key="frame" x="12" y="12" width="34.5" height="16.5"/>
+                                                            <rect key="frame" x="12" y="12" width="37" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9v-tO-SJQ" userLabel="restAddress">
-                                                            <rect key="frame" x="12" y="36.5" width="29.5" height="14"/>
+                                                            <rect key="frame" x="12" y="38" width="31" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="0km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uib-IR-Kao" userLabel="DistanceLabel">
-                                                            <rect key="frame" x="343" y="12" width="27" height="16.5"/>
+                                                            <rect key="frame" x="341" y="12" width="29" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078431372547" green="0.32549019607843138" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TLb-xd-4uB" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                                            <rect key="frame" x="269" y="66.5" width="101" height="29"/>
+                                                            <rect key="frame" x="263" y="69.5" width="107" height="29"/>
                                                             <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="29" id="apX-q0-Sox"/>
@@ -1030,13 +1042,13 @@
                                                             </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Open" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfB-M7-w45" userLabel="openCloseLbl">
-                                                            <rect key="frame" x="12" y="74" width="29.5" height="14"/>
+                                                            <rect key="frame" x="12" y="76.5" width="31" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" red="0.10980392156862745" green="0.65098039215686276" blue="0.35686274509803922" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="AjX-Ie-6uw" userLabel="closeTimingStack">
-                                                            <rect key="frame" x="45.5" y="74" width="180" height="14"/>
+                                                            <rect key="frame" x="47" y="77" width="180" height="14"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MKe-Al-JhV">
                                                                     <rect key="frame" x="0.0" y="0.0" width="12" height="14"/>
@@ -1087,14 +1099,14 @@
                                                             </constraints>
                                                         </stackView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1C-ls-roR">
-                                                            <rect key="frame" x="0.0" y="107.5" width="382" height="16"/>
+                                                            <rect key="frame" x="0.0" y="110.5" width="382" height="16"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="16" id="T6d-gn-yxI"/>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lgh-YI-zXE">
-                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="107.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="110.5"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </view>
                                                     </subviews>
@@ -1149,7 +1161,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResultShimmerTableViewCell" id="U6D-4z-0hX" customClass="ResultShimmerTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="229.5" width="382" height="122.5"/>
+                                                <rect key="frame" x="0.0" y="232.5" width="382" height="122.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U6D-4z-0hX" id="Hph-9L-SC6">
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="122.5"/>
@@ -1368,7 +1380,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Pickup location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2Q-2f-6eM">
-                                        <rect key="frame" x="48" y="17.5" width="361" height="21"/>
+                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -1525,7 +1537,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="350" height="131"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPH-ej-WF3" userLabel="restaurantName">
-                                                                    <rect key="frame" x="12" y="12" width="34.5" height="16.5"/>
+                                                                    <rect key="frame" x="12" y="12" width="37" height="18"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -1550,7 +1562,7 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TRf-Sp-FWw" userLabel="closeTimingStack">
-                                                                    <rect key="frame" x="45.5" y="97.5" width="41.5" height="14"/>
+                                                                    <rect key="frame" x="47" y="97.5" width="43" height="14"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="owC-Un-aie">
                                                                             <rect key="frame" x="0.0" y="0.0" width="12" height="14"/>
@@ -1577,7 +1589,7 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ZA-mc-XGc" userLabel="closeTimingLabel">
-                                                                            <rect key="frame" x="12" y="0.0" width="29.5" height="14"/>
+                                                                            <rect key="frame" x="12" y="0.0" width="31" height="14"/>
                                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -1589,19 +1601,19 @@
                                                                     </constraints>
                                                                 </stackView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N25-rx-cBe" userLabel="restAddress">
-                                                                    <rect key="frame" x="12" y="36.5" width="29.5" height="14"/>
+                                                                    <rect key="frame" x="12" y="38" width="31" height="15.5"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="0km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rD2-du-1YH" userLabel="DistanceLabel">
-                                                                    <rect key="frame" x="311" y="12" width="27" height="16.5"/>
+                                                                    <rect key="frame" x="309" y="12" width="29" height="18"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                                     <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5g-t2-Obb" userLabel="openCloseLbl">
-                                                                    <rect key="frame" x="12" y="97.5" width="29.5" height="14"/>
+                                                                    <rect key="frame" x="12" y="97" width="31" height="15.5"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
                                                                     <color key="textColor" red="0.10980392160000001" green="0.65098039220000004" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -1653,31 +1665,31 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcc-JN-ycp">
-                                                            <rect key="frame" x="104" y="12" width="34.5" height="16.5"/>
+                                                            <rect key="frame" x="104" y="12" width="37" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI7-DP-tFc">
-                                                            <rect key="frame" x="104" y="32.5" width="24.5" height="12"/>
+                                                            <rect key="frame" x="104" y="34" width="26.5" height="13"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y9R-4N-u2w">
-                                                            <rect key="frame" x="104" y="48.5" width="24.5" height="12"/>
+                                                            <rect key="frame" x="104" y="51" width="26.5" height="13"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQc-SO-xSA">
-                                                            <rect key="frame" x="104" y="64.5" width="24.5" height="12"/>
+                                                            <rect key="frame" x="104" y="68" width="25.5" height="13"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="10"/>
                                                             <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_storePinImage" translatesAutoresizingMaskIntoConstraints="NO" id="Apa-24-TfV">
-                                                            <rect key="frame" x="312" y="36.5" width="24" height="24"/>
+                                                            <rect key="frame" x="312" y="40" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="3ig-ls-Lbc"/>
                                                                 <constraint firstAttribute="width" constant="24" id="QJW-1C-Lnf"/>
@@ -1689,7 +1701,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery unavailable" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k0X-cX-nic">
-                                                            <rect key="frame" x="104" y="80.5" width="89" height="12"/>
+                                                            <rect key="frame" x="104" y="85" width="97" height="13"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="10"/>
                                                             <color key="textColor" red="0.69019607839999997" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1711,7 +1723,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="jFm-n4-0XC">
-                                                            <rect key="frame" x="104" y="100.5" width="230" height="24"/>
+                                                            <rect key="frame" x="104" y="106" width="230" height="24"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6v-1Z-kdY" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="107" height="24"/>
@@ -1936,7 +1948,7 @@
                                                     <rect key="frame" x="16" y="12" width="382" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tE3-3K-Vcp">
-                                                            <rect key="frame" x="16" y="17" width="34.5" height="16.5"/>
+                                                            <rect key="frame" x="16" y="16" width="36" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078431372547" green="0.32549019607843138" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1989,26 +2001,26 @@
                                                     <rect key="frame" x="16" y="12" width="382" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Language" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8H-Kj-kVX">
-                                                            <rect key="frame" x="16" y="17" width="62" height="16.5"/>
+                                                            <rect key="frame" x="16" y="16" width="66" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" preferredStyle="sliding" translatesAutoresizingMaskIntoConstraints="NO" id="EsU-X3-vxv">
-                                                            <rect key="frame" x="274.5" y="9.5" width="51" height="31"/>
+                                                            <rect key="frame" x="272.5" y="9.5" width="51" height="31"/>
                                                             <color key="onTintColor" name="kuduThemeBlue"/>
                                                             <connections>
                                                                 <action selector="languageSwitched:" destination="7ja-VT-1YP" eventType="valueChanged" id="Xh0-fH-zKV"/>
                                                             </connections>
                                                         </switch>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eng" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjl-BS-3Zu">
-                                                            <rect key="frame" x="239.5" y="18" width="21" height="14"/>
+                                                            <rect key="frame" x="237" y="17.5" width="21.5" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arabic" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9x-lp-kvj">
-                                                            <rect key="frame" x="337.5" y="18" width="34.5" height="14"/>
+                                                            <rect key="frame" x="335.5" y="17.5" width="36.5" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -2082,7 +2094,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Yy-eh-fhv">
-                                                        <rect key="frame" x="16" y="13" width="81.5" height="19"/>
+                                                        <rect key="frame" x="16" y="11.5" width="87.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -2155,7 +2167,7 @@
                                 <rect key="frame" x="0.0" y="828" width="414" height="68"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Version 1.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UnE-9j-kie">
-                                        <rect key="frame" x="157.5" y="8" width="99" height="16.5"/>
+                                        <rect key="frame" x="155.5" y="8" width="103.5" height="18"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                         <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -2259,13 +2271,13 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backend has not added yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-pC-vHm">
-                                                        <rect key="frame" x="16" y="13" width="197.5" height="19"/>
+                                                        <rect key="frame" x="16" y="11.5" width="208.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0M-ok-ojG" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                                        <rect key="frame" x="377" y="1.5" width="21" height="29"/>
+                                                        <rect key="frame" x="375" y="1.5" width="23" height="29"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="29" id="yki-Bq-el3"/>
@@ -2299,13 +2311,13 @@
                                                 <rect key="frame" x="0.0" y="32" width="414" height="33.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in or Sign up to complete your profile" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcr-Wk-CPU">
-                                                        <rect key="frame" x="16" y="16" width="260" height="16.5"/>
+                                                        <rect key="frame" x="16" y="16" width="269" height="18"/>
                                                         <fontDescription key="fontDescription" name="Mulish-SemiBold" family="Mulish" pointSize="14"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hv6-63-Shm" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                                        <rect key="frame" x="350" y="10" width="48" height="29"/>
+                                                        <rect key="frame" x="346" y="10.5" width="52" height="29"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="29" id="zYY-Lu-boG"/>
@@ -2327,7 +2339,7 @@
                                                         </connections>
                                                     </button>
                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_profile_verifiedMark" translatesAutoresizingMaskIntoConstraints="NO" id="enN-Pf-r28">
-                                                        <rect key="frame" x="382" y="16.5" width="16" height="16"/>
+                                                        <rect key="frame" x="382" y="17" width="16" height="16"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="16" id="PlS-b8-a0X"/>
                                                             <constraint firstAttribute="width" constant="16" id="sYB-0t-Va9"/>
@@ -2427,7 +2439,7 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swh-XK-btK">
-                                                            <rect key="frame" x="14" y="22" width="86" height="19"/>
+                                                            <rect key="frame" x="14" y="20.5" width="89.5" height="20.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -2474,13 +2486,13 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwD-qO-Juk">
-                                                            <rect key="frame" x="12" y="13" width="75.5" height="16.5"/>
+                                                            <rect key="frame" x="12" y="11.5" width="77" height="18"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078431372547" green="0.32549019607843138" blue="0.38823529411764707" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_profile_rightChevron" translatesAutoresizingMaskIntoConstraints="NO" id="UDi-ow-6Xu">
-                                                            <rect key="frame" x="350" y="9.5" width="24" height="24"/>
+                                                            <rect key="frame" x="350" y="8.5" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="2Qh-0m-eaC"/>
                                                                 <constraint firstAttribute="width" constant="24" id="Ple-au-xok"/>
@@ -2541,7 +2553,7 @@
                                                     <rect key="frame" x="16" y="12" width="382" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A4f-Ur-JYJ">
-                                                            <rect key="frame" x="16" y="11" width="60.5" height="28"/>
+                                                            <rect key="frame" x="16" y="11" width="62.5" height="28"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -2601,13 +2613,13 @@
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Language" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DeX-pT-4bA">
-                                                            <rect key="frame" x="12" y="12.5" width="62" height="29"/>
+                                                            <rect key="frame" x="12" y="12.5" width="66" height="29"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                             <color key="textColor" red="0.30196078430000001" green="0.32549019610000002" blue="0.38823529410000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arabic" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ql7-Y3-eeE">
-                                                            <rect key="frame" x="345.5" y="20" width="34.5" height="14"/>
+                                                            <rect key="frame" x="343.5" y="19.5" width="36.5" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -2620,14 +2632,14 @@
                                                             </constraints>
                                                         </view>
                                                         <switch opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" preferredStyle="sliding" translatesAutoresizingMaskIntoConstraints="NO" id="2sm-DX-HCU">
-                                                            <rect key="frame" x="282.5" y="11.5" width="51" height="31"/>
+                                                            <rect key="frame" x="280.5" y="11.5" width="51" height="31"/>
                                                             <color key="onTintColor" name="kuduThemeBlue"/>
                                                             <connections>
                                                                 <action selector="languageChanged:" destination="wtJ-Ag-mGA" eventType="valueChanged" id="jE6-B3-4jg"/>
                                                             </connections>
                                                         </switch>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eng" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0I-qv-zPr">
-                                                            <rect key="frame" x="247.5" y="20" width="21" height="14"/>
+                                                            <rect key="frame" x="245" y="19.5" width="21.5" height="15.5"/>
                                                             <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -2677,7 +2689,7 @@
                                 <rect key="frame" x="0.0" y="828" width="414" height="68"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Version 1.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ad-nx-2eP">
-                                        <rect key="frame" x="157.5" y="8" width="99" height="16.5"/>
+                                        <rect key="frame" x="155.5" y="8" width="103.5" height="18"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                         <color key="textColor" red="0.30196078431372547" green="0.32549019607843138" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -2745,13 +2757,13 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops! No store found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hR-EV-E5J">
-                                        <rect key="frame" x="114" y="475" width="154.5" height="19"/>
+                                        <rect key="frame" x="110.5" y="475" width="161.5" height="20.5"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="16"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There are no stores near you, please select another location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cQ-vr-N2c">
-                                        <rect key="frame" x="60" y="506" width="262" height="28"/>
+                                        <rect key="frame" x="60" y="507.5" width="262" height="30.5"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2774,7 +2786,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="56"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f65-DM-GwA">
-                                        <rect key="frame" x="16" y="17.5" width="393" height="21"/>
+                                        <rect key="frame" x="16" y="16.5" width="393" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2861,10 +2873,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Rk3-Gb-dgS">
-                                <rect key="frame" x="28" y="176" width="90.5" height="14"/>
+                                <rect key="frame" x="28" y="176" width="94" height="15.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Store Near you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuD-vp-tgs">
-                                        <rect key="frame" x="0.0" y="0.0" width="90.5" height="14"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="94" height="15.5"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2872,11 +2884,11 @@
                                 </subviews>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EX6-jH-vih" customClass="NoResultFoundView" customModule="Kudu" customModuleProvider="target">
-                                <rect key="frame" x="16" y="194" width="382" height="668"/>
+                                <rect key="frame" x="16" y="195.5" width="382" height="666.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="uJp-Qe-2vS">
-                                <rect key="frame" x="16" y="194" width="382" height="668"/>
+                                <rect key="frame" x="16" y="195.5" width="382" height="666.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResultShimmerTableViewCell" id="Eil-Vo-TQn" customClass="ResultShimmerTableViewCell" customModule="Kudu" customModuleProvider="target">
@@ -2997,7 +3009,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZwT-9j-DXF">
-                                        <rect key="frame" x="48" y="17.5" width="361" height="21"/>
+                                        <rect key="frame" x="48" y="16.5" width="361" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -3075,24 +3087,36 @@
                                 <rect key="frame" x="32" y="200" width="350" height="48"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+966" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wN-bS-GkG">
-                                        <rect key="frame" x="15" y="16" width="32" height="16.5"/>
+                                        <rect key="frame" x="15" y="15" width="34" height="18"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iil-Xb-qzZ" customClass="AppTextFieldView" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="52" y="0.0" width="298" height="48"/>
+                                        <rect key="frame" x="54" y="0.0" width="296" height="48"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="nRO-kM-WWP"/>
                                         </constraints>
                                     </view>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fRH-p0-AsC">
-                                        <rect key="frame" x="52" y="0.0" width="298" height="48"/>
+                                        <rect key="frame" x="54" y="0.0" width="296" height="48"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aql-Ys-zC3" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                                        <rect key="frame" x="299" y="6.5" width="35" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="U4h-YW-dwI"/>
+                                            <constraint firstAttribute="width" constant="35" id="qWB-Yf-w4b"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="k_editPencil"/>
+                                        <connections>
+                                            <action selector="editPhoneNumberPressed:" destination="U0D-9j-yhJ" eventType="touchUpInside" id="zzV-xP-PWP"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -3100,6 +3124,8 @@
                                     <constraint firstItem="6wN-bS-GkG" firstAttribute="centerY" secondItem="WAj-eX-gES" secondAttribute="centerY" id="Elo-kK-9Eh"/>
                                     <constraint firstItem="iil-Xb-qzZ" firstAttribute="top" secondItem="WAj-eX-gES" secondAttribute="top" id="FaQ-xl-dbs"/>
                                     <constraint firstAttribute="trailing" secondItem="iil-Xb-qzZ" secondAttribute="trailing" id="NIB-3u-uJw"/>
+                                    <constraint firstAttribute="trailing" secondItem="Aql-Ys-zC3" secondAttribute="trailing" constant="16" id="U75-6Y-QKd"/>
+                                    <constraint firstItem="Aql-Ys-zC3" firstAttribute="centerY" secondItem="WAj-eX-gES" secondAttribute="centerY" id="UDx-gQ-liW"/>
                                     <constraint firstItem="iil-Xb-qzZ" firstAttribute="leading" secondItem="6wN-bS-GkG" secondAttribute="trailing" constant="5" id="Vvf-MR-nAF"/>
                                     <constraint firstItem="fRH-p0-AsC" firstAttribute="width" secondItem="iil-Xb-qzZ" secondAttribute="width" id="WFA-Hk-BqT"/>
                                     <constraint firstAttribute="bottom" secondItem="iil-Xb-qzZ" secondAttribute="bottom" id="avy-G6-xm0"/>
@@ -3165,18 +3191,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aql-Ys-zC3" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                <rect key="frame" x="331" y="206.5" width="35" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="U4h-YW-dwI"/>
-                                    <constraint firstAttribute="width" constant="35" id="qWB-Yf-w4b"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="k_editPencil"/>
-                                <connections>
-                                    <action selector="editPhoneNumberPressed:" destination="U0D-9j-yhJ" eventType="touchUpInside" id="zzV-xP-PWP"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ahg-ut-b4Y" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
                                 <rect key="frame" x="32" y="344" width="350" height="48"/>
                                 <color key="backgroundColor" red="0.15294117647058825" green="0.27058823529411763" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3206,10 +3220,8 @@
                             <constraint firstItem="noB-V3-OGx" firstAttribute="trailing" secondItem="LTp-gK-j66" secondAttribute="trailing" constant="32" id="6g5-Nq-uCR"/>
                             <constraint firstItem="WAj-eX-gES" firstAttribute="trailing" secondItem="LTp-gK-j66" secondAttribute="trailing" id="9p2-lP-rCQ"/>
                             <constraint firstItem="LTp-gK-j66" firstAttribute="top" secondItem="hIR-Ub-2Tz" secondAttribute="bottom" constant="24" id="CdX-rY-Q2B"/>
-                            <constraint firstItem="Aql-Ys-zC3" firstAttribute="centerY" secondItem="WAj-eX-gES" secondAttribute="centerY" id="Eqm-24-Urq"/>
                             <constraint firstItem="m1u-UD-iow" firstAttribute="trailing" secondItem="WAj-eX-gES" secondAttribute="trailing" id="Jab-3O-F5w"/>
                             <constraint firstItem="m1u-UD-iow" firstAttribute="top" secondItem="WAj-eX-gES" secondAttribute="bottom" constant="24" id="RQk-kR-fNR"/>
-                            <constraint firstItem="Aql-Ys-zC3" firstAttribute="centerX" secondItem="NCD-7b-XuG" secondAttribute="centerX" id="Rf7-aL-Nza"/>
                             <constraint firstItem="WAj-eX-gES" firstAttribute="top" secondItem="LTp-gK-j66" secondAttribute="bottom" constant="24" id="SKe-cd-aeQ"/>
                             <constraint firstItem="LTp-gK-j66" firstAttribute="leading" secondItem="noB-V3-OGx" secondAttribute="leading" constant="32" id="Sju-BQ-JUH"/>
                             <constraint firstItem="hIR-Ub-2Tz" firstAttribute="top" secondItem="noB-V3-OGx" secondAttribute="top" id="c5A-1g-nkw"/>
@@ -3220,15 +3232,17 @@
                             <constraint firstItem="hIR-Ub-2Tz" firstAttribute="leading" secondItem="noB-V3-OGx" secondAttribute="leading" id="uwk-YN-lm5"/>
                         </constraints>
                         <connections>
+                            <outlet property="countryCodeMarker" destination="6wN-bS-GkG" id="Tpa-Ca-VDb"/>
                             <outlet property="editEmailButton" destination="d1i-Cp-wLd" id="ntS-Bm-StS"/>
                             <outlet property="editNameButton" destination="NCD-7b-XuG" id="f13-p4-yjr"/>
+                            <outlet property="editPhoneNumberButton" destination="Aql-Ys-zC3" id="wo2-fF-j4A"/>
                             <outlet property="emailContainer" destination="m1u-UD-iow" id="rXm-gE-Ms7"/>
                             <outlet property="emailTFView" destination="yxU-tK-G7T" id="zfH-gK-iyk"/>
                             <outlet property="nameContainer" destination="LTp-gK-j66" id="zbh-iE-h7o"/>
                             <outlet property="nameTFView" destination="QbS-x0-bDL" id="A2P-eS-9p8"/>
-                            <outlet property="phoneContainer" destination="WAj-eX-gES" id="brN-4h-GS6"/>
-                            <outlet property="phoneContainerView" destination="WAj-eX-gES" id="KZD-p2-BXs"/>
+                            <outlet property="phoneContainer" destination="WAj-eX-gES" id="e1L-DR-bzX"/>
                             <outlet property="phoneNumberTF" destination="fRH-p0-AsC" id="WgO-nO-Z6f"/>
+                            <outlet property="phoneTFContainer" destination="iil-Xb-qzZ" id="NqQ-QU-ihd"/>
                             <outlet property="titleLabel" destination="ZwT-9j-DXF" id="hOc-Ob-BQk"/>
                             <outlet property="updateButton" destination="Ahg-ut-b4Y" id="1HY-dz-ET5"/>
                         </connections>
@@ -3269,7 +3283,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Favourite" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-Sw-BX2">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Favorite" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPE-Sw-BX2">
                                         <rect key="frame" x="48" y="16.5" width="361" height="23"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="18"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3307,8 +3321,8 @@
                                             <constraint firstAttribute="height" constant="204" id="zcf-I2-n4c"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No favourite added!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilC-qR-L2H">
-                                        <rect key="frame" x="141" y="316" width="132.5" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No favorite added!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilC-qR-L2H">
+                                        <rect key="frame" x="145" y="316" width="124" height="18"/>
                                         <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -3440,7 +3454,9 @@
                             <outlet property="cartBanner" destination="NBY-Fg-o6J" id="Ne1-5L-WsS"/>
                             <outlet property="cartBannerContainer" destination="lHy-cf-MJQ" id="KcD-dn-VyN"/>
                             <outlet property="cartBannerImageBackDrop" destination="MML-58-RCh" id="FeW-ju-PjO"/>
+                            <outlet property="everyoneHasFavouritesLbl" destination="SXL-cD-44D" id="gna-LN-KA8"/>
                             <outlet property="favouriteTitleLabel" destination="HPE-Sw-BX2" id="8Aj-Oy-gOt"/>
+                            <outlet property="noFavoriteAddedLabel" destination="ilC-qR-L2H" id="BEh-rM-jWr"/>
                             <outlet property="noFavouriteView" destination="F8b-XG-CDr" id="IOZ-L1-U6L"/>
                             <outlet property="tableView" destination="9V6-Ef-QYn" id="kdU-YG-dhE"/>
                         </connections>
@@ -3985,16 +4001,16 @@
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="8LH-xI-Vhd">
-            <size key="intrinsicContentSize" width="64" height="24"/>
+            <size key="intrinsicContentSize" width="65" height="24"/>
         </designable>
         <designable name="9UG-0p-qEk">
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="ALm-KR-X5I">
-            <size key="intrinsicContentSize" width="30" height="26"/>
+            <size key="intrinsicContentSize" width="30" height="28"/>
         </designable>
         <designable name="Ahg-ut-b4Y">
-            <size key="intrinsicContentSize" width="53" height="31"/>
+            <size key="intrinsicContentSize" width="57" height="33"/>
         </designable>
         <designable name="Aql-Ys-zC3">
             <size key="intrinsicContentSize" width="17" height="22"/>
@@ -4006,61 +4022,61 @@
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="Fgt-R6-wad">
-            <size key="intrinsicContentSize" width="100" height="32"/>
+            <size key="intrinsicContentSize" width="103" height="32"/>
         </designable>
         <designable name="IQ4-pP-LTU">
-            <size key="intrinsicContentSize" width="136" height="31"/>
+            <size key="intrinsicContentSize" width="143" height="33"/>
         </designable>
         <designable name="KMz-VD-5KU">
-            <size key="intrinsicContentSize" width="101" height="26"/>
+            <size key="intrinsicContentSize" width="107" height="28"/>
         </designable>
         <designable name="L0M-ok-ojG">
-            <size key="intrinsicContentSize" width="21" height="26"/>
+            <size key="intrinsicContentSize" width="23" height="28"/>
         </designable>
         <designable name="N6v-1Z-kdY">
-            <size key="intrinsicContentSize" width="51" height="24"/>
+            <size key="intrinsicContentSize" width="52" height="25"/>
         </designable>
         <designable name="NCD-7b-XuG">
             <size key="intrinsicContentSize" width="17" height="22"/>
         </designable>
         <designable name="NCW-Jn-y7o">
-            <size key="intrinsicContentSize" width="101" height="26"/>
+            <size key="intrinsicContentSize" width="106" height="28"/>
         </designable>
         <designable name="QvI-AL-HVp">
-            <size key="intrinsicContentSize" width="136" height="31"/>
+            <size key="intrinsicContentSize" width="143" height="33"/>
         </designable>
         <designable name="Snb-GT-G0X">
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="TLb-xd-4uB">
-            <size key="intrinsicContentSize" width="101" height="26"/>
+            <size key="intrinsicContentSize" width="107" height="28"/>
         </designable>
         <designable name="TfO-e1-2ao">
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="bTl-AP-q1F">
-            <size key="intrinsicContentSize" width="100" height="32"/>
+            <size key="intrinsicContentSize" width="103" height="32"/>
         </designable>
         <designable name="cx8-u0-pT8">
             <size key="intrinsicContentSize" width="19" height="22"/>
         </designable>
         <designable name="d1F-Jc-KUg">
-            <size key="intrinsicContentSize" width="64" height="24"/>
+            <size key="intrinsicContentSize" width="65" height="24"/>
         </designable>
         <designable name="d1i-Cp-wLd">
             <size key="intrinsicContentSize" width="17" height="22"/>
         </designable>
         <designable name="hv6-63-Shm">
-            <size key="intrinsicContentSize" width="48" height="24"/>
+            <size key="intrinsicContentSize" width="52" height="25"/>
         </designable>
         <designable name="kSg-a3-uPa">
-            <size key="intrinsicContentSize" width="57" height="24"/>
+            <size key="intrinsicContentSize" width="59" height="25"/>
         </designable>
         <designable name="oax-15-lri">
             <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="pis-7D-Fev">
-            <size key="intrinsicContentSize" width="59" height="24"/>
+            <size key="intrinsicContentSize" width="60" height="24"/>
         </designable>
         <designable name="ugH-mI-GAL">
             <size key="intrinsicContentSize" width="24" height="24"/>

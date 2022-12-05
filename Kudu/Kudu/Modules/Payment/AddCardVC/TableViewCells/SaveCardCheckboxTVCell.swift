@@ -11,6 +11,7 @@ class SaveCardCheckboxTVCell: UITableViewCell {
     @IBOutlet private weak var saveCardInfoView: UIView!
     @IBOutlet private weak var defaultCheckbox: UIImageView!
     @IBOutlet private weak var saveCardCheckbox: UIImageView!
+    @IBOutlet private weak var setAsDefaultPaymentLbl: UILabel!
     private let unselected = AppImages.AddAddress.checkBoxUnselected
     private let selectedCheck = AppImages.AddAddress.checkBoxSelected
     
@@ -22,6 +23,7 @@ class SaveCardCheckboxTVCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setAsDefaultPaymentLbl.text = LSCollection.Payments.setAsDefaultPaymentMethod
         selectionStyle = .none
         saveCardInfoView.isHidden = true
         defaultCheckbox.image = unselected

@@ -153,10 +153,10 @@ class HomeVM {
 				let reverseGeoCoder = Geocoder.Google(lat: coordinates.latitude, lng: coordinates.longitude, APIKey: Constants.GooglePaidAPIKey.apiKey)
 				SwiftLocation.geocodeWith(reverseGeoCoder).then({ [weak self] (result) in
 					guard let data = result.data else {
-						self?.delegate?.reverseGeocodingFailed(reason: LocalizedStrings.Home.unableToFetchAddress)
+						self?.delegate?.reverseGeocodingFailed(reason: LSCollection.Home.unableToFetchAddress)
 						return }
 					if data.isEmpty {
-						self?.delegate?.reverseGeocodingFailed(reason: LocalizedStrings.Home.unableToFetchAddress)
+						self?.delegate?.reverseGeocodingFailed(reason: LSCollection.Home.unableToFetchAddress)
 						return }
                     self?.syncCartConfiguration(storeId: storeDetails.data?._id ?? "")
 					self?.parseReverseGeoCodeData(data[0], associatedStore: storeDetails.data)

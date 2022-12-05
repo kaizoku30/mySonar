@@ -71,6 +71,8 @@ struct OrderPlaceRequest {
                                                key.stateName.rawValue: restaurantLocation.restaurantLocation?.stateName ?? "",
                                                key.countryName.rawValue: restaurantLocation.restaurantLocation?.countryName ?? "",
                                                key.zipCode.rawValue: restaurantLocation.restaurantLocation?.zipCode ?? "123"]
+        params["storeNameEnglish"] = restaurantLocation.nameEnglish ?? ""
+        params["storeNameArabic"] = restaurantLocation.nameArabic ?? ""
         params[key.restaurantLocation.rawValue] = restaurantObject
         if servicesType == .delivery {
             params[key.deliveryCharge.rawValue] = deliveryCharge!

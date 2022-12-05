@@ -42,13 +42,13 @@ class EditProfileVM {
     
     func validateData() -> (validData: Bool, errorMsg: String?) {
         if getEmail.isEmpty == false, CommonValidation.isValidEmail(getEmail) == false {
-            return (false, LocalizedStrings.SignUp.pleaseEnterValidEmail)
+            return (false, LSCollection.SignUp.pleaseEnterValidEmail)
         }
         if getName.isEmpty {
-            return (false, LocalizedStrings.SignUp.pleaseEnterFullName)
+            return (false, LSCollection.SignUp.pleaseEnterFullName)
         }
         if CommonValidation.isValidName(getName) == false {
-            return (false, LocalizedStrings.SignUp.pleaseEnterValidFullName)
+            return (false, LSCollection.SignUp.pleaseEnterValidFullName)
         }
         return (true, nil)
     }

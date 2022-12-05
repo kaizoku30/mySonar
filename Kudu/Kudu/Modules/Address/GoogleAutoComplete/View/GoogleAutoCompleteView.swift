@@ -43,9 +43,9 @@ class GoogleAutoCompleteView: UIView {
         var title: String {
             switch self {
             case .recentlySearched:
-                return LocalizedStrings.GoogleAutoComplete.recentSearches
+                return LSCollection.GoogleAutoComplete.recentSearches
             case .savedAddresses:
-                return LocalizedStrings.GoogleAutoComplete.savedAddresses
+                return LSCollection.GoogleAutoComplete.savedAddresses
             }
         }
     }
@@ -70,7 +70,7 @@ class GoogleAutoCompleteView: UIView {
         clearBtn.isHidden = true
         noResultView.contentType = .noResultFound
         searchTFView.textFieldType = .address
-        searchTFView.placeholderText = LocalizedStrings.GoogleAutoComplete.typeAddressToSearch
+        searchTFView.placeholderText = LSCollection.GoogleAutoComplete.typeAddressToSearch
         searchTFView.font = AppFonts.mulishBold.withSize(14)
         searchTFView.textColor = .black
         searchBarContainerView.roundTopCorners(cornerRadius: 4)
@@ -84,14 +84,14 @@ class GoogleAutoCompleteView: UIView {
         tableView.bounces = false
         tableView.showsVerticalScrollIndicator = false
         recentSearchesTableView.bounces = false
-        titleLabel.text = LocalizedStrings.GoogleAutoComplete.setLocationTitle
+        titleLabel.text = LSCollection.GoogleAutoComplete.setLocationTitle
     }
     
     func setupView(flow: GoogleAutoCompleteVM.FlowType = .myAddress) {
         self.flow = flow
         if self.flow == .setDeliveryLocation {
             self.handleViewActions?(.fetchAddressList)
-            self.searchTFView.placeholderText = LocalizedStrings.GoogleAutoComplete.searchYourLocation
+            self.searchTFView.placeholderText = LSCollection.GoogleAutoComplete.searchYourLocation
             self.buttonHeightConstraint.constant = 24
             self.layoutIfNeeded()
         }
@@ -143,7 +143,7 @@ class GoogleAutoCompleteView: UIView {
     
     private func setTitle() {
         if flow == .setDeliveryLocation {
-            titleLabel.text = LocalizedStrings.GoogleAutoComplete.setDeliveryLocation
+            titleLabel.text = "Set delivery Location"
             pinMapBtn.isHidden = false
             pinMapBtn.handleBtnTap = { [weak self] in
                 self?.handleViewActions?(.openMap)
@@ -197,7 +197,7 @@ class GoogleAutoCompleteView: UIView {
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
         mainThread {
             let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.GoogleAutoComplete.cancel, rightButtonTitle: LocalizedStrings.GoogleAutoComplete.settings, container: self)
+            alert.configureLocationView(type: type, leftButtonTitle: LSCollection.GoogleAutoComplete.cancel, rightButtonTitle: LSCollection.GoogleAutoComplete.settings, container: self)
             alert.handleActionOnLocationView = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.openSettings)
@@ -244,14 +244,14 @@ extension GoogleAutoCompleteView {
             case false:
                 self.tableView.isHidden = true
                 self.tableView.reloadData()
-                self.showError(message: errorMsg ?? LocalizedStrings.GoogleAutoComplete.somethingWentWrong, extraDelay: nil)
+                self.showError(message: errorMsg ?? LSCollection.GoogleAutoComplete.somethingWentWrong, extraDelay: nil)
             }
         case .reverseGeocoding:
             if isSuccess == false {
                 self.tableView.isUserInteractionEnabled = true
                 self.searchBarContainerView.isUserInteractionEnabled = true
                 self.tableView.reloadData()
-                self.showError(message: errorMsg ?? LocalizedStrings.GoogleAutoComplete.somethingWentWrong)
+                self.showError(message: errorMsg ?? LSCollection.GoogleAutoComplete.somethingWentWrong)
             }
         case .addressListFetched:
             switch isSuccess {

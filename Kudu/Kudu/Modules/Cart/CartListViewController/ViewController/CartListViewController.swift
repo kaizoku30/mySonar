@@ -7,6 +7,12 @@
 
 import UIKit
 
+public func prettyJSON(_ data: [String: Any]) {
+    if let jsonData = try? JSONSerialization.data(withJSONObject: data), let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
+       print(JSONString)
+    }
+}
+
 enum CartPageFlow {
     case fromExplore
     case fromHome
@@ -17,7 +23,6 @@ enum CartPageFlow {
 class CartListViewController: BaseVC {
     
     @IBOutlet private weak var baseView: CartListView!
-    private var youMayAlsoLikeFetched = false
     let viewModel: CartListVM! = CartListVM()
     var updateExploreMenu: (() -> Void)?
     var flow: CartPageFlow = .fromHome
@@ -25,6 +30,10 @@ class CartListViewController: BaseVC {
     private var tempLoaderIndex: Int?
     private var scheduleDate: Int?
     private var initialSetupDone = false
+    private var youMayAlsoLikeFetched = false
+    private var bottomDetailVC: BaseVC?
+    private var bottomDetailItemIndex: Int?
+    private var bottomDetailCartObject: CartListObject?
     
     private func doesNotDeliverToThisLocation() {
         mainThread {
@@ -35,87 +44,12 @@ class CartListViewController: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.baseView.addRefreshControl()
-        handleActions()
-        self.baseView.setCartView(enabled: false)
+        initialSetup()
         if viewModel.getServiceType == .delivery {
-            viewModel.checkIfNoStoreExists(lat: viewModel.getDeliveryLocation?.latitude ?? 0.0, long: viewModel.getDeliveryLocation?.longitude ?? 0.0, checked: { [weak self] in
-                self?.initialSetupDone = true
-                if $0.isNotNil {
-                    DataManager.shared.currentDeliveryLocation?.associatedStore = $0
-                    var deliveryLocation = self?.viewModel.getDeliveryLocation
-                    deliveryLocation?.associatedStore = $0
-                    if let loc = deliveryLocation {
-                        self?.viewModel.updateDeliveryLocation(loc)
-                    }
-                    self?.viewModel.updateStore($0!)
-                    self?.syncCart()
-                } else {
-                    self?.viewModel.clearDeliveryLocation()
-                    self?.doesNotDeliverToThisLocation()
-                    self?.syncCart()
-                }
-            })
+            setupForDeliveryType()
+        } else {
+            syncCart()
         }
-        syncCart()
-    }
-    
-    // MARK: SYNC CART
-    
-    private func syncCart() {
-        CartUtility.syncCart { [weak self] in
-            mainThread {
-                guard let `self` = self else { return }
-                self.viewModel.cartSynced()
-                if self.viewModel.getCartObjects.isEmpty {
-                    if self.retrySync == false {
-                        self.retrySync = true
-                        self.syncCart()
-                        return
-                    } else {
-                        self.baseView.removeLoaderOverlay()
-                        self.baseView.endRefreshing()
-                        self.baseView.showNoCartView()
-                        return
-                    }
-                }
-                self.baseView.updateServiceType(self.viewModel.getServiceType, scheduleTime: self.scheduleDate)
-                self.viewModel.updateFetchingCartConfig()
-                self.getStoreConfig(syncing: true) {
-                    if self.viewModel.checkIfFreeItemAdd() {
-                        self.addFreeItemToCart()
-                    } else {
-                        if let coupon = self.viewModel.getCoupon, let couponId = coupon._id, !couponId.isEmpty {
-                            let couponInvalid = CartUtility.checkCouponValidationError(coupon)
-                            if couponInvalid.isNotNil, let freeItemExists = self.viewModel.getCartObjects.firstIndex(where: { $0.offerdItem ?? false == true }), let freeItem = self.viewModel.getCartObjects[safe: freeItemExists] {
-                                self.removeFreeItem(index: freeItemExists, freeItem: freeItem, done: { [weak self] in
-                                    self?.showCartPage()
-                                })
-                            } else {
-                                self.showCartPage()
-                            }
-                        } else {
-                            self.showCartPage()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    private func showCartPage() {
-        mainThread {
-            self.baseView.tableView.reloadData()
-            self.baseView.setupBottomInfo(deliveryLocation: self.viewModel.getDeliveryLocation, restaurantSelected: self.viewModel.getStoreDetails, mode: self.viewModel.getServiceType)
-            self.stopLoading()
-        }
-    }
-    
-    private func stopLoading() {
-        self.baseView.removeLoaderOverlay()
-        self.baseView.endRefreshing()
-        self.refreshCartView()
-        self.fetchYouMayAlsoLikeItems()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +59,60 @@ class CartListViewController: BaseVC {
         }
     }
     
+    private func initialSetup() {
+        self.baseView.addRefreshControl()
+        handleActions()
+        self.baseView.setCartView(enabled: false)
+    }
+    
+    private func fetchYouMayAlsoLikeItems() {
+        viewModel.fetchYouMayAlsoLike { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.youMayAlsoLikeFetched = true
+            mainThread {
+                strongSelf.baseView.refreshYouMayAlsoLike()
+            }
+        }
+    }
+    
+    private func setupForDeliveryType() {
+        viewModel.checkIfNoStoreExists(lat: viewModel.getDeliveryLocation?.latitude ?? 0.0, long: viewModel.getDeliveryLocation?.longitude ?? 0.0, checked: { [weak self] in
+            self?.initialSetupDone = true
+            if $0.isNotNil {
+                DataManager.shared.currentDeliveryLocation?.associatedStore = $0
+                var deliveryLocation = self?.viewModel.getDeliveryLocation
+                deliveryLocation?.associatedStore = $0
+                if let loc = deliveryLocation {
+                    self?.viewModel.updateDeliveryLocation(loc)
+                }
+                self?.viewModel.updateStore($0!)
+                self?.syncCart()
+            } else {
+                self?.viewModel.clearDeliveryLocation()
+                let lat = self?.viewModel.getDeliveryLocation?.latitude ?? 0.0
+                if lat != 0.0 {
+                    self?.doesNotDeliverToThisLocation()
+                }
+                self?.syncCart()
+            }
+        })
+    }
+    
+    private func getStoreConfig(syncing: Bool = false, fetched: (() -> Void)? = nil) {
+        if viewModel.isFetchingCartConfig {
+            viewModel.fetchCartConfig {
+                if !syncing {
+                    self.baseView.refreshBillSection()
+                }
+                self.refreshCartView()
+                self.baseView.setCartView(enabled: self.viewModel.allowPayment())
+                fetched?()
+            }
+        }
+    }
+}
+
+extension CartListViewController {
     // MARK: Handle Actions
     
     private func handleActions() {
@@ -143,8 +131,8 @@ class CartListViewController: BaseVC {
                 case .fromExplore:
                     strongSelf.pop()
                 case .fromHome, .fromFavourites, .fromMyOffers:
-                    strongSelf.tabBarController?.selectedIndex = HomeTabBarVC.TabOptions.menu.rawValue
-                    strongSelf.pop()
+                    strongSelf.tabBarController?.selectedIndex = HomeTabBarVC.TabOptions.home.rawValue
+                    strongSelf.popToSpecificViewController(kindOf: HomeVC.self)
                 }
             case .addAddressFlow:
                 strongSelf.changeDeliveryAddressFlow(addAddressFlow: true)
@@ -160,88 +148,11 @@ class CartListViewController: BaseVC {
         }
     }
     
-    private func openScheduleOrder() {
-        self.tabBarController?.addOverlayBlack()
-        let vc = DateTimeVC.instantiate(fromAppStoryboard: .CartPayment)
-        vc.prefill = self.scheduleDate
-        vc.dateTimeSelected = { [weak self] in
-            self?.scheduleDate = $0
-            self?.baseView.updateServiceType(self?.viewModel.getServiceType ?? .delivery, scheduleTime: self?.scheduleDate)
-            vc.dismiss(animated: true, completion: {
-                self?.tabBarController?.removeOverlay()
-            })
-        }
-        vc.handleDeallocation = { [weak self] in
-            vc.dismiss(animated: true, completion: {
-                self?.tabBarController?.removeOverlay()
-            })
-        }
-        vc.modalPresentationStyle = .overFullScreen
-        self.present(vc, animated: true)
-    }
-    
-    private func handleDeleteIndex(_ index: Int) {
-        let strongSelf = self
-        let needToHandleCompletionBlock = strongSelf.checkStateOfFreeItems()
-        if !needToHandleCompletionBlock.handleCompletion {
-            self.viewModel.updateCountLocally(count: 0, index: index)
-            if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
-                CartUtility.removeCouponFromCartLocally()
-                CartUtility.syncCart { //No implementation needed here
-                }
-                self.baseView.showNoCartView()
-                return
-            }
-            self.baseView.reloadCartItemSection()
-            self.refreshCartView()
-        } else {
-            strongSelf.tempLoaderIndex = index
-            strongSelf.baseView.reloadCartItemSection()
-            strongSelf.viewModel.updateCountLocally(count: 0, index: index, completionHandler: { [weak self] in
-                let updated = strongSelf.checkStateOfFreeItems()
-                self?.removeFreeItem(index: updated.index, freeItem: updated.item, done: { [weak self] in
-                    guard let `self` = self else { return }
-                    self.tempLoaderIndex = nil
-                    self.viewModel.updateCountLocally(count: 0, index: index)
-                    if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
-                        CartUtility.removeCouponFromCartLocally()
-                        CartUtility.syncCart { //No implementation needed here
-                        }
-                        self.baseView.showNoCartView()
-                        return
-                    }
-                    self.baseView.reloadCartItemSection()
-                    self.refreshCartView()
-                })
-            })
-        }
-    }
-    
-    private func getStoreConfig(syncing: Bool = false, fetched: (() -> Void)? = nil) {
-        if viewModel.isFetchingCartConfig {
-            viewModel.fetchCartConfig {
-                if !syncing {
-                    self.baseView.refreshBillSection()
-                }
-                self.refreshCartView()
-                self.baseView.setCartView(enabled: self.viewModel.allowPayment())
-                fetched?()
-            }
-        }
-    }
-    
-    private func fetchYouMayAlsoLikeItems() {
-        viewModel.fetchYouMayAlsoLike { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.youMayAlsoLikeFetched = true
-            mainThread {
-                strongSelf.baseView.refreshYouMayAlsoLike()
-            }
-        }
-    }
 }
 
 extension CartListViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: TableView Mgmt
     
     func numberOfSections(in tableView: UITableView) -> Int {
         let sections = CartListView.Sections.allCases.count
@@ -398,14 +309,112 @@ extension CartListViewController {
 
 extension CartListViewController {
     
+    // MARK: SYNC CART
+    private func syncCart() {
+        CartUtility.syncCart { [weak self] in
+            mainThread {
+                guard let `self` = self else { return }
+                self.viewModel.cartSynced()
+                if self.viewModel.getCartObjects.isEmpty {
+                    if self.retrySync == false {
+                        self.retrySync = true
+                        self.syncCart()
+                        return
+                    } else {
+                        self.baseView.removeLoaderOverlay()
+                        self.baseView.endRefreshing()
+                        self.baseView.showNoCartView()
+                        return
+                    }
+                }
+                self.baseView.updateServiceType(self.viewModel.getServiceType, scheduleTime: self.scheduleDate)
+                self.viewModel.updateFetchingCartConfig()
+                self.getStoreConfig(syncing: true) {
+                    if self.viewModel.checkIfFreeItemAdd() {
+                        self.addFreeItemToCart()
+                    } else {
+                        if let coupon = self.viewModel.getCoupon, let couponId = coupon._id, !couponId.isEmpty {
+                            let couponInvalid = CartUtility.checkCouponValidationError(coupon)
+                            if couponInvalid.isNotNil, let freeItemExists = self.viewModel.getCartObjects.firstIndex(where: { $0.offerdItem ?? false == true }), let freeItem = self.viewModel.getCartObjects[safe: freeItemExists] {
+                                self.removeFreeItem(index: freeItemExists, freeItem: freeItem, done: { [weak self] in
+                                    self?.showCartPage()
+                                })
+                            } else {
+                                self.showCartPage()
+                            }
+                        } else {
+                            self.showCartPage()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func showCartPage() {
+        mainThread {
+            self.baseView.tableView.reloadData()
+            self.baseView.setupBottomInfo(deliveryLocation: self.viewModel.getDeliveryLocation, restaurantSelected: self.viewModel.getStoreDetails, mode: self.viewModel.getServiceType)
+            self.stopLoading()
+        }
+    }
+    
+    private func stopLoading() {
+        self.baseView.removeLoaderOverlay()
+        self.baseView.endRefreshing()
+        self.refreshCartView()
+        self.fetchYouMayAlsoLikeItems()
+    }
+    
     private func refreshCartView() {
         mainThread {
             self.baseView.updateCartDetails(itemCount: CartUtility.getItemCount(), totalPrice: CartUtility.getPrice(), deliveryCharge: self.viewModel.getCartConfig?.deliveryCharges, addedCoupon: self.viewModel.getCoupon)
             self.baseView.setCartView(enabled: self.viewModel.allowPayment())
         }
     }
+}
+
+extension CartListViewController {
     
-    // MARK: CART REPEAT CUSTOMISATION HANDLING
+    // MARK: Cart Operations
+    
+    private func handleDeleteIndex(_ index: Int) {
+        let strongSelf = self
+        let needToHandleCompletionBlock = strongSelf.checkStateOfFreeItems()
+        if !needToHandleCompletionBlock.handleCompletion {
+            strongSelf.tempLoaderIndex = index
+            strongSelf.baseView.reloadCartItemSection()
+            self.viewModel.updateCountLocally(count: 0, index: index, completionHandler: {
+                self.tempLoaderIndex = nil
+                if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
+                    CartUtility.syncCart { }
+                    self.baseView.showNoCartView()
+                    return
+                }
+                self.baseView.reloadCartItemSection()
+                self.refreshCartView()
+            })
+        } else {
+            strongSelf.tempLoaderIndex = index
+            strongSelf.baseView.reloadCartItemSection()
+            strongSelf.viewModel.updateCountLocally(count: 0, index: index, completionHandler: { [weak self] in
+                let updated = strongSelf.checkStateOfFreeItems()
+                self?.removeFreeItem(index: updated.index, freeItem: updated.item, done: { [weak self] in
+                    guard let `self` = self else { return }
+                    self.tempLoaderIndex = nil
+                    //self.viewModel.updateCountLocally(count: 0, index: index)
+                    if self.viewModel.getCartObjects.isEmpty || self.viewModel.getCartObjects.first?.offerdItem ?? false == true {
+                        CartUtility.syncCart { //No implementation needed here
+                        }
+                        self.baseView.showNoCartView()
+                        return
+                    }
+                    self.baseView.reloadCartItemSection()
+                    self.refreshCartView()
+                })
+            })
+        }
+    }
     
     private func handleCustomiseRepeat(index: Int) {
         let popUp = RepeatCustomisationView(frame: CGRect(x: 0, y: 0, width: self.view.width - AppPopUpView.HorizontalPadding, height: 0))
@@ -417,9 +426,13 @@ extension CartListViewController {
                 if action == .repeatCustomisation {
                     let closureHandlingNeeded = strongSelf.checkStateOfFreeItems()
                     if !closureHandlingNeeded.handleCompletion {
-                        self?.viewModel.updateCountLocally(count: (relevantItem.quantity ?? 0) + 1, index: index)
+                        self?.tempLoaderIndex = index
                         self?.baseView.reloadCartItemSection()
-                        self?.refreshCartView()
+                        self?.viewModel.updateCountLocally(count: (relevantItem.quantity ?? 0) + 1, index: index, completionHandler: {
+                            self?.tempLoaderIndex = nil
+                            self?.baseView.reloadCartItemSection()
+                            self?.refreshCartView()
+                        })
                     } else {
                         //First count will be updated through closure, then we'll get to know if item needs to be added or not
                         self?.tempLoaderIndex = index
@@ -444,83 +457,28 @@ extension CartListViewController {
             }
         }
     }
+    
+    private func addedToCartSuccessfully() {
+        self.baseView.reloadCartItemSection(itemAddition: viewModel.getCartObjects.count - 1)
+        self.refreshCartView()
+    }
 }
 
 extension CartListViewController {
-    
+    // MARK: Item Detail/ Customised Item Detail
     private func openItemDetail(itemIndex: Int) {
         if let itemDetails = viewModel.getCartObjects[safe: itemIndex]?.itemDetails, let cartObject = viewModel.getCartObjects[safe: itemIndex] {
             mainThread { [weak self] in
                 guard let strongSelf = self else { return }
-                let vc = BaseVC()
-                vc.configureForCustomView()
-                let itemDetailSheet = ItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.baseView.width, height: strongSelf.baseView.height))
-                itemDetailSheet.configureForExploreMenu(container: vc.view, itemId: itemDetails._id ?? "", serviceType: APIEndPoints.ServicesType(rawValue: itemDetails.servicesAvailable ?? "") ?? .delivery, showDeleteConfirmation: true)
-                itemDetailSheet.cartCountUpdated = { (count, _) in
-                    
-                    if count == 0 {
-                        strongSelf.handleDeleteIndex(itemIndex)
-                        return
-                    }
-                    
-                    let needToHandleCompletionBlock = strongSelf.checkStateOfFreeItems()
-                    if !needToHandleCompletionBlock.handleCompletion {
-                        if let cartObjectLatest = strongSelf.viewModel.getCartObjects[safe: itemIndex], cartObjectLatest.hashId ?? "" == cartObject.hashId ?? "" {
-                            //hashId in system safely
-                            strongSelf.baseView.safelyDisableOutlets(disable: true)
-                            strongSelf.viewModel.updateCountLocally(count: count, index: itemIndex, completionHandler: {
-                                strongSelf.baseView.safelyDisableOutlets(disable: false)
-                                if strongSelf.viewModel.getCartObjects.isEmpty {
-                                    strongSelf.baseView.showNoCartView()
-                                } else {
-                                    strongSelf.baseView.reloadCartItemSection()
-                                    strongSelf.refreshCartView()
-                                    return
-                                }
-                            })
-                        } else {
-                            //item being added
-                            //should never happen
-                            strongSelf.present(fatalErrorAlert(reason: "You should never be able to add item from item detail in cart"), animated: true)
-                        }
-                    } else {
-                        strongSelf.tempLoaderIndex = itemIndex
-                        strongSelf.baseView.reloadCartItemSection()
-                        if let cartObjectLatest = strongSelf.viewModel.getCartObjects[safe: itemIndex], cartObjectLatest.hashId ?? "" == cartObject.hashId ?? "" {
-                            //hashId in system safely
-                            strongSelf.viewModel.updateCountLocally(count: count, index: itemIndex, completionHandler: { [weak self] in
-                                let updated = strongSelf.checkStateOfFreeItems()
-                                self?.removeFreeItem(index: updated.index, freeItem: updated.item, done: { [weak self] in
-                                    self?.tempLoaderIndex = nil
-                                    let checkFreeItemAdd = self?.viewModel.checkIfFreeItemAdd() ?? false
-                                    if checkFreeItemAdd && needToHandleCompletionBlock.index.isNil {
-                                        self?.baseView.bringLoaderToFront()
-                                        self?.syncCart()
-                                    } else {
-                                        if strongSelf.viewModel.getCartObjects.isEmpty {
-                                            strongSelf.baseView.showNoCartView()
-                                        } else {
-                                            strongSelf.baseView.reloadCartItemSection()
-                                            strongSelf.refreshCartView()
-                                            return
-                                        }
-                                    }
-                                })
-                            })
-                        } else {
-                            //item being added
-                            //should never happen
-                            strongSelf.present(fatalErrorAlert(reason: "You should never be able to add item from item detail in cart"), animated: true)
-                        }
-                    }
-                }
-                itemDetailSheet.handleDeallocation = {
-                    vc.dismiss(animated: true, completion: { [weak self] in
-                        self?.tabBarController?.removeOverlay()
-                    })
-                }
+                strongSelf.bottomDetailVC = BaseVC()
+                strongSelf.bottomDetailItemIndex = itemIndex
+                strongSelf.bottomDetailCartObject = cartObject
+                strongSelf.bottomDetailVC?.configureForCustomView()
+                let itemDetailSheet = BaseItemDetailView(frame: CGRect(x: 0, y: 0, width: strongSelf.baseView.width, height: strongSelf.baseView.height))
+                itemDetailSheet.delegate = self
+                itemDetailSheet.configureForExploreMenu(container: strongSelf.bottomDetailVC!.view, itemId: itemDetails._id ?? "", serviceType: APIEndPoints.ServicesType(rawValue: itemDetails.servicesAvailable ?? "") ?? .delivery, showDeleteConfirmation: true)
                 strongSelf.tabBarController?.addOverlayBlack()
-                strongSelf.present(vc, animated: true)
+                strongSelf.present(strongSelf.bottomDetailVC!, animated: true)
             }
         }
     }
@@ -547,8 +505,6 @@ extension CartListViewController {
             }
         }
     }
-    
-    // MARK: CART CUSTOMISATION DETAIL VIEW HANDLING
     
     private func displayCustomisationPage(result: MenuItem, cartObject: CartListObject, index: Int, prefillTemplate: CustomisationTemplate?) {
         let vc = BaseVC()
@@ -590,11 +546,6 @@ extension CartListViewController {
         }
         self.tabBarController?.addOverlayBlack()
         self.present(vc, animated: true)
-    }
-    
-    private func addedToCartSuccessfully() {
-        self.baseView.reloadCartItemSection(itemAddition: viewModel.getCartObjects.count - 1)
-        self.refreshCartView()
     }
 }
 
@@ -685,25 +636,6 @@ extension CartListViewController {
 }
 
 extension CartListViewController {
-    private func openVehicleDetailsEditor() {
-        let bottomSheet = UpdateVehicleDetailsView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
-        bottomSheet.configure(container: self.baseView, prefill: self.viewModel.getCartConfig?.vehicleDetails)
-        bottomSheet.presentColorPicker = { [weak self] in
-            guard let strongSelf = self else { return }
-            $0.modalPresentationStyle = .overFullScreen
-            strongSelf.present($0, animated: true)
-        }
-        bottomSheet.dismissColorPicker = { [weak self] in
-            self?.dismiss(animated: true)
-        }
-        bottomSheet.vehicleDetailsUpdated = { [weak self] in
-            self?.viewModel.updateFetchingCartConfig()
-            self?.getStoreConfig()
-        }
-    }
-}
-
-extension CartListViewController {
     // MARK: You May Also Like
     func getYouMayAlsoLikeContainerCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(with: YouMayAlsoLikeContainerCell.self)
@@ -740,7 +672,9 @@ extension CartListViewController {
                 self.baseView.bringLoaderToFront()
                 self.syncCart()
             } else {
-                self.addedToCartSuccessfully()
+                self.baseView.bringLoaderToFront()
+                self.syncCart()
+                //self.addedToCartSuccessfully()
             }
         }, updated: {
             self.tabBarController?.removeLoaderOverlay()
@@ -749,8 +683,10 @@ extension CartListViewController {
                 self.baseView.bringLoaderToFront()
                 self.syncCart()
             } else {
-                self.baseView.reloadCartItemSection()
-                self.refreshCartView()
+                self.baseView.bringLoaderToFront()
+                self.syncCart()
+//                self.baseView.reloadCartItemSection()
+//                self.refreshCartView()
             }
         })
     }
@@ -775,7 +711,9 @@ extension CartListViewController {
                     strongSelf.baseView.bringLoaderToFront()
                     strongSelf.syncCart()
                 } else {
-                    strongSelf.addedToCartSuccessfully()
+                    strongSelf.baseView.bringLoaderToFront()
+                    strongSelf.syncCart()
+                    // strongSelf.addedToCartSuccessfully()
                 }
             }, updated: {
                 self?.tabBarController?.removeLoaderOverlay()
@@ -784,8 +722,10 @@ extension CartListViewController {
                     strongSelf.baseView.bringLoaderToFront()
                     strongSelf.syncCart()
                 } else {
-                    strongSelf.baseView.reloadCartItemSection()
-                    strongSelf.refreshCartView()
+                    strongSelf.baseView.bringLoaderToFront()
+                    strongSelf.syncCart()
+//                    strongSelf.baseView.reloadCartItemSection()
+//                    strongSelf.refreshCartView()
                 }
             })
         }
@@ -809,9 +749,9 @@ extension CartListViewController {
         }
         cell.removeCoupon = { [weak self] in
             self?.baseView.bringLoaderToFront()
-            CartUtility.removeCouponFromCart(completionHandler: {
+            CartUtility.removeCouponAndFreeItemsRemotely(couponId: CartUtility.getAttachedCoupon?._id ?? "", cartArray: CartUtility.fetchCartLocally(), completion: {
                 self?.syncCart()
-            }, cartRef: self?.viewModel.getCartObjects ?? [])
+            })
         }
         cell.openCouponVC = { [weak self] in
             let vc = CartCouponListVC.instantiate(fromAppStoryboard: .Coupon)
@@ -828,7 +768,7 @@ extension CartListViewController {
 }
 
 extension CartListViewController {
-    // MARK: Cart modification - coupon free item syncing
+    // MARK: (cart modification - coupon free item) syncing
     
     private func checkStateOfFreeItems() -> (handleCompletion: Bool, index: Int?, item: CartListObject?) {
         let strongSelf = self
@@ -836,14 +776,15 @@ extension CartListViewController {
         var freeItemIndexToRemove: Int?
         var freeItemToRemove: CartListObject?
         if let coupon = strongSelf.viewModel.getCoupon, let couponId = coupon._id, !couponId.isEmpty {
-            //let couponInvalid = CartUtility.checkCouponValidationError(coupon)
             if let freeItemExists = strongSelf.viewModel.getCartObjects.firstIndex(where: { $0.offerdItem ?? false == true }), let freeItem = strongSelf.viewModel.getCartObjects[safe: freeItemExists] {
                 freeItemIndexToRemove = freeItemExists
                 freeItemToRemove = freeItem
                 needToHandleCompletionBlock = true
+                //Need to remove free item
             }
             
             if let promoType = PromoOfferType(rawValue: coupon.promoData?.offerType ?? ""), promoType == .item, !viewModel.getCartObjects.contains(where: { $0.offerdItem ?? false }) {
+                //Need to remove coupon, but not free item
                 return (true, nil, nil)
             }
         }
@@ -857,7 +798,6 @@ extension CartListViewController {
 
 extension CartListViewController {
     // MARK: FREE ITEMs
-    
     private func addFreeItemToCart() {
         guard let coupon = viewModel.getCoupon, let promoType = PromoOfferType(rawValue: coupon.promoData?.offerType ?? ""), promoType == .item, let items = coupon.promoData?.items else {
             self.showCartPage()
@@ -917,7 +857,7 @@ extension CartListViewController {
         let removeItemReq = RemoveItemFromCartRequest(itemId: freeItem?.itemId ?? "", hashId: freeItem?.hashId ?? "", offeredItem: true)
         APIEndPoints.CartEndPoints.removeItemFromCart(req: removeItemReq, success: { [weak self] _ in
             self?.viewModel.removeCartObject(atIndex: index!)
-            CartUtility.removeItemFromCart(freeItem?.hashId ?? "", offeredItem: true)
+            CartUtility.removeItemFromCartLocally(freeItem?.hashId ?? "", offeredItem: true)
             done()
         }, failure: { _ in
             done()
@@ -926,6 +866,55 @@ extension CartListViewController {
 }
 
 extension CartListViewController {
+    
+    // MARK: Schedule Order Flow
+    private func openScheduleOrder() {
+        self.tabBarController?.addOverlayBlack()
+        let vc = DateTimeVC.instantiate(fromAppStoryboard: .CartPayment)
+        vc.view.semanticContentAttribute = .forceLeftToRight
+        vc.prefill = self.scheduleDate
+        vc.dateTimeSelected = { [weak self] in
+            self?.scheduleDate = $0
+            self?.baseView.updateServiceType(self?.viewModel.getServiceType ?? .delivery, scheduleTime: self?.scheduleDate)
+            vc.dismiss(animated: true, completion: {
+                self?.tabBarController?.removeOverlay()
+            })
+        }
+        vc.handleDeallocation = { [weak self] in
+            vc.dismiss(animated: true, completion: {
+                self?.tabBarController?.removeOverlay()
+            })
+        }
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
+    }
+}
+
+extension CartListViewController {
+    
+    // MARK: Vehicle Details Flow
+    
+    private func openVehicleDetailsEditor() {
+        let bottomSheet = UpdateVehicleDetailsView(frame: CGRect(x: 0, y: 0, width: self.baseView.width, height: self.baseView.height))
+        bottomSheet.configure(container: self.baseView, prefill: self.viewModel.getCartConfig?.vehicleDetails)
+        bottomSheet.presentColorPicker = { [weak self] in
+            guard let strongSelf = self else { return }
+            $0.modalPresentationStyle = .overFullScreen
+            strongSelf.present($0, animated: true)
+        }
+        bottomSheet.dismissColorPicker = { [weak self] in
+            self?.dismiss(animated: true)
+        }
+        bottomSheet.vehicleDetailsUpdated = { [weak self] in
+            self?.viewModel.updateFetchingCartConfig()
+            self?.getStoreConfig()
+        }
+    }
+}
+
+extension CartListViewController {
+    
+    // MARK: Make Payment Flow
     private func makePayment() {
         
         guard let store = viewModel.getStoreDetails else { return }
@@ -1038,7 +1027,9 @@ extension CartListViewController {
     }
     
     private func hitValidateOrder(request: OrderPlaceRequest) {
+        self.view.isUserInteractionEnabled = false
         self.viewModel.validateOrder(req: request, validated: { [weak self] (response) in
+            self?.view.isUserInteractionEnabled = true
             switch response {
             case .success(let responseString):
                 self?.baseView.toggleMakePaymentLoader(false)
@@ -1060,8 +1051,72 @@ extension CartListViewController {
     }
 }
 
-func prettyJSON(_ data: [String: Any]) {
-    if let jsonData = try? JSONSerialization.data(withJSONObject: data), let JSONString = String(data: jsonData, encoding: String.Encoding.utf8) {
-       print(JSONString)
+extension CartListViewController: BaseItemDetailDelegate {
+    func cartCountUpdatedBaseItem(count: Int, item: MenuItem) {
+        mainThread { [weak self] in
+            guard let strongSelf = self else { return }
+            if count == 0 {
+                strongSelf.handleDeleteIndex(strongSelf.bottomDetailItemIndex!)
+                return
+            }
+            let needToHandleCompletionBlock = strongSelf.checkStateOfFreeItems()
+            if !needToHandleCompletionBlock.handleCompletion {
+                if let cartObjectLatest = strongSelf.viewModel.getCartObjects[safe: strongSelf.bottomDetailItemIndex!], cartObjectLatest.hashId ?? "" == strongSelf.bottomDetailCartObject?.hashId ?? "" {
+                    //hashId in system safely
+                    strongSelf.baseView.safelyDisableOutlets(disable: true)
+                    strongSelf.viewModel.updateCountLocally(count: count, index: strongSelf.bottomDetailItemIndex!, completionHandler: {
+                        strongSelf.baseView.safelyDisableOutlets(disable: false)
+                        if strongSelf.viewModel.getCartObjects.isEmpty {
+                            strongSelf.baseView.showNoCartView()
+                        } else {
+                            strongSelf.baseView.reloadCartItemSection()
+                            strongSelf.refreshCartView()
+                            return
+                        }
+                    })
+                } else {
+                    //item being added
+                    //should never happen
+                    strongSelf.present(fatalErrorAlert(reason: "You should never be able to add item from item detail in cart"), animated: true)
+                }
+            } else {
+                strongSelf.tempLoaderIndex = strongSelf.bottomDetailItemIndex!
+                strongSelf.baseView.reloadCartItemSection()
+                if let cartObjectLatest = strongSelf.viewModel.getCartObjects[safe: strongSelf.bottomDetailItemIndex!], cartObjectLatest.hashId ?? "" == strongSelf.bottomDetailCartObject?.hashId ?? "" {
+                    //hashId in system safely
+                    strongSelf.viewModel.updateCountLocally(count: count, index: strongSelf.bottomDetailItemIndex!, completionHandler: { [weak self] in
+                        let updated = strongSelf.checkStateOfFreeItems()
+                        self?.removeFreeItem(index: updated.index, freeItem: updated.item, done: { [weak self] in
+                            self?.tempLoaderIndex = nil
+                            let checkFreeItemAdd = self?.viewModel.checkIfFreeItemAdd() ?? false
+                            if checkFreeItemAdd && needToHandleCompletionBlock.index.isNil {
+                                self?.baseView.bringLoaderToFront()
+                                self?.syncCart()
+                            } else {
+                                if strongSelf.viewModel.getCartObjects.isEmpty {
+                                    strongSelf.baseView.showNoCartView()
+                                } else {
+                                    strongSelf.baseView.reloadCartItemSection()
+                                    strongSelf.refreshCartView()
+                                    return
+                                }
+                            }
+                        })
+                    })
+                } else {
+                    //item being added
+                    //should never happen
+                    strongSelf.present(fatalErrorAlert(reason: "You should never be able to add item from item detail in cart"), animated: true)
+                }
+            }
+        }
+    }
+    
+    func handleBaseItemViewDeallocation() {
+        mainThread { [weak self] in
+            self?.bottomDetailVC?.dismiss(animated: true, completion: { [weak self] in
+                self?.tabBarController?.removeOverlay()
+            })
+        }
     }
 }

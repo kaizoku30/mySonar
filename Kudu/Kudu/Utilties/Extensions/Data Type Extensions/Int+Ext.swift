@@ -7,25 +7,26 @@ extension Int {
 }
 
 extension Int {
-    func convertMinutesToAMPM(smallcase: Bool = false) -> String {
+    
+    func convertMinutesToAMPM(smallcase: Bool = false, safelyRemovingArabic: Bool = false) -> String {
         var hourString = ""
         var minuteString = ""
         var hours = self/60
         let minutes = self%60
         minuteString = minutes < 10 ? "0\(minutes)" : "\(minutes)"
-        var amPm: String = LocalizedStrings.SetRestaurant.amString
+        var amPm: String = !safelyRemovingArabic ?  LSCollection.SetRestaurant.amString : "AM"
         if hours > 11 {
             
             if hours == 24 {
-                amPm = LocalizedStrings.SetRestaurant.amString
+                amPm = !safelyRemovingArabic ?  LSCollection.SetRestaurant.amString : "AM"
                 hours = 12
                 hourString = "\(hours)"
             } else if hours == 12 {
-                amPm = LocalizedStrings.SetRestaurant.pmString
+                amPm = !safelyRemovingArabic ?  LSCollection.SetRestaurant.pmString : "PM"
                 hours = 12
                 hourString = "\(hours)"
             } else {
-                amPm = LocalizedStrings.SetRestaurant.pmString
+                amPm = !safelyRemovingArabic ?  LSCollection.SetRestaurant.pmString : "PM"
                 hours -= 12
                 hourString = "\(hours)"
             }

@@ -31,7 +31,7 @@ class OurStoreTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.text = LocalizedStrings.Profile.ourStore
+        titleLabel.text = LSCollection.Profile.ourStore
         self.selectionStyle = .none
     }
 }
@@ -62,7 +62,7 @@ class LanguagePickerCell: UITableViewCell {
         arabicLanguageSwitch.backgroundColor = AppColors.kuduThemeBlue
         arabicLanguageSwitch.onTintColor = AppColors.kuduThemeBlue
         arabicLanguageSwitch.cornerRadius = arabicLanguageSwitch.height/2
-        titleLabel.text = LocalizedStrings.Profile.language
+        titleLabel.text = LSCollection.Profile.language
         arabicLanguageSwitch.setOn(false, animated: true)
     }
 }

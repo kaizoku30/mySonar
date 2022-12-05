@@ -53,6 +53,8 @@ class OutOfReachView: AppPopUpViewType {
 		self.tag = Constants.CustomViewTags.alertTag
 		let title = "Out of reach"
 		let subtitle = "We don’t deliver here yet, but we’re expanding quickly and hopefully will soon!"
+        self.titleLabel.text = title
+        self.subtitleLabel.text = subtitle
 		let titleHeight = title.heightOfText(titleLabel.width, font: titleFont)
 		let messageHeight = subtitle.heightOfText(subtitleLabel.width, font: messageFont)
 		self.height = titleHeight + messageHeight + OutOfReachView.VerticalPadding + 10

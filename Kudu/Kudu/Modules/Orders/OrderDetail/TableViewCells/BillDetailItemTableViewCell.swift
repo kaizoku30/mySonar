@@ -39,8 +39,10 @@ class BillDetailBreakdownCell: UITableViewCell {
 class TotalPayableCell: UITableViewCell {
     @IBOutlet weak var vatLabel: UILabel! // (Prices Include X% VAT)
     @IBOutlet weak var totalPrice: UILabel!
+    @IBOutlet weak var totalPayableTitleLbl: UILabel!
     
     func configure(vat: String = "", totalAmount: Double) {
+        totalPayableTitleLbl.text = LSCollection.CartScren.totalPayable
         vatLabel.isHidden = false
         vatLabel.text = "(Prices Include \(vat)% VAT)"
         totalPrice.text = "SR \(totalAmount.round(to: 2).removeZerosFromEnd())"

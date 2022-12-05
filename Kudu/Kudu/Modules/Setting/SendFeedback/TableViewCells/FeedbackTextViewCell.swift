@@ -16,7 +16,7 @@ class FeedbackTextViewCell: UITableViewCell {
         feedbackTxtView.textContainer.lineFragmentPadding = 15
         feedbackTxtView.backgroundColor = AppColors.SendFeedbackScreen.textfieldBg
         feedbackTxtView.delegate = self
-        feedbackTxtView.text = LocalizedStrings.Setting.writeYourFeedbackHere
+        feedbackTxtView.text = LSCollection.Setting.writeYourFeedbackHere
         feedbackTxtView.tintColor = .black
         feedbackTxtView.textColor = AppColors.SendFeedbackScreen.placeholderTextColor
         // Initialization code
@@ -31,7 +31,7 @@ class FeedbackTextViewCell: UITableViewCell {
     func configure(_ text: String) {
         if text.isEmpty {
             feedbackTxtView.textColor = AppColors.SendFeedbackScreen.placeholderTextColor
-            feedbackTxtView.text = LocalizedStrings.Setting.writeYourFeedbackHere
+            feedbackTxtView.text = LSCollection.Setting.writeYourFeedbackHere
         } else {
             feedbackTxtView.textColor = .black
             feedbackTxtView.text = text
@@ -47,7 +47,7 @@ extension FeedbackTextViewCell: UITextViewDelegate {
         let text = textView.text.byRemovingLeadingTrailingWhiteSpaces
         textView.text = text
         if text == "" {
-            textView.text = LocalizedStrings.Setting.writeYourFeedbackHere
+            textView.text = LSCollection.Setting.writeYourFeedbackHere
             textView.textColor = AppColors.SendFeedbackScreen.placeholderTextColor
         }
         self.textEntered?(text)
@@ -55,7 +55,7 @@ extension FeedbackTextViewCell: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == LocalizedStrings.Setting.writeYourFeedbackHere {
+        if textView.text == LSCollection.Setting.writeYourFeedbackHere {
             textView.text = ""
             textView.textColor = .black
         }
@@ -63,7 +63,7 @@ extension FeedbackTextViewCell: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let oldString: NSString = (textView.text ?? "") as NSString
-        if oldString as String == LocalizedStrings.Setting.writeYourFeedbackHere || oldString == "" && text == " " {
+        if oldString as String == LSCollection.Setting.writeYourFeedbackHere || oldString == "" && text == " " {
             return false
         }
         let newString = oldString.appending(text)

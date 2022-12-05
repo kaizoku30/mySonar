@@ -51,10 +51,10 @@ class MapPinVM {
         let reverseGeoCoder = Geocoder.Google(lat: lat, lng: long, APIKey: Constants.GooglePaidAPIKey.apiKey)
         SwiftLocation.geocodeWith(reverseGeoCoder).then({ [weak self] (result) in
             guard let data = result.data else {
-                self?.delegate?.reverseGeocodingFailed(reason: LocalizedStrings.MapPin.unableToFetchAddress)
+                self?.delegate?.reverseGeocodingFailed(reason: LSCollection.MapPin.unableToFetchAddress)
                 return }
             if data.isEmpty {
-                self?.delegate?.reverseGeocodingFailed(reason: LocalizedStrings.MapPin.unableToFetchAddress)
+                self?.delegate?.reverseGeocodingFailed(reason: LSCollection.MapPin.unableToFetchAddress)
                 return }
             self?.parseReverseGeoCodeData(data[0])
         })

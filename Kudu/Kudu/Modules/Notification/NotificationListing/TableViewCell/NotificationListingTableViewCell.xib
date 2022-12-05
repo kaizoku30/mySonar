@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Mulish-Bold.ttf">
+            <string>Mulish-Bold</string>
+        </array>
         <array key="Mulish-Medium.ttf">
             <string>Mulish-Medium</string>
         </array>
@@ -34,8 +37,8 @@
                         <rect key="frame" x="1" y="6" width="329" height="105"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Order is in on its way! It will reach your location in 10 mins." textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-aa-r8e">
-                                <rect key="frame" x="41" y="16" width="278" height="35.5"/>
-                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                <rect key="frame" x="41" y="15" width="278" height="33.5"/>
+                                <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -47,21 +50,30 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="11 November, 2022" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAt-8C-h3c">
-                                <rect key="frame" x="41" y="55.5" width="109.5" height="15.5"/>
+                                <rect key="frame" x="41" y="52.5" width="128" height="18"/>
+                                <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="11 November, 2022" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uPf-eM-L2V">
+                                <rect key="frame" x="41" y="74.5" width="109.5" height="15.5"/>
                                 <fontDescription key="fontDescription" name="Mulish-Regular" family="Mulish" pointSize="12"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.6044081125827816" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.60440811260000005" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.36470588235294116" green="0.37647058823529411" blue="0.40392156862745099" alpha="0.15622413079470199" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="lAt-8C-h3c" secondAttribute="bottom" constant="15" id="450-R8-lbY"/>
                             <constraint firstItem="ja9-aa-r8e" firstAttribute="leading" secondItem="X87-nY-z5C" secondAttribute="trailing" constant="12" id="AN1-zv-wRw"/>
-                            <constraint firstItem="ja9-aa-r8e" firstAttribute="top" secondItem="Cvc-Da-eBZ" secondAttribute="top" constant="16" id="Fs6-mk-pYj"/>
+                            <constraint firstItem="uPf-eM-L2V" firstAttribute="top" secondItem="lAt-8C-h3c" secondAttribute="bottom" constant="4" id="C8h-qM-6HD"/>
+                            <constraint firstItem="ja9-aa-r8e" firstAttribute="top" secondItem="Cvc-Da-eBZ" secondAttribute="top" constant="15" id="Fs6-mk-pYj"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lAt-8C-h3c" secondAttribute="trailing" constant="10" id="I5O-RP-hLo"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ja9-aa-r8e" secondAttribute="trailing" constant="10" id="Tc4-lY-ebW"/>
+                            <constraint firstItem="uPf-eM-L2V" firstAttribute="leading" secondItem="lAt-8C-h3c" secondAttribute="leading" id="TyN-Rg-BsX"/>
                             <constraint firstItem="X87-nY-z5C" firstAttribute="leading" secondItem="Cvc-Da-eBZ" secondAttribute="leading" constant="12" id="WOj-K3-jLv"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="uPf-eM-L2V" secondAttribute="bottom" constant="15" id="XzC-gg-gMA"/>
                             <constraint firstItem="lAt-8C-h3c" firstAttribute="leading" secondItem="X87-nY-z5C" secondAttribute="trailing" constant="12" id="fgf-DP-7pw"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uPf-eM-L2V" secondAttribute="trailing" constant="10" id="jgn-ml-P5a"/>
                             <constraint firstItem="X87-nY-z5C" firstAttribute="top" secondItem="Cvc-Da-eBZ" secondAttribute="top" constant="16" id="wne-iw-MQq"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="X87-nY-z5C" secondAttribute="bottom" constant="19" id="xiZ-wW-tVU"/>
                             <constraint firstItem="lAt-8C-h3c" firstAttribute="top" secondItem="ja9-aa-r8e" secondAttribute="bottom" constant="4" id="yj7-93-Whn"/>
@@ -105,6 +117,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="notificationDate" destination="uPf-eM-L2V" id="7i1-Lm-2EP"/>
                 <outlet property="notificationSubtitle" destination="lAt-8C-h3c" id="Yrf-js-uvC"/>
                 <outlet property="notificationTitle" destination="ja9-aa-r8e" id="AqL-eC-N9k"/>
             </connections>

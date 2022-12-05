@@ -38,11 +38,11 @@ class GuestProfileVC: AccountProfileVC {
         var title: String {
             switch self {
             case .ourStore:
-                return LocalizedStrings.Profile.ourStore
+                return LSCollection.Profile.ourStore
             case .menu:
-                return LocalizedStrings.Profile.menu
+                return LSCollection.Profile.menu
             case .language:
-                return LocalizedStrings.Profile.language
+                return LSCollection.Profile.language
             }
         }
     }

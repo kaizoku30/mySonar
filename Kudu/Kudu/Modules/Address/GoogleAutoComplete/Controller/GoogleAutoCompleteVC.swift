@@ -210,8 +210,13 @@ extension GoogleAutoCompleteVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             let item = viewModel.getMyAddressList[row - 1]
             let addressType = APIEndPoints.AddressLabelType(rawValue: item.addressLabel ?? "")
-            let title = addressType == .OTHER ? item.otherAddressLabel ?? "" : item.addressLabel ?? ""
-            cell.configure(title: title, subtitle: item.buildingName ?? "", index: row - 1, addressType: addressType)
+            var title = addressType == .OTHER ? item.otherAddressLabel ?? "" : item.addressLabel ?? ""
+            if addressType == .HOME {
+                title = "Home"
+            } else {
+                title = "Work"
+            }
+            cell.configure(title: title, subtitle: "\(item.buildingName ?? ""), \(item.cityName ?? ""), \(item.stateName ?? "")", index: row - 1, addressType: addressType)
             cell.cellTapped = { [weak self] in
                 let myAddress = viewModel.getMyAddressList[$0]
                 let object = LocationInfoModel(trimmedAddress: myAddress.buildingName ?? "", city: myAddress.cityName ?? "", state: myAddress.stateName ?? "", postalCode: myAddress.zipCode ?? "", latitude: (myAddress.location?.latitude) ?? 0.0, longitude: (myAddress.location?.longitude) ?? 0.0, googleTitle: myAddress.buildingName ?? "", googleSubtitle: "\(myAddress.cityName ?? ""), \(myAddress.stateName ?? "")", associatedMyAddress: myAddress)

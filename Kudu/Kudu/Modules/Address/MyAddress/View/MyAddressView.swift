@@ -38,9 +38,9 @@ class MyAddressView: UIView {
         var title: String {
             switch self {
             case .DEFAULT:
-                return LocalizedStrings.MyAddress.defaultAddressTitle
+                return LSCollection.MyAddress.defaultAddressTitle
             case .OTHER:
-                return LocalizedStrings.MyAddress.otherAddressTitle
+                return LSCollection.MyAddress.otherAddressTitle
             }
         }
     }
@@ -69,8 +69,8 @@ class MyAddressView: UIView {
         noResult.contentType = .none
         toggleLoader(start: false)
         toggleNoResult(show: true)
-        myAddressLabel.text = LocalizedStrings.MyAddress.myAddressLabel
-        addNewAddressBtn.setTitle(LocalizedStrings.MyAddress.addNewAddressBtn, for: .normal)
+        myAddressLabel.text = LSCollection.MyAddress.myAddressLabel
+        addNewAddressBtn.setTitle(LSCollection.MyAddress.addNewAddressBtn, for: .normal)
     }
     private func initialSetup() {
         tableView.separatorStyle = .none
@@ -111,7 +111,7 @@ class MyAddressView: UIView {
         //popUpAlert.rightButtonBgColor = AppColors.MyAddressScreen.deleteBtnColor
         popUpAlert.setButtonConfiguration(for: .left, config: .blueOutline, buttonLoader: .left)
         popUpAlert.setButtonConfiguration(for: .right, config: .yellow, buttonLoader: nil)
-		popUpAlert.configure(message: LocalizedStrings.MyAddress.showDeletePopUpMessage, leftButtonTitle: LocalizedStrings.MyAddress.delete, rightButtonTitle: LocalizedStrings.MyAddress.cancel, container: self, setMessageAsTitle: true)
+		popUpAlert.configure(message: LSCollection.MyAddress.showDeletePopUpMessage, leftButtonTitle: LSCollection.MyAddress.delete, rightButtonTitle: LSCollection.MyAddress.cancel, container: self, setMessageAsTitle: true)
         popUpAlert.handleAction = { [weak self] in
             if $0 == .right { return }
             if let list = otherAddresses, isDefault, list.isEmpty == false {
@@ -125,7 +125,7 @@ class MyAddressView: UIView {
     func showAddDefaultAddressPopUp(idToReplace: String) {
         let popUpAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.width - AppPopUpView.HorizontalPadding, height: 0))
         popUpAlert.rightButtonBgColor = AppColors.kuduThemeYellow
-        popUpAlert.configure(message: LocalizedStrings.MyAddress.showAddDefaultAddressPopUpMessage, leftButtonTitle: LocalizedStrings.MyAddress.cancel, rightButtonTitle: LocalizedStrings.MyAddress.add, container: self)
+        popUpAlert.configure(message: LSCollection.MyAddress.showAddDefaultAddressPopUpMessage, leftButtonTitle: LSCollection.MyAddress.cancel, rightButtonTitle: LSCollection.MyAddress.add, container: self)
         popUpAlert.handleAction = { [weak self] in
             if $0 == .left { return }
             self?.handleViewActions?(.addNewDefaultAddress(idToReplace: idToReplace))
@@ -171,7 +171,7 @@ extension MyAddressView {
                     self.tableView.isHidden = false
                 }
             case false:
-                self.showError(message: errorMsg ?? LocalizedStrings.MyAddress.somethingWentWrong, extraDelay: nil)
+                self.showError(message: errorMsg ?? LSCollection.MyAddress.somethingWentWrong, extraDelay: nil)
             }
         case .deleteAddress:
             break

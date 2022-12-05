@@ -19,7 +19,7 @@ class FeedbackNumberCell: UITableViewCell {
         tfContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(containerTapped)))
         tfContainerView.backgroundColor = AppColors.SendFeedbackScreen.textfieldBg
         tfContainerView.semanticContentAttribute = .forceLeftToRight
-        phoneTF.placeholder = LocalizedStrings.Setting.enterMobileNumber
+        phoneTF.placeholder = LSCollection.Setting.enterMobileNumber
         phoneTF.semanticContentAttribute = .forceLeftToRight
         phoneTF.keyboardType = .phonePad
         phoneTF.delegate = self

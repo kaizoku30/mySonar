@@ -103,11 +103,11 @@ extension NotificationVC: UITableViewDelegate, UITableViewDataSource, UIScrollVi
                     self?.baseView.refreshTable()
                     self?.viewModel.deleteNotification(id: self?.viewModel.allNotifications[indexPath.row]._id ?? "", indexPath: indexPath) { _ in
                         self?.indexForDeletion = nil
-                        self?.baseView.refreshTable()
-                        tableView.beginUpdates()
                         self?.viewModel.allNotifications.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: .none)
-                        tableView.endUpdates()
+                        self?.baseView.refreshTable()
+//                        tableView.beginUpdates()
+//                        tableView.deleteRows(at: [indexPath], with: .none)
+//                        tableView.endUpdates()
                         if tableView.numberOfRows(inSection: 0) == 0 {
                             self?.baseView.showNoResult()
                         }

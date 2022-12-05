@@ -10,7 +10,7 @@ import FBSDKCoreKit
 import LanguageManager_iOS
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow? {
         didSet {
             self.window?.overrideUserInterfaceStyle = .light
@@ -18,23 +18,40 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private(set) static var shared: SceneDelegate?
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         Self.shared = self
         SceneDelegate.shared?.window = UIWindow(windowScene: windowScene)
+        
+        // MARK: Language Setup
+        languageRelatedSetup()
+        
+        // MARK: Initialisation of UI
+        Router.shared.initialiseLaunchVC()
+        
+        //MARK: Handle Notification Launch
+        handleLaunchFromNotifications(connectionOptions)
+    }
+    
+    private func languageRelatedSetup() {
         var language: Languages = .en
         if AppUserDefaults.value(forKey: .selectedLanguage) as? String ?? "" == AppUserDefaults.Language.ar.rawValue {
             language = .ar
         }
         LanguageManager.shared.setLanguage(language: language, for: nil, viewControllerFactory: nil, animation: nil)
-        Router.shared.initialiseLaunchVC()
+    }
+    
+    private func handleLaunchFromNotifications(_ connectionOptions: UIScene.ConnectionOptions) {
         if connectionOptions.notificationResponse.isNotNil {
             if connectionOptions.notificationResponse?.notification.request.identifier ?? "" != "CART REMINDER" {
-                DataManager.shared.launchedFromNotification = true
+                DataManager.shared.setLaunchedFromNotification(true)
             }
         }
     }
+}
+
+extension SceneDelegate {
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
@@ -47,7 +64,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = URLContexts.first?.url else {
                return
            }
-
            ApplicationDelegate.shared.application(
                UIApplication.shared,
                open: url,

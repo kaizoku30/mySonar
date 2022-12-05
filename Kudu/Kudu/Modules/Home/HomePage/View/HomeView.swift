@@ -121,11 +121,11 @@ class HomeView: UIView {
         [deliverToLargeBtn, deliveryAddLbl, deliverToBtn].forEach({
             $0?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setLocationFlow)))
         })
-        deliverToLargeBtn.setTitle(LocalizedStrings.Home.deliverTo, for: .normal)
+        deliverToLargeBtn.setTitle(LSCollection.Home.deliverTo, for: .normal)
         [deliveryLbl, curbsideLbl, pickUpLbl].forEach({ $0?.adjustsFontSizeToFitWidth = true})
-        deliveryLbl.text = LocalizedStrings.Home.delivery
-        curbsideLbl.text = LocalizedStrings.Home.curbside
-        pickUpLbl.text = LocalizedStrings.Home.pickup
+        deliveryLbl.text = LSCollection.Home.delivery
+        curbsideLbl.text = LSCollection.Home.curbside
+        pickUpLbl.text = LSCollection.Home.pickup
     }
     
     func setupView(_ delegate: HomeVC) {
@@ -203,21 +203,21 @@ class HomeView: UIView {
     
     @objc func deliveryTapped() {
         DataManager.shared.currentServiceType = .delivery
-        deliverToLargeBtn.setTitle(LocalizedStrings.Home.deliverTo, for: .normal)
+        deliverToLargeBtn.setTitle(LSCollection.Home.deliverTo, for: .normal)
         selectButton(button: .delivery)
         handleViewActions?(.sectionButtonPressed(section: .delivery))
     }
     
     @objc func curbsideTapped() {
         DataManager.shared.currentServiceType = .curbside
-        deliverToLargeBtn.setTitle(LocalizedStrings.Home.pickupFrom, for: .normal)
+        deliverToLargeBtn.setTitle(LSCollection.Home.pickupFrom, for: .normal)
         selectButton(button: .curbside)
         handleViewActions?(.sectionButtonPressed(section: .curbside))
     }
     
     @objc func pickupTapped() {
         DataManager.shared.currentServiceType = .pickup
-        deliverToLargeBtn.setTitle(LocalizedStrings.Home.pickupFrom, for: .normal)
+        deliverToLargeBtn.setTitle(LSCollection.Home.pickupFrom, for: .normal)
         selectButton(button: .pickup)
         handleViewActions?(.sectionButtonPressed(section: .pickup))
     }
@@ -243,7 +243,7 @@ class HomeView: UIView {
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
         mainThread {
             let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self)
+            alert.configureLocationView(type: type, leftButtonTitle: LSCollection.Home.cancel, rightButtonTitle: LSCollection.Home.setting, container: self)
             alert.handleActionOnLocationView = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.openSettings)
@@ -266,7 +266,7 @@ extension HomeView {
     func showAlreadyAssociatedAlert() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
             let appAlert = AppPopUpView(frame: CGRect(x: 0, y: 0, width: self.width -  AppPopUpView.HorizontalPadding, height: 0))
-            appAlert.configure(title: LocalizedStrings.EditProfile.emailAlreadyVerified, message: LocalizedStrings.EditProfile.emailAlreadyAssociated, leftButtonTitle: LocalizedStrings.EditProfile.cancel, rightButtonTitle: LocalizedStrings.EditProfile.updateButton, container: self)
+            appAlert.configure(title: LSCollection.EditProfile.emailAlreadyVerified, message: LSCollection.EditProfile.emailAlreadyAssociated, leftButtonTitle: LSCollection.EditProfile.cancel, rightButtonTitle: LSCollection.EditProfile.updateButton, container: self)
             appAlert.handleAction = { [weak self] (action) in
                 if action == .right {
                     //Need to take to Edit Profile and Email

@@ -95,7 +95,7 @@ extension SignUpVC: SignUpVMDelegate {
     
     func signUpAPIResponse(responseType: Result<String, Error>) {
         switch responseType {
-        case .success(let result) :
+        case .success:
             self.baseView.handleAPIResponse(isSuccess: true, errorMsg: nil)
             let phoneVerificationVC = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
             let signUpRequest = SignUpRequest(email: self.baseView.getEmail, name: self.baseView.getName, mobileNum: self.baseView.getPhoneNum)
@@ -108,7 +108,7 @@ extension SignUpVC: SignUpVMDelegate {
     
     func socialSignUpAPIResponse(responseType: Result<String, Error>) {
         switch responseType {
-        case .success(let result) :
+        case .success:
             self.baseView.handleAPIResponse(isSuccess: true, errorMsg: nil)
             let phoneVerificationVC = PhoneVerificationVC.instantiate(fromAppStoryboard: .Onboarding)
             let socialSignUpReq = self.viewModel?.getSocialData

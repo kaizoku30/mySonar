@@ -31,7 +31,7 @@ enum DeliveryOrderStatus: String, OrderStatusType {
         case .outForDelivery:
             return "Out for Delivery"
         case .delivered:
-            return "Delivered"
+            return LSCollection.Orders.deliveredStatus
         }
     }
     

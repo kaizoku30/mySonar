@@ -416,14 +416,15 @@ Go ahead &amp; Explore Menu.</string>
                                                             <rect key="frame" x="289" y="74" width="90" height="28"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9n-wr-ZCi" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                                                    <rect key="frame" x="31" y="0.0" width="28" height="28"/>
+                                                                    <rect key="frame" x="9" y="0.0" width="72" height="28"/>
                                                                     <color key="backgroundColor" name="kuduThemeBlue"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="28" id="0TT-K0-bJd"/>
                                                                         <constraint firstAttribute="height" constant="28" id="46j-vc-7ab"/>
+                                                                        <constraint firstAttribute="width" constant="72" id="PTP-vi-0vA"/>
                                                                     </constraints>
+                                                                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="7.3300000000000001" maxX="0.0" maxY="7.2999999999999998"/>
-                                                                    <state key="normal" image="k_exploreMenu_delete">
+                                                                    <state key="normal" title="Delete">
                                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </state>
                                                                     <userDefinedRuntimeAttributes>
@@ -529,6 +530,7 @@ Go ahead &amp; Explore Menu.</string>
                                             <outlet property="productDetailArrow" destination="QT1-uu-SWm" id="Ri1-fh-S5a"/>
                                             <outlet property="productDetailStack" destination="gR7-gd-6u9" id="zNK-h1-etZ"/>
                                             <outlet property="productDetailView" destination="ETj-HG-ZHx" id="cyZ-F6-AJt"/>
+                                            <outlet property="productDetailsTitleLbl" destination="izO-RO-m63" id="HuV-kC-amg"/>
                                             <outlet property="tempLoader" destination="2AO-aQ-s7M" id="k7m-69-pWc"/>
                                             <outlet property="tempLoaderView" destination="GER-8T-4kQ" id="CKW-9M-VXK"/>
                                         </connections>
@@ -565,6 +567,7 @@ Go ahead &amp; Explore Menu.</string>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="policyText" destination="DCP-Kb-3dG" id="MO2-As-8Nc"/>
+                                            <outlet property="titleLabel" destination="K8Y-0Z-H4O" id="qQJ-yQ-8Xw"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ApplyCouponTableViewCell" id="3PT-MB-Ryk" customClass="ApplyCouponTableViewCell" customModule="Kudu" customModuleProvider="target">
@@ -742,6 +745,7 @@ Go ahead &amp; Explore Menu.</string>
                                             <outlet property="appliedCouponView" destination="Noq-Vv-kjt" id="hyx-vz-NeQ"/>
                                             <outlet property="appliedNotAppliedLabel" destination="dZt-2k-vTm" id="LuI-6r-gDV"/>
                                             <outlet property="applyCouponView" destination="b5D-xa-6Aw" id="2zW-oJ-JhM"/>
+                                            <outlet property="applyCouponsTitle" destination="WMl-YG-3vL" id="rjO-Tj-Wnc"/>
                                             <outlet property="couponSavingsTextLabel" destination="sNE-bo-HmL" id="B3B-Fd-WRj"/>
                                             <outlet property="offerNotApplicableLabel" destination="XoL-Yh-PEr" id="sdJ-k5-V4v"/>
                                             <outlet property="removeChangeButton" destination="HPx-HC-guy" id="BOh-xk-Sjt"/>
@@ -1124,6 +1128,7 @@ Go ahead &amp; Explore Menu.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="billdetailLabel" destination="Rzs-EO-Uhe" id="sFt-32-v7O"/>
                                             <outlet property="deliveryChargeLabel" destination="qVD-f2-QET" id="Meu-ZT-GdB"/>
                                             <outlet property="deliveryChargeView" destination="FgV-QA-1Xg" id="IHE-2B-ndd"/>
                                             <outlet property="itemTotalLabel" destination="d0V-Bl-q6d" id="c4G-1i-Zyo"/>
@@ -1131,6 +1136,7 @@ Go ahead &amp; Explore Menu.</string>
                                             <outlet property="promoSeparatorView" destination="LrZ-bJ-lDu" id="Ppi-VO-UNC"/>
                                             <outlet property="promoView" destination="R5g-g4-wQz" id="Yj9-Uq-JKC"/>
                                             <outlet property="totalPayableLabel" destination="7VN-eR-ZsZ" id="ads-sY-cPJ"/>
+                                            <outlet property="totalPayableTitleLbl" destination="HCp-UR-3BF" id="8zh-FA-g2c"/>
                                             <outlet property="vatDisclaimerLabel" destination="5Q3-SB-Cq9" id="tKQ-ld-eUv"/>
                                         </connections>
                                     </tableViewCell>
@@ -1306,6 +1312,7 @@ Go ahead &amp; Explore Menu.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="billdetailLabel" destination="49n-Fc-eJf" id="EHc-hQ-pgu"/>
                                             <outlet property="deliveryChargeLabel" destination="xxN-UM-gwf" id="8KK-6K-bvc"/>
                                             <outlet property="deliveryChargeView" destination="Hwj-Ba-y01" id="hPd-8B-Yab"/>
                                             <outlet property="itemTotalLabel" destination="Xrp-S5-4lE" id="93e-mE-CJ3"/>
@@ -1313,6 +1320,7 @@ Go ahead &amp; Explore Menu.</string>
                                             <outlet property="shimmerView2" destination="6sj-LG-A0w" id="AzG-yy-nX1"/>
                                             <outlet property="shimmerView3" destination="m6B-cS-6ZM" id="oHL-4I-YFD"/>
                                             <outlet property="totalPayableLabel" destination="yKO-6d-EHb" id="ddc-Zx-vup"/>
+                                            <outlet property="totalPayableTItleLabel" destination="jBu-ql-xNo" id="aG3-Xi-QdW"/>
                                             <outlet property="vatDisclaimerLabel" destination="Nq7-dU-qmB" id="G50-1V-YpD"/>
                                         </connections>
                                     </tableViewCell>
@@ -1890,6 +1898,7 @@ Payable</string>
                                                 <connections>
                                                     <outlet property="addCardImg" destination="Cmv-F9-SSs" id="pf0-7v-5U6"/>
                                                     <outlet property="addCardLabel" destination="tpN-Rk-Slg" id="Zbr-jZ-qDf"/>
+                                                    <outlet property="creditCardDebitCardLabel" destination="7pk-ow-FAI" id="Rj3-N9-asR"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SavedCardHeaderCell" id="Ecz-zm-8Gq" customClass="SavedCardHeaderCell" customModule="Kudu" customModuleProvider="target">
@@ -1927,6 +1936,9 @@ Payable</string>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="savedCardsHeaderLabel" destination="s0n-8G-zJr" id="zxB-fM-dQz"/>
+                                                </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SavedCardCell" id="sl5-YJ-kuY" customClass="SavedCardCell" customModule="Kudu" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="247" width="430" height="148.66667175292969"/>
@@ -2246,6 +2258,7 @@ Payable</string>
                         </constraints>
                         <connections>
                             <outlet property="codPaymentHeight" destination="xar-RW-WpH" id="GG7-Ck-qFf"/>
+                            <outlet property="paymentOptionsTitle" destination="ZMV-I0-eJb" id="nj7-I2-35I"/>
                             <outlet property="tableView" destination="ZUr-BE-m4u" id="b4P-0t-DHD"/>
                         </connections>
                     </view>
@@ -2344,6 +2357,11 @@ Looking forward to serving you again in
                             <constraint firstItem="AJh-pU-ajH" firstAttribute="top" secondItem="MQy-zJ-w1x" secondAttribute="bottom" constant="5" id="zv8-Xf-zWd"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="thankYouForUsingKuduLbl" destination="Q7A-c1-TFT" id="zgJ-x4-D3R"/>
+                        <outlet property="thankYouLbl" destination="MQy-zJ-w1x" id="dCu-8c-XVV"/>
+                        <outlet property="yourOrderIsConfirmedLbl" destination="AJh-pU-ajH" id="6fe-8F-zog"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y3x-QZ-biD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2353,11 +2371,11 @@ Looking forward to serving you again in
         <scene sceneID="Hbt-48-EiP">
             <objects>
                 <viewController storyboardIdentifier="DateTimeVC" modalPresentationStyle="overFullScreen" id="WfU-0f-8OX" customClass="DateTimeVC" customModule="Kudu" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" restorationIdentifier="DateTimeView" id="VGM-Ix-4ZJ" customClass="DateTimeView" customModule="Kudu" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" restorationIdentifier="DateTimeView" id="VGM-Ix-4ZJ" customClass="DateTimeView" customModule="Kudu" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jol-p9-xvu">
+                            <view contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="Jol-p9-xvu">
                                 <rect key="frame" x="0.0" y="546" width="430" height="386"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Date and Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6br-xy-vVx">
@@ -2515,7 +2533,7 @@ Looking forward to serving you again in
                                             <action selector="setDateAndTimeBtnPressed:" destination="VGM-Ix-4ZJ" eventType="touchUpInside" id="YGi-Of-Zqd"/>
                                         </connections>
                                     </button>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zhj-nC-nJ2" customClass="RTCalendarView" customModule="Kudu" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" translatesAutoresizingMaskIntoConstraints="NO" id="Zhj-nC-nJ2" customClass="RTCalendarView" customModule="Kudu" customModuleProvider="target">
                                         <rect key="frame" x="18" y="50" width="393" height="316"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
@@ -4159,6 +4177,7 @@ Pickup</string>
                         </constraints>
                         <connections>
                             <outlet property="noResultView" destination="oxn-rs-OFX" id="Ce5-Hg-bnC"/>
+                            <outlet property="orderTitleLbl" destination="lRu-gq-fiV" id="HVl-jy-1xS"/>
                             <outlet property="tableView" destination="mYY-Iu-egO" id="aOS-By-Rpa"/>
                         </connections>
                     </view>
@@ -4262,26 +4281,26 @@ Pickup</string>
                                 <color key="backgroundColor" name="offWhiteTableView"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OrderInfoTableViewCell" id="QY7-SM-6qh" customClass="OrderInfoTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="430" height="59"/>
+                                        <rect key="frame" x="0.0" y="50" width="430" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QY7-SM-6qh" id="aL9-2M-cST">
-                                            <rect key="frame" x="0.0" y="0.0" width="430" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="430" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uEx-OH-Xtu">
-                                                    <rect key="frame" x="16" y="12" width="398" height="41"/>
+                                                    <rect key="frame" x="16" y="12" width="398" height="52"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FIP-aD-uZH">
-                                                            <rect key="frame" x="0.0" y="0.0" width="398" height="41"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="398" height="52"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nh3-5X-bfg">
-                                                                    <rect key="frame" x="15.999999999999996" y="11.666666666666666" width="58.666666666666657" height="17.666666666666671"/>
+                                                                    <rect key="frame" x="15.999999999999996" y="17.333333333333329" width="58.666666666666657" height="17.666666666666671"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="14"/>
                                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z54-nL-o8R">
-                                                                    <rect key="frame" x="323" y="12" width="63" height="17"/>
+                                                                    <rect key="frame" x="323" y="12" width="63" height="28"/>
                                                                     <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
                                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                                     <state key="normal" title="Rate Order">
@@ -4289,30 +4308,10 @@ Pickup</string>
                                                                     </state>
                                                                 </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uKq-pQ-k0u">
-                                                                    <rect key="frame" x="325.33333333333331" y="12" width="60.666666666666686" height="17"/>
+                                                                    <rect key="frame" x="386" y="12" width="0.0" height="28"/>
                                                                     <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="bcR-dX-CVZ">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="60.666666666666664" height="17"/>
-                                                                            <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Pickup" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5b2-I0-R1Y">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="40.666666666666664" height="17"/>
-                                                                                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="12"/>
-                                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                </label>
-                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="k_kudu_nearMe" translatesAutoresizingMaskIntoConstraints="NO" id="Q3H-5h-3e8">
-                                                                                    <rect key="frame" x="43.666666666666686" y="0.0" width="17" height="17"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" constant="17" id="0LF-2h-txZ"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                            </subviews>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="height" constant="17" id="1Ud-ee-aKB"/>
-                                                                            </constraints>
-                                                                        </stackView>
                                                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Sp-OB-Dqm" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="60.666666666666664" height="24"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="24"/>
                                                                             <color key="backgroundColor" name="yellowF5B21B"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="24" id="dct-JU-Kho"/>
@@ -4394,14 +4393,12 @@ Pickup</string>
                                         <connections>
                                             <outlet property="callRestView" destination="vhr-Nt-Wpt" id="Nlg-tu-3F0"/>
                                             <outlet property="iHaveArrivedButton" destination="0Sp-OB-Dqm" id="wjh-7h-471"/>
-                                            <outlet property="mapRedirectionStack" destination="bcR-dX-CVZ" id="rz9-DF-pEa"/>
                                             <outlet property="orderIDLabel" destination="nh3-5X-bfg" id="Z9j-4r-h0O"/>
-                                            <outlet property="pickupCurbsideLabel" destination="5b2-I0-R1Y" id="Ja3-p6-hci"/>
                                             <outlet property="rateOrderButton" destination="z54-nL-o8R" id="KmN-8c-lBF"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeliveryOrderStatusTableViewCell" id="Ppx-BM-Ze9" customClass="DeliveryOrderStatusTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="109" width="430" height="298"/>
+                                        <rect key="frame" x="0.0" y="120" width="430" height="298"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ppx-BM-Ze9" id="qv4-Uw-fEp">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="298"/>
@@ -4699,7 +4696,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NonDeliveryOrderStatusTableViewCell" id="f6p-ZA-xAC" customClass="NonDeliveryOrderStatusTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="407" width="430" height="305"/>
+                                        <rect key="frame" x="0.0" y="418" width="430" height="305"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f6p-ZA-xAC" id="ih1-b4-Epi">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="305"/>
@@ -5075,7 +5072,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BillingDetailsHeaderCell" id="gsv-RT-Jaa" customClass="BillingDetailsHeaderCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="712" width="430" height="53.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="723" width="430" height="53.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gsv-RT-Jaa" id="guW-e9-wEC">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="53.666667938232422"/>
@@ -5130,7 +5127,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BillDetailItemTableViewCell" id="scn-Fq-lL0" customClass="BillDetailItemTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="765.66666793823242" width="430" height="27.333333969116211"/>
+                                        <rect key="frame" x="0.0" y="776.66666793823242" width="430" height="27.333333969116211"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="scn-Fq-lL0" id="ZUF-Uy-Byj">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="27.333333969116211"/>
@@ -5187,7 +5184,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BillDetailBreakdownCell" id="iea-km-Iyz" customClass="BillDetailBreakdownCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="793.00000190734863" width="430" height="109"/>
+                                        <rect key="frame" x="0.0" y="804.00000190734863" width="430" height="109"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iea-km-Iyz" id="Lmj-YL-ogE">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="109"/>
@@ -5324,7 +5321,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TotalPayableCell" id="Rd5-zs-e5J" customClass="TotalPayableCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="902.00000190734863" width="430" height="36"/>
+                                        <rect key="frame" x="0.0" y="913.00000190734863" width="430" height="36"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rd5-zs-e5J" id="PDl-fA-iLj">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="36"/>
@@ -5392,12 +5389,13 @@ Pickup</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="totalPayableTitleLbl" destination="uXM-Pf-FBo" id="nys-k2-Gjx"/>
                                             <outlet property="totalPrice" destination="DA2-6P-C4m" id="gOp-g9-7DZ"/>
                                             <outlet property="vatLabel" destination="WEF-Xv-Rbo" id="Qkj-Nh-XP4"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OrderDetailsSectionHeaderCell" id="7hV-rq-5BL" customClass="OrderDetailsSectionHeaderCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="938.00000190734863" width="430" height="53.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="949.00000190734863" width="430" height="53.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7hV-rq-5BL" id="Qc2-oa-Xmb">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="53.666667938232422"/>
@@ -5462,7 +5460,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OrderIdCell" id="iRP-0h-nbh" customClass="OrderIdCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="991.66666984558105" width="430" height="44"/>
+                                        <rect key="frame" x="0.0" y="1002.6666698455811" width="430" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iRP-0h-nbh" id="O9z-1b-DRB">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="44"/>
@@ -5499,7 +5497,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OrderDetailBreakdownCell" id="mZk-gh-pyU" customClass="OrderDetailBreakdownCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1035.6666698455811" width="430" height="234.66667175292969"/>
+                                        <rect key="frame" x="0.0" y="1046.6666698455811" width="430" height="234.66667175292969"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mZk-gh-pyU" id="WU6-A0-LHD">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="234.66667175292969"/>
@@ -5638,7 +5636,7 @@ Pickup</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RatingOrderTableViewCell" id="iKi-1G-dEc" customClass="RatingOrderTableViewCell" customModule="Kudu" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1270.3333415985107" width="430" height="140.66667175292969"/>
+                                        <rect key="frame" x="0.0" y="1281.3333415985107" width="430" height="140.66667175292969"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iKi-1G-dEc" id="gAk-3a-OqN">
                                             <rect key="frame" x="0.0" y="0.0" width="430" height="140.66667175292969"/>
@@ -5849,6 +5847,7 @@ Pickup</string>
                             <outlet property="cancelOrderButton" destination="5ZH-z0-JWx" id="Dvx-rz-dzy"/>
                             <outlet property="cancelOrderView" destination="OZP-zt-QFe" id="rbt-3B-ZfW"/>
                             <outlet property="loaderView" destination="xbu-dw-TPJ" id="xzf-9W-uv8"/>
+                            <outlet property="orderDetailLbl" destination="6mG-1Q-G9F" id="Ydy-6r-lPO"/>
                             <outlet property="reorderButton" destination="oaX-HW-ToP" id="PMz-Kj-Wwe"/>
                             <outlet property="reorderView" destination="mWJ-Pb-gXu" id="gse-xO-XJj"/>
                             <outlet property="tableView" destination="hDq-bL-mlf" id="wiY-cA-f6l"/>
@@ -5927,7 +5926,7 @@ Pickup</string>
             <size key="intrinsicContentSize" width="68" height="35"/>
         </designable>
         <designable name="s9n-wr-ZCi">
-            <size key="intrinsicContentSize" width="12.333333333333334" height="22"/>
+            <size key="intrinsicContentSize" width="43" height="30"/>
         </designable>
         <designable name="vLZ-lY-5Gr">
             <size key="intrinsicContentSize" width="24" height="24"/>

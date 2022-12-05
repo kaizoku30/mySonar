@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,6 +20,7 @@
             <connections>
                 <outlet property="alertMessage" destination="o61-YA-yUD" id="Zw0-pv-XnY"/>
                 <outlet property="alertTitle" destination="CTU-kB-26u" id="pjQ-X4-3WC"/>
+                <outlet property="centerButton" destination="gOU-5T-tdC" id="1G5-yd-07Z"/>
                 <outlet property="leftBtn" destination="OiY-PH-1wx" id="bXA-mW-ZCG"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="gmQ-XO-Pfn"/>
                 <outlet property="rightBtn" destination="7Pk-75-dDj" id="f3q-De-1xQ"/>
@@ -59,17 +60,34 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gOU-5T-tdC" customClass="AppButton" customModule="Kudu" customModuleProvider="target">
+                    <rect key="frame" x="103" y="240" width="122" height="40"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.69803921570000005" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="5a7-Bh-j2D"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122" id="9eV-Yz-mTt"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Update"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Wy4-5U-GFW">
-                    <rect key="frame" x="28" y="24" width="272" height="110.5"/>
+                    <rect key="frame" x="28" y="24" width="272" height="89"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seems like you already have an account with this number. Do you want to merge your accounts?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CTU-kB-26u">
-                            <rect key="frame" x="0.0" y="0.0" width="272" height="53"/>
+                            <rect key="frame" x="0.0" y="0.0" width="272" height="49"/>
                             <fontDescription key="fontDescription" name="Mulish-Bold" family="Mulish" pointSize="14"/>
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seems like you already have an account with this number. Do you want to merge your accounts?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o61-YA-yUD">
-                            <rect key="frame" x="0.0" y="65" width="272" height="45.5"/>
+                            <rect key="frame" x="0.0" y="61" width="272" height="28"/>
                             <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                             <color key="textColor" white="0.0" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -82,6 +100,7 @@
                 <constraint firstItem="OiY-PH-1wx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Wy4-5U-GFW" secondAttribute="bottom" constant="18" id="0qo-i8-HDX"/>
                 <constraint firstAttribute="trailing" secondItem="Wy4-5U-GFW" secondAttribute="trailing" constant="28" id="4IH-N1-4gv"/>
                 <constraint firstItem="7Pk-75-dDj" firstAttribute="trailing" secondItem="Wy4-5U-GFW" secondAttribute="trailing" id="9g0-l4-U8r"/>
+                <constraint firstItem="gOU-5T-tdC" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Acn-1t-qK5"/>
                 <constraint firstAttribute="bottom" secondItem="OiY-PH-1wx" secondAttribute="bottom" constant="20" id="E6v-YD-eTe"/>
                 <constraint firstItem="7Pk-75-dDj" firstAttribute="leading" secondItem="OiY-PH-1wx" secondAttribute="trailing" constant="27" id="HLf-0e-OO6"/>
                 <constraint firstItem="Wy4-5U-GFW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="28" id="Ps5-QC-7qu"/>
@@ -89,6 +108,7 @@
                 <constraint firstItem="OiY-PH-1wx" firstAttribute="height" secondItem="7Pk-75-dDj" secondAttribute="height" id="pMx-yO-Jc3"/>
                 <constraint firstItem="7Pk-75-dDj" firstAttribute="centerY" secondItem="OiY-PH-1wx" secondAttribute="centerY" id="pma-ts-pxa"/>
                 <constraint firstItem="OiY-PH-1wx" firstAttribute="width" secondItem="7Pk-75-dDj" secondAttribute="width" id="tfT-vn-KUt"/>
+                <constraint firstItem="gOU-5T-tdC" firstAttribute="centerY" secondItem="7Pk-75-dDj" secondAttribute="centerY" id="txK-a9-mS1"/>
                 <constraint firstItem="OiY-PH-1wx" firstAttribute="leading" secondItem="Wy4-5U-GFW" secondAttribute="leading" id="yJ2-5J-19B"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -102,10 +122,13 @@
     </objects>
     <designables>
         <designable name="7Pk-75-dDj">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="30" height="29"/>
         </designable>
         <designable name="OiY-PH-1wx">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="30" height="29"/>
+        </designable>
+        <designable name="gOU-5T-tdC">
+            <size key="intrinsicContentSize" width="47" height="29"/>
         </designable>
     </designables>
     <resources>

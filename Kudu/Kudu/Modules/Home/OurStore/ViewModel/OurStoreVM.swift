@@ -34,7 +34,7 @@ class OurStoreVM {
     }
     
     func fetchRestaurants(searchKey: String) {
-        guard let lat = DataManager.shared.currentRelevantLatLong.lat, let long = DataManager.shared.currentRelevantLatLong.long else { return }
+        guard let lat = self.location?.latitude, let long = self.location?.longitude else { return }
         webservice.ourStoreListing(searchKey: searchKey, latitude: lat, longitude: long, success: { [weak self] in
             self?.restaurants = $0.data?.list ?? []
             self?.delegate.ourStoreAPIResponse(responseType: .success($0.message ?? ""))

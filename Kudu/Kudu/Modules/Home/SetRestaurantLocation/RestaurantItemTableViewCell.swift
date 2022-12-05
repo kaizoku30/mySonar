@@ -24,7 +24,7 @@ class RestaurantItemTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        confirmButton.setTitle(LocalizedStrings.SetRestaurant.confirmlocationSmall, for: .normal)
+        confirmButton.setTitle(LSCollection.SetRestaurant.confirmlocationSmall, for: .normal)
 		containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellContainerTapped)))
         // Initialization code
     }
@@ -54,7 +54,7 @@ class RestaurantItemTableViewCell: UITableViewCell {
         let areaName = AppUserDefaults.selectedLanguage() == .en ? (item.restaurantLocation?.areaNameEnglish) ?? "" : (item.restaurantLocation?.areaNameArabic) ?? ""
         restNameLabel.text = name
         let distance = (item.distance ?? 0.0).round(to: 2).removeZerosFromEnd()
-        distanceLabel.text = distance + LocalizedStrings.SetRestaurant.km
+        distanceLabel.text = distance + LSCollection.SetRestaurant.km
         restAddressLabel.text = areaName
         let closingTime = type == .pickup ? (item.pickupTimingToInMinutes.isNotNil ? item.pickupTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0) : (item.curbSideTimingToInMinutes.isNotNil ? item.curbSideTimingToInMinutes! : item.workingHoursEndTimeInMinutes ?? 0)
         let openingTime = type == .pickup ? (item.pickupTimingFromInMinutes.isNotNil ? item.pickupTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0) : (item.curbSideTimingFromInMinutes.isNotNil ? item.curbSideTimingFromInMinutes! : item.workingHoursStartTimeInMinutes ?? 0)
@@ -62,10 +62,10 @@ class RestaurantItemTableViewCell: UITableViewCell {
         let isOpen = currentTime >= openingTime && currentTime <= closingTime
 		self.isOpen = isOpen
         closeTimingStackView.isHidden = !isOpen
-        closeTimingLabel.text = "\(LocalizedStrings.SetRestaurant.closed) " + closingTime.convertMinutesToAMPM()
+        closeTimingLabel.text = "\(LSCollection.SetRestaurant.closed) " + closingTime.convertMinutesToAMPM()
 		closeTimingLabel.font = AppFonts.mulishBold.withSize(14)
         setConfirmButton(enabled: isOpen)
-        openCloseLabel.text = isOpen ? LocalizedStrings.SetRestaurant.open : LocalizedStrings.SetRestaurant.closed
+        openCloseLabel.text = isOpen ? LSCollection.SetRestaurant.open : LSCollection.SetRestaurant.closed
         openCloseLabel.textColor = isOpen ? AppColors.RestaurantListCell.openGreen : AppColors.RestaurantListCell.closedRed
 		openCloseLabel.font = isOpen ? AppFonts.mulishBold.withSize(14) : AppFonts.mulishBold.withSize(12)
     }

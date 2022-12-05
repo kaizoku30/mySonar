@@ -22,7 +22,7 @@ class SearchAddressCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         initialSetup()
-        searchLabel.text = LocalizedStrings.AddNewAddress.searchLocation
+        searchLabel.text = LSCollection.AddNewAddress.searchLocation
         searchLabel.textColor = AppColors.AddNewAddress.disabledTextColor
         // Initialization code
     }
@@ -34,7 +34,7 @@ class SearchAddressCell: UITableViewCell {
     
     func configure(address: String) {
         if address.isEmpty {
-            searchLabel.text = LocalizedStrings.AddNewAddress.searchLocation
+            searchLabel.text = LSCollection.AddNewAddress.searchLocation
             searchLabel.textColor = AppColors.AddNewAddress.disabledTextColor
             return }
         searchLabel.text = address

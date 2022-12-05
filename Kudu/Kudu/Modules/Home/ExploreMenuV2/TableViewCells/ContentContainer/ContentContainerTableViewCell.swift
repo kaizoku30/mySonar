@@ -7,6 +7,15 @@
 
 import UIKit
 
+struct ContentContainerTableViewCellVM {
+    let categories: [MenuCategory]
+    let columnData: [[MenuItem]]
+    let metrics: ExploreMenuViewScrollMetrics
+    let queueScroll: Bool
+    let reloadData: Bool
+    let serviceType: APIEndPoints.ServicesType
+}
+
 class ContentContainerTableViewCell: UITableViewCell {
 	@IBOutlet weak var collectionView: UICollectionView!
 	
@@ -39,12 +48,12 @@ class ContentContainerTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(categories: [MenuCategory], columnData: [[MenuItem]], metrics: ExploreMenuViewScrollMetrics, queueScroll: Bool, reloadData: Bool, serviceType: APIEndPoints.ServicesType) {
-        self.serviceType = serviceType
-		self.categories = categories
-		self.columnData = columnData
-		self.metrics = metrics
-		if queueScroll {
+    func configure(_ vm: ContentContainerTableViewCellVM) {
+        self.serviceType = vm.serviceType
+        self.categories = vm.categories
+        self.columnData = vm.columnData
+        self.metrics = vm.metrics
+        if vm.queueScroll {
             if self.collectionView.numberOfItems(inSection: 0) != self.categories.count {
                 self.collectionView.reloadData()
             } else {
@@ -56,8 +65,8 @@ class ContentContainerTableViewCell: UITableViewCell {
             })
             self.queueScrollComplete?()
 		}
-		if reloadData {
-			self.reloadData = reloadData
+        if vm.reloadData {
+            self.reloadData = vm.reloadData
 			self.collectionView.reloadItems(at: [IndexPath(item: self.metrics.currentColumnIndex, section: 0)])
 			self.layoutIfNeeded()
 			self.collectionView.scrollToItem(at: IndexPath(item: self.metrics.currentColumnIndex, section: 0), at: .centeredHorizontally, animated: false)

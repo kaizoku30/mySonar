@@ -21,6 +21,7 @@ class OrderDetailsSectionHeaderCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        orderDetailsLabel.text = LSCollection.Orders.orderDetails
         containerView.roundTopCorners(cornerRadius: 4)
     }
     

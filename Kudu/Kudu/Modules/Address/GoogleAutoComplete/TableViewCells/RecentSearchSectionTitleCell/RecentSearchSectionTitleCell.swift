@@ -17,7 +17,7 @@ class RecentSearchSectionTitleCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        clearBtn.setAttributedTitle(NSAttributedString(string: LocalizedStrings.MapPin.clear, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]), for: .normal)
+        clearBtn.setAttributedTitle(NSAttributedString(string: LSCollection.MapPin.clear, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]), for: .normal)
         clearBtn.handleBtnTap = { [weak self] in
             self?.clearBtnPressed?()
         }

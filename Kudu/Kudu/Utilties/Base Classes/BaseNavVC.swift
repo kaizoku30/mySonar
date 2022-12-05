@@ -7,7 +7,7 @@ enum PushTransition: Int {
 
 class BaseNavVC: UINavigationController, UIGestureRecognizerDelegate {
 
-    var disableSwipeBackGesture = false
+    var disableSwipeBackGesture = true
     
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)

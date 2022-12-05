@@ -96,7 +96,7 @@ extension MyFavouritesVM {
             if oldCount == 0 {
                 addToCart(menuItem: menuItem, template: template, serviceType: serviceType, favouriteObjectId: items[index]._id ?? "", newCount: newCount)
             } else {
-                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount, completion: { [weak self] in
+                CartUtility.updateCartCountRemotely(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: true, quantity: newCount, completion: { [weak self] in
                     guard let strongSelf = self else { return }
                     switch $0 {
                     case .success:
@@ -106,7 +106,7 @@ extension MyFavouritesVM {
                         let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                         strongSelf.delegate?.reloadTable()
-                    case .failure(let error):
+                    case .failure:
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
                         strongSelf.delegate?.reloadTable()
                     }
@@ -115,7 +115,7 @@ extension MyFavouritesVM {
         } else {
             if newCount == 0 {
                // items[index].cartCount = newCount
-                CartUtility.removeItemFromCart(menuItem: menuItem, hashId: object.hashId ?? "", completion: { [weak self] in
+                CartUtility.removeItemFromCartRemotely(menuItem: menuItem, hashId: object.hashId ?? "", completion: { [weak self] in
                     guard let strongSelf = self else { return }
                     switch $0 {
                     case .success:
@@ -125,14 +125,14 @@ extension MyFavouritesVM {
                         let cartNotification = CartCountNotifier(isIncrement: false, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                         strongSelf.delegate?.reloadTable()
-                    case .failure(let error):
+                    case .failure:
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
                         strongSelf.delegate?.reloadTable()
                     }
                 })
             } else {
                 //items[index].cartCount = newCount
-                CartUtility.updateCartCount(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount, completion: { [weak self] in
+                CartUtility.updateCartCountRemotely(menuItem: menuItem, hashId: object.hashId ?? "", isIncrement: false, quantity: newCount, completion: { [weak self] in
                     guard let strongSelf = self else { return }
                     switch $0 {
                     case .success:
@@ -142,7 +142,7 @@ extension MyFavouritesVM {
                         let cartNotification = CartCountNotifier(isIncrement: false, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: object.hashId ?? "", serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: object.modGroups ?? [])
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
                         strongSelf.delegate?.reloadTable()
-                    case .failure(let error):
+                    case .failure:
                         NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart)
                         strongSelf.delegate?.reloadTable()
                     }
@@ -167,7 +167,7 @@ extension MyFavouritesVM {
             debugPrint(response)
             var copy = cartItem
             copy.itemDetails = menuItem
-            CartUtility.addItemToCart(copy)
+            CartUtility.addItemToCartLocally(copy)
             if let findIndex = self.items.firstIndex(where: { $0._id ?? "" == favouriteObjectId}) {
                 self.items[findIndex].cartCount = newCount
             }
@@ -182,11 +182,11 @@ extension MyFavouritesVM {
     }
     
     func addToCartDirectly(menuItem: MenuItem, hashId: String, modGroups: [ModGroup]) {
-        let cart = CartUtility.fetchCart()
+        let cart = CartUtility.fetchCartLocally()
         let hashIdExists = cart.firstIndex(where: { $0.hashId ?? "" == hashId })
         if hashIdExists.isNotNil {
             let previousQuantity = cart[hashIdExists!].quantity ?? 0
-            CartUtility.updateCartCount(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1, completion: {
+            CartUtility.updateCartCountRemotely(menuItem: menuItem, hashId: hashId, isIncrement: true, quantity: previousQuantity + 1, completion: {
                 switch $0 {
                 case .success:
                     let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: modGroups)
@@ -200,7 +200,7 @@ extension MyFavouritesVM {
             return
         }
         let addToCartReq = AddCartItemRequest(itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: hashId, storeId: nil, itemSdmId: menuItem.itemId ?? 0, quantity: 1, servicesAvailable: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable!) ?? .delivery, modGroups: modGroups)
-        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem, completion: { [weak self] _ in
+        CartUtility.addItemToCartRemotely(addToCartReq: addToCartReq, menuItem: menuItem, completion: { [weak self] _ in
             let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: APIEndPoints.ServicesType(rawValue: menuItem.servicesAvailable ?? "") ?? .delivery, modGroups: addToCartReq.modGroups)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
             self?.delegate?.reloadTable()

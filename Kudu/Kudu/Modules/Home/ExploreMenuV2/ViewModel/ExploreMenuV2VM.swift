@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class ExploreMenuV2VM {
+    
 	private var serviceType: APIEndPoints.ServicesType!
 	private var storeId: String?
 	private var categories: [MenuCategory] = []
@@ -42,14 +43,9 @@ class ExploreMenuV2VM {
 	}
     
     func refreshViewModel(someConflictOccured: (() -> Void)? = nil) {
-        let oldServiceType = self.serviceType
         self.serviceType = DataManager.shared.currentServiceType
         self.storeId = DataManager.shared.currentStoreId
-        if serviceType != oldServiceType {
-            self.itemColumnData = []
-            self.categories = []
-            someConflictOccured?()
-        }
+        someConflictOccured?()
     }
     
     func syncWithExploreSearch(object: MenuSearchResultItem) {
@@ -123,6 +119,7 @@ class ExploreMenuV2VM {
 	func fetchAllItemTableData(completedFetching: @escaping ((Bool) -> Void)) {
         itemColumnData = []
         categoriesFetched = []
+        categories = []
         getMenus { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.categories.forEach({ _ in
@@ -181,9 +178,9 @@ class ExploreMenuV2VM {
 
 extension ExploreMenuV2VM {
 	// MARK: Operation Methods
-	func updateLikeStatus(_ liked: Bool, itemId: String, hashId: String, modGroups: [ModGroup]?, tableIndex: Int, likeFailed: @escaping ((String) -> Void?)) {
-        var hashId = hashId
-		if liked {
+    func updateLikeStatus(req: LikeUpdateRequest, likeFailed: @escaping ((String) -> Void?)) {
+        var hashId = req.hashId
+        if req.liked {
 			debugPrint("Added Hash ID \(hashId)")
 			DataManager.saveHashIDtoFavourites(hashId)
 		} else {
@@ -191,19 +188,19 @@ extension ExploreMenuV2VM {
 			DataManager.removeHashIdFromFavourites(hashId)
 		}
         
-        guard let menuItems = itemColumnData[safe: tableIndex], let itemIndex = menuItems.firstIndex(where: { $0._id == itemId }) else {
+        guard let menuItems = itemColumnData[safe: req.tableIndex], let itemIndex = menuItems.firstIndex(where: { $0._id == req.itemId }) else {
             fatalError("Item Index issue")
         }
-        let item = itemColumnData[tableIndex][itemIndex]
-        var modGroups: [ModGroup]? = modGroups
+        let item = itemColumnData[req.tableIndex][itemIndex]
+        var modGroups: [ModGroup]? = req.modGroups
 		if modGroups.isNotNil {
-			itemColumnData[tableIndex][itemIndex].isFavourites = liked
-            modGroups = itemColumnData[tableIndex][itemIndex].templates?.last?.modGroups
-            if let templateHashID = itemColumnData[tableIndex][itemIndex].templates?.last?.hashId {
+            itemColumnData[req.tableIndex][itemIndex].isFavourites = req.liked
+            modGroups = itemColumnData[req.tableIndex][itemIndex].templates?.last?.modGroups
+            if let templateHashID = itemColumnData[req.tableIndex][itemIndex].templates?.last?.hashId {
                 hashId = templateHashID
             }
 		}
-        let request = FavouriteRequest(itemId: itemId, hashId: hashId, menuId: item.menuId ?? "", itemSdmId: item.itemId ?? 0, isFavourite: liked, servicesAvailable: self.serviceType, modGroups: modGroups)
+        let request = FavouriteRequest(itemId: req.itemId, hashId: hashId, menuId: item.menuId ?? "", itemSdmId: item.itemId ?? 0, isFavourite: req.liked, servicesAvailable: self.serviceType, modGroups: modGroups)
 		APIEndPoints.HomeEndPoints.hitFavouriteAPI(request: request, success: { (response) in
 			debugPrint(response.message ?? "")
 		}, failure: { (error) in
@@ -232,9 +229,8 @@ extension ExploreMenuV2VM {
 			
 		} else {
 			guard let item = menuItems[safe: index] else { return }
-			//itemColumnData[tableIndex][index].cartCount = newCount
 			debugPrint("Count updated to \(newCount) for item : \(menuItem.nameEnglish ?? "")")
-			if item.templates?.count ?? 0 > 0 {
+            if item.templates?.count ?? 0 > 0, let recentTemplate = item.templates?.last, let modGroupCount = recentTemplate.modGroups?.count, modGroupCount > 0 {
 				//Some template to be removed
 				debugPrint("Removed template with hashId : \(menuItems[index].templates?.last?.hashId ?? "")")
 				let lastHashId = itemColumnData[tableIndex][index].templates?.last?.hashId ?? ""
@@ -273,12 +269,12 @@ extension ExploreMenuV2VM {
 		}
 		guard let menuId = categories[safe: tableIndex]?._id, let itemId = menuItem._id, let itemSdmId = menuItem.itemId  else { return }
 		let addToCartReq = AddCartItemRequest(itemId: itemId, menuId: menuId, hashId: hashId, storeId: self.storeId, itemSdmId: itemSdmId, quantity: 1, servicesAvailable: serviceType, modGroups: template?.modGroups)
-        CartUtility.addItemToCart(addToCartReq: addToCartReq, menuItem: menuItem, completion: {
+        CartUtility.addItemToCartRemotely(addToCartReq: addToCartReq, menuItem: menuItem, completion: {
             switch $0 {
             case .success:
                 let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: self.serviceType, modGroups: addToCartReq.modGroups)
                 NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-            case .failure(let error):
+            case .failure:
                 let cartNotification = CartCountNotifier(isIncrement: true, itemId: addToCartReq.itemId, menuId: addToCartReq.menuId, hashId: addToCartReq.hashId, serviceType: self.serviceType, modGroups: addToCartReq.modGroups, apiFailed: true)
                 NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
             }
@@ -291,10 +287,10 @@ extension ExploreMenuV2VM {
 		//CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
 		APIEndPoints.CartEndPoints.incrementDecrementCartCount(req: updateCartReq, success: { (response) in
 			debugPrint(response)
-            CartUtility.updateCartCount(hashId, isIncrement: isIncrement)
+            CartUtility.updateCartCountLocally(hashId, isIncrement: isIncrement)
             let cartNotification = CartCountNotifier(isIncrement: isIncrement, itemId: updateCartReq.itemId, menuId: menuItem.menuId ?? "", hashId: updateCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-		}, failure: { (error) in
+		}, failure: { _ in
             let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: updateCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups ?? [], apiFailed: true)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		})
@@ -303,11 +299,11 @@ extension ExploreMenuV2VM {
     private func removeItemFromCart(menuItem: MenuItem, hashId: String, tableIndex: Int, templateModGroups: [ModGroup]?) {
 		guard let itemId = menuItem._id else { return }
 		let removeCartReq = RemoveItemFromCartRequest(itemId: itemId, hashId: hashId)
-		APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { (response) in
-            CartUtility.removeItemFromCart(hashId)
+		APIEndPoints.CartEndPoints.removeItemFromCart(req: removeCartReq, success: { _ in
+            CartUtility.removeItemFromCartLocally(hashId)
             let cartNotification = CartCountNotifier(isIncrement: false, itemId: removeCartReq.itemId, menuId: menuItem.menuId ?? "", hashId: removeCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
-		}, failure: { (error) in
+		}, failure: { _ in
             let cartNotification = CartCountNotifier(isIncrement: true, itemId: menuItem._id ?? "", menuId: menuItem.menuId ?? "", hashId: removeCartReq.hashId, serviceType: self.serviceType, modGroups: templateModGroups ?? [], apiFailed: true)
             NotificationCenter.postNotificationForObservers(.itemCountUpdatedFromCart, object: cartNotification.getUserInfoFormat)
 		})

@@ -953,8 +953,8 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attached Photos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKc-JS-GcZ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="93.333333333333329" height="15.333333333333334"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attached Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nKc-JS-GcZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="87.333333333333329" height="15.333333333333334"/>
                                                     <fontDescription key="fontDescription" name="Mulish-Medium" family="Mulish" pointSize="12"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -1220,6 +1220,7 @@
                     <connections>
                         <outlet property="changePhoneNumContainer" destination="aZN-lQ-ZTs" id="MvD-Uf-VdM"/>
                         <outlet property="changePhoneNumberTF" destination="st0-3m-84H" id="ZcU-pE-WGH"/>
+                        <outlet property="titleLabel" destination="9mp-Gp-1N2" id="1Hd-cD-bdW"/>
                         <outlet property="verifyNowButton" destination="dPs-Mm-Bya" id="2zK-vv-yqN"/>
                     </connections>
                 </viewController>

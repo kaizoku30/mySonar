@@ -133,7 +133,7 @@ extension ExploreMenuSearchVC {
 			mainThread {
 				self?.results = []
 				response.data?.forEach({
-                    let resultFormat = MenuSearchResultItem(menuId: $0.menuId ?? "", _id: $0._id, titleEnglish: nil, titleArabic: nil, isCategory: false, isItem: true, descriptionEnglish: $0.descriptionEnglish, descriptionArabic: $0.descriptionArabic, nameEnglish: $0.nameEnglish, nameArabic: $0.nameArabic, itemImageUrl: $0.itemImageUrl, price: $0.price, allergicComponent: $0.allergicComponent, isCustomised: $0.isCustomised, menuImageUrl: nil, itemCount: nil, cartCount: nil, isAvailable: true, itemId: $0.itemId ?? 0, calories: $0.calories)
+                    let resultFormat = MenuSearchResultItem(menuId: $0.menuId ?? "", _id: $0._id, titleEnglish: nil, titleArabic: nil, isCategory: false, isItem: true, descriptionEnglish: $0.descriptionEnglish, descriptionArabic: $0.descriptionArabic, nameEnglish: $0.nameEnglish, nameArabic: $0.nameArabic, itemImageUrl: $0.itemImageUrl, price: $0.price, allergicComponent: $0.allergicComponent, isCustomised: $0.isCustomised, menuImageUrl: nil, itemCount: nil, cartCount: nil, isAvailable: true, itemId: $0.itemId ?? 0, calories: $0.calories, cartRefrences: $0.cartRefrences)
 					self?.results.append(resultFormat)
 				})
 				self?.isFetchingMenuItems = false

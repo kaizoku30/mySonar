@@ -44,7 +44,7 @@ struct MenuSearchResultItem: Codable {
 	private enum CodingKeys: String, CodingKey {
         case menuId, _id, titleEnglish, titleArabic, nameEnglish, isCategory, isItem, descriptionEnglish, descriptionArabic, nameArabic, itemImageUrl, price, allergicComponent, isCustomised, menuImageUrl, itemCount, cartCount, isFavourites, isAvailable, itemId, modGroups, templates, cartRefrences, calories, timeRange, isTimeRangeSet }
 	
-    init(menuId: String?, _id: String?, titleEnglish: String?, titleArabic: String?, isCategory: Bool?, isItem: Bool?, descriptionEnglish: String?, descriptionArabic: String?, nameEnglish: String?, nameArabic: String?, itemImageUrl: String?, price: Double?, allergicComponent: [AllergicComponent]?, isCustomised: Bool?, menuImageUrl: String?, itemCount: Int?, cartCount: Int?, isAvailable: Bool?, itemId: Int?, calories: Int?) {
+    init(menuId: String?, _id: String?, titleEnglish: String?, titleArabic: String?, isCategory: Bool?, isItem: Bool?, descriptionEnglish: String?, descriptionArabic: String?, nameEnglish: String?, nameArabic: String?, itemImageUrl: String?, price: Double?, allergicComponent: [AllergicComponent]?, isCustomised: Bool?, menuImageUrl: String?, itemCount: Int?, cartCount: Int?, isAvailable: Bool?, itemId: Int?, calories: Int?, cartRefrences: CartReference? = nil) {
 		self.menuId = menuId
 		self._id = _id
 		self.titleEnglish = titleEnglish
@@ -67,6 +67,16 @@ struct MenuSearchResultItem: Codable {
         self.calories = calories
         self.timeRange = []
         self.isTimeRangeSet = false
+        self.cartRefrences = cartRefrences
+        self.templates = []
+        self.cartCount = cartRefrences?.quantity ?? 0
+        for templateObject in cartRefrences?.customised ?? [] {
+            let count = templateObject.totalQuantity ?? 0
+            for _ in 0..<count {
+                templates?.append(templateObject)
+            }
+        }
+        self.cartCount = self.cartRefrences?.quantity ?? 0
 	}
 	
 	init(from decoder: Decoder) throws {

@@ -20,7 +20,7 @@ class FeedbackNameCell: UITableViewCell {
         selectionStyle = .none
         nameTFView.textFieldType = .name
         nameTFView.backgroundColor = .clear
-        nameTFView.placeholderText = LocalizedStrings.Setting.enterYourName
+        nameTFView.placeholderText = LSCollection.Setting.enterYourName
         tfContainerView.backgroundColor = AppColors.SendFeedbackScreen.textfieldBg
         tfContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(containerTapped)))
         nameTFView.textFieldFinishedEditing = { [weak self] in

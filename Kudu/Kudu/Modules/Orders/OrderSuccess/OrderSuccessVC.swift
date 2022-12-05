@@ -10,6 +10,10 @@ import AVFoundation
 
 class OrderSuccessVC: BaseVC {
     
+    @IBOutlet private weak var thankYouForUsingKuduLbl: UILabel!
+    @IBOutlet private weak var yourOrderIsConfirmedLbl: UILabel!
+    @IBOutlet private weak var thankYouLbl: UILabel!
+    
     var flow: CartPageFlow!
     
     @IBAction func doneButton(_ sender: Any) {
@@ -26,6 +30,11 @@ class OrderSuccessVC: BaseVC {
         
         if self.navigationController?.viewControllers.contains(where: { $0.isKind(of: HomeVC.self )}) ?? false {
             self.popToSpecificViewController(kindOf: HomeVC.self)
+            return
+        }
+        
+        if self.navigationController?.viewControllers.contains(where: { $0.isKind(of: ProfileVC.self)}) ?? false {
+            self.popToSpecificViewController(kindOf: ProfileVC.self)
             return
         }
         

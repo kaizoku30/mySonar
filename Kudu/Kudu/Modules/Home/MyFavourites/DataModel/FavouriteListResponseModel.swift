@@ -45,7 +45,7 @@ struct FavouriteItem: Codable {
         modGroups = try? container.decode([ModGroup]?.self, forKey: .modGroups)
         itemDetails = try? container.decode(MenuItem?.self, forKey: .itemDetails)
         self.templates = []
-        let hashIdCount = CartUtility.fetchCart().first(where: { $0.hashId ?? "" == self.hashId })?.quantity ?? 0
+        let hashIdCount = CartUtility.fetchCartLocally().first(where: { $0.hashId ?? "" == self.hashId })?.quantity ?? 0
         self.cartCount = hashIdCount
         let loopCount = self.cartCount ?? 0
         for _ in 0..<loopCount {

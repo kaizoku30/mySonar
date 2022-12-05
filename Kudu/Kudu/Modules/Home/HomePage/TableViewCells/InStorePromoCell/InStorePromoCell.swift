@@ -26,8 +26,8 @@ class InStorePromoCell: UITableViewCell {
         collectionView.dataSource = self
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         collectionView.registerCell(with: HomeOfferDealCollectionViewCell.self)
-        viewAllButton.setTitle(LocalizedStrings.Home.viewAll, for: .normal)
-        inStorePromoLbl.text = LocalizedStrings.Home.inStorePromos
+        viewAllButton.setTitle(LSCollection.Home.viewAll, for: .normal)
+        inStorePromoLbl.text = LSCollection.Home.inStorePromos
         // Initialization code
     }
 

@@ -69,6 +69,7 @@ class SetRestaurantLocationVC: BaseVC {
 			case .backButtonPressed:
 				strongSelf.pop()
 			case .searchTextChanged:
+                strongSelf.baseView.showHideMapButton(show: strongSelf.baseView.getSearchText().isEmpty == false)
 				strongSelf.debouncer.call()
 			case .openMap:
 				strongSelf.queueMapFlow = true

@@ -97,6 +97,7 @@ extension CouponDetailPopUpVC {
             guard let strongSelf = self else { return }
             if $0 {
                 // MARK: QUEUE NAVIGATION FROM HERE TO AN ITEM OR A CATEGORY
+                CartUtility.setComingFromMyOffers()
                 guard let coupon = self?.viewModel.getCoupon else { return }
                 self?.dimissPopUp?(coupon)
             } else {
@@ -182,6 +183,6 @@ extension CouponDetailPopUpVC {
 extension CouponDetailPopUpVC: CouponDetailPopUpViewDelegate {
     func setTableHeight() {
         self.setHeight()
-        self.baseView.validationErrorLabel.text = LocalizedStrings.CouponDetail.couponAlreadyRedeemed.localize()
+        self.baseView.validationErrorLabel.text = LSCollection.CouponDetail.couponAlreadyRedeemed.localize()
     }
 }

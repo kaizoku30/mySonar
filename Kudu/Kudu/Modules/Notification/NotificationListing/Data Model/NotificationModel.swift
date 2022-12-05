@@ -38,5 +38,6 @@ struct NotificationList: Codable {
     let notificationType: String?
     let description: String?
     let messageType: String?
+    let created: Int?
     
 }

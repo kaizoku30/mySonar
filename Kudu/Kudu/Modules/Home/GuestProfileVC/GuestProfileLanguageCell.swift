@@ -25,7 +25,7 @@ class GuestProfileLanguageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        titleLabel.text = LocalizedStrings.Profile.language
+        titleLabel.text = LSCollection.Profile.language
         arabicLanguageSwitch.semanticContentAttribute = .forceLeftToRight
     }
     

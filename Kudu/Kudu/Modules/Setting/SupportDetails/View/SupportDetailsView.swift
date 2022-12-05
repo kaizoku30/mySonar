@@ -36,10 +36,10 @@ class SupportDetailsView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         addGestureRecognizers()
-        titleLabel.text = LocalizedStrings.Setting.support
-        infoLabel.text = LocalizedStrings.Setting.itLooksLikeYouAreExperiencingProblems
-        callUsLabel.text = LocalizedStrings.Setting.callUs
-        mailUsLabel.text = LocalizedStrings.Setting.emailUs
+        titleLabel.text = LSCollection.Setting.support
+        infoLabel.text = LSCollection.Setting.itLooksLikeYouAreExperiencingProblems
+        callUsLabel.text = LSCollection.Setting.callUs
+        mailUsLabel.text = LSCollection.Setting.emailUs
     }
     
     private func addGestureRecognizers() {

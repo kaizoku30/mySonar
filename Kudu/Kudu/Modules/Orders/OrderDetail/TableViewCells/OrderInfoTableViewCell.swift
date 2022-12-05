@@ -25,10 +25,11 @@ class OrderInfoTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        rateOrderButton.setTitle(LSCollection.Orders.rateOrderBtn, for: .normal)
         iHaveArrivedButton.addTarget(self, action: #selector(ihaveArrivedPressed), for: .touchUpInside)
         iHaveArrivedButton.isUserInteractionEnabled = false
         rateOrderButton.addTarget(self, action: #selector(rateOrderButtonPressed), for: .touchUpInside)
-        mapRedirectionStack.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(mapRedirect)))
+       // mapRedirectionStack.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(mapRedirect)))
     }
     
     @objc private func mapRedirect() {
@@ -50,8 +51,8 @@ class OrderInfoTableViewCell: UITableViewCell {
             callRestView.isHidden = deliveryStatus != .orderPlaced
         }
         let curbsideStatus = CurbsidePickupOrderStatus(rawValue: orderStatus) ?? .orderPlaced
-        mapRedirectionStack.isHidden = serviceType == .delivery || curbsideStatus == .cancelled || curbsideStatus == .collected
-        pickupCurbsideLabel.text = serviceType == .curbside ? "Curbside" : "Pickup"
+       // mapRedirectionStack.isHidden = true//serviceType == .delivery || curbsideStatus == .cancelled || curbsideStatus == .collected
+      //  pickupCurbsideLabel.text = serviceType == .curbside ? "Curbside" : "Pickup"
         orderIDLabel.text = "Order ID : \(orderId)"
         if serviceType == .curbside {
             let isArrived = arrivalInfo.hasArrived

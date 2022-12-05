@@ -51,8 +51,8 @@ class AddNewAddressView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         initialSetup()
-        myAddressLabel.text = LocalizedStrings.MyAddress.myAddressLabel
-        addAddressButton.setTitle(LocalizedStrings.AddNewAddress.saveButton, for: .normal)
+        myAddressLabel.text = LSCollection.MyAddress.myAddressLabel
+        addAddressButton.setTitle(LSCollection.AddNewAddress.saveButton, for: .normal)
     }
     
     private func initialSetup() {
@@ -65,7 +65,7 @@ class AddNewAddressView: UIView {
     }
     
     func updateTitleForEditFlow() {
-        myAddressLabel.text = LocalizedStrings.MyAddress.editAddress
+        myAddressLabel.text = LSCollection.MyAddress.editAddress
     }
     
     func showError(message: String, extraDelay: TimeInterval? = nil) {
@@ -93,7 +93,7 @@ class AddNewAddressView: UIView {
     func showLocationServicesAlert(type: LocationServicesDeniedView.LocationAlertType) {
         mainThread {
             let alert = LocationServicesDeniedView(frame: CGRect(x: 0, y: 0, width: LocationServicesDeniedView.locationPopUpWidth, height: LocationServicesDeniedView.locationPopUpHeight))
-            alert.configureLocationView(type: type, leftButtonTitle: LocalizedStrings.Home.cancel, rightButtonTitle: LocalizedStrings.Home.setting, container: self)
+            alert.configureLocationView(type: type, leftButtonTitle: LSCollection.Home.cancel, rightButtonTitle: LSCollection.Home.setting, container: self)
             alert.handleActionOnLocationView = { [weak self] in
                 if $0 == .right {
                     self?.handleViewActions?(.openSettings)

@@ -1,6 +1,0 @@
-framework module NKQuartzClockTimePicker {
-  umbrella header "NKQuartzClockTimePicker-umbrella.h"
-
-  export *
-  module * { export * }
-}

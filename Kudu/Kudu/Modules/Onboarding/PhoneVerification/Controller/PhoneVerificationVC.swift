@@ -64,6 +64,10 @@ extension PhoneVerificationVC: PhoneVerificationVMDelegate {
             self.baseView.handleAPIResponse(.verifyMobileOtpAPI, isSuccess: true, errorMsg: nil)
             DataManager.shared.loginResponse?.isEmailVerified = true
             NotificationCenter.postNotificationForObservers(.updateProfilePage)
+            if viewModel?.isAddCardFlow ?? false {
+                self.pop()
+                return
+            }
             self.popToSpecificViewController(kindOf: ProfileVC.self)
             if self.navigationController?.viewControllers.contains(where: { $0.isKind(of: ProfileVC.self)}) == false {
                 self.pop()

@@ -10,7 +10,7 @@ import UIKit
 extension ExploreMenuSearchVC {
 	func setupTF() {
 		searchTFView.textFieldType = .address
-		searchTFView.placeholderText = LocalizedStrings.SearchMenu.searchByNameOrCategories
+		searchTFView.placeholderText = LSCollection.SearchMenu.searchByNameOrCategories
 		searchTFView.font = AppFonts.mulishBold.withSize(14)
 		searchTFView.textColor = .black
 		
