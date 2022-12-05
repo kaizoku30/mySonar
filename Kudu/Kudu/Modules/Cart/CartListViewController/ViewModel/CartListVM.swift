@@ -174,12 +174,9 @@ class CartListVM {
     func checkIfNoStoreExists(lat: Double, long: Double, checked: @escaping ((StoreDetail?) -> Void)) {
         APIEndPoints.HomeEndPoints.getStoreDetailsForDelivery(lat: lat, long: long, servicesType: self.serviceType, success: {
             checked($0.data)
-        }, failure: { (error) in
-            if error.code == 422 {
-                checked(nil)
-            } else {
-                checked(nil)
-            }
+        }, failure: { _ in
+            //422
+            checked(nil)
         })
     }
     
